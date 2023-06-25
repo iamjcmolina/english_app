@@ -98,10 +98,6 @@ class IndependentClause {
   Pronoun? get pronoun => subject is Pronoun? subject as Pronoun : null;
   NounPhrase? get nounPhrase => subject is NounPhrase? subject as NounPhrase : null;
 
-  Verb get validVerb => verb ?? EmptyVerb();
-  Subject get validSubject => subject ?? EmptySubject();
-  Verb get verbWord => verb is PhrasalVerb? (verb as PhrasalVerb).verb : validVerb;
-
   String get affirmativeSimplePresent {
     return affirmativeSpeech(
       auxiliarVerbs: [
@@ -468,7 +464,30 @@ class IndependentClause {
         ],
         conjugatedVerb: verbWord.progressive);
   }
-
+  
+  Verb get validVerb => verb ?? EmptyVerb();
+  Subject get validSubject => subject ?? EmptySubject();
+  Verb get verbWord => verb is PhrasalVerb? (verb as PhrasalVerb).verb : validVerb;
+  
+  bool get contractFirstAuxiliarVerb { return true; }
+  String? get validFrontAdverb { return ''; }
+  String get validSubject { return ''; }
+  String? get firstAuxiliarVerb { return ''; }
+  String? get validMidAdverb { return ''; }
+  String? get secondAuxiliarVerb { return ''; }
+  String? get thirdAuxiliarVerb { return ''; }
+  String get conjugatedVerbWord { return ''; }
+  String get validSubjectComplement { return ''; }
+  String? get validIndirectObject { return null; }
+  String? get validDirectObject { return null; }
+  String? get validDirectObject { return null; }
+  String? get phrasalVerbParticle { return null; }
+  List<String>? get adverbs { return null; }
+  
+  String conjugateVerbWord(VerbWord verb) {
+    return '';
+  }
+  
   String affirmativeSpeech({
     bool interrogative = false,
     required List<Object?> auxiliarVerbs,
