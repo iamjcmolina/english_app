@@ -15,5 +15,5 @@ class PrepositionalPhraseWithGerundObject extends PrepositionalPhrase {
   AdverbType get adverbType => throw UnimplementedError();
 
   @override
-  String toString() => '$preposition ${verb.progressive}';
+  String toString() => '$preposition ${verb.presentParticiple}';
 }

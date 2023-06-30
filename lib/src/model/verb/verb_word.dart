@@ -3,7 +3,7 @@ import '../noun/subject.dart';
 import 'verb.dart';
 
 class VerbWord extends Verb {
-  static String simplePresentForSingularThirdPerson(String infinitive) {
+  static String presentForSingularThirdPerson(String infinitive) {
     String penultimateLetter =
         infinitive.substring(infinitive.length - 2, infinitive.length - 1);
     String lastLetter = infinitive.substring(infinitive.length - 1);
@@ -31,7 +31,7 @@ class VerbWord extends Verb {
   @override
   String infinitive;
   @override
-  String simplePast;
+  String past;
   @override
   String pastParticiple;
 
@@ -40,7 +40,7 @@ class VerbWord extends Verb {
     required this.isDitransitive,
     this.isLinkingVerb = false,
     required this.infinitive,
-    required this.simplePast,
+    required this.past,
     required this.pastParticiple,
   });
 
@@ -48,19 +48,25 @@ class VerbWord extends Verb {
     required this.isTransitive,
     required this.isDitransitive,
     required this.infinitive,
-    required this.simplePast,
-  }): pastParticiple = simplePast, isLinkingVerb = false;
+    required this.past,
+  }): pastParticiple = past, isLinkingVerb = false;
 
   @override
   bool get isBe => infinitive == 'be';
 
   @override
-  String get progressive => '${infinitive}ing';
+  String get presentParticiple => '${infinitive}ing';
 
   @override
-  String simplePresent(Subject subject) {
+  String present(Subject subject, [bool enableContraction = true, bool negative = false, bool alternativeContraction = false]) {
+    if(isBe) {
+      if (negative) {
+        return Verb.negativeSimplePresentBe(subject, enableContraction, alternativeContraction);
+      }
+      return Verb.simplePresentBe(subject, enableContraction);
+    }
     if (subject.singularThirdPerson) {
-      return VerbWord.simplePresentForSingularThirdPerson(infinitive);
+      return VerbWord.presentForSingularThirdPerson(infinitive);
     }
     return infinitive;
   }

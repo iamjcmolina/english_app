@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/sentence_cubit.dart';
+import '../../english_app.dart';
 import '../../model/sentence.dart';
 import '../../widget/independent_clause_builder.dart';
+import '../common/item_button.dart';
 
 class SentencePage extends StatefulWidget {
   SentencePage({super.key});
@@ -18,16 +20,15 @@ class _SentencePageState extends State<SentencePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sentence'),
+        actions: EnglishApp.globalActions,
       ),
       body: BlocBuilder<SentenceCubit, Sentence>(builder: (context, state) {
         return ListView(
           children: [
-            Card(
-                child: ListTile(
-                  title: Text(state.toString(),
-                      style: const TextStyle(fontWeight: FontWeight.bold)
-                  ),
-                )
+            ListTile(
+              title: Text(state.toString(),
+                  style: const TextStyle(fontWeight: FontWeight.bold)
+              ),
             ),
             Card(
               child: ListTile(

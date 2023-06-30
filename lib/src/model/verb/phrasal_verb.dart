@@ -29,13 +29,13 @@ class PhrasalVerb extends Verb {
   String get pastParticiple => '${verb.pastParticiple} $particle';
 
   @override
-  String get progressive => '${verb.progressive} $particle';
+  String get presentParticiple => '${verb.presentParticiple} $particle';
 
   @override
-  String get simplePast => '${verb.simplePast} $particle';
+  String get past => '${verb.past} $particle';
 
   @override
-  String simplePresent(Subject subject) {
-    return '${verb.simplePresent(subject)} $particle';
+  String present(Subject subject, [bool enableContraction = true, bool negative = false, bool alternativeContraction = false]) {
+    return '${verb.present(subject, enableContraction, negative, alternativeContraction)} $particle';
   }
 }

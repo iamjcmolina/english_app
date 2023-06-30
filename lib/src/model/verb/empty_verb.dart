@@ -21,13 +21,13 @@ class EmptyVerb implements Verb {
   String get pastParticiple => '<Past participle verb>';
 
   @override
-  String get progressive => '<Progressive verb>';
+  String get presentParticiple => '<Progressive verb>';
 
   @override
-  String get simplePast => '<Simple past verb>';
+  String get past => '<Simple past verb>';
 
   @override
-  String simplePresent(Subject subject) => '<Simple present verb>';
+  String present(Subject subject, [bool enableContraction = true, bool negative = false, bool alternativeContraction = false]) => '<Simple present verb>';
 
   @override
   String toString() => infinitive;

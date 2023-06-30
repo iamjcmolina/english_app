@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc/sentence_cubit.dart';
-import '../model/noun/pronoun.dart';
 import '../model/verb/verb.dart';
 import '../service/vocabulary_service.dart';
 import 'common/autocomplete_word.dart';
-import 'common/elevated_card.dart';
 
 class VerbBuilder extends StatefulWidget {
   final Verb? verb;
@@ -31,9 +28,6 @@ class _VerbBuilderState extends State<VerbBuilder> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: const Text('<Verb>')
-          ),
           Card(
               child: AutocompleteWord<Verb>(
                 label: 'Verb',

@@ -7,6 +7,7 @@ import '../model/noun/subject.dart';
 import '../model/noun/subject_type.dart';
 import '../model/sentence.dart';
 import '../model/tense.dart';
+import '../model/tense_type.dart';
 import '../model/verb/empty_verb.dart';
 import '../model/verb/verb.dart';
 
@@ -15,10 +16,15 @@ class SentenceCubit extends Cubit<Sentence> {
       : super(Sentence(independentClause: IndependentClause(
           type: ClauseType.affirmative,
           tense: Tense.simplePresent,
+          tenseType: TenseType.simple,
         )));
 
   void setIndependentClause(IndependentClause independentClause) {
     emit(state.copyWith(independentClause: independentClause));
+  }
+
+  void toggleModalVerb() {
+    setIndependentClause(state.independentClause.copyWith(enableModalVerb: !state.independentClause.enableModalVerb));
   }
 
   void toggleContractions() {

@@ -10,12 +10,16 @@ import '../noun/pronoun.dart';
 import '../noun/subject_type.dart';
 import '../subject_complement.dart';
 import '../tense.dart';
+import '../tense_type.dart';
+import '../verb/empty_modal_verb.dart';
 import '../verb/modal_verb.dart';
 import '../verb/empty_verb.dart';
 import '../verb/phrasal_verb.dart';
 import '../verb/phrasal_verb_particle.dart';
 import '../verb/verb.dart';
-import '../verb/verb_type.dart';
+import '../verb/verb_tense.dart';
+import '../verb/verb_word.dart';
+import '../verb/verb_phrase.dart';
 import 'clause_type.dart';
 
 class IndependentClause {
@@ -25,6 +29,7 @@ class IndependentClause {
   bool enableModalVerb;
   bool enableDirectObject;
   ClauseType type;
+  TenseType tenseType;
   Tense tense;
   Adverb? beginningAdverb;
   SubjectType subjectType;
@@ -44,6 +49,7 @@ class IndependentClause {
     this.enableModalVerb = false,
     this.enableDirectObject = false,
     required this.type,
+    required this.tenseType,
     required this.tense,
     this.beginningAdverb,
     this.subjectType = SubjectType.pronoun,
@@ -64,6 +70,7 @@ class IndependentClause {
     bool? enableModalVerb,
     bool? enableDirectObject,
     ClauseType? type,
+    TenseType? tenseType,
     Tense? tense,
     Nullable<Adverb>? beginningAdverb,
     SubjectType? subjectType,
@@ -82,6 +89,7 @@ class IndependentClause {
     enableModalVerb: enableModalVerb ?? this.enableModalVerb,
     enableDirectObject: enableDirectObject ?? this.enableDirectObject,
     type: type ?? this.type,
+    tenseType: tenseType ?? this.tenseType,
     tense: tense ?? this.tense,
     beginningAdverb: beginningAdverb == null? this.beginningAdverb : beginningAdverb.value,
     subjectType: subjectType ?? this.subjectType,
@@ -97,6 +105,409 @@ class IndependentClause {
 
   Pronoun? get pronoun => subject is Pronoun? subject as Pronoun : null;
   NounPhrase? get nounPhrase => subject is NounPhrase? subject as NounPhrase : null;
+
+  Verb get validVerb => verb ?? EmptyVerb();
+  ModalVerb get validModalVerb => modalVerb ?? EmptyModalVerb();
+  Subject get validSubject => subject ?? EmptySubject();
+  Verb get verbWord => verb is PhrasalVerb? (verb as PhrasalVerb).verb : validVerb;
+
+  VerbPhrase get affirmativeSimplePresentVerbPhrase {
+    String? firstAuxiliarVerb = enableModalVerb
+        ? validModalVerb.value
+        : validVerb.isBe
+        ? conjugateVerbWord(validVerb)
+        : enableAffirmativeEmphasis
+        ? validSubject.singularThirdPerson
+        ? 'does'
+        : 'do'
+        : null;
+    return VerbPhrase(
+      isFirstVerbContracted: validVerb.isBe
+          && !enableModalVerb
+          && enableContractions,
+      auxiliars: [
+        if (firstAuxiliarVerb != null) firstAuxiliarVerb
+      ],
+      conjugatedVerbWord: conjugateVerbWord(verbWord),
+      phrasalVerbParticle: validVerb is PhrasalVerb? (validVerb as PhrasalVerb).particle : null,
+    );
+  }
+
+  VerbTense get verbTense {
+    if (type == ClauseType.affirmative) {
+      if (tense == Tense.simplePresent) {// He is happy
+        return enableModalVerb || (!validVerb.isBe && enableAffirmativeEmphasis)
+            ? VerbTense.infinitive
+            : VerbTense.present;
+      } else if (tense == Tense.simplePast) {
+        return !validVerb.isBe && enableAffirmativeEmphasis ? VerbTense.infinitive : VerbTense.past;
+      }
+    } else if (type == ClauseType.negative && tense == Tense.simplePresent) {
+      return enableModalVerb || !validVerb.isBe ? VerbTense.infinitive : VerbTense.present;
+    }
+    if (tense == Tense.simplePresent) {
+      return validVerb.isBe && enableModalVerb? VerbTense.infinitive : VerbTense.present;
+    } else if (tense == Tense.simplePast) {
+      return VerbTense.infinitive;
+    } else if (tense == Tense.simpleFuture) {
+      return VerbTense.infinitive;
+    } else if (tense == Tense.simplePresentPerfect
+        || tense == Tense.simplePastPerfect
+        || tense == Tense.simpleFuturePerfect) {
+      return VerbTense.pastParticiple;
+    } else {
+      return VerbTense.presentParticiple;
+    }
+  }
+
+  VerbPhrase get affirmativeSimplePastVerbPhrase {
+    String? firstAuxiliar = validVerb.isBe
+        ? simplePastVerb(validVerb)
+        : enableAffirmativeEmphasis
+        ? 'did'
+        : null;
+    return VerbPhrase(
+      isFirstVerbContracted: false,
+      auxiliars: [
+        if (firstAuxiliar !=null) firstAuxiliar
+      ],
+      conjugatedVerbWord: conjugateVerbWord(verbWord),
+    );
+  }
+
+  String simplePastVerb(Verb verb) {
+    if (verb.isBe) {
+      if(type == ClauseType.negative) {
+        Verb.negativeSimplePastBe(validSubject, enableContractions);
+      }
+      Verb.simplePastBe(validSubject);
+    }
+    return verb.past;
+  }
+
+  VerbPhrase get affirmativeSimpleFutureVerbPhrase => VerbPhrase(
+    isFirstVerbContracted: enableContractions,
+    auxiliars: [enableContractions ? "'ll" : 'will'],
+    conjugatedVerbWord: verbWord.infinitive,
+  );
+
+  VerbPhrase get affirmativeSimplePresentPerfectVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [
+        enableContractions
+            ? validSubject.singularThirdPerson
+            ? "'s"
+            : "'ve"
+            : validSubject.singularThirdPerson
+            ? 'has'
+            : 'have'
+      ],
+      conjugatedVerbWord: verbWord.pastParticiple
+  );
+
+  VerbPhrase get affirmativeSimplePastPerfectVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [enableContractions ? "'d" : "had"],
+      conjugatedVerbWord: verbWord.pastParticiple
+  );
+
+  VerbPhrase get affirmativeSimpleFuturePerfectVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [
+        enableContractions ? "'ll" : 'will',
+        'have'
+      ],
+      conjugatedVerbWord: verbWord.pastParticiple
+  );
+
+  VerbPhrase get affirmativeContinuousPresentVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: !enableModalVerb && enableContractions,
+      auxiliars: [
+        enableModalVerb
+            ? validModalVerb.value
+            : Verb.simplePresentBe(validSubject, enableContractions),
+        if (enableModalVerb && verbWord.isBe) 'be'
+      ],
+      conjugatedVerbWord: verbWord.presentParticiple
+  );
+
+  VerbPhrase get affirmativeContinuousPastVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: false,
+      auxiliars: [Verb.simplePastBe(validSubject)],
+      conjugatedVerbWord: verbWord.presentParticiple
+  );
+
+  VerbPhrase get affirmativeContinuousFutureVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [enableContractions ? "'ll" : 'will', 'be'],
+      conjugatedVerbWord: verbWord.presentParticiple
+  );
+
+  VerbPhrase get affirmativeContinuousPresentPerfectVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [
+        enableContractions
+            ? validSubject.singularThirdPerson
+            ? "'s"
+            : "'ve"
+            : validSubject.singularThirdPerson
+            ? 'has'
+            : 'have',
+        'been'
+      ],
+      conjugatedVerbWord: verbWord.presentParticiple
+  );
+
+  VerbPhrase get affirmativeContinuousPastPerfectVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [enableContractions ? "'d" : "had", 'been'],
+      conjugatedVerbWord: verbWord.presentParticiple
+  );
+
+  VerbPhrase get affirmativeContinuousFuturePerfectVerbPhrase => VerbPhrase(
+      isFirstVerbContracted: enableContractions,
+      auxiliars: [
+        enableContractions ? "'ll" : 'will',
+        'have',
+        'been'
+      ],
+      conjugatedVerbWord: verbWord.presentParticiple
+  );
+
+  VerbPhrase get negativeSimplePresentVerbPhrase {
+    String simplePresentVerb = verbWord.present(validSubject);
+    return VerbPhrase(
+      isFirstVerbContracted: validVerb.isBe && !enableModalVerb && enableContractions,
+      auxiliars: [
+        enableModalVerb
+            ? validModalVerb.negative(enableContractions)
+            : validVerb.isBe
+            ? conjugateVerbWord(verbWord)
+            : enableContractions
+            ? validSubject.singularThirdPerson
+            ? "doesn't"
+            : "don't"
+            : validSubject.singularThirdPerson
+            ? 'does not'
+            : 'do not'
+      ],
+      conjugatedVerbWord: conjugateVerbWord(verbWord),
+    );
+  }
+
+  VerbPhrase get negativeSimplePastVerbPhrase {
+    return VerbPhrase(
+      isFirstVerbContracted: validVerb.isBe && enableContractions,
+      auxiliars: [
+        validVerb.isBe
+            ? Verb.negativeSimplePastBe(validSubject, enableContractions)
+            : enableContractions
+            ? "didn't"
+            : 'did not'
+      ],
+      conjugatedVerbWord: verbWord.infinitive,
+    );
+  }
+
+  VerbPhrase get negativeSimpleFutureVerbPhrase {
+    return VerbPhrase(
+        auxiliars: [enableContractions ? "won't" : 'will not'],
+        conjugatedVerbWord: verbWord.infinitive
+    );
+  }
+
+  VerbPhrase get negativeSimplePresentPerfectVerbPhrase {
+    return VerbPhrase(
+      auxiliars: [
+        enableContractions
+            ? validSubject.singularThirdPerson
+            ? "hasn't"
+            : "haven't"
+            : validSubject.singularThirdPerson
+            ? 'has not'
+            : 'have not'
+      ],
+      conjugatedVerbWord: verbWord.pastParticiple
+    );
+  }
+
+  VerbPhrase get negativeSimplePastPerfectVerbPhrase {
+    return VerbPhrase(
+        isFirstVerbContracted: !enableContractions,
+        auxiliars: [enableContractions ? "'d not" : "had not"],
+        conjugatedVerbWord: verbWord.pastParticiple);
+  }
+
+  VerbPhrase get negativeSimpleFuturePerfectVerbPhrase {
+    return VerbPhrase(
+        isFirstVerbContracted: !enableContractions,
+        auxiliars: [
+          enableContractions ? "won't" : 'will not',
+          validSubject.singularThirdPerson ? 'has' : 'have'
+        ],
+        conjugatedVerbWord: verbWord.pastParticiple);
+  }
+
+  VerbPhrase get negativeContinuousPresentVerbPhrase {
+    return VerbPhrase(
+        isFirstVerbContracted: !enableModalVerb &&
+            enableContractions &&
+            !enableSecondContractionToBe,
+        auxiliars: [
+          enableModalVerb
+              ? validModalVerb.negative(enableContractions)
+              : Verb.negativeSimplePresentBe(
+              validSubject, enableContractions, enableSecondContractionToBe),
+          if (enableModalVerb) 'be'
+        ],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get negativeContinuousPastVerbPhrase {
+    return VerbPhrase(
+        auxiliars: [Verb.negativeSimplePastBe(validSubject, enableContractions)],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get negativeContinuousFutureVerbPhrase {
+    return VerbPhrase(
+        auxiliars: [enableContractions ? "won't" : 'will not', 'be'],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get negativeContinuousPresentPerfectVerbPhrase {
+    return VerbPhrase(
+        isFirstVerbContracted: !enableContractions,
+        auxiliars: [
+          enableContractions
+              ? validSubject.singularThirdPerson
+              ? "'s not"
+              : "'ve not"
+              : validSubject.singularThirdPerson
+              ? 'has not'
+              : 'have not',
+          'been'
+        ],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get negativeContinuousPastPerfectVerbPhrase {
+    return VerbPhrase(
+        isFirstVerbContracted: !enableContractions,
+        auxiliars: [enableContractions ? "'d not" : "'had not", 'been'],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get negativeContinuousFuturePerfectVerbPhrase {
+    return VerbPhrase(
+      auxiliars: [
+        enableContractions ? "won't" : 'will not',
+        validSubject.singularThirdPerson ? 'has' : 'have',
+        'been'
+      ],
+      conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get interrogativeSimplePresentVerbPhrase {
+    return VerbPhrase(
+      invertAuxiliarAndSubject: true,
+      auxiliars: [
+        enableModalVerb
+            ? validModalVerb.value
+            : validVerb.isBe
+            ? Verb.simplePresentBe(validSubject, false)
+            : validSubject.singularThirdPerson
+            ? 'Does'
+            : 'Do'
+      ],
+      conjugatedVerbWord: verbWord.infinitive,
+    );
+  }
+
+  VerbPhrase get interrogativeSimplePastVerbPhrase {
+    return VerbPhrase(
+      invertAuxiliarAndSubject: true,
+      auxiliars: [validVerb.isBe ? Verb.simplePastBe(validSubject) : 'Did'],
+      conjugatedVerbWord: verbWord.infinitive,
+    );
+  }
+
+  VerbPhrase get interrogativeSimpleFutureVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: ['Will'],
+        conjugatedVerbWord: verbWord.infinitive);
+  }
+
+  VerbPhrase get interrogativeSimplePresentPerfectVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: [validSubject.singularThirdPerson ? 'Has' : 'Have'],
+        conjugatedVerbWord: verbWord.pastParticiple);
+  }
+
+  VerbPhrase get interrogativeSimplePastPerfectVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: ["Had"],
+        conjugatedVerbWord: verbWord.pastParticiple);
+  }
+
+  VerbPhrase get interrogativeSimpleFuturePerfectVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: ['Will', validSubject.singularThirdPerson ? 'has' : 'have'],
+        conjugatedVerbWord: verbWord.pastParticiple);
+  }
+
+  VerbPhrase get interrogativeContinuousPresentVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: [
+          enableModalVerb ? validModalVerb.value : Verb.simplePresentBe(validSubject, false),
+          if (enableModalVerb) 'be'
+        ],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get interrogativeContinuousPastVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: [Verb.simplePastBe(validSubject)],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get interrogativeContinuousFutureVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: ['Will', 'be'],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get interrogativeContinuousPresentPerfectVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: [validSubject.singularThirdPerson ? 'Has' : 'Have', 'been'],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get interrogativeContinuousPastPerfectVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: ["Had", 'been'],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
+
+  VerbPhrase get interrogativeContinuousFuturePerfectVerbPhrase {
+    return VerbPhrase(
+        invertAuxiliarAndSubject: true,
+        auxiliars: [
+          'Will',
+          validSubject.singularThirdPerson ? 'has' : 'have',
+          'been'
+        ],
+        conjugatedVerbWord: verbWord.presentParticiple);
+  }
 
   String get affirmativeSimplePresent {
     return affirmativeSpeech(
@@ -115,7 +526,7 @@ class IndependentClause {
       validVerb.isBe && !enableModalVerb && enableContractions,
       conjugatedVerb: validVerb.isBe && enableModalVerb || enableAffirmativeEmphasis
           ? verbWord.infinitive
-          : verbWord.simplePresent(validSubject),
+          : verbWord.present(validSubject),
     );
   }
 
@@ -129,7 +540,7 @@ class IndependentClause {
             : null
       ],
       conjugatedVerb:
-      enableAffirmativeEmphasis ? verbWord.infinitive : verbWord.simplePast,
+      enableAffirmativeEmphasis ? verbWord.infinitive : verbWord.past,
     );
   }
 
@@ -166,7 +577,7 @@ class IndependentClause {
     return affirmativeSpeech(
         auxiliarVerbs: [
           enableContractions ? "'ll" : 'will',
-          validSubject.singularThirdPerson ? 'has' : 'have'
+          'have'
         ],
         disableSpacePrefixForAuxiliarVerb: enableContractions,
         conjugatedVerb: verbWord.pastParticiple);
@@ -182,20 +593,20 @@ class IndependentClause {
         ],
         disableSpacePrefixForAuxiliarVerb:
         !enableModalVerb && enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get affirmativeContinuousPast {
     return affirmativeSpeech(
         auxiliarVerbs: [Verb.simplePastBe(validSubject)],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get affirmativeContinuousFuture {
     return affirmativeSpeech(
         auxiliarVerbs: [enableContractions ? "'ll" : 'will', 'be'],
         disableSpacePrefixForAuxiliarVerb: enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get affirmativeContinuousPresentPerfect {
@@ -211,14 +622,14 @@ class IndependentClause {
           'been'
         ],
         disableSpacePrefixForAuxiliarVerb: enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get affirmativeContinuousPastPerfect {
     return affirmativeSpeech(
         auxiliarVerbs: [enableContractions ? "'d" : "had", 'been'],
         disableSpacePrefixForAuxiliarVerb: enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get affirmativeContinuousFuturePerfect {
@@ -229,11 +640,11 @@ class IndependentClause {
           'been'
         ],
         disableSpacePrefixForAuxiliarVerb: enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get negativeSimplePresent {
-    String simplePresentVerb = verbWord.simplePresent(validSubject);
+    String simplePresentVerb = verbWord.present(validSubject);
     return affirmativeSpeech(
       auxiliarVerbs: [
         enableModalVerb
@@ -318,19 +729,19 @@ class IndependentClause {
         disableSpacePrefixForAuxiliarVerb: !enableModalVerb &&
             enableContractions &&
             !enableSecondContractionToBe,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get negativeContinuousPast {
     return affirmativeSpeech(
         auxiliarVerbs: [Verb.negativeSimplePastBe(validSubject, enableContractions)],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get negativeContinuousFuture {
     return affirmativeSpeech(
         auxiliarVerbs: [enableContractions ? "won't" : 'will not', 'be'],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get negativeContinuousPresentPerfect {
@@ -346,14 +757,14 @@ class IndependentClause {
           'been'
         ],
         disableSpacePrefixForAuxiliarVerb: !enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get negativeContinuousPastPerfect {
     return affirmativeSpeech(
         auxiliarVerbs: [enableContractions ? "'d not" : "'had not", 'been'],
         disableSpacePrefixForAuxiliarVerb: !enableContractions,
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get negativeContinuousFuturePerfect {
@@ -361,7 +772,7 @@ class IndependentClause {
       enableContractions ? "won't" : 'will not',
       validSubject.singularThirdPerson ? 'has' : 'have',
       'been'
-    ], conjugatedVerb: verbWord.progressive);
+    ], conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get interrogativeSimplePresent {
@@ -423,35 +834,35 @@ class IndependentClause {
           enableModalVerb ? modalVerb : Verb.simplePresentBe(validSubject, false),
           enableModalVerb ? 'be' : null
         ],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get interrogativeContinuousPast {
     return affirmativeSpeech(
         interrogative: true,
         auxiliarVerbs: [Verb.simplePastBe(validSubject)],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get interrogativeContinuousFuture {
     return affirmativeSpeech(
         interrogative: true,
         auxiliarVerbs: ['Will', 'be'],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get interrogativeContinuousPresentPerfect {
     return affirmativeSpeech(
         interrogative: true,
         auxiliarVerbs: [validSubject.singularThirdPerson ? 'Has' : 'Have', 'been'],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get interrogativeContinuousPastPerfect {
     return affirmativeSpeech(
         interrogative: true,
         auxiliarVerbs: ["Had", 'been'],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
 
   String get interrogativeContinuousFuturePerfect {
@@ -462,31 +873,37 @@ class IndependentClause {
           validSubject.singularThirdPerson ? 'has' : 'have',
           'been'
         ],
-        conjugatedVerb: verbWord.progressive);
+        conjugatedVerb: verbWord.presentParticiple);
   }
   
-  Verb get validVerb => verb ?? EmptyVerb();
-  Subject get validSubject => subject ?? EmptySubject();
-  Verb get verbWord => verb is PhrasalVerb? (verb as PhrasalVerb).verb : validVerb;
-  
-  bool get contractFirstAuxiliarVerb { return true; }
-  String? get validFrontAdverb { return ''; }
-  String get validSubject { return ''; }
-  String? get firstAuxiliarVerb { return ''; }
-  String? get validMidAdverb { return ''; }
+  bool get isFirstAuxiliarVerbContracted { return true; }
+  String? get frontAdverbString { return beginningAdverb == null? '<Front Adverb>' : '$beginningAdverb'; }
+  String get subjectString { return '$validSubject'; }
+  String? get firstAuxiliarVerb { return null; }
+  String? get midAdverbString { return ''; }
   String? get secondAuxiliarVerb { return ''; }
   String? get thirdAuxiliarVerb { return ''; }
   String get conjugatedVerbWord { return ''; }
-  String get validSubjectComplement { return ''; }
-  String? get validIndirectObject { return null; }
-  String? get validDirectObject { return null; }
-  String? get validDirectObject { return null; }
-  String? get phrasalVerbParticle { return null; }
-  List<String>? get adverbs { return null; }
+  String get subjectComplementString { return subjectComplement == null? '<Subject Complement>' : '$subjectComplement'; }
+  String get indirectObjectString { return indirectObject == null? '<Indirect Object>' : '$indirectObject'; }
+  String get directObjectString { return directObject == null? '<Direct Object>' : '$directObject'; }
+  String? get phrasalVerbParticle { return verb is PhrasalVerb? (verb as PhrasalVerb).particle.toString() : null; }
+  List<String>? get adverbStrings { return null; }
   
-  String conjugateVerbWord(VerbWord verb) {
-    return '';
+  String conjugateVerbWord(Verb verb) {
+    if (verbTense == VerbTense.present) {
+      return verb.present(validSubject, enableContractions, type == ClauseType.negative, enableSecondContractionToBe);
+    } if (verbTense == VerbTense.past) {
+      return simplePastVerb(verb);
+    } else if (verbTense == VerbTense.presentParticiple) {
+      return verb.presentParticiple;
+    } else if (verbTense == VerbTense.pastParticiple) {
+      return verb.pastParticiple;
+    }
+    return verb.infinitive;
   }
+
+
   
   String affirmativeSpeech({
     bool interrogative = false,
@@ -516,79 +933,138 @@ class IndependentClause {
     return speech.toString();
   }
 
+  String speech(VerbPhrase verbPhrase) {
+    PhrasalVerbParticle? particle =
+    verb is PhrasalVerb? (verb as PhrasalVerb).particle : null;
+    Speech speech = Speech();
+    speech.add(beginningAdverb);
+    speech.add(verbPhrase.firstAuxiliar, when: verbPhrase.invertAuxiliarAndSubject);
+    speech.add(validSubject);
+    speech.add(verbPhrase.firstAuxiliar,
+        when: !verbPhrase.invertAuxiliarAndSubject,
+        disablePrefixWhen: verbPhrase.isFirstVerbContracted);
+    speech.add(midAdverb);
+    speech.add(verbPhrase.secondAuxiliar);
+    speech.add(verbPhrase.thirdAuxiliar);
+    speech.add(verbPhrase.conjugatedVerbWord, when: !validVerb.isBe);
+    speech.add(subjectComplement, when: validVerb.isLinkingVerb);
+    speech.add(indirectObject, when: !validVerb.isLinkingVerb);
+    speech.add(directObject, when: !validVerb.isLinkingVerb);
+    speech.add(particle, when: !validVerb.isLinkingVerb);
+    speech.add(adverbs.join(' '));
+    speech.add('?', when: verbPhrase.invertAuxiliarAndSubject, disablePrefixWhen: true);
+    return speech.toString();
+  }
+
   @override
   String toString() {
     if (type == ClauseType.affirmative && tense == Tense.simplePresent) {
-      return affirmativeSimplePresent;
+      // return affirmativeSimplePresent;
+      return speech(affirmativeSimplePresentVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.simplePast) {
-      return affirmativeSimplePast;
+      // return affirmativeSimplePast;
+      return speech(affirmativeSimplePastVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.simpleFuture){
-      return affirmativeSimpleFuture;
+      // return affirmativeSimpleFuture;
+      return speech(affirmativeSimpleFutureVerbPhrase);
     } if (type == ClauseType.affirmative && tense == Tense.simplePresentPerfect) {
-      return affirmativeSimplePresentPerfect;
+      // return affirmativeSimplePresentPerfect;
+      return speech(affirmativeSimplePresentPerfectVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.simplePastPerfect) {
-      return affirmativeSimplePastPerfect;
+      // return affirmativeSimplePastPerfect;
+      return speech(affirmativeSimplePastPerfectVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.simpleFuturePerfect){
-      return affirmativeSimpleFuturePerfect;
+      // return affirmativeSimpleFuturePerfect;
+      return speech(affirmativeSimpleFuturePerfectVerbPhrase);
     } if (type == ClauseType.affirmative && tense == Tense.continuousPresent) {
-      return affirmativeContinuousPresent;
+      // return affirmativeContinuousPresent;
+      return speech(affirmativeContinuousPresentVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.continuousPast) {
-      return affirmativeContinuousPast;
+      // return affirmativeContinuousPast;
+      return speech(affirmativeContinuousPastVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.continuousFuture){
-      return affirmativeContinuousFuture;
+      // return affirmativeContinuousFuture;
+      return speech(affirmativeContinuousFutureVerbPhrase);
     } if (type == ClauseType.affirmative && tense == Tense.continuousPresentPerfect) {
-      return affirmativeContinuousPresentPerfect;
+      // return affirmativeContinuousPresentPerfect;
+      return speech(affirmativeContinuousPresentPerfectVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.continuousPastPerfect) {
-      return affirmativeContinuousPastPerfect;
+      // return affirmativeContinuousPastPerfect;
+      return speech(affirmativeContinuousPastPerfectVerbPhrase);
     } else if (type == ClauseType.affirmative && tense == Tense.continuousFuturePerfect){
-      return affirmativeContinuousFuturePerfect;
+      // return affirmativeContinuousFuturePerfect;
+      return speech(affirmativeContinuousFuturePerfectVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.simplePresent) {
-      return negativeSimplePresent;
+      // return negativeSimplePresent;
+      return speech(negativeSimplePresentVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.simplePast) {
-      return negativeSimplePast;
+      // return negativeSimplePast;
+      return speech(negativeSimplePastVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.simpleFuture){
-      return negativeSimpleFuture;
+      // return negativeSimpleFuture;
+      return speech(negativeSimpleFutureVerbPhrase);
     } if (type == ClauseType.negative && tense == Tense.simplePresentPerfect) {
-      return negativeSimplePresentPerfect;
+      // return negativeSimplePresentPerfect;
+      return speech(negativeSimplePresentPerfectVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.simplePastPerfect) {
-      return negativeSimplePastPerfect;
+      // return negativeSimplePastPerfect;
+      return speech(negativeSimplePastPerfectVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.simpleFuturePerfect){
-      return negativeSimpleFuturePerfect;
+      // return negativeSimpleFuturePerfect;
+      return speech(negativeSimpleFuturePerfectVerbPhrase);
     } if (type == ClauseType.negative && tense == Tense.continuousPresent) {
-      return negativeContinuousPresent;
+      // return negativeContinuousPresent;
+      return speech(negativeContinuousPresentVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.continuousPast) {
-      return negativeContinuousPast;
+      // return negativeContinuousPast;
+      return speech(negativeContinuousPastVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.continuousFuture){
-      return negativeContinuousFuture;
+      // return negativeContinuousFuture;
+      return speech(negativeContinuousFutureVerbPhrase);
     } if (type == ClauseType.negative && tense == Tense.continuousPresentPerfect) {
-      return negativeContinuousPresentPerfect;
+      // return negativeContinuousPresentPerfect;
+      return speech(negativeContinuousPresentPerfectVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.continuousPastPerfect) {
-      return negativeContinuousPastPerfect;
+      // return negativeContinuousPastPerfect;
+      return speech(negativeContinuousPastPerfectVerbPhrase);
     } else if (type == ClauseType.negative && tense == Tense.continuousFuturePerfect){
-      return negativeContinuousFuturePerfect;
+      // return negativeContinuousFuturePerfect;
+      return speech(negativeContinuousFuturePerfectVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.simplePresent) {
-      return interrogativeSimplePresent;
+      // return interrogativeSimplePresent;
+      return speech(interrogativeSimplePresentVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.simplePast) {
-      return interrogativeSimplePast;
+      // return interrogativeSimplePast;
+      return speech(interrogativeSimplePastVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.simpleFuture){
-      return interrogativeSimpleFuture;
+      // return interrogativeSimpleFuture;
+      return speech(interrogativeSimpleFutureVerbPhrase);
     } if (type == ClauseType.interrogative && tense == Tense.simplePresentPerfect) {
-      return interrogativeSimplePresentPerfect;
+      // return interrogativeSimplePresentPerfect;
+      return speech(interrogativeSimplePresentPerfectVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.simplePastPerfect) {
-      return interrogativeSimplePastPerfect;
+      // return interrogativeSimplePastPerfect;
+      return speech(interrogativeSimplePastPerfectVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.simpleFuturePerfect){
-      return interrogativeSimpleFuturePerfect;
+      // return interrogativeSimpleFuturePerfect;
+      return speech(interrogativeSimpleFuturePerfectVerbPhrase);
     } if (type == ClauseType.interrogative && tense == Tense.continuousPresent) {
-      return interrogativeContinuousPresent;
+      // return interrogativeContinuousPresent;
+      return speech(interrogativeContinuousPresentVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.continuousPast) {
-      return interrogativeContinuousPast;
+      // return interrogativeContinuousPast;
+      return speech(interrogativeContinuousPastVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.continuousFuture){
-      return interrogativeContinuousFuture;
+      // return interrogativeContinuousFuture;
+      return speech(interrogativeContinuousFutureVerbPhrase);
     } if (type == ClauseType.interrogative && tense == Tense.continuousPresentPerfect) {
-      return interrogativeContinuousPresentPerfect;
+      // return interrogativeContinuousPresentPerfect;
+      return speech(interrogativeContinuousPresentPerfectVerbPhrase);
     } else if (type == ClauseType.interrogative && tense == Tense.continuousPastPerfect) {
-      return interrogativeContinuousPastPerfect;
+      // return interrogativeContinuousPastPerfect;
+      return speech(interrogativeContinuousPastPerfectVerbPhrase);
     }
-    return interrogativeContinuousFuturePerfect;
+    // return interrogativeContinuousFuturePerfect;
+    return speech(interrogativeContinuousFuturePerfectVerbPhrase);
   }
 }

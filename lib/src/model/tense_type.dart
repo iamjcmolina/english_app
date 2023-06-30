@@ -1,0 +1,1 @@
+enum TenseType {simple, continuous}

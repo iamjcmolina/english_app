@@ -38,12 +38,12 @@ class VocabularyService extends ChangeNotifier {
     // final String response = await rootBundle.loadString('assets/irregular-verbs.json');
     // List<Verb> irregularVerbs = await json.decode(response);
     List<Verb> irregularVerbs = [
-      VerbWord(infinitive: 'build', simplePast: 'built', pastParticiple: 'built', isTransitive: true, isDitransitive: false),
-      VerbWord(infinitive: 'buy', simplePast: 'bought', pastParticiple: 'bought', isTransitive: true, isDitransitive: true),
-      VerbWord(infinitive: 'drink', simplePast: 'drank', pastParticiple: 'drunk', isTransitive: true, isDitransitive: false),
-      VerbWord(infinitive: 'eat', simplePast: 'ate', pastParticiple: 'eaten', isTransitive: true, isDitransitive: false),
-      VerbWord(infinitive: 'forget', simplePast: 'forgot', pastParticiple: 'forgotten', isTransitive: true, isDitransitive: false),
-      VerbWord(infinitive: 'be', simplePast: '', pastParticiple: '', isTransitive: false, isDitransitive: false),
+      VerbWord(infinitive: 'build', past: 'built', pastParticiple: 'built', isTransitive: true, isDitransitive: false),
+      VerbWord(infinitive: 'buy', past: 'bought', pastParticiple: 'bought', isTransitive: true, isDitransitive: true),
+      VerbWord(infinitive: 'drink', past: 'drank', pastParticiple: 'drunk', isTransitive: true, isDitransitive: false),
+      VerbWord(infinitive: 'eat', past: 'ate', pastParticiple: 'eaten', isTransitive: true, isDitransitive: false),
+      VerbWord(infinitive: 'forget', past: 'forgot', pastParticiple: 'forgotten', isTransitive: true, isDitransitive: false),
+      VerbWord(infinitive: 'be', past: '', pastParticiple: '', isTransitive: false, isDitransitive: false),
     ];
     return irregularVerbs;
   }

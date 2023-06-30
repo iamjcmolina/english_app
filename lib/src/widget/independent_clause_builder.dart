@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/sentence_cubit.dart';
+import '../english_app.dart';
 import '../model/clause/clause_type.dart';
 import '../model/sentence.dart';
 import '../model/tense.dart';
-import 'common/filled_card.dart';
-import 'common/outlined_card.dart';
 import 'subject_builder.dart';
 import 'verb_builder.dart';
 
@@ -14,7 +13,8 @@ class IndependentClauseBuilder extends StatefulWidget {
   IndependentClauseBuilder({super.key});
 
   @override
-  State<IndependentClauseBuilder> createState() => _IndependentClauseBuilderState();
+  State<IndependentClauseBuilder> createState() =>
+      _IndependentClauseBuilderState();
 }
 
 class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
@@ -26,44 +26,172 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
 
     return BlocBuilder<SentenceCubit, Sentence>(builder: (context, state) {
       return Scaffold(
-      appBar: AppBar(
-        title: const Text('Independent Clause'),
-      ),
-      body: ListView(
+        appBar: AppBar(
+          title: const Text('Independent Clause'),
+          actions: EnglishApp.globalActions,
+        ),
+        body: Column(
           children: [
             ListTile(
-              title: Text(state.independentClause.toString()),
-              subtitle: const Text('Independent clause'),
+              title: Text('${state.independentClause}'),
             ),
-            OutlinedCard(
-              children: [
+            Expanded(
+              child: ListView(
+                children: [
+                  Card(
+                    child: Column(
+                      children: [
+                        if (false) ListTile(
+                          title: const Text('Undoubtedly'),
+                          subtitle: const Text('Adverb'),
+                          dense: true,
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {  },
+                          ),
+                        ),
+                        ListTile(
+                          title: Text('${state.independentClause.validSubject}'),
+                          subtitle: const Text('Subject'),
+                          dense: true,
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SubjectBuilder()));
+                          },
+                        ),
+                        if (state.independentClause.firstAuxiliarVerb != null) ListTile(
+                          title: Text(state.independentClause.firstAuxiliarVerb!),
+                          subtitle: Text('First Auxiliar verb'
+                              '${
+                              state.independentClause.enableModalVerb ? ', Modal Verb'
+                              : state.independentClause.validVerb.isBe ? ', Verb "To BE"'
+                              : ''
+                              }'
+                          ),
+                          dense: true,
+                          trailing: state.independentClause.enableModalVerb?
+                            const Icon(Icons.arrow_forward_ios)
+                            : null,
+                          onTap: state.independentClause.enableModalVerb? () {
+                          } : null,
+                        ),
+                        if (false) ListTile(
+                          title: const Text('always'),
+                          subtitle: const Text('Adverb'),
+                          dense: true,
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {  },
+                          ),
+                        ),
+                        if (false) ListTile(
+                          title: const Text(''),
+                          subtitle: const Text('Second Auxiliar verb'),
+                          dense: true,
+                        ),
+                        if (false) ListTile(
+                          title: const Text(''),
+                          subtitle: const Text('Third Auxiliar verb'),
+                          dense: true,
+                        ),
+                        ListTile(
+                          title: Text('${state.independentClause.validVerb}'),
+                          subtitle: const Text('Verb'),
+                          dense: true,
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => VerbBuilder(
+                                      verb: state.independentClause.verb,
+                                      setVerb: sentenceCubit.setVerb,
+                                    )));
+                          },
+                        ),
+                        if (state.independentClause.validVerb.isDitransitive) ListTile(
+                          title: Text('Indirect Object'),
+                          dense: true,
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {},
+                        ),
+                        if (state.independentClause.validVerb.isTransitive) ListTile(
+                          title: Text('Direct Object'),
+                          dense: true,
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {},
+                        ),
+                        if (state.independentClause.validVerb.isLinkingVerb) ListTile(
+                          title: Text('Subject complement'),
+                          dense: true,
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {},
+                        ),
+                        if (false) ListTile(
+                          title: const Text('here'),
+                          subtitle: const Text('Adverb'),
+                          dense: true,
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {  },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.menu),
+          onPressed: () { openBottomSheet(context); },
+        ),
+      );
+    });
+  }
+
+  openBottomSheet(BuildContext context) {
+    final sentenceCubit = context.read<SentenceCubit>();
+    showModalBottomSheet(
+        isScrollControlled: false,
+        context: context,
+        builder: (BuildContext context) =>
+            BlocBuilder<SentenceCubit, Sentence>(builder: (context, state) =>
+              Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: () {  },
+                        icon: const Icon(Icons.add),
+                        label: const Text('Adverb'),
+                      ),
+                    ),
+                  ),
+                  const ListTile(
+                    title: Text('First Auxiliar Verb'),
+                  ),
                   ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Options'),
-                    trailing: Icon(showOptions? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down_outlined),
-                    onTap: () { setState(() { showOptions = !showOptions; }); },
-                  ),
-                   if(showOptions) ListTile(
-                    title: const Text('Contractions'),
+                    leading: const Icon(Icons.view_day),
+                    title: const Text('Modal Verb'),
                     dense: true,
                     trailing: Switch(
-                      value: state.independentClause.enableContractions,
+                      value: state.independentClause.enableModalVerb,
                       onChanged: (value) {
-                        sentenceCubit.toggleContractions();
+                        sentenceCubit.toggleModalVerb();
                       },
                     ),
                   ),
-                if(showOptions)ListTile(
-                    title: const Text('Alternative contraction for to be verb'),
-                    dense: true,
-                    trailing: Switch(
-                      value: state.independentClause.enableSecondContractionToBe,
-                      onChanged: (value) {
-                        sentenceCubit.toggleAlternativeContractionToBeVerb();
-                      },
-                    ),
-                  ),
-                if(showOptions) ListTile(
+                  ListTile(
+                    leading: const Icon(Icons.view_day),
                     title: const Text('Affirmative emphasis'),
                     dense: true,
                     trailing: Switch(
@@ -73,8 +201,31 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                       },
                     ),
                   ),
-                if(showOptions) Padding(
-                    padding: const EdgeInsets.symmetric( horizontal: 12.0),
+                  ListTile(
+                    leading: const Icon(Icons.compress),
+                    title: const Text('Contract'),
+                    dense: true,
+                    trailing: Switch(
+                      value: state.independentClause.enableContractions,
+                      onChanged: (value) {
+                        sentenceCubit.toggleContractions();
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.compress),
+                    title: const Text('Alternative contraction'),
+                    dense: true,
+                    trailing: Switch(
+                      value:
+                      state.independentClause.enableSecondContractionToBe,
+                      onChanged: (value) {
+                        sentenceCubit.toggleAlternativeContractionToBeVerb();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -84,18 +235,19 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                           onChanged: (Tense? value) {
                             sentenceCubit.setTense(value!);
                           },
-                          items: Tense.values.map<DropdownMenuItem<Tense>>((Tense item) =>
-                              DropdownMenuItem<Tense>(
+                          items: Tense.values
+                              .map<DropdownMenuItem<Tense>>(
+                                  (Tense item) => DropdownMenuItem<Tense>(
                                 value: item,
                                 child: Text(item.name),
-                              )
-                          ).toList(),
+                              ))
+                              .toList(),
                         ),
                       ],
                     ),
                   ),
-                if(showOptions) Padding(
-                    padding: const EdgeInsets.symmetric( horizontal: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -105,120 +257,21 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                           onChanged: (ClauseType? value) {
                             sentenceCubit.setClauseType(value!);
                           },
-                          items: ClauseType.values.map<DropdownMenuItem<ClauseType>>((ClauseType item) =>
-                              DropdownMenuItem<ClauseType>(
-                                value: item,
-                                child: Text(item.name),
-                              )
-                          ).toList(),
+                          items: ClauseType.values
+                              .map<DropdownMenuItem<ClauseType>>(
+                                  (ClauseType item) =>
+                                  DropdownMenuItem<ClauseType>(
+                                    value: item,
+                                    child: Text(item.name),
+                                  ))
+                              .toList(),
                         ),
                       ],
                     ),
                   ),
                 ],
-
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('<Adverb>'),
-                subtitle: const Text('Adverb'),
-                dense: true,
-                enabled: false,
-                trailing: Switch(value: false, onChanged: (bool value) {  },),
-                onTap: () {
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text('${state.independentClause.validSubject}'),
-                subtitle: const Text('Subject'),
-                dense: true,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SubjectBuilder()));
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text('<Modal verb>'),
-                subtitle: const Text('Modal verb'),
-                dense: true,
-                enabled: false,
-                trailing: Switch(value: false, onChanged: (bool value) {  },),
-                onTap: () {
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text('<Adverb>'),
-                subtitle: const Text('Adverb'),
-                dense: true,
-                enabled: false,
-                trailing: Switch(value: false, onChanged: (bool value) {  },),
-                onTap: () {
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text('${state.independentClause.validVerb}'),
-                subtitle: const Text('Verb'),
-                dense: true,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => VerbBuilder(
-                    verb: state.independentClause.verb,
-                    setVerb: sentenceCubit.setVerb,
-                  )));
-                },
-              ),
-            ),
-            if (state.independentClause.validVerb.isDitransitive) Card(
-              child: ListTile(
-                title: Text('<Indirect Object>'),
-                subtitle: const Text('Indirect Object'),
-                dense: true,
-                enabled: false,
-                trailing: Switch(value: false, onChanged: (bool value) {  },),
-                onTap: () {
-                },
-              ),
-            ),
-            if (state.independentClause.validVerb.isTransitive) Card(
-              child: ListTile(
-                title: Text('<Direct object>'),
-                subtitle: const Text('Direct object'),
-                dense: true,
-                enabled: false,
-                trailing: Switch(value: false, onChanged: (bool value) {  },),
-                onTap: () {
-                },
-              ),
-            ),
-            if (state.independentClause.validVerb.isLinkingVerb) Card(
-              child: ListTile(
-                title: Text('<Subject complement>'),
-                subtitle: const Text('Subject complement'),
-                dense: true,
-                onTap: () {
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text('<Adverbs>'),
-                subtitle: const Text('Adverbs'),
-                dense: true,
-                enabled: false,
-                trailing: Switch(value: false, onChanged: (bool value) {  },),
-                onTap: () {
-                },
-              ),
-            ),
-          ],
-        )
-      );
-    });
+              )
+            )
+    );
   }
 }

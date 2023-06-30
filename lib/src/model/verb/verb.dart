@@ -31,9 +31,9 @@ abstract class Verb {
   bool get isDitransitive; // A ditransitive verb can have direct and indirect objects
   bool get isLinkingVerb;
   bool get isBe;
-  String get progressive;
   String get infinitive;
-  String get simplePast;
+  String present(Subject subject, [bool enableContraction = true, bool negative = false, bool alternativeContraction = false]);
+  String get past;
+  String get presentParticiple;
   String get pastParticiple;
-  String simplePresent(Subject subject);
 }
