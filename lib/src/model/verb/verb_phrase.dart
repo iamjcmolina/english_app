@@ -3,16 +3,14 @@ import 'phrasal_verb_particle.dart';
 class VerbPhrase {
   bool isFirstVerbContracted;
   bool invertAuxiliarAndSubject;
-  List<String> auxiliars;
+  List<String?> auxiliars;
   String conjugatedVerbWord;
-  PhrasalVerbParticle? phrasalVerbParticle;
 
   VerbPhrase({
     this.isFirstVerbContracted = false,
     this.invertAuxiliarAndSubject = false,
     required this.auxiliars,
     required this.conjugatedVerbWord,
-    this.phrasalVerbParticle,
   });
 
   String? get firstAuxiliar =>

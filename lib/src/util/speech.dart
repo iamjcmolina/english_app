@@ -10,6 +10,7 @@ class Speech {
 
   @override
   String toString() {
-    return buffer.toString();
+    String speech = buffer.toString();
+    return speech.substring(0,1).toUpperCase() + speech.substring(1).toLowerCase();
   }
 }
