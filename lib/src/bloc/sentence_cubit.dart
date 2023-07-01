@@ -24,7 +24,11 @@ class SentenceCubit extends Cubit<Sentence> {
   }
 
   void toggleModalVerb() {
-    setIndependentClause(state.independentClause.copyWith(enableModalVerb: !state.independentClause.enableModalVerb));
+    bool setOffEmphasis = state.independentClause.enableAffirmativeEmphasis && !state.independentClause.enableModalVerb;
+    setIndependentClause(state.independentClause.copyWith(
+        enableModalVerb: !state.independentClause.enableModalVerb,
+        enableAffirmativeEmphasis: setOffEmphasis? false : state.independentClause.enableAffirmativeEmphasis
+    ));
   }
 
   void toggleContractions() {
@@ -36,7 +40,11 @@ class SentenceCubit extends Cubit<Sentence> {
   }
 
   void toggleAffirmativeEmphasis() {
-    setIndependentClause(state.independentClause.copyWith(enableAffirmativeEmphasis: !state.independentClause.enableAffirmativeEmphasis));
+    bool disableModalVerbEmphasis = state.independentClause.enableModalVerb && !state.independentClause.enableAffirmativeEmphasis;
+    setIndependentClause(state.independentClause.copyWith(
+      enableAffirmativeEmphasis: !state.independentClause.enableAffirmativeEmphasis,
+      enableModalVerb: disableModalVerbEmphasis? false : state.independentClause.enableModalVerb
+    ));
   }
 
   void setClauseType(ClauseType type) {

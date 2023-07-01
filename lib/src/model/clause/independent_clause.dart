@@ -518,7 +518,8 @@ class IndependentClause {
     PhrasalVerbParticle? particle =
     verb is PhrasalVerb? (verb as PhrasalVerb).particle : null;
     Speech speech = Speech();
-    speech.add('$beginningAdverb,');
+    speech.add(beginningAdverb);
+    speech.add(',', when: beginningAdverb != null, disablePrefixWhen: true);
     speech.add(firstAuxiliar, when: type == ClauseType.interrogative);
     speech.add(validSubject);
     speech.add(firstAuxiliar,

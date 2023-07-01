@@ -18,13 +18,13 @@ class IndependentClauseBuilder extends StatefulWidget {
 }
 
 class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
-  bool showOptions = false;
 
   @override
   Widget build(BuildContext context) {
     final sentenceCubit = context.read<SentenceCubit>();
 
     return BlocBuilder<SentenceCubit, Sentence>(builder: (context, state) {
+      final clause = state.independentClause;
       return Scaffold(
         appBar: AppBar(
           title: const Text('Independent Clause'),
@@ -33,7 +33,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
         body: Column(
           children: [
             ListTile(
-              title: Text('${state.independentClause}'),
+              title: Text('${clause}'),
             ),
             Expanded(
               child: ListView(
@@ -51,7 +51,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                           ),
                         ),
                         ListTile(
-                          title: Text('${state.independentClause.validSubject}'),
+                          title: Text('${clause.validSubject}'),
                           subtitle: const Text('Subject'),
                           dense: true,
                           trailing: const Icon(Icons.arrow_forward_ios),
@@ -62,20 +62,20 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                                     builder: (context) => SubjectBuilder()));
                           },
                         ),
-                        if (state.independentClause.firstAuxiliarVerb != null) ListTile(
-                          title: Text(state.independentClause.firstAuxiliarVerb!),
+                        if (clause.firstAuxiliar != null) ListTile(
+                          title: Text(clause.firstAuxiliar!),
                           subtitle: Text('First Auxiliar verb'
                               '${
-                              state.independentClause.enableModalVerb ? ', Modal Verb'
-                              : state.independentClause.validVerb.isBe ? ', Verb "To BE"'
+                              clause.enableModalVerb ? ', Modal Verb'
+                              : clause.validVerb.isBe ? ', Verb "To BE"'
                               : ''
                               }'
                           ),
                           dense: true,
-                          trailing: state.independentClause.enableModalVerb?
+                          trailing: clause.enableModalVerb ?
                             const Icon(Icons.arrow_forward_ios)
                             : null,
-                          onTap: state.independentClause.enableModalVerb? () {
+                          onTap: clause.enableModalVerb? () {
                           } : null,
                         ),
                         if (false) ListTile(
@@ -98,7 +98,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                           dense: true,
                         ),
                         ListTile(
-                          title: Text('${state.independentClause.validVerb}'),
+                          title: Text('${clause.validVerb}'),
                           subtitle: const Text('Verb'),
                           dense: true,
                           trailing: const Icon(Icons.arrow_forward_ios),
@@ -107,24 +107,24 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => VerbBuilder(
-                                      verb: state.independentClause.verb,
+                                      verb: clause.verb,
                                       setVerb: sentenceCubit.setVerb,
                                     )));
                           },
                         ),
-                        if (state.independentClause.validVerb.isDitransitive) ListTile(
+                        if (clause.validVerb.isDitransitive) ListTile(
                           title: Text('Indirect Object'),
                           dense: true,
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {},
                         ),
-                        if (state.independentClause.validVerb.isTransitive) ListTile(
+                        if (clause.validVerb.isTransitive) ListTile(
                           title: Text('Direct Object'),
                           dense: true,
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {},
                         ),
-                        if (state.independentClause.validVerb.isLinkingVerb) ListTile(
+                        if (clause.validVerb.isLinkingVerb) ListTile(
                           title: Text('Subject complement'),
                           dense: true,
                           trailing: const Icon(Icons.arrow_forward_ios),
@@ -161,21 +161,11 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
         isScrollControlled: false,
         context: context,
         builder: (BuildContext context) =>
-            BlocBuilder<SentenceCubit, Sentence>(builder: (context, state) =>
-              Column(
+            BlocBuilder<SentenceCubit, Sentence>(builder: (context, state) {
+              final clause = state.independentClause;
+              return Column(
                 children: [
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FilledButton.icon(
-                        onPressed: () {  },
-                        icon: const Icon(Icons.add),
-                        label: const Text('Adverb'),
-                      ),
-                    ),
-                  ),
                   const ListTile(
                     title: Text('First Auxiliar Verb'),
                   ),
@@ -184,7 +174,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                     title: const Text('Modal Verb'),
                     dense: true,
                     trailing: Switch(
-                      value: state.independentClause.enableModalVerb,
+                      value: clause.enableModalVerb,
                       onChanged: (value) {
                         sentenceCubit.toggleModalVerb();
                       },
@@ -195,7 +185,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                     title: const Text('Affirmative emphasis'),
                     dense: true,
                     trailing: Switch(
-                      value: state.independentClause.enableAffirmativeEmphasis,
+                      value: clause.enableAffirmativeEmphasis,
                       onChanged: (value) {
                         sentenceCubit.toggleAffirmativeEmphasis();
                       },
@@ -203,10 +193,10 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                   ),
                   ListTile(
                     leading: const Icon(Icons.compress),
-                    title: const Text('Contract'),
+                    title: const Text('Contraction'),
                     dense: true,
                     trailing: Switch(
-                      value: state.independentClause.enableContractions,
+                      value: clause.enableContractions,
                       onChanged: (value) {
                         sentenceCubit.toggleContractions();
                       },
@@ -218,7 +208,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                     dense: true,
                     trailing: Switch(
                       value:
-                      state.independentClause.enableSecondContractionToBe,
+                      clause.enableSecondContractionToBe,
                       onChanged: (value) {
                         sentenceCubit.toggleAlternativeContractionToBeVerb();
                       },
@@ -231,16 +221,17 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                       children: [
                         const Text('Tense'),
                         DropdownButton<Tense>(
-                          value: state.independentClause.tense,
+                          value: clause.tense,
                           onChanged: (Tense? value) {
                             sentenceCubit.setTense(value!);
                           },
                           items: Tense.values
                               .map<DropdownMenuItem<Tense>>(
-                                  (Tense item) => DropdownMenuItem<Tense>(
-                                value: item,
-                                child: Text(item.name),
-                              ))
+                                  (Tense item) =>
+                                  DropdownMenuItem<Tense>(
+                                    value: item,
+                                    child: Text(item.name),
+                                  ))
                               .toList(),
                         ),
                       ],
@@ -253,7 +244,7 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                       children: [
                         const Text('Clause type'),
                         DropdownButton<ClauseType>(
-                          value: state.independentClause.type,
+                          value: clause.type,
                           onChanged: (ClauseType? value) {
                             sentenceCubit.setClauseType(value!);
                           },
@@ -269,9 +260,20 @@ class _IndependentClauseBuilderState extends State<IndependentClauseBuilder> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add),
+                        label: const Text('Adverb'),
+                      ),
+                    ),
+                  ),
                 ],
-              )
-            )
+              );
+            })
     );
   }
 }
