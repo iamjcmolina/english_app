@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/sentence_cubit.dart';
-import '../english_app.dart';
-import '../model/clause/clause_type.dart';
-import '../model/sentence.dart';
-import '../model/tense.dart';
-import 'subject_builder.dart';
-import 'verb_builder.dart';
+import '../../bloc/sentence_cubit.dart';
+import '../../english_app.dart';
+import '../../model/clause/clause_type.dart';
+import '../../model/sentence.dart';
+import '../../model/tense.dart';
+import '../subject_builder.dart';
+import '../verb_builder.dart';
 
 class IndependentClauseBuilder extends StatefulWidget {
   IndependentClauseBuilder({super.key});

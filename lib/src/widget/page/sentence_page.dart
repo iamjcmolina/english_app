@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/sentence_cubit.dart';
 import '../../english_app.dart';
 import '../../model/sentence.dart';
-import '../../widget/independent_clause_builder.dart';
+import '../independent_clause/independent_clause_builder.dart';
 import '../common/item_button.dart';
 
 class SentencePage extends StatefulWidget {
