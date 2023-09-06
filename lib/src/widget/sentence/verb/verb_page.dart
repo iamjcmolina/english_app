@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../../../model/sentence/clause/independent_clause_options.dart';
 import '../../../model/sentence/clause/value/clause_type.dart';
 import '../../../model/sentence/clause/value/tense.dart';
+import '../../../model/sentence/noun/subject.dart';
 import '../../../model/sentence/verb/any_verb.dart';
+import '../../../model/sentence/verb/be.dart';
 import '../../../service/vocabulary_service.dart';
 import '../../root_layout.dart';
 import '../sentence_item_field.dart';
@@ -24,9 +26,10 @@ enum VerbTense {
 
 class VerbPage extends StatefulWidget {
   final AnyVerb? verb;
+  final Subject? subject;
   final IndependentClauseOptions options;
 
-  const VerbPage({super.key, this.verb, required this.options});
+  const VerbPage({super.key, this.verb, this.subject, required this.options});
 
   @override
   State<VerbPage> createState() => _VerbPageState();
@@ -70,7 +73,7 @@ class _VerbPageState extends State<VerbPage> {
                       if(!settingVerb) SentenceItemTile(
                         color: pronounColor,
                         label: 'Verb',
-                        value: verb?.value,
+                        value: verb == null? null : stringVerb(verb!),
                         trailing: const Icon(Icons.edit),
                         onTap: () => toggleSettingPronoun(),
                       ),
@@ -78,7 +81,7 @@ class _VerbPageState extends State<VerbPage> {
                         label: 'Verb',
                         value: verb,
                         options: verbs,
-                        displayStringForOption: (verb) => verb.value,
+                        displayStringForOption: (verb) => stringVerb(verb),
                         onSelected: onVerbSelected,
                         onCleaned: () => onVerbCleaned(),
                         onChanged: (text) => onVerbChanged(),
@@ -116,20 +119,47 @@ class _VerbPageState extends State<VerbPage> {
 
   setShowBottomAppBar(bool show) => setState(() => showBottomAppBar = show);
 
+  String stringVerb(AnyVerb verb) {
+    if (verbTense == VerbTense.present) {
+      return verb.present(
+        singularFirstPerson: widget.subject?.singularFirstPerson ?? true,
+        singularThirdPerson: widget.subject?.singularThirdPerson ?? false,
+        enableContraction: widget.options.collapseFirstAuxiliaryVerb,
+        alternativeContraction: widget.options.collapseNegativeFirstAuxiliaryVerb,
+        negative: widget.options.clauseType == ClauseType.negative,
+      );
+    } else if (verbTense == VerbTense.past) {
+      return verb.simplePast(
+        singularFirstPerson: widget.subject?.singularFirstPerson ?? true,
+        singularThirdPerson: widget.subject?.singularThirdPerson ?? false,
+        enableContraction: widget.options.collapseFirstAuxiliaryVerb,
+        negative: widget.options.clauseType == ClauseType.negative,
+      );
+    } else if (verbTense == VerbTense.presentParticiple) {
+      return verb.presentParticiple;
+    } else if (verbTense == VerbTense.pastParticiple) {
+      return verb.pastParticiple;
+    }
+    return verb.infinitive;
+  }
+
   VerbTense get verbTense {
+    if (verb == null) {
+      return VerbTense.infinitive;
+    }
     if (widget.options.clauseType == ClauseType.affirmative) {
       if (widget.options.tense == Tense.simplePresent) {
-        return widget.options.modalVerb || (!validVerb.isBe && widget.options.affirmativeEmphasis)
+        return widget.options.modalVerb || (verb is! Be && widget.options.affirmativeEmphasis)
             ? VerbTense.infinitive
             : VerbTense.present;
       } else if (widget.options.tense == Tense.simplePast) {
-        return !validVerb.isBe && widget.options.affirmativeEmphasis ? VerbTense.infinitive : VerbTense.past;
+        return verb is! Be && widget.options.affirmativeEmphasis ? VerbTense.infinitive : VerbTense.past;
       }
-    } else if (widget.options.type == ClauseType.negative && widget.options.tense == Tense.simplePresent) {
-      return widget.options.modalVerb || !validVerb.isBe ? VerbTense.infinitive : VerbTense.present;
+    } else if (widget.options.clauseType == ClauseType.negative && widget.options.tense == Tense.simplePresent) {
+      return widget.options.modalVerb || verb is! Be ? VerbTense.infinitive : VerbTense.present;
     }
     if (widget.options.tense == Tense.simplePresent) {
-      return validVerb.isBe && widget.options.modalVerb? VerbTense.infinitive : VerbTense.present;
+      return verb is Be && widget.options.modalVerb? VerbTense.infinitive : VerbTense.present;
     } else if (widget.options.tense == Tense.simplePast) {
       return VerbTense.infinitive;
     } else if (widget.options.tense == Tense.simpleFuture) {
