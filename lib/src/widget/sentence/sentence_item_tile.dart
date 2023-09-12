@@ -6,6 +6,7 @@ class SentenceItemTile extends StatelessWidget {
   final String? value;
   final bool hide;
   final Widget? trailing;
+  final String? subtitle;
   final void Function()? onTap;
 
   const SentenceItemTile({
@@ -15,6 +16,7 @@ class SentenceItemTile extends StatelessWidget {
     this.value,
     this.hide = false,
     this.trailing,
+    this.subtitle,
     this.onTap,
   });
 
@@ -37,6 +39,8 @@ class SentenceItemTile extends StatelessWidget {
           ),
         ],
       )),
+      subtitle: subtitle == null || subtitle!.isEmpty? null
+          : Text(subtitle!, style: const TextStyle(fontStyle: FontStyle.italic)),
       trailing: trailing,
       onTap: onTap,
     );

@@ -1,6 +1,8 @@
 import 'any_verb.dart';
 
 class UndefinedVerb extends AnyVerb {
+  const UndefinedVerb();
+
   @override
   bool get isTransitive => false;
 
@@ -26,19 +28,19 @@ class UndefinedVerb extends AnyVerb {
 
   @override
   String present({
-    bool singularFirstPerson = true,
-    bool singularThirdPerson = false,
-    bool enableContraction = true,
-    bool negative = false,
-    bool alternativeContraction = false
+    required bool singularFirstPerson,
+    required bool singularThirdPerson,
+    required bool contraction,
+    required bool negativeContraction,
+    required bool negative,
   }) => '<Simple present verb>';
 
   String get presentForSingularThirdPerson => '<Simple present verb>';
 
   @override
   String simplePast({
-    bool singularFirstPerson = true,
-    bool singularThirdPerson = false,
-    bool enableContraction = true,
-    bool negative = false}) => past;
+    required bool singular,
+    required bool negativeContraction,
+    required bool negative,
+  }) => past;
 }

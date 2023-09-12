@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/noun/pronoun.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
 
 class VerbForm extends StatefulWidget {
   final List<Pronoun> pronouns;

@@ -6,15 +6,14 @@ import '../../model/sentence/clause/independent_clause.dart';
 import '../../model/sentence/sentence.dart';
 import 'clause/independent_clause_page.dart';
 
-class SentenceBuilder extends StatefulWidget {
-  SentenceBuilder({super.key});
+class SentencePage extends StatefulWidget {
+  const SentencePage({super.key});
 
   @override
-  State<SentenceBuilder> createState() => _SentenceBuilderState();
+  State<SentencePage> createState() => _SentencePageState();
 }
 
-class _SentenceBuilderState extends State<SentenceBuilder> {
-  // late Sentence sentence;
+class _SentencePageState extends State<SentencePage> {
   Sentence sentence = Sentence(
       independentClause: IndependentClause(
         // options: IndependentClauseOptions(),

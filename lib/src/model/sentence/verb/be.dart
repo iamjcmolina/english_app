@@ -21,39 +21,39 @@ class Be extends AnyVerb {
 
   @override
   String present({
-    bool singularFirstPerson = true,
-    bool singularThirdPerson = false,
-    bool enableContraction = true,
-    bool negative = false,
-    bool alternativeContraction = false,
+    required bool singularFirstPerson,
+    required bool singularThirdPerson,
+    required bool contraction,
+    required bool negativeContraction,
+    required bool negative,
   }) {
     if (negative) {
       if (singularFirstPerson) {
-        return enableContraction? "'m not" : 'am not';
+        return contraction? "'m not" : 'am not';
       } else if (singularThirdPerson) {
-        return alternativeContraction? "isn't" : enableContraction? "'s not" : 'is';
+        return negativeContraction? "isn't" : contraction? "'s not" : 'is not';
       }
-      return alternativeContraction? "aren't" : enableContraction? "'re not" : 'are';
+      return negativeContraction? "aren't" : contraction? "'re not" : 'are not';
     }
     if (singularFirstPerson) {
-      return enableContraction? "'m" : 'am';
+      return contraction? "'m" : 'am';
     } else if (singularThirdPerson) {
-      return enableContraction? "'s" : 'is';
+      return contraction? "'s" : 'is';
     }
-    return enableContraction? "'re" : 'are';
+    return contraction? "'re" : 'are';
   }
 
   @override
   String simplePast({
-    bool singularFirstPerson = true,
-    bool singularThirdPerson = false,
-    bool enableContraction = true,
-    bool negative = false,
+    required bool singular,
+    required bool negativeContraction,
+    required bool negative,
   }) {
     if (negative) {
-      return enableContraction? (singularFirstPerson || singularThirdPerson) ? "wasn't" : "weren't"
-          :(singularFirstPerson || singularThirdPerson) ? 'was not' : 'were not';
+      return negativeContraction
+          ? singular ? "wasn't" : "weren't"
+          : singular ? 'was not' : 'were not';
     }
-    return (singularFirstPerson || singularThirdPerson) ? 'was' : 'were';
+    return singular ? 'was' : 'were';
   }
 }

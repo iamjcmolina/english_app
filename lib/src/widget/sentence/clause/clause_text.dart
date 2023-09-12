@@ -1,86 +1,87 @@
 import 'package:flutter/material.dart';
 
+import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
 
 class ClauseText extends StatelessWidget {
-  final String? frontAdverb;
-  final String? subject;
-  final String? firstAuxiliaryVerb;
-  final String? middleAdverb;
-  final String? secondAuxiliaryVerb;
-  final String? thirdAuxiliaryVerb;
-  final String? verb;
-  final String? indirectObject;
-  final String? directObject;
-  final String? subjectComplement;
-  final String? endAdverb;
+  final IndependentClause clause;
 
   const ClauseText({
     super.key,
-    this.frontAdverb,
-    this.subject,
-    this.firstAuxiliaryVerb,
-    this.middleAdverb,
-    this.secondAuxiliaryVerb,
-    this.thirdAuxiliaryVerb,
-    this.verb,
-    this.indirectObject,
-    this.directObject,
-    this.subjectComplement,
-    this.endAdverb,
+    required this.clause,
   });
 
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
+    final firstAuxiliary = clause.auxiliaries.first;
+    final secondAuxiliary = clause.auxiliaries.elementAtOrNull(1);
+    final thirdAuxiliary = clause.auxiliaries.elementAtOrNull(2);
+    final contraction = !clause.settings.isInterrogative && clause.settings.contraction;
+
+    final firstAuxiliaryVerbSpan = TextSpan(
+        text: firstAuxiliary == null? '<FirstAuxiliaryVerb> ' : '$firstAuxiliary ',
+        style: (firstAuxiliary == null)? unsetTextStyle
+            : TextStyle(color: IndependentClausePartColor.verb.color)
+    );
 
     return RichText(
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
         children: <TextSpan>[
-          TextSpan(
-              text: frontAdverb == null? '<FrontAdverb> ' : '$frontAdverb ',
-              style: (frontAdverb == null)? unsetTextStyle : TextStyle(color: IndependentClausePartColor.adverb.color)
+          if(!clause.settings.isInterrogative) TextSpan(
+              text: '${clause.safeFrontAdverb} ',
+              style: (clause.frontAdverb == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.adverb.color)
           ),
+          if(clause.settings.isInterrogative) firstAuxiliaryVerbSpan,
           TextSpan(
-              text: subject == null? '<Subject> ' : '$subject ',
-              style: (subject == null)? unsetTextStyle : TextStyle(color: IndependentClausePartColor.noun.color)
+              text: '${clause.safeSubject}${contraction? '': ' '}',
+              style: (clause.subject == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.noun.color)
           ),
+          if(!clause.settings.isInterrogative) firstAuxiliaryVerbSpan,
           TextSpan(
-              text: firstAuxiliaryVerb == null? '<FirstAuxiliaryVerb> ' : '$firstAuxiliaryVerb ',
-              style: (firstAuxiliaryVerb == null)? unsetTextStyle : TextStyle(color: IndependentClausePartColor.verb.color)
+              text: '${clause.safeMiddleAdverb} ',
+              style: (clause.midAdverb == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.adverb.color)
           ),
-          TextSpan(
-              text: middleAdverb == null? '<MiddleAdverb> ' : '$middleAdverb ',
-              style: (middleAdverb == null)? unsetTextStyle : TextStyle(color: IndependentClausePartColor.adverb.color)
-          ),
-          if (secondAuxiliaryVerb != null) TextSpan(
-              text: '$secondAuxiliaryVerb ',
+          if (secondAuxiliary != null) TextSpan(
+              text: '$secondAuxiliary ',
               style: TextStyle(color: IndependentClausePartColor.verb.color)
           ),
-          if (thirdAuxiliaryVerb != null) TextSpan(
-              text: '$thirdAuxiliaryVerb ',
+          if (thirdAuxiliary != null) TextSpan(
+              text: '$thirdAuxiliary ',
               style: TextStyle(color: IndependentClausePartColor.verb.color)
           ),
+          if(!clause.isBeAuxiliary) TextSpan(
+              text: '${clause.safeVerb} ',
+              style: (clause.verb == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.verb.color)
+          ),
+          if (clause.safeVerb.isDitransitive) TextSpan(
+              text: '${clause.safeIndirectObject} ',
+              style: (clause.indirectObject == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.noun.color)
+          ),
+          if (clause.safeVerb.isTransitive) TextSpan(
+              text: '${clause.safeDirectObject} ',
+              style: (clause.directObject == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.noun.color)
+          ),
+          if (clause.safeVerb.isLinkingVerb) TextSpan(
+              text: '${clause.safeSubjectComplement} ',
+              style: (clause.subjectComplement == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.noun.color)
+          ),
           TextSpan(
-              text: verb == null? '<Verb> ' : '$verb ',
-              style: (verb == null)? unsetTextStyle : TextStyle(color: IndependentClausePartColor.verb.color)
+              text: '${clause.safeEndAdverb}',
+              style: (clause.endAdverb == null)? unsetTextStyle
+                  : TextStyle(color: IndependentClausePartColor.adverb.color)
           ),
-          if (indirectObject != null) TextSpan(
-              text: '$indirectObject ',
-              style: TextStyle(color: IndependentClausePartColor.noun.color)
-          ),
-          if (directObject != null) TextSpan(
-              text: '$directObject ',
-              style: TextStyle(color: IndependentClausePartColor.noun.color)
-          ),
-          if (subjectComplement != null) TextSpan(
-              text: '$subjectComplement ',
-              style: TextStyle(color: IndependentClausePartColor.noun.color)
-          ),
-          TextSpan(
-              text: endAdverb == null? '<EndAdverb> ' : '$endAdverb ',
-              style: (endAdverb == null)? unsetTextStyle : TextStyle(color: IndependentClausePartColor.adverb.color)
+          if(clause.settings.isInterrogative) const TextSpan(
+              text: '?',
+              style: unsetTextStyle
           ),
         ],
       ),

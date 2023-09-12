@@ -1,2 +1,3 @@
 class AnyAdverb {
+  const AnyAdverb();
 }

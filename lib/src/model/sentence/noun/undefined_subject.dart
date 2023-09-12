@@ -1,6 +1,8 @@
 import 'subject.dart';
 
 class UndefinedSubject extends Subject {
+  const UndefinedSubject();
+
   @override
   bool get plural => false;
 
@@ -12,4 +14,7 @@ class UndefinedSubject extends Subject {
 
   @override
   bool get singularThirdPerson => false;
+
+  @override
+  String toString() => '<Subject>';
 }

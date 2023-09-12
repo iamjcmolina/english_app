@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../model/sentence/noun/pronoun.dart';
 import '../model/sentence/verb/any_verb.dart';
+import '../model/sentence/verb/be.dart';
 import '../model/sentence/verb/verb.dart';
 
 class VocabularyService extends ChangeNotifier {
@@ -32,13 +33,13 @@ class VocabularyService extends ChangeNotifier {
   List<AnyVerb> verbs ()  {
     // final String response = await rootBundle.loadString('assets/irregular-verbs.json');
     // List<Verb> irregularVerbs = await json.decode(response);
-    List<Verb> irregularVerbs = [
+    List<AnyVerb> irregularVerbs = [
+      Be(),
       Verb(infinitive: 'build', past: 'built', pastParticiple: 'built', isTransitive: true, isDitransitive: false),
       Verb(infinitive: 'buy', past: 'bought', pastParticiple: 'bought', isTransitive: true, isDitransitive: true),
       Verb(infinitive: 'drink', past: 'drank', pastParticiple: 'drunk', isTransitive: true, isDitransitive: false),
       Verb(infinitive: 'eat', past: 'ate', pastParticiple: 'eaten', isTransitive: true, isDitransitive: false),
       Verb(infinitive: 'forget', past: 'forgot', pastParticiple: 'forgotten', isTransitive: true, isDitransitive: false),
-      Verb(infinitive: 'be', past: '', pastParticiple: '', isTransitive: false, isDitransitive: false),
     ];
     return irregularVerbs;
   }

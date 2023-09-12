@@ -35,19 +35,18 @@ class Verb extends AnyVerb {
 
   @override
   String present({
-    bool singularFirstPerson = true,
-    bool singularThirdPerson = false,
-    bool enableContraction = true,
-    bool negative = false,
-    bool alternativeContraction = false,
+    required bool singularFirstPerson,
+    required bool singularThirdPerson,
+    required bool contraction,
+    required bool negativeContraction,
+    required bool negative,
   }) => singularThirdPerson? _presentForSingularThirdPerson : infinitive;
 
   @override
   String simplePast({
-    bool singularFirstPerson = true,
-    bool singularThirdPerson = false,
-    bool enableContraction = true,
-    bool negative = false,
+    required bool singular,
+    required bool negativeContraction,
+    required bool negative,
   }) => past;
 
   String get _presentForSingularThirdPerson {
