@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
+import '../../../model/sentence/verb/any_verb.dart';
 
 class ClauseText extends StatelessWidget {
   final IndependentClause clause;
@@ -17,7 +18,6 @@ class ClauseText extends StatelessWidget {
     final firstAuxiliary = clause.auxiliaries.first;
     final secondAuxiliary = clause.auxiliaries.elementAtOrNull(1);
     final thirdAuxiliary = clause.auxiliaries.elementAtOrNull(2);
-    final contraction = !clause.settings.isInterrogative && clause.settings.contraction;
 
     final firstAuxiliaryVerbSpan = TextSpan(
         text: firstAuxiliary == null? '<FirstAuxiliaryVerb> ' : '$firstAuxiliary ',
@@ -36,7 +36,7 @@ class ClauseText extends StatelessWidget {
           ),
           if(clause.settings.isInterrogative) firstAuxiliaryVerbSpan,
           TextSpan(
-              text: '${clause.safeSubject}${contraction? '': ' '}',
+              text: '${clause.safeSubject}${clause.isContractionActive? '': ' '}',
               style: (clause.subject == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.noun.color)
           ),
@@ -55,7 +55,7 @@ class ClauseText extends StatelessWidget {
               style: TextStyle(color: IndependentClausePartColor.verb.color)
           ),
           if(!clause.isBeAuxiliary) TextSpan(
-              text: '${clause.safeVerb} ',
+              text: '${AnyVerb.verbToString(clause.safeVerb, clause.safeSubject, clause.settings)} ',
               style: (clause.verb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.verb.color)
           ),

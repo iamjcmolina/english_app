@@ -1,51 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../model/sentence/clause/independent_clause_settings.dart';
-import '../../../model/sentence/noun/subject.dart';
-import '../../../model/sentence/noun/undefined_subject.dart';
+import '../../../model/sentence/clause/independent_clause.dart';
+import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence/verb/be.dart';
-import '../../../model/sentence/verb/undefined_verb.dart';
-import '../../../model/sentence/verb/value/verb_tense.dart';
 import '../../../service/vocabulary_service.dart';
 import '../sentence_item_field.dart';
 import '../sentence_item_tile.dart';
 
 class VerbListItem extends StatelessWidget {
-  final Color color;
-  final AnyVerb? verb;
-  final Subject? subject;
-  final bool isBeAuxiliary;
+  final IndependentClause clause;
   final bool editingVerb;
   final void Function() toggleEditingVerb;
   final void Function() showOrHideBottomAppBar;
-  final IndependentClauseSettings settings;
   final void Function(AnyVerb? verb) setVerb;
-  final void Function() toggleModalVerb;
-  final void Function() toggleContraction;
-  final void Function() toggleNegativeContraction;
-  final TextEditingController? textEditingController;
+  final TextEditingController? verbEditingController;
 
   const VerbListItem({
     super.key,
-    required this.color,
-    this.verb,
-    this.subject,
-    required this.isBeAuxiliary,
+    required this.clause,
     required this.editingVerb,
     required this.toggleEditingVerb,
-    required this.settings,
-    required this.setVerb,
     required this.showOrHideBottomAppBar,
-    required this.toggleModalVerb,
-    required this.toggleContraction,
-    required this.toggleNegativeContraction,
-    this.textEditingController,
+    required this.setVerb,
+    this.verbEditingController,
   });
-
-  AnyVerb get safeVerb => verb ?? const UndefinedVerb();
-  Subject get safeSubject => subject ?? const UndefinedSubject();
 
   @override
   Widget build(BuildContext context) {
@@ -56,45 +35,22 @@ class VerbListItem extends StatelessWidget {
     return Column(
       children: [
         SentenceItemTile(
-          color: color,
-          label: isBeAuxiliary? 'Verb, First Auxiliary Verb' : 'Verb',
-          value: AnyVerb.verbToString(safeVerb, safeSubject, settings),
-          subtitle: isBeAuxiliary? settings.firstAuxiliaryVerbConfig : null,
+          color: IndependentClausePartColor.verb.color,
+          label: clause.isBeAuxiliary? 'Verb, First Auxiliary Verb' : 'Verb',
+          value: AnyVerb.verbToString(clause.safeVerb, clause.safeSubject, clause.settings),
+          subtitle: clause.isBeAuxiliary? clause.auxiliaryConfig : null,
           trailing: Icon(editingVerb? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingVerb,
         ),
         if(editingVerb) SentenceItemField<AnyVerb>(
           label: 'Verb',
-          value: verb,
+          value: clause.verb,
           options: verbs,
-          displayStringForOption: (verb) => AnyVerb.verbToString(verb, safeSubject, settings),
+          displayStringForOption: (verb) => AnyVerb.verbToString(verb, clause.safeSubject, clause.settings),
           onSelected: onVerbSelected,
           onCleaned: () => onVerbCleaned(),
           onChanged: (text) => onVerbChanged(),
-          textEditingController: textEditingController,
-        ),
-        if (editingVerb && isBeAuxiliary) SwitchListTile(
-          title: const Text('Modal Verb'),
-          secondary: const Icon(Icons.add),
-          dense: true,
-          value: settings.modalVerb,
-          onChanged: settings.isSimplePresent? (bool value) => toggleModalVerb() : null,
-        ),
-        if (editingVerb && isBeAuxiliary) SwitchListTile(
-          title: const Text('Contraction'),
-          dense: true,
-          secondary: const Icon(Icons.compress),
-          value: settings.contraction,
-          onChanged: (value) => toggleContraction(),
-        ),
-        if (editingVerb && isBeAuxiliary) SwitchListTile(
-          title: const Text('Negative Contraction'),
-          dense: true,
-          secondary: const Icon(Icons.compress),
-          value: settings.negativeContraction,
-          onChanged: settings.isNegative
-              ? (value) => toggleNegativeContraction()
-              : null,
+          textEditingController: verbEditingController,
         ),
       ],
     );

@@ -42,16 +42,6 @@ class IndependentClause {
     this.endAdverb,
   });
 
-  AnyAdverb get safeFrontAdverb => frontAdverb ?? const UndefinedAdverb();
-  Subject get safeSubject => subject ?? const UndefinedSubject();
-  ModalVerb get safeModalVerb => modalVerb ?? const UndefinedModalVerb();
-  AnyAdverb get safeMiddleAdverb => midAdverb ?? const UndefinedAdverb();
-  AnyVerb get safeVerb => verb ?? const UndefinedVerb();
-  IndirectObject get safeIndirectObject => indirectObject ?? const UndefinedIndirectObject();
-  DirectObject get safeDirectObject => directObject ?? const UndefinedDirectObject();
-  SubjectComplement get safeSubjectComplement => subjectComplement ?? const UndefinedSubjectComplement();
-  AnyAdverb get safeEndAdverb => endAdverb ?? const UndefinedAdverb();
-
   IndependentClause copyWith({
     IndependentClauseSettings? settings,
     Nullable<AnyAdverb>? frontAdverb,
@@ -76,6 +66,16 @@ class IndependentClause {
     endAdverb: endAdverb == null? this.endAdverb : endAdverb.value,
   );
 
+  AnyAdverb get safeFrontAdverb => frontAdverb ?? const UndefinedAdverb();
+  Subject get safeSubject => subject ?? const UndefinedSubject();
+  ModalVerb get safeModalVerb => modalVerb ?? const UndefinedModalVerb();
+  AnyAdverb get safeMiddleAdverb => midAdverb ?? const UndefinedAdverb();
+  AnyVerb get safeVerb => verb ?? const UndefinedVerb();
+  IndirectObject get safeIndirectObject => indirectObject ?? const UndefinedIndirectObject();
+  DirectObject get safeDirectObject => directObject ?? const UndefinedDirectObject();
+  SubjectComplement get safeSubjectComplement => subjectComplement ?? const UndefinedSubjectComplement();
+  AnyAdverb get safeEndAdverb => endAdverb ?? const UndefinedAdverb();
+
   List<String?> get auxiliaries {
     return switch(settings.tense) {
       Tense.simplePresent => simplePresentAuxiliaries(),
@@ -89,13 +89,12 @@ class IndependentClause {
       Tense.continuousFuture => continuousFutureAuxiliaries(),
       Tense.continuousPresentPerfect => continuousPresentPerfectAuxiliaries(),
       Tense.continuousPastPerfect => continuousPastPerfectAuxiliaries(),
-      _ => continuousFuturePerfectAuxiliaries()
+      _ => continuousFuturePerfectAuxiliaries(),
     };
   }
 
   List<String?> simplePresentAuxiliaries() {
-    bool contraction = settings.isInterrogative? false
-        : settings.contraction;
+    bool contraction = !settings.isInterrogative && settings.contraction;
     String presentToBe = safeVerb.present(
       singularFirstPerson: safeSubject.singularFirstPerson,
       singularThirdPerson: safeSubject.singularThirdPerson,
@@ -309,6 +308,26 @@ class IndependentClause {
     return settings.isNegative? negative : affirmative;
   }
 
-  bool get isBeAuxiliary => (settings.isSimplePresent || settings.isSimplePast)
-      && verb is Be;
+  bool get isModalVerbEditable => settings.isSimplePresent && settings.modalVerb;
+  bool get isModalVerbAllowed => settings.isSimplePresent;
+  bool get isEmphasisAllowed => (settings.isSimplePresent || settings.isSimplePast)
+      && settings.isAffirmative && verb is! Be && !settings.modalVerb;
+  bool get isContractionAllowed => !settings.isInterrogative
+      && (isBeAuxiliary || settings.modalVerb);
+  bool get isNegativeContractionAllowed => settings.isNegative;
+
+  bool get isBeAuxiliary => verb is Be
+      && ((settings.isSimplePresent && !settings.modalVerb) || settings.isSimplePast);
+
+  bool get isContractionActive => isContractionAllowed && settings.contraction
+      && (settings.modalVerb && safeModalVerb.hasContraction
+      && !settings.affirmativeEmphasis);
+
+  String get auxiliaryConfig => [
+    if (isBeAuxiliary) 'Main Verb',
+    if (settings.modalVerb) 'Modal Verb',
+    if (settings.affirmativeEmphasis) 'Affirmative Emphasis',
+    if (settings.contraction) 'Contraction',
+    if (settings.negativeContraction) 'Negative Contraction',
+  ].join(', ');
 }

@@ -54,11 +54,4 @@ class IndependentClauseSettings {
   bool get isContinuousPresentPerfect => tense == Tense.continuousPresentPerfect;
   bool get isContinuousPastPerfect => tense == Tense.continuousPastPerfect;
   bool get isContinuousFuturePerfect => tense == Tense.continuousFuturePerfect;
-
-  String get firstAuxiliaryVerbConfig => [
-    if (modalVerb) 'Modal Verb',
-    if (affirmativeEmphasis) 'Affirmative Emphasis',
-    if (contraction) 'Auxiliary Verb Contraction',
-    if (negativeContraction) 'Negative Auxiliary Verb Contraction',
-  ].join(', ');
 }

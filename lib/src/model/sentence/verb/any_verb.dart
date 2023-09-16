@@ -53,9 +53,6 @@ abstract class AnyVerb {
   }
 
   static VerbTense verbTense(AnyVerb verb, IndependentClauseSettings settings) {
-    if (verb is UndefinedVerb) {
-      return VerbTense.infinitive;
-    }
     if (settings.isAffirmative) {
       if (settings.isSimplePresent) {
         return settings.modalVerb
@@ -75,7 +72,7 @@ abstract class AnyVerb {
       return verb is Be && settings.modalVerb
           ? VerbTense.infinitive : VerbTense.present;
     } else if (settings.isSimplePast) {
-      return VerbTense.infinitive;
+      return VerbTense.past;
     } else if (settings.isSimpleFuture) {
       return VerbTense.infinitive;
     } else if (settings.isSimplePresentPerfect

@@ -5,6 +5,7 @@ class UndefinedModalVerb extends ModalVerb {
       '<ModalVerb>',
       '<ModalVerbContraction>',
       '<NegativeModalVerb>',
-      '<NegativeModalVerbContraction>'
+      '<NegativeModalVerbContraction>',
+      false
   );
 }
