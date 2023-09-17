@@ -4,9 +4,7 @@ import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/independent_clause_settings.dart';
 import '../../../model/sentence/clause/value/clause_type.dart';
 import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
-import '../../../model/sentence/clause/value/tense.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence/verb/be.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
 import '../sentence_item_field.dart';
 import '../sentence_item_tile.dart';
@@ -157,6 +155,6 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
 
   String modalVerbToString(ModalVerb modalVerb) =>
       settings.clauseType == ClauseType.negative
-          ? modalVerb.negativeValue(settings.negativeContraction)
+          ? modalVerb.negativeValue(settings.contraction, settings.negativeContraction)
           : modalVerb.affirmativeValue(!settings.isInterrogative && settings.contraction);
 }

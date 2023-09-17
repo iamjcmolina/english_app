@@ -115,7 +115,7 @@ class IndependentClause {
     ];
     List<String?> negative = [
       settings.modalVerb
-          ? modalVerb?.negativeValue(settings.negativeContraction)
+          ? modalVerb?.negativeValue(settings.contraction, settings.negativeContraction)
           : verb is Be
           ? presentToBe
           : settings.negativeContraction
@@ -156,6 +156,7 @@ class IndependentClause {
       settings.contraction && !settings.isInterrogative ? "'ll" : 'will'
     ];
     List<String?> negative = [
+      settings.contraction? "'ll not" :
       settings.negativeContraction ? "won't" : 'will not'
     ];
     return settings.isNegative? negative : affirmative;
@@ -203,6 +204,7 @@ class IndependentClause {
       'have'
     ];
     List<String?> negative = [
+      settings.contraction ? "'ll not" :
       settings.negativeContraction ? "won't" : 'will not',
       'have'
     ];
@@ -213,19 +215,19 @@ class IndependentClause {
     String presentToBe = Be().present(
       singularFirstPerson: safeSubject.singularFirstPerson,
       singularThirdPerson: safeSubject.singularThirdPerson,
-      contraction: settings.contraction,
+      contraction: !settings.isInterrogative && settings.contraction,
       negativeContraction: settings.negativeContraction,
       negative: settings.isNegative,
     );
     List<String?> affirmative = [
       settings.modalVerb
-          ? safeModalVerb.affirmativeValue(settings.contraction)
+          ? safeModalVerb.affirmativeValue(!settings.isInterrogative && settings.contraction)
           : presentToBe,
       if (settings.modalVerb) 'be'
     ];
     List<String?> negative = [
       settings.modalVerb
-          ? safeModalVerb.negativeValue(settings.negativeContraction)
+          ? safeModalVerb.negativeValue(settings.contraction, settings.negativeContraction)
           : presentToBe,
       if (settings.modalVerb) 'be'
     ];
@@ -301,27 +303,54 @@ class IndependentClause {
       'been'
     ];
     List<String?> negative = [
-      settings.contraction ? "'ll not" : settings.negativeContraction? "won't": 'will not',
+      settings.contraction
+          ? "'ll not" : settings.negativeContraction? "won't": 'will not',
       'have',
       'been'
     ];
     return settings.isNegative? negative : affirmative;
   }
 
-  bool get isModalVerbEditable => settings.isSimplePresent && settings.modalVerb;
-  bool get isModalVerbAllowed => settings.isSimplePresent;
-  bool get isEmphasisAllowed => (settings.isSimplePresent || settings.isSimplePast)
-      && settings.isAffirmative && verb is! Be && !settings.modalVerb;
-  bool get isContractionAllowed => !settings.isInterrogative
-      && (isBeAuxiliary || settings.modalVerb);
+  bool get isModalVerbEditable => settings.isSimplePresent
+      || settings.isContinuousPresent && settings.modalVerb;
+
+  bool get isModalVerbAllowed => settings.isSimplePresent
+      || settings.isContinuousPresent;
+
+  bool get isEmphasisAllowed => switch(settings.tense) {
+    Tense.simplePresent => settings.isAffirmative && !settings.modalVerb && verb is! Be,
+    Tense.simplePast => settings.isAffirmative && verb is! Be,
+    _ => false,
+  };
+
+  bool get isContractionAllowed {
+    bool contraction = !settings.isInterrogative;
+    return switch(settings.tense) {
+      Tense.simplePresent => contraction && (settings.modalVerb || verb is Be),
+      Tense.simplePast || Tense.continuousPast => false,
+      _ => contraction,
+    };
+  }
+
   bool get isNegativeContractionAllowed => settings.isNegative;
 
-  bool get isBeAuxiliary => verb is Be
-      && ((settings.isSimplePresent && !settings.modalVerb) || settings.isSimplePast);
+  bool get isBeAuxiliary => switch(settings.tense) {
+    Tense.simplePresent => !settings.modalVerb && verb is Be,
+    Tense.simplePast => verb is Be,
+    _ => false,
+  };
 
-  bool get isContractionActive => isContractionAllowed && settings.contraction
-      && (settings.modalVerb && safeModalVerb.hasContraction
-      && !settings.affirmativeEmphasis);
+  bool get isContractionActive {
+    bool isContractionAllowed = !settings.isInterrogative && settings.contraction;
+    return switch(settings.tense) {
+      Tense.simplePresent => isContractionAllowed
+          && (settings.modalVerb && safeModalVerb.hasContraction || isBeAuxiliary),
+      Tense.continuousPresent => isContractionAllowed
+          && (settings.modalVerb && safeModalVerb.hasContraction || isBeAuxiliary),
+      Tense.simplePast || Tense.continuousPast => false,
+      _ => isContractionAllowed,
+    };
+  }
 
   String get auxiliaryConfig => [
     if (isBeAuxiliary) 'Main Verb',

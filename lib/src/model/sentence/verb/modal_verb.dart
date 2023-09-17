@@ -12,24 +12,26 @@ class ModalVerb {
   ];
 
   final String affirmative;
-  final String affirmativeContraction;
+  final String contraction;
   final String negative;
-  final String negativeContraction;
+  final String contractionNegative;
   final bool hasContraction;
 
   const ModalVerb(
     this.affirmative,
-    this.affirmativeContraction,
+    this.contraction,
     this.negative,
-    this.negativeContraction,
+    this.contractionNegative,
     this.hasContraction,
   );
 
-  String affirmativeValue([bool contraction = true]) => contraction
-      ? affirmativeContraction
+  String get negativeContraction => '$contraction not';
+
+  String affirmativeValue(bool contraction) => contraction
+      ? this.contraction
       : affirmative;
 
-  String negativeValue([bool contraction = true]) => contraction
-      ? negativeContraction
-      : negative;
+  String negativeValue(bool contraction, bool negativeContraction) =>
+      contraction ? contractionNegative
+      : negativeContraction ? this.negativeContraction: negative;
 }
