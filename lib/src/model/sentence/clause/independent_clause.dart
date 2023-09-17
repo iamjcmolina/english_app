@@ -311,8 +311,8 @@ class IndependentClause {
     return settings.isNegative? negative : affirmative;
   }
 
-  bool get isModalVerbEditable => settings.isSimplePresent
-      || settings.isContinuousPresent && settings.modalVerb;
+  bool get isModalVerbEditable => (settings.isSimplePresent
+      || settings.isContinuousPresent) && settings.modalVerb;
 
   bool get isModalVerbAllowed => settings.isSimplePresent
       || settings.isContinuousPresent;

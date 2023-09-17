@@ -42,14 +42,14 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
     bool isContractionToggleShown = editingFirstAuxiliaryVerb && clause.isContractionAllowed;
     bool isNegativeToggleShown = editingFirstAuxiliaryVerb && clause.isNegativeContractionAllowed;
 
-    String safeAuxiliary = clause.auxiliaries.elementAt(0) ?? '<First Auxiliary Verb>';
+    String? auxiliary = clause.auxiliaries.elementAt(0);
 
     return Column(
       children: [
         if (!clause.isBeAuxiliary) SentenceItemTile(
           color: IndependentClausePartColor.verb.color,
-          label: 'First Auxiliary Verb',
-          value: safeAuxiliary,
+          label: '<FirstAuxiliaryVerb>',
+          value: auxiliary,
           subtitle: clause.auxiliaryConfig,
           trailing: Icon(editingFirstAuxiliaryVerb? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingFirstAuxiliaryVerb,
@@ -81,7 +81,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
         ),
         if (editingFirstAuxiliaryVerb) SwitchListTile(
           secondary: const Icon(Icons.add),
-          title: const Text('Affirmative present or past emphasis'),
+          title: const Text('Affirmative emphasis'),
           value: settings.affirmativeEmphasis,
           dense: true,
           onChanged: isEmphasisToggleShown?

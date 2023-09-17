@@ -34,7 +34,7 @@ class SentenceItemTile extends StatelessWidget {
             style: TextStyle(color: color),
           ),
           TextSpan(
-            text: emptyValue? '' : ' - $label',
+            text: emptyValue? label : ' - $label',
             style: TextStyle(fontSize: emptyValue? 14 : 12),
           ),
         ],

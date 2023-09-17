@@ -37,7 +37,8 @@ class VerbListItem extends StatelessWidget {
         SentenceItemTile(
           color: IndependentClausePartColor.verb.color,
           label: clause.isBeAuxiliary? 'Verb, First Auxiliary Verb' : 'Verb',
-          value: AnyVerb.verbToString(clause.safeVerb, clause.safeSubject, clause.settings),
+          value: clause.verb == null ? null
+              : AnyVerb.verbToString(clause.safeVerb, clause.safeSubject, clause.settings),
           subtitle: clause.isBeAuxiliary? clause.auxiliaryConfig : null,
           trailing: Icon(editingVerb? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingVerb,

@@ -13,15 +13,15 @@ class UndefinedVerb extends AnyVerb {
   bool get isLinkingVerb => false;
 
   @override
-  String get infinitive => '<Bare infinitive verb>';
+  String get infinitive => '<BareInfinitiveVerb>';
 
   @override
-  String get pastParticiple => '<Past participle verb>';
+  String get pastParticiple => '<PastParticipleVerb>';
 
   @override
-  String get presentParticiple => '<Progressive verb>';
+  String get presentParticiple => '<ProgressiveVerb>';
 
-  String get past => '<Simple past verb>';
+  String get past => '<SimplePastVerb>';
 
   @override
   String toString() => infinitive;
@@ -33,9 +33,9 @@ class UndefinedVerb extends AnyVerb {
     required bool contraction,
     required bool negativeContraction,
     required bool negative,
-  }) => '<Simple present verb>';
+  }) => '<SimplePresentVerb>';
 
-  String get presentForSingularThirdPerson => '<Simple present verb>';
+  String get presentForSingularThirdPerson => '<SimplePresentVerb>';
 
   @override
   String simplePast({
