@@ -15,13 +15,12 @@ class ClauseText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final firstAuxiliary = clause.auxiliaries.first;
-    final secondAuxiliary = clause.auxiliaries.elementAtOrNull(1);
-    final thirdAuxiliary = clause.auxiliaries.elementAtOrNull(2);
 
     final firstAuxiliaryVerbSpan = TextSpan(
-        text: firstAuxiliary == null? '<FirstAuxiliaryVerb> ' : '$firstAuxiliary ',
-        style: (firstAuxiliary == null)? unsetTextStyle
+        text: clause.firstAuxiliaryVerb == null
+            ? '${clause.undefinedFirstAuxiliaryVerb} '
+            : '${clause.firstAuxiliaryVerb} ',
+        style: (clause.firstAuxiliaryVerb == null)? unsetTextStyle
             : TextStyle(color: IndependentClausePartColor.verb.color)
     );
 
@@ -46,12 +45,12 @@ class ClauseText extends StatelessWidget {
               style: (clause.midAdverb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.adverb.color)
           ),
-          if (secondAuxiliary != null) TextSpan(
-              text: '$secondAuxiliary ',
+          if (clause.secondAuxiliaryVerb != null) TextSpan(
+              text: '${clause.secondAuxiliaryVerb} ',
               style: TextStyle(color: IndependentClausePartColor.verb.color)
           ),
-          if (thirdAuxiliary != null) TextSpan(
-              text: '$thirdAuxiliary ',
+          if (clause.thirdAuxiliaryVerb != null) TextSpan(
+              text: '${clause.thirdAuxiliaryVerb} ',
               style: TextStyle(color: IndependentClausePartColor.verb.color)
           ),
           if(!clause.isBeAuxiliary) TextSpan(

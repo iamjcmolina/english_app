@@ -9,12 +9,10 @@ import '../../../model/sentence/clause/value/tense.dart';
 import '../../../model/sentence/noun/subject.dart';
 import '../../../model/sentence/noun/undefined_subject.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence/verb/be.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
 import '../../../model/sentence/verb/undefined_modal_verb.dart';
 import '../../../model/sentence/verb/undefined_verb.dart';
 import '../noun/subject_page.dart';
-import '../sentence_item_field.dart';
 import '../verb/first_auxiliary_verb_list_item.dart';
 import '../verb/verb_list_item.dart';
 import 'clause_text.dart';
@@ -45,26 +43,14 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
 
   @override
   Widget build(BuildContext context) {
-    final clauseMap = {
-      'frontAdverb': false? null :'Undoubtedly',
-      'subject': clause.subject.toString(),//false? null :'you',
-      'firstAuxiliaryVerb': false? null :'will',
-      'middleAdverb': true? null :'always',
-      'secondAuxiliaryVerb': false? null :'have',
-      'thirdAuxiliaryVerb': false? null :'been',
-      'verb': false? null :'working',
-      'indirectObject': null,
-      'directObject': null,
-      'subjectComplement': null,
-      'endAdverb': true? null :'quickly',
-    };
-    final verbListItem = clause.isBeAuxiliary? const SizedBox.shrink() : VerbListItem(
+    final verbListItem = VerbListItem(
       clause: clause,
       editingVerb: editingVerb,
       toggleEditingVerb: toggleEditingVerb,
       showOrHideBottomAppBar: showOrHideBottomAppBar,
       setVerb: setVerb,
       verbEditingController: verbEditingController,
+      hide: clause.isBeAuxiliary,
     );
     final firstAuxiliaryVerbListItem = FirstAuxiliaryVerbListItem(
       editingFirstAuxiliaryVerb: editingFirstAuxiliaryVerb,
@@ -150,18 +136,18 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                 Card(
                   child: Column(
                     children: [
-                      if (settings.clauseType != ClauseType.interrogative)
-                        SentenceItemTile(
-                          color: IndependentClausePartColor.adverb.color,
-                          label: '<FrontAdverb>',
-                          value: clause.frontAdverb?.toString(),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                        ),
+                      SentenceItemTile(
+                        color: IndependentClausePartColor.adverb.color,
+                        label: clause.undefinedFrontAdverb.toString(),
+                        value: clause.frontAdverb?.toString(),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        hide: settings.isInterrogative,
+                      ),
                       if (settings.isInterrogative)
                         firstAuxiliaryVerbListItem,
                       SentenceItemTile(
                         color: IndependentClausePartColor.noun.color,
-                        label: '<Subject>',
+                        label: clause.undefinedSubject.toString(),
                         value: clause.subject?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => navigateToSubjectPage(context),
@@ -170,49 +156,49 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                         firstAuxiliaryVerbListItem,
                       SentenceItemTile(
                         color: IndependentClausePartColor.adverb.color,
-                        label: '<MiddleAdverb>',
+                        label: clause.undefinedMiddleAdverb.toString(),
                         value: clause.midAdverb?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
-                      if (clause.auxiliaries.length > 1) SentenceItemTile(
+                      SentenceItemTile(
                         color: IndependentClausePartColor.verb.color,
-                        label: '<SecondAuxiliaryVerb>',
-                        value: clause.auxiliaries.elementAtOrNull(1),
+                        label: clause.undefinedSecondAuxiliaryVerb,
+                        value: clause.secondAuxiliaryVerb,
                         // trailing: const Icon(Icons.arrow_forward_ios),
-                        hide: clause.auxiliaries.elementAtOrNull(1) == null,
+                        hide: clause.secondAuxiliaryVerb == null,
                       ),
-                      if (clause.auxiliaries.length > 2) SentenceItemTile(
+                      SentenceItemTile(
                         color: IndependentClausePartColor.verb.color,
-                        label: '<ThirdAuxiliaryVerb>',
-                        value: clause.auxiliaries.elementAtOrNull(2),
+                        label: clause.undefinedThirdAuxiliaryVerb,
+                        value: clause.thirdAuxiliaryVerb,
                         // trailing: const Icon(Icons.arrow_forward_ios),
-                        hide: clause.auxiliaries.elementAtOrNull(2) == null,
+                        hide: clause.thirdAuxiliaryVerb == null,
                       ),
                       if (!clause.isBeAuxiliary) verbListItem,
                       SentenceItemTile(
                         color: IndependentClausePartColor.noun.color,
-                        label: '<IndirectObject>',
+                        label: clause.undefinedIndirectObject.toString(),
                         value: clause.indirectObject?.toString(),
                         hide: !safeVerb.isDitransitive,
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       SentenceItemTile(
                         color: IndependentClausePartColor.noun.color,
-                        label: '<DirectObject>',
+                        label: clause.undefinedDirectObject.toString(),
                         value: clause.directObject?.toString(),
                         hide: !safeVerb.isTransitive,
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       SentenceItemTile(
                         color: IndependentClausePartColor.noun.color,
-                        label: '<SubjectComplement>',
+                        label: clause.undefinedSubjectComplement.toString(),
                         value: clause.subjectComplement?.toString(),
                         hide: !safeVerb.isLinkingVerb,
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       SentenceItemTile(
                         color: IndependentClausePartColor.adverb.color,
-                        label: '<EndAdverb>',
+                        label: clause.undefinedEndAdverb.toString(),
                         value: clause.endAdverb?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),

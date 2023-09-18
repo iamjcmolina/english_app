@@ -42,14 +42,12 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
     bool isContractionToggleShown = editingFirstAuxiliaryVerb && clause.isContractionAllowed;
     bool isNegativeToggleShown = editingFirstAuxiliaryVerb && clause.isNegativeContractionAllowed;
 
-    String? auxiliary = clause.auxiliaries.elementAt(0);
-
     return Column(
       children: [
         if (!clause.isBeAuxiliary) SentenceItemTile(
           color: IndependentClausePartColor.verb.color,
-          label: '<FirstAuxiliaryVerb>',
-          value: auxiliary,
+          label: clause.undefinedFirstAuxiliaryVerb,
+          value: clause.firstAuxiliaryVerb,
           subtitle: clause.auxiliaryConfig,
           trailing: Icon(editingFirstAuxiliaryVerb? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingFirstAuxiliaryVerb,

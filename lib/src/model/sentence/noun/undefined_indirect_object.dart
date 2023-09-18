@@ -4,5 +4,5 @@ class UndefinedIndirectObject extends IndirectObject {
   const UndefinedIndirectObject();
 
   @override
-  String toString() => 'IndirectObject';
+  String toString() => '<IndirectObject>';
 }

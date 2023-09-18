@@ -15,6 +15,7 @@ class VerbListItem extends StatelessWidget {
   final void Function() showOrHideBottomAppBar;
   final void Function(AnyVerb? verb) setVerb;
   final TextEditingController? verbEditingController;
+  final bool hide;
 
   const VerbListItem({
     super.key,
@@ -24,6 +25,7 @@ class VerbListItem extends StatelessWidget {
     required this.showOrHideBottomAppBar,
     required this.setVerb,
     this.verbEditingController,
+    this.hide = false,
   });
 
   @override
@@ -32,11 +34,15 @@ class VerbListItem extends StatelessWidget {
 
     List<AnyVerb> verbs = vocabularyService.verbs();
 
-    return Column(
+    String verbLabel = AnyVerb.verbToString(clause.undefinedVerb, clause.safeSubject, clause.settings);
+    String auxiliaryVerbLabel = clause.isBeAuxiliary
+        ? ', ${clause.undefinedFirstAuxiliaryVerb}' : '';
+
+    return hide? const SizedBox.shrink() : Column(
       children: [
         SentenceItemTile(
           color: IndependentClausePartColor.verb.color,
-          label: clause.isBeAuxiliary? 'Verb, First Auxiliary Verb' : 'Verb',
+          label: '$verbLabel$auxiliaryVerbLabel',
           value: clause.verb == null ? null
               : AnyVerb.verbToString(clause.safeVerb, clause.safeSubject, clause.settings),
           subtitle: clause.isBeAuxiliary? clause.auxiliaryConfig : null,
@@ -44,7 +50,7 @@ class VerbListItem extends StatelessWidget {
           onTap: toggleEditingVerb,
         ),
         if(editingVerb) SentenceItemField<AnyVerb>(
-          label: 'Verb',
+          label: AnyVerb.verbToString(clause.undefinedVerb, clause.safeSubject, clause.settings),
           value: clause.verb,
           options: verbs,
           displayStringForOption: (verb) => AnyVerb.verbToString(verb, clause.safeSubject, clause.settings),

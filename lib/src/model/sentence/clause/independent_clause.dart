@@ -66,32 +66,46 @@ class IndependentClause {
     endAdverb: endAdverb == null? this.endAdverb : endAdverb.value,
   );
 
-  AnyAdverb get safeFrontAdverb => frontAdverb ?? const UndefinedAdverb();
-  Subject get safeSubject => subject ?? const UndefinedSubject();
-  ModalVerb get safeModalVerb => modalVerb ?? const UndefinedModalVerb();
-  AnyAdverb get safeMiddleAdverb => midAdverb ?? const UndefinedAdverb();
-  AnyVerb get safeVerb => verb ?? const UndefinedVerb();
-  IndirectObject get safeIndirectObject => indirectObject ?? const UndefinedIndirectObject();
-  DirectObject get safeDirectObject => directObject ?? const UndefinedDirectObject();
-  SubjectComplement get safeSubjectComplement => subjectComplement ?? const UndefinedSubjectComplement();
-  AnyAdverb get safeEndAdverb => endAdverb ?? const UndefinedAdverb();
+  AnyAdverb get undefinedFrontAdverb => const UndefinedAdverb('<FrontAdverb>');
+  Subject get undefinedSubject => const UndefinedSubject();
+  String get undefinedFirstAuxiliaryVerb => '<FirstAuxiliaryVerb>';
+  String get undefinedSecondAuxiliaryVerb => '<SecondAuxiliaryVerb>';
+  String get undefinedThirdAuxiliaryVerb => '<ThirdAuxiliaryVerb>';
+  ModalVerb get undefinedModalVerb => const UndefinedModalVerb();
+  AnyAdverb get undefinedMiddleAdverb => const UndefinedAdverb('<MiddleAdverb>');
+  AnyVerb get undefinedVerb => const UndefinedVerb();
+  IndirectObject get undefinedIndirectObject => const UndefinedIndirectObject();
+  DirectObject get undefinedDirectObject => const UndefinedDirectObject();
+  SubjectComplement get undefinedSubjectComplement => const UndefinedSubjectComplement();
+  AnyAdverb get undefinedEndAdverb => const UndefinedAdverb('<EndAdverb>');
 
-  List<String?> get auxiliaries {
-    return switch(settings.tense) {
-      Tense.simplePresent => simplePresentAuxiliaries(),
-      Tense.simplePast => simplePastAuxiliaries(),
-      Tense.simpleFuture => simpleFutureAuxiliaries(),
-      Tense.simplePresentPerfect => simplePresentPerfectAuxiliaries(),
-      Tense.simplePastPerfect => simplePastPerfectAuxiliaries(),
-      Tense.simpleFuturePerfect => simpleFuturePerfectAuxiliaries(),
-      Tense.continuousPresent => continuousPresentAuxiliaries(),
-      Tense.continuousPast => continuousPastAuxiliaries(),
-      Tense.continuousFuture => continuousFutureAuxiliaries(),
-      Tense.continuousPresentPerfect => continuousPresentPerfectAuxiliaries(),
-      Tense.continuousPastPerfect => continuousPastPerfectAuxiliaries(),
-      _ => continuousFuturePerfectAuxiliaries(),
-    };
-  }
+  AnyAdverb get safeFrontAdverb => frontAdverb ?? undefinedFrontAdverb;
+  Subject get safeSubject => subject ?? undefinedSubject;
+  String? get firstAuxiliaryVerb => auxiliaries.firstOrNull;
+  String? get secondAuxiliaryVerb => auxiliaries.elementAtOrNull(1);
+  String? get thirdAuxiliaryVerb => auxiliaries.elementAtOrNull(2);
+  ModalVerb get safeModalVerb => modalVerb ?? undefinedModalVerb;
+  AnyAdverb get safeMiddleAdverb => midAdverb ?? undefinedMiddleAdverb;
+  AnyVerb get safeVerb => verb ?? undefinedVerb;
+  IndirectObject get safeIndirectObject => indirectObject ?? undefinedIndirectObject;
+  DirectObject get safeDirectObject => directObject ?? undefinedDirectObject;
+  SubjectComplement get safeSubjectComplement => subjectComplement ?? undefinedSubjectComplement;
+  AnyAdverb get safeEndAdverb => endAdverb ?? undefinedEndAdverb;
+
+  List<String?> get auxiliaries => switch(settings.tense) {
+    Tense.simplePresent => simplePresentAuxiliaries(),
+    Tense.simplePast => simplePastAuxiliaries(),
+    Tense.simpleFuture => simpleFutureAuxiliaries(),
+    Tense.simplePresentPerfect => simplePresentPerfectAuxiliaries(),
+    Tense.simplePastPerfect => simplePastPerfectAuxiliaries(),
+    Tense.simpleFuturePerfect => simpleFuturePerfectAuxiliaries(),
+    Tense.continuousPresent => continuousPresentAuxiliaries(),
+    Tense.continuousPast => continuousPastAuxiliaries(),
+    Tense.continuousFuture => continuousFutureAuxiliaries(),
+    Tense.continuousPresentPerfect => continuousPresentPerfectAuxiliaries(),
+    Tense.continuousPastPerfect => continuousPastPerfectAuxiliaries(),
+    _ => continuousFuturePerfectAuxiliaries(),
+  };
 
   List<String?> simplePresentAuxiliaries() {
     bool contraction = !settings.isInterrogative && settings.contraction;

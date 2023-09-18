@@ -1,8 +1,9 @@
 import 'any_adverb.dart';
 
 class UndefinedAdverb extends AnyAdverb {
-  const UndefinedAdverb();
+  final String label;
+  const UndefinedAdverb(this.label);
 
   @override
-  String toString() => 'Adverb';
+  String toString() => label;
 }
