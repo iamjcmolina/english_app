@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'service/vocabulary_service.dart';
 import 'service/sentence_cubit.dart';
 import 'widget/sentence/clause/independent_clause_page.dart';
-import 'widget/sentence/sentence_page.dart';
 
 class EnglishApp extends StatelessWidget {
   static final ValueNotifier<ThemeMode> themeNotifier =

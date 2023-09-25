@@ -26,15 +26,15 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _textEditingController = textEditingController ?? TextEditingController();
-    _textEditingController.text = value != null? nullableToString(value) : '';
+    final textEditingController = this.textEditingController ?? TextEditingController();
+    textEditingController.text = value != null? nullableToString(value) : '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
       child: true? RawAutocomplete<T>(
         //initialValue: value != null? TextEditingValue(text: nullableToString(value)) : null,
         displayStringForOption: displayStringForOption,
         focusNode: FocusNode(),
-        textEditingController: _textEditingController,
+        textEditingController: textEditingController,
         optionsBuilder: (TextEditingValue textEditingValue) {
           if (textEditingValue.text == '') {
             return options;
@@ -64,7 +64,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
                 icon: const Icon(Icons.clear),
               ),
             ),
-            validator: (value) => optionFound(value)? null : 'Choose a valid ${label}',
+            validator: (value) => optionFound(value)? null : 'Choose a valid $label',
             autovalidateMode: AutovalidateMode.always,
             onChanged: onChanged,
           );
@@ -132,7 +132,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
                   icon: const Icon(Icons.clear),
                 ),
               ),
-              validator: (value) => optionFound(value)? null : 'Choose a valid ${label}',
+              validator: (value) => optionFound(value)? null : 'Choose a valid $label',
               autovalidateMode: AutovalidateMode.always,
               onChanged: onChanged,
             );

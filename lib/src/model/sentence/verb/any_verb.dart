@@ -1,7 +1,6 @@
 import '../clause/independent_clause_settings.dart';
 import '../noun/subject.dart';
 import 'be.dart';
-import 'undefined_verb.dart';
 import 'value/verb_tense.dart';
 
 abstract class AnyVerb {

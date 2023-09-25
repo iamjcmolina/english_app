@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../model/sentence/adverb/adverb.dart';
+import '../model/sentence/adverb/any_adverb.dart';
+import '../model/sentence/adverb/value/adverb_position.dart';
 import '../model/sentence/noun/pronoun.dart';
 import '../model/sentence/verb/any_verb.dart';
 import '../model/sentence/verb/be.dart';
@@ -59,6 +62,7 @@ class VocabularyService extends ChangeNotifier {
   //   ];
   // }
 
+
   List<String> adjectives({bool adjectivalPhrase = false}) {
     return [
       'beautiful',
@@ -73,4 +77,48 @@ class VocabularyService extends ChangeNotifier {
   //     Noun.uncountable('water'),
   //   ];
   // }
+
+  List<Adverb> allAdverbs = [
+    Adverb.manner('quickly'),
+    Adverb.place('here'),
+    Adverb.place('there'),
+    Adverb.place('outside'),
+    Adverb.time('today'),
+    Adverb.time('tomorrow'),
+    Adverb.duration('long'),
+    Adverb.frequency('always', {AdverbPosition.mid, AdverbPosition.end}),
+    Adverb.frequency('usually'),
+    Adverb.frequency('normally'),
+    Adverb.frequency('often'),
+    Adverb.frequency('sometimes'),
+    Adverb.frequency('occasionally'),
+    Adverb.frequency('rarely'),
+    Adverb.frequency('never', {AdverbPosition.mid, AdverbPosition.end}),
+    Adverb.degree('really', {AdverbPosition.mid}),
+    Adverb.degree('very', {AdverbPosition.mid}),
+    Adverb.degree('quite', {AdverbPosition.mid}),
+    Adverb.degree('a lot', {AdverbPosition.end}),
+    Adverb.degree('a bit', {AdverbPosition.end}),
+    Adverb.focusing('simply'),
+    Adverb.certainty('probably', {AdverbPosition.mid}),
+    Adverb.certainty('possibly', {AdverbPosition.mid}),
+    Adverb.certainty('certainly', {AdverbPosition.mid}),
+    Adverb.certainty('maybe', {AdverbPosition.front, AdverbPosition.end}),
+    Adverb.certainty('perhaps', {AdverbPosition.front, AdverbPosition.end}),
+    Adverb.viewpoint('personally'),
+    Adverb.viewpoint('frankly'),
+    Adverb.evaluative('unfortunately'),
+  ];
+
+  List<AnyAdverb> frontAdverbs() =>
+    allAdverbs.where((adverb) => adverb.positions.contains(AdverbPosition.front))
+        .toList();
+
+  List<AnyAdverb> midAdverbs() =>
+      allAdverbs.where((adverb) => adverb.positions.contains(AdverbPosition.mid))
+          .toList();
+
+  List<AnyAdverb> endAdverbs() =>
+      allAdverbs.where((adverb) => adverb.positions.contains(AdverbPosition.end))
+          .toList();
 }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../english_app.dart';
 
 class RootLayout extends StatelessWidget {
-  String title;
-  List<Widget> bottomAppBarChildren;
-  bool showBottomAppBar;
-  Widget child;
+  final String title;
+  final List<Widget> bottomAppBarChildren;
+  final bool showBottomAppBar;
+  final Widget child;
 
-  RootLayout({
+  const RootLayout({
     super.key,
     required this.title,
     this.bottomAppBarChildren = const[],

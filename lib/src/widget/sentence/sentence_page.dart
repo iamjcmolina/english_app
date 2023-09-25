@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../english_app.dart';
 import '../../model/sentence/clause/independent_clause.dart';
@@ -15,15 +14,7 @@ class SentencePage extends StatefulWidget {
 
 class _SentencePageState extends State<SentencePage> {
   Sentence sentence = Sentence(
-      independentClause: IndependentClause(
-        // options: IndependentClauseOptions(),
-        // subject: UndefinedSubject(), // logic
-        // verb: UndefinedVerb(), // logic
-        // modalVerb: UndefinedModalVerb(), // logic
-        // indirectObject: UndefinedIndirectObject(),
-        // directObject: UndefinedDirectObject(),
-        // subjectComplement: UndefinedSubjectComplement(),
-      )
+      independentClause: IndependentClause()
   );
 
 

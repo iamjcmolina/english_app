@@ -1,0 +1,1 @@
+enum AdverbVariant {word}

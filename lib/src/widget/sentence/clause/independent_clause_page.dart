@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/nullable.dart';
+import '../../../model/sentence/adverb/any_adverb.dart';
+import '../../../model/sentence/adverb/value/adverb_position.dart';
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/independent_clause_settings.dart';
 import '../../../model/sentence/clause/value/clause_type.dart';
@@ -12,6 +14,7 @@ import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
 import '../../../model/sentence/verb/undefined_modal_verb.dart';
 import '../../../model/sentence/verb/undefined_verb.dart';
+import '../adverb/adverb_page.dart';
 import '../noun/subject_page.dart';
 import '../verb/first_auxiliary_verb_list_item.dart';
 import '../verb/verb_list_item.dart';
@@ -141,6 +144,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                         label: clause.undefinedFrontAdverb.toString(),
                         value: clause.frontAdverb?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => navigateToAdverbPage(context, AdverbPosition.front),
                         hide: settings.isInterrogative,
                       ),
                       if (settings.isInterrogative)
@@ -159,6 +163,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                         label: clause.undefinedMiddleAdverb.toString(),
                         value: clause.midAdverb?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => navigateToAdverbPage(context, AdverbPosition.mid),
                       ),
                       SentenceItemTile(
                         color: IndependentClausePartColor.verb.color,
@@ -201,6 +206,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                         label: clause.undefinedEndAdverb.toString(),
                         value: clause.endAdverb?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => navigateToAdverbPage(context, AdverbPosition.end),
                       ),
                     ],
                   ),
@@ -215,11 +221,17 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
 
   setClause(IndependentClause clause) => setState(()=> this.clause = clause);
 
+  setFrontAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(frontAdverb: Nullable(adverb)));
+
   setSubject(Subject? subject) => setClause(clause.copyWith(subject: Nullable(subject)));
 
   setModalVerb(ModalVerb? modalVerb) => setClause(clause.copyWith(modalVerb: Nullable(modalVerb)));
 
+  setMidAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(midAdverb: Nullable(adverb)));
+
   setVerb(AnyVerb? verb) => setClause(clause.copyWith(verb: Nullable(verb)));
+
+  setEndAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(endAdverb: Nullable(adverb)));
 
   setSettings(IndependentClauseSettings options) => setClause(clause.copyWith(settings: options));
 
@@ -250,6 +262,27 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             )));
     if (subject is Subject) {
       setSubject(subject);
+    }
+  }
+
+  navigateToAdverbPage(BuildContext context, AdverbPosition position) async {
+    final adverb = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AdverbPage(
+              adverb: switch(position) {
+                AdverbPosition.front => clause.frontAdverb,
+                AdverbPosition.mid => clause.midAdverb,
+                _ => clause.endAdverb,
+              },
+              position: position,
+            )));
+    if (adverb is AnyAdverb) {
+      switch(position) {
+        case AdverbPosition.front: setFrontAdverb(adverb); break;
+        case AdverbPosition.mid: setMidAdverb(adverb); break;
+        case _: setEndAdverb(adverb); break;
+      }
     }
   }
 

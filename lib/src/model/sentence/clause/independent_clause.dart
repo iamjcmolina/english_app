@@ -367,7 +367,6 @@ class IndependentClause {
   }
 
   String get auxiliaryConfig => [
-    if (isBeAuxiliary) 'Main Verb',
     if (settings.modalVerb) 'Modal Verb',
     if (settings.affirmativeEmphasis) 'Affirmative Emphasis',
     if (settings.contraction) 'Contraction',

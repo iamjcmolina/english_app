@@ -25,18 +25,13 @@ class _VerbFormState extends State<VerbForm> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return Expanded(
+    return const Expanded(
       child: Column(
         children: [
-
         ],
       ),
     );
   }
-
-
 
   @override
   void initState() {

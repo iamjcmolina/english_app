@@ -22,7 +22,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
       ],
     );

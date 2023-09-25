@@ -78,10 +78,7 @@ class ClauseText extends StatelessWidget {
               style: (clause.endAdverb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.adverb.color)
           ),
-          if(clause.settings.isInterrogative) const TextSpan(
-              text: '?',
-              style: unsetTextStyle
-          ),
+          if(clause.settings.isInterrogative) const TextSpan(text: '?'),
         ],
       ),
     );
