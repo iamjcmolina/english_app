@@ -28,7 +28,7 @@ class ClauseText extends StatelessWidget {
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
         children: <TextSpan>[
-          if(!clause.settings.isInterrogative) TextSpan(
+          if(!clause.settings.isInterrogative && clause.frontAdverb != null) TextSpan(
               text: '${clause.safeFrontAdverb} ',
               style: (clause.frontAdverb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.adverb.color)
@@ -40,7 +40,7 @@ class ClauseText extends StatelessWidget {
                   : TextStyle(color: IndependentClausePartColor.noun.color)
           ),
           if(!clause.settings.isInterrogative) firstAuxiliaryVerbSpan,
-          TextSpan(
+          if (clause.midAdverb != null) TextSpan(
               text: '${clause.safeMiddleAdverb} ',
               style: (clause.midAdverb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.adverb.color)
@@ -58,12 +58,12 @@ class ClauseText extends StatelessWidget {
               style: (clause.verb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.verb.color)
           ),
-          if (clause.safeVerb.isDitransitive) TextSpan(
+          if (clause.safeVerb.isDitransitive && clause.indirectObject != null) TextSpan(
               text: '${clause.safeIndirectObject} ',
               style: (clause.indirectObject == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.noun.color)
           ),
-          if (clause.safeVerb.isTransitive) TextSpan(
+          if (clause.safeVerb.isTransitive && clause.directObject != null) TextSpan(
               text: '${clause.safeDirectObject} ',
               style: (clause.directObject == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.noun.color)
@@ -73,7 +73,7 @@ class ClauseText extends StatelessWidget {
               style: (clause.subjectComplement == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.noun.color)
           ),
-          TextSpan(
+          if (clause.endAdverb != null) TextSpan(
               text: '${clause.safeEndAdverb}',
               style: (clause.endAdverb == null)? unsetTextStyle
                   : TextStyle(color: IndependentClausePartColor.adverb.color)
