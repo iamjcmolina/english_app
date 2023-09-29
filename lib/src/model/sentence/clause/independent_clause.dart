@@ -1,9 +1,9 @@
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../adverb/undefined_adverb.dart';
+import '../noun/any_noun.dart';
 import '../noun/direct_object.dart';
 import '../noun/indirect_object.dart';
-import '../noun/subject.dart';
 import '../noun/subject_complement.dart';
 import '../noun/undefined_direct_object.dart';
 import '../noun/undefined_indirect_object.dart';
@@ -20,7 +20,7 @@ import 'value/tense.dart';
 class IndependentClause {
   IndependentClauseSettings settings;
   AnyAdverb? frontAdverb;
-  Subject? subject;
+  AnyNoun? subject;
   ModalVerb? modalVerb;
   AnyAdverb? midAdverb;
   AnyVerb? verb;
@@ -45,7 +45,7 @@ class IndependentClause {
   IndependentClause copyWith({
     IndependentClauseSettings? settings,
     Nullable<AnyAdverb>? frontAdverb,
-    Nullable<Subject>? subject,
+    Nullable<AnyNoun>? subject,
     Nullable<ModalVerb>? modalVerb,
     Nullable<AnyAdverb>? midAdverb,
     Nullable<AnyVerb>? verb,
@@ -67,7 +67,7 @@ class IndependentClause {
   );
 
   AnyAdverb get undefinedFrontAdverb => const UndefinedAdverb('<FrontAdverb>');
-  Subject get undefinedSubject => const UndefinedSubject();
+  AnyNoun get undefinedSubject => const UndefinedSubject();
   String get undefinedFirstAuxiliaryVerb => '<FirstAuxiliaryVerb>';
   String get undefinedSecondAuxiliaryVerb => '<SecondAuxiliaryVerb>';
   String get undefinedThirdAuxiliaryVerb => '<ThirdAuxiliaryVerb>';
@@ -80,7 +80,7 @@ class IndependentClause {
   AnyAdverb get undefinedEndAdverb => const UndefinedAdverb('<EndAdverb>');
 
   AnyAdverb get safeFrontAdverb => frontAdverb ?? undefinedFrontAdverb;
-  Subject get safeSubject => subject ?? undefinedSubject;
+  AnyNoun get safeSubject => subject ?? undefinedSubject;
   String? get firstAuxiliaryVerb => auxiliaries.firstOrNull;
   String? get secondAuxiliaryVerb => auxiliaries.elementAtOrNull(1);
   String? get thirdAuxiliaryVerb => auxiliaries.elementAtOrNull(2);
@@ -110,8 +110,8 @@ class IndependentClause {
   List<String?> simplePresentAuxiliaries() {
     bool contraction = !settings.isInterrogative && settings.contraction;
     String presentToBe = safeVerb.present(
-      singularFirstPerson: safeSubject.singularFirstPerson,
-      singularThirdPerson: safeSubject.singularThirdPerson,
+      singularFirstPerson: safeSubject.isSingularFirstPerson,
+      singularThirdPerson: safeSubject.isSingularThirdPerson,
       contraction: contraction,
       negativeContraction: settings.negativeContraction,
       negative: settings.isNegative,
@@ -122,7 +122,7 @@ class IndependentClause {
           : verb is Be
           ? presentToBe
           : settings.isInterrogative || settings.affirmativeEmphasis
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? 'does'
           : 'do'
           : null
@@ -133,10 +133,10 @@ class IndependentClause {
           : verb is Be
           ? presentToBe
           : settings.negativeContraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "doesn't"
           : "don't"
-          : safeSubject.singularThirdPerson
+          : safeSubject.isSingularThirdPerson
           ? 'does not'
           : 'do not'
     ];
@@ -145,7 +145,7 @@ class IndependentClause {
 
   List<String?> simplePastAuxiliaries() {
     String pastBe = safeVerb.simplePast(
-        singular: safeSubject.singular,
+        isPlural: safeSubject.countability == Countability.singular,
         negativeContraction: settings.contraction,
         negative: settings.isNegative);
     List<String?> affirmative = [
@@ -179,23 +179,23 @@ class IndependentClause {
   List<String?> simplePresentPerfectAuxiliaries() {
     List<String?> affirmative = [
       !settings.isInterrogative && settings.contraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "'s"
           : "'ve"
-          : safeSubject.singularThirdPerson
+          : safeSubject.isSingularThirdPerson
           ? 'has'
           : 'have'
     ];
     List<String?> negative = [
       settings.contraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "'s not"
           : "'ve not"
           : settings.negativeContraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "hasn't"
           : "haven't"
-          : safeSubject.singularThirdPerson
+          : safeSubject.isSingularThirdPerson
           ? 'has not'
           : 'have not'
     ];
@@ -227,8 +227,8 @@ class IndependentClause {
 
   List<String?> continuousPresentAuxiliaries() {
     String presentToBe = Be().present(
-      singularFirstPerson: safeSubject.singularFirstPerson,
-      singularThirdPerson: safeSubject.singularThirdPerson,
+      singularFirstPerson: safeSubject.isSingularFirstPerson,
+      singularThirdPerson: safeSubject.isSingularThirdPerson,
       contraction: !settings.isInterrogative && settings.contraction,
       negativeContraction: settings.negativeContraction,
       negative: settings.isNegative,
@@ -251,7 +251,7 @@ class IndependentClause {
   List<String?> continuousPastAuxiliaries() {
     return [
       Be().simplePast(
-        singular: safeSubject.singular,
+        isPlural: safeSubject.countability == Countability.plural,
         negativeContraction: settings.negativeContraction,
         negative: settings.isNegative,
       )
@@ -273,24 +273,24 @@ class IndependentClause {
   List<String?> continuousPresentPerfectAuxiliaries() {
     List<String?> affirmative = [
       !settings.isInterrogative && settings.contraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "'s"
           : "'ve"
-          : safeSubject.singularThirdPerson
+          : safeSubject.isSingularThirdPerson
           ? 'has'
           : 'have',
       'been'
     ];
     List<String?> negative = [
       settings.contraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "'s not"
           : "'ve not"
           : settings.negativeContraction
-          ? safeSubject.singularThirdPerson
+          ? safeSubject.isSingularThirdPerson
           ? "hasn't"
           : "haven't"
-          : safeSubject.singularThirdPerson
+          : safeSubject.isSingularThirdPerson
           ? 'has not'
           : 'have not',
       'been'

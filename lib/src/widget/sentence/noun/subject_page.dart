@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
-import '../../../model/sentence/noun/subject.dart';
 import '../../../model/sentence/noun/value/subject_type.dart';
+import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../service/vocabulary_service.dart';
 import '../../root_layout.dart';
+import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
 class SubjectPage extends StatefulWidget {
   final SubjectType subjectType;
-  final Subject? subject;
+  final AnyNoun? subject;
 
   const SubjectPage({super.key, required this.subjectType, this.subject});
 
@@ -20,7 +22,7 @@ class SubjectPage extends StatefulWidget {
 
 class _SubjectPageState extends State<SubjectPage> {
   late SubjectType subjectType;
-  Subject? subject;
+  AnyNoun? subject;
   bool showBottomAppBar = false;
 
   @override
@@ -59,12 +61,17 @@ class _SubjectPageState extends State<SubjectPage> {
               pronoun: subject is Pronoun? subject as Pronoun : null,
               setShowBottomAppBar: setShowBottomAppBar
             ),
+          if (subjectType == SubjectType.nounPhrase)
+            NounPhraseForm(
+              setNounPhrase: setSubject,
+              nounPhrase: subject is NounPhrase? subject as NounPhrase : null,
+            ),
         ],
       ),
     );
   }
 
-  setSubject(Subject? subject) => setState(() => this.subject = subject);
+  setSubject(AnyNoun? subject) => setState(() => this.subject = subject);
 
   setSubjectType(SubjectType type) => setState(() => subjectType = type);
 

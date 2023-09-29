@@ -1,19 +1,16 @@
-import 'subject.dart';
+import 'any_noun.dart';
 
-class UndefinedSubject extends Subject {
+class UndefinedSubject extends AnyNoun {
   const UndefinedSubject();
 
   @override
-  bool get plural => false;
+  Countability get countability => Countability.singular;
 
   @override
-  bool get singular => true;
+  bool get isSingularFirstPerson => true;
 
   @override
-  bool get singularFirstPerson => true;
-
-  @override
-  bool get singularThirdPerson => false;
+  bool get isSingularThirdPerson => false;
 
   @override
   String toString() => '<Subject>';

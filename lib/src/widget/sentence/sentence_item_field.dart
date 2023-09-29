@@ -7,7 +7,6 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
   final String Function(T) displayStringForOption;
   final bool enable;
   final void Function(T) onSelected;
-  final void Function()? onCleaned;
   final void Function(String)? onChanged;
   final TextEditingController? textEditingController;
 
@@ -19,7 +18,6 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     this.displayStringForOption = RawAutocomplete.defaultStringForOption,
     this.enable = true,
     required this.onSelected,
-    required this.onCleaned,
     required this.onChanged,
     this.textEditingController,
   });
@@ -30,8 +28,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     textEditingController.text = value != null? nullableToString(value) : '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-      child: true? RawAutocomplete<T>(
-        //initialValue: value != null? TextEditingValue(text: nullableToString(value)) : null,
+      child: RawAutocomplete<T>(
         displayStringForOption: displayStringForOption,
         focusNode: FocusNode(),
         textEditingController: textEditingController,
@@ -59,7 +56,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
               suffixIcon: IconButton(
                 onPressed: () {
                   textEditingController.clear();
-                  if (onCleaned != null) onCleaned!();
+                  if (onChanged != null) onChanged!('');
                 },
                 icon: const Icon(Icons.clear),
               ),
@@ -86,9 +83,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     final T option = options.elementAt(index);
                     return GestureDetector(
-                      onTap: () {
-                        onSelected(option);
-                      },
+                      onTap: () => onSelected(option),
                       child: ListTile(
                         title: Text(displayStringForOption(option)),
                       ),
@@ -99,44 +94,6 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
             ),
           );
         },
-      )
-          : Autocomplete<T>(
-          initialValue: value != null? TextEditingValue(text: nullableToString(value)) : null,
-          displayStringForOption: displayStringForOption,
-          optionsBuilder: (TextEditingValue textEditingValue) {
-            if (textEditingValue.text == '') {
-              return options;
-            }
-            return options.where((T option) {
-              return nullableToString(option).contains(textEditingValue.text.toLowerCase());
-            });
-          },
-          onSelected: onSelected,
-          fieldViewBuilder: (
-              BuildContext context,
-              TextEditingController textEditingController,
-              FocusNode focusNode,
-              VoidCallback onFieldSubmitted
-              ) {
-            return TextFormField(
-              keyboardType: TextInputType.none,
-              controller: textEditingController,
-              focusNode: focusNode,
-              decoration: InputDecoration(
-                label: Text(label),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    textEditingController.clear();
-                    if (onCleaned != null) onCleaned!();
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              ),
-              validator: (value) => optionFound(value)? null : 'Choose a valid $label',
-              autovalidateMode: AutovalidateMode.always,
-              onChanged: onChanged,
-            );
-          }
       ),
     );
   }

@@ -8,7 +8,7 @@ import '../../../model/sentence/clause/independent_clause_settings.dart';
 import '../../../model/sentence/clause/value/clause_type.dart';
 import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
 import '../../../model/sentence/clause/value/tense.dart';
-import '../../../model/sentence/noun/subject.dart';
+import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/undefined_subject.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
@@ -40,7 +40,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   final TextEditingController verbEditingController = TextEditingController();
 
   IndependentClauseSettings get settings => clause.settings;
-  Subject get safeSubject => clause.subject ?? const UndefinedSubject();
+  AnyNoun get safeSubject => clause.subject ?? const UndefinedSubject();
   AnyVerb get safeVerb => clause.verb ?? const UndefinedVerb();
   int index = 0;
 
@@ -155,6 +155,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                         value: clause.subject?.toString(),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => navigateToSubjectPage(context),
+                        required: true,
                       ),
                       if (!settings.isInterrogative)
                         firstAuxiliaryVerbListItem,
@@ -200,6 +201,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                         value: clause.subjectComplement?.toString(),
                         hide: !safeVerb.isLinkingVerb,
                         trailing: const Icon(Icons.arrow_forward_ios),
+                        required: true,
                       ),
                       SentenceItemTile(
                         color: IndependentClausePartColor.adverb.color,
@@ -223,7 +225,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
 
   setFrontAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(frontAdverb: Nullable(adverb)));
 
-  setSubject(Subject? subject) => setClause(clause.copyWith(subject: Nullable(subject)));
+  setSubject(AnyNoun? subject) => setClause(clause.copyWith(subject: Nullable(subject)));
 
   setModalVerb(ModalVerb? modalVerb) => setClause(clause.copyWith(modalVerb: Nullable(modalVerb)));
 
@@ -260,7 +262,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
               subjectType: settings.subjectType,
               subject: clause.subject,
             )));
-    if (subject is Subject) {
+    if (subject is AnyNoun) {
       setSubject(subject);
     }
   }

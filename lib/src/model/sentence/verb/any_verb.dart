@@ -1,5 +1,5 @@
 import '../clause/independent_clause_settings.dart';
-import '../noun/subject.dart';
+import '../noun/any_noun.dart';
 import 'be.dart';
 import 'value/verb_tense.dart';
 
@@ -22,24 +22,24 @@ abstract class AnyVerb {
   });
 
   String simplePast({
-    required bool singular,
+    required bool isPlural,
     required bool negativeContraction,
     required bool negative,
   });
 
-  static String verbToString(AnyVerb verb, Subject subject, IndependentClauseSettings settings) {
+  static String verbToString(AnyVerb verb, AnyNoun subject, IndependentClauseSettings settings) {
     VerbTense verbTense = AnyVerb.verbTense(verb, settings);
     if (verbTense == VerbTense.present) {
       return verb.present(
-        singularFirstPerson: subject.singularFirstPerson,
-        singularThirdPerson: subject.singularThirdPerson,
+        singularFirstPerson: subject.isSingularFirstPerson,
+        singularThirdPerson: subject.isSingularThirdPerson,
         contraction: !settings.isInterrogative && settings.contraction,
         negativeContraction: settings.negativeContraction,
         negative: settings.isNegative,
       );
     } else if (verbTense == VerbTense.past) {
       return verb.simplePast(
-        singular: subject.singular,
+        isPlural: subject.countability == Countability.plural,
         negativeContraction: settings.negativeContraction,
         negative: settings.isNegative,
       );

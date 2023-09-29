@@ -39,7 +39,7 @@ class UndefinedVerb extends AnyVerb {
 
   @override
   String simplePast({
-    required bool singular,
+    required bool isPlural,
     required bool negativeContraction,
     required bool negative,
   }) => past;

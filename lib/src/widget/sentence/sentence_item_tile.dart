@@ -8,6 +8,7 @@ class SentenceItemTile extends StatelessWidget {
   final Widget? trailing;
   final String? subtitle;
   final void Function()? onTap;
+  final bool required;
 
   const SentenceItemTile({
     super.key,
@@ -18,6 +19,7 @@ class SentenceItemTile extends StatelessWidget {
     this.trailing,
     this.subtitle,
     this.onTap,
+    this.required = false,
   });
 
   @override
@@ -35,8 +37,17 @@ class SentenceItemTile extends StatelessWidget {
           ),
           TextSpan(
             text: emptyValue? label : ' $label',
-            style: TextStyle(fontSize: emptyValue? 14 : 12),
+            style: TextStyle(
+              fontSize: emptyValue? 14 : 12,
+            ),
           ),
+          TextSpan(
+            text: required? ' *' : '',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            )
+          )
         ],
       )),
       subtitle: subtitle == null || subtitle!.isEmpty? null

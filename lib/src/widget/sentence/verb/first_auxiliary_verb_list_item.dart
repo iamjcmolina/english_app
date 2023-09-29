@@ -66,7 +66,6 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
           options: ModalVerb.modalVerbs,
           displayStringForOption: (modalVerb) => modalVerbToString(modalVerb),
           onSelected: onModalVerbSelected,
-          onCleaned: () => onModalVerbCleaned(),
           onChanged: (text) => onModalVerbChanged(),
         ),
         if (editingFirstAuxiliaryVerb) SwitchListTile(
@@ -109,11 +108,6 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
     setModalVerb(modalVerb);
     //toggleEditingFirstAuxiliaryVerb();
     // showOrHideBottomAppBar();
-  }
-
-  onModalVerbCleaned() {
-    // onModalVerbChanged();
-    // toggleEditingFirstAuxiliaryVerb();
   }
 
   onModalVerbChanged() {

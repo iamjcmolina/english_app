@@ -57,7 +57,6 @@ class _PronounFormState extends State<PronounForm> {
                           options: widget.pronouns,
                           displayStringForOption: (pronoun) => pronoun.value,
                           onSelected: onPronounSelected,
-                          onCleaned: () => onPronounCleaned(),
                           onChanged: (text) => onPronounChanged(),
                       ),
                     ],
@@ -75,11 +74,6 @@ class _PronounFormState extends State<PronounForm> {
     widget.setPronoun(pronoun);
     toggleSettingPronoun();
     widget.setShowBottomAppBar(true);
-  }
-
-  onPronounCleaned() {
-    onPronounChanged();
-    toggleSettingPronoun();
   }
 
   onPronounChanged() {

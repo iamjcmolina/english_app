@@ -48,6 +48,7 @@ class VerbListItem extends StatelessWidget {
           subtitle: clause.isBeAuxiliary? clause.auxiliaryConfig : null,
           trailing: Icon(editingVerb? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingVerb,
+          required: true,
         ),
         if(editingVerb) SentenceItemField<AnyVerb>(
           label: AnyVerb.verbToString(clause.undefinedVerb, clause.safeSubject, clause.settings),
@@ -55,7 +56,6 @@ class VerbListItem extends StatelessWidget {
           options: verbs,
           displayStringForOption: (verb) => AnyVerb.verbToString(verb, clause.safeSubject, clause.settings),
           onSelected: onVerbSelected,
-          onCleaned: () => onVerbCleaned(),
           onChanged: (text) => onVerbChanged(),
           textEditingController: verbEditingController,
         ),
@@ -67,11 +67,6 @@ class VerbListItem extends StatelessWidget {
     setVerb(verb);
     toggleEditingVerb();
     //showOrHideBottomAppBar();
-  }
-
-  onVerbCleaned() {
-    onVerbChanged();
-    // toggleEditingVerb();
   }
 
   onVerbChanged() {

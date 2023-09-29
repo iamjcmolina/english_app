@@ -45,15 +45,15 @@ class Be extends AnyVerb {
 
   @override
   String simplePast({
-    required bool singular,
+    required bool isPlural,
     required bool negativeContraction,
     required bool negative,
   }) {
     if (negative) {
       return negativeContraction
-          ? singular ? "wasn't" : "weren't"
-          : singular ? 'was not' : 'were not';
+          ? isPlural ? "weren't" : "wasn't"
+          : isPlural ? 'were not' : 'was not';
     }
-    return singular ? 'was' : 'were';
+    return isPlural ? 'were' : 'was';
   }
 }

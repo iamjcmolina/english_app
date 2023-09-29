@@ -121,7 +121,6 @@ class _AdverbPageState extends State<AdverbPage> {
                         value: adverb,
                         options: adverbs,
                         onSelected: onAdverbSelected,
-                        onCleaned: () => onAdverbCleaned(),
                         onChanged: (text) => onAdverbChanged(),
                       ),
                     ],
@@ -138,10 +137,6 @@ class _AdverbPageState extends State<AdverbPage> {
   void onAdverbSelected(AnyAdverb adverb) {
     setAdverb(adverb);
     showOrHideBottomAppBar();
-  }
-
-  onAdverbCleaned() {
-    onAdverbChanged();
   }
 
   onAdverbChanged() {

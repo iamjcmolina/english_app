@@ -3,26 +3,17 @@ import 'package:flutter/material.dart';
 import '../model/sentence/adverb/adverb.dart';
 import '../model/sentence/adverb/any_adverb.dart';
 import '../model/sentence/adverb/value/adverb_position.dart';
+import '../model/sentence/noun/any_noun.dart';
+import '../model/sentence/noun/noun.dart';
 import '../model/sentence/noun/pronoun.dart';
+import '../model/sentence/phrase/determiner.dart';
 import '../model/sentence/verb/any_verb.dart';
 import '../model/sentence/verb/be.dart';
 import '../model/sentence/verb/verb.dart';
+import '../util/util.dart';
 
 class VocabularyService extends ChangeNotifier {
-  static const List<String> possesiveAdjectives = ['my','your','his','her','its','our','their'];
-  static const List<String> possesivePronouns = ['mine','yours','his','hers','its','ours','theirs'];
-  static const List<String> singularDemonstratives = ['this','these','that','those'];
-  static const List<String> pluralDemonstratives = ['this','these','that','those'];
-  static const List<String> distributiveAdjectives = ['each','every','either','neither','any','both'];
-  static const List<String> quantifiers = ['some','many','a few','the few','a lot of','several'];
-  static const List<String> numbers = ['one','two','three','four','five','six', 'seven', 'eight', 'nine', 'ten'
-    ,'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
-  static const List<String> ordinalNumbers = [
-    'first','second','third','fourth','fifth','sixth', 'seventh', 'eighth', 'nineth', 'tenth',
-    'eleventh', 'twelfth', 'thirteenth','fourteenth','fifteenth','sixteenth','seventeenth','eighteenth','nineteenth','twentieth'];
-  static const List<String> doers = ['I','you','he','she','it','we','they'];
-  static const List<String> receivers = ['me','you','him','her','it','us','them'];
-  static const List<String> articles = ['the','a','an'];
+  static const List<String> possessivePronouns = ['mine','yours','his','hers','its','ours','theirs'];
 
   // List<Preposition> prepositions() {
   //   return [
@@ -48,35 +39,182 @@ class VocabularyService extends ChangeNotifier {
   }
 
   List<Pronoun> subjectPronouns() {
+    const List<String> doers = ['I','you','he','she','it','we','they'];
     return doers.map((e) => Pronoun(e)).toList();
   }
 
-  // List<String> determiners(Noun noun) {
-  //   return [
-  //     ...(noun.isCountable? articles : ['the']),
-  //     ...distributiveAdjectives,
-  //     ...(noun.isSingular? singularDemonstratives : pluralDemonstratives),
-  //     ...(noun.isCountable? possesiveAdjectives : []),
-  //     ...(!noun.isCountable? [] : noun.isSingular? ['one'] : numbers.where((number) => number!='one')),
-  //     ...quantifiers,
-  //   ];
-  // }
+  List<Pronoun> objectPronouns() {
+    const List<String> receivers = ['me','you','him','her','it','us','them'];
+    return receivers.map((e) => Pronoun(e)).toList();
+  }
 
+  List<Determiner> articles(Noun? noun) {
+    List<Determiner> articles = [
+      Determiner.article('a', false, true, false),
+      Determiner.article('an', false, true, false),
+      Determiner.article('the', true, true, true),
+    ];
+    if (noun == null) {
+      return articles;
+    }
+    bool nounStartsWithVowel = Util.isVowel(noun.value.substring(0,1));
+    bool isSingular = noun.countability == Countability.singular;
+    print('nounStartsWithVowel: $nounStartsWithVowel');
+    if (isSingular && nounStartsWithVowel) {
+      return [articles[1], articles.last];
+    } else if (isSingular && !nounStartsWithVowel) {
+      return [articles.first, articles.last];
+    }
+    return [articles.last];
+  }
 
-  List<String> adjectives({bool adjectivalPhrase = false}) {
+  List<Determiner> possessives() {
     return [
-      'beautiful',
-      ...adjectivalPhrase? [] : ordinalNumbers,
+      Determiner.possessive('my'),
+      Determiner.possessive('your'),
+      Determiner.possessive('his'),
+      Determiner.possessive('her'),
+      Determiner.possessive('its'),
+      Determiner.possessive('our'),
+      Determiner.possessive('their'),
     ];
   }
 
-  // List<Noun> nouns() {
-  //   return [
-  //     Noun.countable(isSingular: true, value: 'pet'),
-  //     Noun.countable(isSingular: false, value: 'pets'),
-  //     Noun.uncountable('water'),
-  //   ];
-  // }
+  List<Determiner> demonstratives(Noun? noun) {
+    List<Determiner> demonstratrives = [
+      Determiner.demonstrative('this', true, true, false),
+      Determiner.demonstrative('that', true, true, false),
+      Determiner.demonstrative('these', false, false, true),
+      Determiner.demonstrative('those', false, false, true),
+    ];
+    if (noun == null) {
+      return demonstratrives;
+    }
+    return demonstratrives.where((e)
+    => noun.countability == Countability.uncountable && e.allowsUncountable
+        || noun.countability == Countability.singular && e.allowsSingular
+        || noun.countability == Countability.plural && e.allowsPlural
+    ).toList();
+  }
+
+  List<Determiner> distributives(Noun? noun) {
+    List<Determiner> distributives = [
+      Determiner.distributive('each', false, true, false),
+      Determiner.distributive('every', false, true, false),
+      Determiner.distributive('either', false, true, true),
+      Determiner.distributive('neither', false, true, true),
+      Determiner.distributive('any', true, true, true),
+      Determiner.distributive('both', false, false, true),
+    ];
+    if (noun == null) {
+      return distributives;
+    }
+    return distributives.where((e)
+    => noun.countability == Countability.uncountable && e.allowsUncountable
+        || noun.countability == Countability.singular && e.allowsSingular
+        || noun.countability == Countability.plural && e.allowsPlural
+    ).toList();
+  }
+
+  List<Determiner> quantifiers(Noun? noun) {
+    List<Determiner> quantifiers = [
+      Determiner.quantifier('some', true, true, true),
+      Determiner.quantifier('many', false, false, true),
+      Determiner.quantifier('a few', false, false, true),
+      Determiner.quantifier('the few', false, false, true),
+      Determiner.quantifier('a lot of', true, false, true),
+      Determiner.quantifier('several', false, false, true),
+    ];
+    if (noun == null) {
+      return quantifiers;
+    }
+    return quantifiers.where((e)
+    => noun.countability == Countability.uncountable && e.allowsUncountable
+        || noun.countability == Countability.singular && e.allowsSingular
+        || noun.countability == Countability.plural && e.allowsPlural
+    ).toList();
+  }
+
+  List<Determiner> numbers(Noun? noun, [bool includeOrdinalNumbers = false]) {
+    List<Determiner> ordinalNumbers = [
+      Determiner.ordinalNumber('first'),
+      Determiner.ordinalNumber('second'),
+      Determiner.ordinalNumber('third'),
+      Determiner.ordinalNumber('fourth'),
+      Determiner.ordinalNumber('fifth'),
+      Determiner.ordinalNumber('sixth'),
+      Determiner.ordinalNumber('seventh'),
+      Determiner.ordinalNumber('eighth'),
+      Determiner.ordinalNumber('nineth'),
+      Determiner.ordinalNumber('tenth'),
+      Determiner.ordinalNumber('eleventh'),
+      Determiner.ordinalNumber('twelfth'),
+      Determiner.ordinalNumber('thirteenth'),
+      Determiner.ordinalNumber('fourteenth'),
+      Determiner.ordinalNumber('fifteenth'),
+      Determiner.ordinalNumber('sixteenth'),
+      Determiner.ordinalNumber('seventeenth'),
+      Determiner.ordinalNumber('eighteenth'),
+      Determiner.ordinalNumber('nineteenth'),
+      Determiner.ordinalNumber('twentieth'),
+    ];
+    List<Determiner> naturalNumbers = [
+      Determiner.one(),
+      Determiner.naturalNumber('two'),
+      Determiner.naturalNumber('three'),
+      Determiner.naturalNumber('four'),
+      Determiner.naturalNumber('five'),
+      Determiner.naturalNumber('six'),
+      Determiner.naturalNumber('seven'),
+      Determiner.naturalNumber('eight'),
+      Determiner.naturalNumber('nine'),
+      Determiner.naturalNumber('ten'),
+      Determiner.naturalNumber('eleven'),
+      Determiner.naturalNumber('twelve'),
+      Determiner.naturalNumber('thirteen'),
+      Determiner.naturalNumber('fourteen'),
+      Determiner.naturalNumber('fifteen'),
+      Determiner.naturalNumber('sixteen'),
+      Determiner.naturalNumber('seventeen'),
+      Determiner.naturalNumber('eighteen'),
+      Determiner.naturalNumber('nineteen'),
+      Determiner.naturalNumber('twenty'),
+    ];
+    if (noun == null) {
+      return [
+        ...naturalNumbers,
+        if (includeOrdinalNumbers) ...ordinalNumbers,
+      ];
+    }
+    return [...naturalNumbers.where((e)
+    => noun.countability == Countability.uncountable && e.allowsUncountable
+        || noun.countability == Countability.singular && e.allowsSingular
+        || noun.countability == Countability.plural && e.allowsPlural
+    ).toList(),
+      if (includeOrdinalNumbers && noun.countability == Countability.singular)
+        ...ordinalNumbers,
+    ];
+  }
+
+  List<String> adjectives() {
+    return ['beautiful', 'small','big','intelligent','round','lazy','old'];
+  }
+
+  List<Noun> nouns(Determiner? determiner) {
+    List<Noun> nouns = [
+      Noun('pet', Countability.singular),
+      Noun('pets', Countability.plural),
+      Noun('water', Countability.uncountable),
+    ];
+    if (determiner == null) {
+      return nouns;
+    }
+    return nouns.where((e) {
+      return e.countability == Countability.uncountable && determiner.allowsUncountable
+          || e.countability == Countability.singular && determiner.allowsSingular
+          || e.countability == Countability.plural && determiner.allowsPlural;
+    }).toList();
+  }
 
   List<Adverb> allAdverbs = [
     Adverb.manner('quickly'),
