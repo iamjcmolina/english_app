@@ -24,7 +24,6 @@ class _SubjectPageState extends State<SubjectPage> {
   late SubjectType subjectType;
   AnyNoun? subject;
   bool showBottomAppBar = false;
-  late ScrollController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +34,13 @@ class _SubjectPageState extends State<SubjectPage> {
     return RootLayout(
       title: 'Subject',
       showBottomAppBar: showBottomAppBar,
-      controller: _controller,
       bottomAppBarChildren: [
         IconButton(
           onPressed: () => Navigator.pop(context, subject),
           icon: const Icon(Icons.save)
         ),
       ],
-      child: Column(
+      header: Column(
         children: [
           Center(
             child: DropdownButton<SubjectType>(
@@ -56,12 +54,16 @@ class _SubjectPageState extends State<SubjectPage> {
               ).toList(),
             ),
           ),
+        ],
+      ),
+      body: Column(
+        children: [
           if (subjectType == SubjectType.pronoun)
             PronounForm(
-              pronouns: pronouns,
-              setPronoun: setSubject,
-              pronoun: subject is Pronoun? subject as Pronoun : null,
-              setShowBottomAppBar: setShowBottomAppBar
+                pronouns: pronouns,
+                setPronoun: setSubject,
+                pronoun: subject is Pronoun? subject as Pronoun : null,
+                setShowBottomAppBar: setShowBottomAppBar
             ),
           if (subjectType == SubjectType.nounPhrase)
             NounPhraseForm(
@@ -82,7 +84,6 @@ class _SubjectPageState extends State<SubjectPage> {
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
     subjectType = widget.subjectType;
     subject = widget.subject;
     showBottomAppBar = subject != null;

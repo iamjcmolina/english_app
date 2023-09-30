@@ -26,7 +26,6 @@ class _AdverbPageState extends State<AdverbPage> {
   bool editingSettings = false;
   bool isBottomAppBarShown = false;
   bool editingVerb = false;
-  late ScrollController _controller;
 
   int index = 0;
 
@@ -50,7 +49,6 @@ class _AdverbPageState extends State<AdverbPage> {
 
     return RootLayout(
       title: 'Independent Clause',
-      controller: _controller,
       showBottomAppBar: isBottomAppBarShown,
       bottomAppBarChildren: [
         IconButton(
@@ -58,7 +56,7 @@ class _AdverbPageState extends State<AdverbPage> {
             icon: const Icon(Icons.save)
         ),
       ],
-      child: Column(
+      header: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
@@ -112,27 +110,20 @@ class _AdverbPageState extends State<AdverbPage> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView(
-              controller: _controller,
-              children: [
-                Card(
-                  child: Column(
-                    children: [
-                      SentenceItemField<AnyAdverb>(
-                        label: label,
-                        value: adverb,
-                        options: adverbs,
-                        onSelected: onAdverbSelected,
-                        onChanged: (text) => onAdverbChanged(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
+      ),
+      body: Card(
+        child: Column(
+          children: [
+            SentenceItemField<AnyAdverb>(
+              label: label,
+              value: adverb,
+              options: adverbs,
+              onSelected: onAdverbSelected,
+              onChanged: (text) => onAdverbChanged(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -163,7 +154,6 @@ class _AdverbPageState extends State<AdverbPage> {
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
     adverb = (widget.adverb is Adverb? widget.adverb : null) as Adverb?;
     adverbVariant = variant;
   }

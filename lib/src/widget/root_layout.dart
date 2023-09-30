@@ -7,16 +7,16 @@ class RootLayout extends StatefulWidget {
   final String title;
   final List<Widget> bottomAppBarChildren;
   final bool showBottomAppBar;
-  final Widget child;
-  final ScrollController controller;
+  final Widget header;
+  final Widget body;
 
   const RootLayout({
     super.key,
     required this.title,
     this.bottomAppBarChildren = const[],
     this.showBottomAppBar = false,
-    required this.child,
-    required this.controller,
+    required this.header,
+    required this.body,
   });
 
   @override
@@ -24,6 +24,7 @@ class RootLayout extends StatefulWidget {
 }
 
 class _RootLayoutState extends State<RootLayout> {
+  late ScrollController _controller;
   bool _isVisible = true;
 
   @override
@@ -33,7 +34,20 @@ class _RootLayoutState extends State<RootLayout> {
         title: Text(widget.title),
         actions: EnglishApp.globalActions,
       ),
-      body: widget.child,
+      body: Column(
+        children: [
+          widget.header,
+          Expanded(
+            child: ListView(
+              controller: _controller,
+              children: [
+                widget.body,
+                const SizedBox(height: 25),
+              ],
+            )
+          ),
+        ],
+      ),
       bottomNavigationBar: widget.bottomAppBarChildren.isEmpty? null : AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         height: _isVisible ? 80.0 : 0,
@@ -48,7 +62,7 @@ class _RootLayoutState extends State<RootLayout> {
   }
 
   void _listen() {
-    final ScrollDirection direction = widget.controller.position.userScrollDirection;
+    final ScrollDirection direction = _controller.position.userScrollDirection;
     if (direction == ScrollDirection.forward) {
       _show();
     } else if (direction == ScrollDirection.reverse) {
@@ -71,14 +85,14 @@ class _RootLayoutState extends State<RootLayout> {
   @override
   void initState() {
     super.initState();
-    //_controller = ScrollController();
-    widget.controller.addListener(_listen);
+    _controller = ScrollController();
+    _controller.addListener(_listen);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_listen);
-    widget.controller.dispose();
+    _controller.removeListener(_listen);
+    _controller.dispose();
     super.dispose();
   }
 }

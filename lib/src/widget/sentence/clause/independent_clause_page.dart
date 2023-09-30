@@ -38,7 +38,6 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   bool editingFirstAuxiliaryVerb = false;
   bool editingVerb = false;
   final TextEditingController verbEditingController = TextEditingController();
-  late ScrollController _controller;
 
   IndependentClauseSettings get settings => clause.settings;
   AnyNoun get safeSubject => clause.subject ?? const UndefinedSubject();
@@ -70,15 +69,13 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     return RootLayout(
       title: 'Independent Clause',
       showBottomAppBar: isBottomAppBarShown,
-      controller: _controller,
       bottomAppBarChildren: [
         IconButton(
             onPressed: () => onSavePage(context),
             icon: const Icon(Icons.save)
         ),
       ],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      header: Column(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,91 +132,84 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ListTile(
             title: ClauseText(clause: clause),
           ),
-          Expanded(
-            child: ListView(
-              controller: _controller,
-              children: [
-                Card(
-                  child: Column(
-                    children: [
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.adverb.color,
-                        label: clause.undefinedFrontAdverb.toString(),
-                        value: clause.frontAdverb?.toString(),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => navigateToAdverbPage(context, AdverbPosition.front),
-                        hide: settings.isInterrogative,
-                      ),
-                      if (settings.isInterrogative)
-                        firstAuxiliaryVerbListItem,
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.noun.color,
-                        label: clause.undefinedSubject.toString(),
-                        value: clause.subject?.toString(),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => navigateToSubjectPage(context),
-                        required: true,
-                      ),
-                      if (!settings.isInterrogative)
-                        firstAuxiliaryVerbListItem,
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.adverb.color,
-                        label: clause.undefinedMiddleAdverb.toString(),
-                        value: clause.midAdverb?.toString(),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => navigateToAdverbPage(context, AdverbPosition.mid),
-                      ),
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.verb.color,
-                        label: clause.undefinedSecondAuxiliaryVerb,
-                        value: clause.secondAuxiliaryVerb,
-                        // trailing: const Icon(Icons.arrow_forward_ios),
-                        hide: clause.secondAuxiliaryVerb == null,
-                      ),
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.verb.color,
-                        label: clause.undefinedThirdAuxiliaryVerb,
-                        value: clause.thirdAuxiliaryVerb,
-                        // trailing: const Icon(Icons.arrow_forward_ios),
-                        hide: clause.thirdAuxiliaryVerb == null,
-                      ),
-                      if (!clause.isBeAuxiliary) verbListItem,
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.noun.color,
-                        label: clause.undefinedIndirectObject.toString(),
-                        value: clause.indirectObject?.toString(),
-                        hide: !safeVerb.isDitransitive,
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.noun.color,
-                        label: clause.undefinedDirectObject.toString(),
-                        value: clause.directObject?.toString(),
-                        hide: !safeVerb.isTransitive,
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.noun.color,
-                        label: clause.undefinedSubjectComplement.toString(),
-                        value: clause.subjectComplement?.toString(),
-                        hide: !safeVerb.isLinkingVerb,
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        required: true,
-                      ),
-                      SentenceItemTile(
-                        color: IndependentClausePartColor.adverb.color,
-                        label: clause.undefinedEndAdverb.toString(),
-                        value: clause.endAdverb?.toString(),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => navigateToAdverbPage(context, AdverbPosition.end),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
+      ),
+      body: Card(
+        child: Column(
+          children: [
+            SentenceItemTile(
+              color: IndependentClausePartColor.adverb.color,
+              label: clause.undefinedFrontAdverb.toString(),
+              value: clause.frontAdverb?.toString(),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => navigateToAdverbPage(context, AdverbPosition.front),
+              hide: settings.isInterrogative,
+            ),
+            if (settings.isInterrogative)
+              firstAuxiliaryVerbListItem,
+            SentenceItemTile(
+              color: IndependentClausePartColor.noun.color,
+              label: clause.undefinedSubject.toString(),
+              value: clause.subject?.toString(),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => navigateToSubjectPage(context),
+              required: true,
+            ),
+            if (!settings.isInterrogative)
+              firstAuxiliaryVerbListItem,
+            SentenceItemTile(
+              color: IndependentClausePartColor.adverb.color,
+              label: clause.undefinedMiddleAdverb.toString(),
+              value: clause.midAdverb?.toString(),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => navigateToAdverbPage(context, AdverbPosition.mid),
+            ),
+            SentenceItemTile(
+              color: IndependentClausePartColor.verb.color,
+              label: clause.undefinedSecondAuxiliaryVerb,
+              value: clause.secondAuxiliaryVerb,
+              // trailing: const Icon(Icons.arrow_forward_ios),
+              hide: clause.secondAuxiliaryVerb == null,
+            ),
+            SentenceItemTile(
+              color: IndependentClausePartColor.verb.color,
+              label: clause.undefinedThirdAuxiliaryVerb,
+              value: clause.thirdAuxiliaryVerb,
+              // trailing: const Icon(Icons.arrow_forward_ios),
+              hide: clause.thirdAuxiliaryVerb == null,
+            ),
+            if (!clause.isBeAuxiliary) verbListItem,
+            SentenceItemTile(
+              color: IndependentClausePartColor.noun.color,
+              label: clause.undefinedIndirectObject.toString(),
+              value: clause.indirectObject?.toString(),
+              hide: !safeVerb.isDitransitive,
+              trailing: const Icon(Icons.arrow_forward_ios),
+            ),
+            SentenceItemTile(
+              color: IndependentClausePartColor.noun.color,
+              label: clause.undefinedDirectObject.toString(),
+              value: clause.directObject?.toString(),
+              hide: !safeVerb.isTransitive,
+              trailing: const Icon(Icons.arrow_forward_ios),
+            ),
+            SentenceItemTile(
+              color: IndependentClausePartColor.noun.color,
+              label: clause.undefinedSubjectComplement.toString(),
+              value: clause.subjectComplement?.toString(),
+              hide: !safeVerb.isLinkingVerb,
+              trailing: const Icon(Icons.arrow_forward_ios),
+              required: true,
+            ),
+            SentenceItemTile(
+              color: IndependentClausePartColor.adverb.color,
+              label: clause.undefinedEndAdverb.toString(),
+              value: clause.endAdverb?.toString(),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => navigateToAdverbPage(context, AdverbPosition.end),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -294,7 +284,6 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
     clause = widget.clause ?? IndependentClause();
   }
 }
