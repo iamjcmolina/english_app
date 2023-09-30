@@ -38,6 +38,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   bool editingFirstAuxiliaryVerb = false;
   bool editingVerb = false;
   final TextEditingController verbEditingController = TextEditingController();
+  late ScrollController _controller;
 
   IndependentClauseSettings get settings => clause.settings;
   AnyNoun get safeSubject => clause.subject ?? const UndefinedSubject();
@@ -69,6 +70,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     return RootLayout(
       title: 'Independent Clause',
       showBottomAppBar: isBottomAppBarShown,
+      controller: _controller,
       bottomAppBarChildren: [
         IconButton(
             onPressed: () => onSavePage(context),
@@ -135,6 +137,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           Expanded(
             child: ListView(
+              controller: _controller,
               children: [
                 Card(
                   child: Column(
@@ -291,6 +294,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   @override
   void initState() {
     super.initState();
+    _controller = ScrollController();
     clause = widget.clause ?? IndependentClause();
   }
 }
