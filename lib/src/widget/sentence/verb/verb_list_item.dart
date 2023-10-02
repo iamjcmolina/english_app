@@ -12,24 +12,27 @@ class VerbListItem extends StatelessWidget {
   final IndependentClause clause;
   final bool editingVerb;
   final void Function() toggleEditingVerb;
-  final void Function() showOrHideBottomAppBar;
+  final void Function() checkCanSave;
   final void Function(AnyVerb? verb) setVerb;
   final TextEditingController? verbEditingController;
-  final bool hide;
+  final bool show;
 
   const VerbListItem({
     super.key,
     required this.clause,
     required this.editingVerb,
     required this.toggleEditingVerb,
-    required this.showOrHideBottomAppBar,
+    required this.checkCanSave,
     required this.setVerb,
     this.verbEditingController,
-    this.hide = false,
+    this.show = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    if(!show) {
+      const SizedBox.shrink();
+    }
     final vocabularyService = Provider.of<VocabularyService>(context);
 
     List<AnyVerb> verbs = vocabularyService.verbs();
@@ -38,7 +41,7 @@ class VerbListItem extends StatelessWidget {
     String auxiliaryVerbLabel = clause.isBeAuxiliary
         ? ', ${clause.undefinedFirstAuxiliaryVerb}' : '';
 
-    return hide? const SizedBox.shrink() : Column(
+    return Column(
       children: [
         SentenceItemTile(
           color: IndependentClausePartColor.verb.color,
@@ -66,11 +69,11 @@ class VerbListItem extends StatelessWidget {
   void onVerbSelected(AnyVerb verb) {
     setVerb(verb);
     toggleEditingVerb();
-    //showOrHideBottomAppBar();
+    checkCanSave();
   }
 
   onVerbChanged() {
     setVerb(null);
-    showOrHideBottomAppBar();
+    checkCanSave();
   }
 }

@@ -6,14 +6,14 @@ import 'determiner.dart';
 import 'value/determiner_type.dart';
 
 class NounPhrase extends AnyNoun {
-  Determiner? quantifierOf;
+  Determiner? quantifier;
   Determiner? determiner;
   Determiner? number;
   String? adjective;
   Noun? noun;
 
   NounPhrase({
-    this.quantifierOf,
+    this.quantifier,
     this.determiner,
     this.number,
     this.adjective,
@@ -27,7 +27,7 @@ class NounPhrase extends AnyNoun {
     Nullable<String>? adjective,
     Nullable<Noun>? noun,
   }) => NounPhrase(
-    quantifierOf: quantifierOf == null? this.quantifierOf : quantifierOf.value,
+    quantifier: quantifierOf == null? this.quantifier : quantifierOf.value,
     determiner: determiner == null? this.determiner : determiner.value,
     number: number == null? this.number : number.value,
     adjective: adjective == null? this.adjective : adjective.value,
@@ -43,20 +43,21 @@ class NounPhrase extends AnyNoun {
   @override
   bool get isSingularThirdPerson => noun?.isSingularThirdPerson ?? true;
 
-  bool get allowQuantifierOf => number == null && adjective == null
+  bool get allowQuantifier => number == null && adjective == null
       && determiner?.type == DeterminerType.possessive;
-  bool get allowNumber => quantifierOf == null && determiner?.type != null
+  bool get allowNumber => quantifier == null && determiner?.type != null
       && determiner?.type != DeterminerType.number;
-  bool get allowAdjective => quantifierOf == null;
+  bool get allowAdjective => quantifier == null;
 
-  String? get quantifierOfText => quantifierOf == null? null : '$quantifierOf'
-  '${  quantifierOf!.value.contains('of')? '' : ' of'}';
+  String? get quantifierText => quantifier == null? null : '$quantifier'
+  '${quantifier!.value.contains('of')? '' : ' of'}';
 
 
   @override
   String toString() {
     SentenceBuffer buffer = SentenceBuffer();
-    buffer.add(quantifierOf, when: allowQuantifierOf, disablePrefixWhen: true);
+    buffer.add(quantifier, when: allowQuantifier, disablePrefixWhen: true);
+    buffer.add(determiner);
     buffer.add(number, when: allowNumber);
     buffer.add(adjective, when: allowAdjective);
     buffer.add(noun);

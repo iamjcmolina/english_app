@@ -1,90 +1,64 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/noun/pronoun.dart';
+import '../../item_editor_layout.dart';
+import '../dropdown_tile.dart';
 import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
 
-class PronounForm extends StatefulWidget {
+class PronounForm extends StatelessWidget {
+  final Function(bool) setCanSave;
+  final Widget settingsControl;
   final List<Pronoun> pronouns;
-  final void Function(Pronoun?) setPronoun;
   final Pronoun? pronoun;
-  final Function(bool) setShowBottomAppBar;
+  final void Function(Pronoun?) setPronoun;
 
   const PronounForm({
     super.key,
+    required this.setCanSave,
+    required this.settingsControl,
     required this.pronouns,
+    required this.pronoun,
     required this.setPronoun,
-    required this.setShowBottomAppBar,
-    this.pronoun,
   });
 
   @override
-  State<PronounForm> createState() => _PronounFormState();
-}
-
-class _PronounFormState extends State<PronounForm> {
-  bool settingPronoun = false;
-
-  @override
   Widget build(BuildContext context) {
+    const unsetTextStyle = TextStyle(fontSize: 12);
     const Color pronounColor = Colors.deepPurpleAccent;
 
-    return Expanded(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              widget.pronoun == null? '<Pronoun>' : widget.pronoun.toString(),
-              style: const TextStyle(color: pronounColor),
-            ),
+    return ItemEditorLayout(
+      header: [
+        settingsControl,
+        ListTile(
+          title: Text(
+            pronoun == null? '<Pronoun>' : pronoun.toString(),
+            style: pronoun == null? unsetTextStyle
+                : const TextStyle(color: pronounColor),
           ),
-          Expanded(
-            child: ListView(
-              children: [
-                Card(
-                  child: Column(
-                    children: [
-                      if(!settingPronoun) SentenceItemTile(
-                        color: pronounColor,
-                        label: 'Pronoun',
-                        value: widget.pronoun?.value,
-                        trailing: const Icon(Icons.edit),
-                        onTap: () => toggleSettingPronoun(),
-                      ),
-                      if(settingPronoun) SentenceItemField<Pronoun>(
-                          label: 'Pronoun',
-                          value: widget.pronoun,
-                          options: widget.pronouns,
-                          displayStringForOption: (pronoun) => pronoun.value,
-                          onSelected: onPronounSelected,
-                          onChanged: (text) => onPronounChanged(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+        ),
+      ],
+      body: [
+        DropdownTile(
+          color: pronounColor,
+          title: 'Pronoun',
+          textValue: pronoun?.value,
+          fields: [
+            SentenceItemField<Pronoun>(
+              label: 'Pronoun',
+              value: pronoun,
+              options: pronouns,
+              displayStringForOption: (pronoun) => pronoun.value,
+              onSelected: (pronoun) => validateAndSet(pronoun),
+              onChanged: (text) => validateAndSet(null),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 
-  onPronounSelected(Pronoun pronoun) {
-    widget.setPronoun(pronoun);
-    toggleSettingPronoun();
-    widget.setShowBottomAppBar(true);
-  }
-
-  onPronounChanged() {
-    widget.setPronoun(null);
-    widget.setShowBottomAppBar(false);
-  }
-
-  toggleSettingPronoun() => setState(() => settingPronoun = !settingPronoun);
-
-  @override
-  void initState() {
-    super.initState();
+  validateAndSet(Pronoun? pronoun) {
+    setCanSave(pronoun != null);
+    setPronoun(pronoun);
   }
 }

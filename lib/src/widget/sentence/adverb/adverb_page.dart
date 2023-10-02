@@ -1,160 +1,82 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
 import '../../../model/sentence/adverb/value/adverb_position.dart';
 import '../../../model/sentence/adverb/value/adverb_variant.dart';
-import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
-import '../../../service/vocabulary_service.dart';
-import '../sentence_item_field.dart';
-import '../../root_layout.dart';
+import '../../sentence_scaffold.dart';
+import 'adverb_form.dart';
 
 class AdverbPage extends StatefulWidget {
-  final AnyAdverb? adverb;
   final AdverbPosition position;
+  final AnyAdverb? adverb;
 
-  const AdverbPage({super.key, this.adverb, required this.position});
+  const AdverbPage({super.key, required this.position, required this.adverb});
 
   @override
   State<AdverbPage> createState() => _AdverbPageState();
 }
 
 class _AdverbPageState extends State<AdverbPage> {
-  late AdverbVariant adverbVariant;
-  late Adverb? adverb;
-  bool editingSettings = false;
-  bool isBottomAppBarShown = false;
-  bool editingVerb = false;
-
-  int index = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final vocabularyService = Provider.of<VocabularyService>(context);
-
-    List<AnyAdverb> adverbs = switch(widget.position) {
-      AdverbPosition.front => vocabularyService.frontAdverbs(),
-      AdverbPosition.mid => vocabularyService.midAdverbs(),
-      _ => vocabularyService.endAdverbs(),
-    };
-
-    String label = switch(widget.position){
-      AdverbPosition.front => '<FrontAdverb>',
-      AdverbPosition.mid => '<MidAdverb>',
-      _ => '<EndAdverb>',
-    };
-
-    const unsetTextStyle = TextStyle(fontSize: 12);
-
-    return RootLayout(
-      title: 'Independent Clause',
-      showBottomAppBar: isBottomAppBarShown,
-      bottomAppBarChildren: [
-        IconButton(
-            onPressed: () => onSavePage(context),
-            icon: const Icon(Icons.save)
-        ),
-      ],
-      header: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => setState(() => index = index == 0? 1 : 0),
-                    child: const Icon(Icons.chevron_left),
-                  ),
-                  IndexedStack(
-                    index: index,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownMenu<AdverbVariant>(
-                          initialSelection: adverbVariant,
-                          label: const Text('Adverb Variant'),
-                          dropdownMenuEntries: AdverbVariant.values
-                              .map<DropdownMenuEntry<AdverbVariant>>(
-                                  (AdverbVariant item) => DropdownMenuEntry<AdverbVariant>(
-                                value: item,
-                                label: item.name,
-                              )).toList(),
-                          onSelected: (AdverbVariant? item) => setAdverbVariant(item!),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => setState(() => index = index == 0? 1 : 0),
-                    child: const Icon(Icons.chevron_right),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          ListTile(
-            title: RichText(
-              text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
-                children: <TextSpan>[
-                  TextSpan(
-                      text: '${adverb ?? label}',
-                      style: (adverb == null)? unsetTextStyle
-                          : TextStyle(color: IndependentClausePartColor.adverb.color)
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: Card(
-        child: Column(
-          children: [
-            SentenceItemField<AnyAdverb>(
-              label: label,
-              value: adverb,
-              options: adverbs,
-              onSelected: onAdverbSelected,
-              onChanged: (text) => onAdverbChanged(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void onAdverbSelected(AnyAdverb adverb) {
-    setAdverb(adverb);
-    showOrHideBottomAppBar();
-  }
-
-  onAdverbChanged() {
-    setAdverb(null);
-    showOrHideBottomAppBar();
-  }
-
-  setAdverb(AnyAdverb? adverb) => setState(()=> this.adverb = adverb as Adverb?);
-
-  setAdverbVariant(AdverbVariant variant) => setState(()=> adverbVariant = variant);
-
-  onSavePage(BuildContext context) => Navigator.pop(context, adverb);
-
-  showOrHideBottomAppBar() => setState(() => isBottomAppBarShown = adverb != null);
-
-  AdverbVariant get variant => switch(widget.adverb.runtimeType) {
-    Adverb => AdverbVariant.word,
-    _ => AdverbVariant.word,
-  };
+  late AdverbVariant variant;
+  late AnyAdverb? adverb;
+  bool canSave = false;
 
   @override
   void initState() {
     super.initState();
-    adverb = (widget.adverb is Adverb? widget.adverb : null) as Adverb?;
-    adverbVariant = variant;
+    adverb = widget.adverb;
+    variant = switch(widget.adverb.runtimeType) {
+      _ => AdverbVariant.word,
+    };
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final settingsControl = Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownMenu<AdverbVariant>(
+          initialSelection: variant,
+          label: const Text('Adverb Variant'),
+          dropdownMenuEntries: AdverbVariant.values
+              .map<DropdownMenuEntry<AdverbVariant>>(
+                  (AdverbVariant item) => DropdownMenuEntry<AdverbVariant>(
+                value: item,
+                label: item.name,
+              )).toList(),
+          onSelected: (AdverbVariant? item) => setVariant(item!),
+        ),
+      ),
+    );
+
+    return SentenceScaffold(
+      title: 'Independent Clause',
+      bottomActions: [
+        IconButton(
+            onPressed: canSave? () => Navigator.pop(context, adverb) : null,
+            icon: const Icon(Icons.save),
+        ),
+        IconButton(
+          onPressed: () => Navigator.pop(context, false),
+          icon: const Icon(Icons.clear),
+        ),
+      ],
+      body: switch(variant) {
+        _ => AdverbForm(
+          settingsControl: settingsControl,
+          position: widget.position,
+          adverb: adverb is Adverb? adverb as Adverb : null,
+          setAdverb: setAdverb,
+          setCanSave: setCanSave,
+        ),
+      }
+    );
+  }
+
+  setAdverb(AnyAdverb? adverb) => setState(() => this.adverb = adverb as Adverb?);
+
+  setVariant(AdverbVariant variant) => setState(() => this.variant = variant);
+
+  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

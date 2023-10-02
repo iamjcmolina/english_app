@@ -14,12 +14,13 @@ import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
 import '../../../model/sentence/verb/undefined_modal_verb.dart';
 import '../../../model/sentence/verb/undefined_verb.dart';
+import '../../item_editor_layout.dart';
 import '../adverb/adverb_page.dart';
 import '../noun/subject_page.dart';
 import '../verb/first_auxiliary_verb_list_item.dart';
 import '../verb/verb_list_item.dart';
 import 'clause_text.dart';
-import '../../root_layout.dart';
+import '../../sentence_scaffold.dart';
 import '../sentence_item_tile.dart';
 
 class IndependentClausePage extends StatefulWidget {
@@ -33,8 +34,7 @@ class IndependentClausePage extends StatefulWidget {
 
 class _IndependentClausePageState extends State<IndependentClausePage> {
   late IndependentClause clause;
-  bool editingSettings = false;
-  bool isBottomAppBarShown = false;
+  bool canSave = false;
   bool editingFirstAuxiliaryVerb = false;
   bool editingVerb = false;
   final TextEditingController verbEditingController = TextEditingController();
@@ -45,87 +45,91 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   int index = 0;
 
   @override
+  void initState() {
+    super.initState();
+    clause = widget.clause ?? IndependentClause();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final verbListItem = VerbListItem(
       clause: clause,
       editingVerb: editingVerb,
       toggleEditingVerb: toggleEditingVerb,
-      showOrHideBottomAppBar: showOrHideBottomAppBar,
+      checkCanSave: checkCanSave,
       setVerb: setVerb,
       verbEditingController: verbEditingController,
-      hide: clause.isBeAuxiliary,
+      show: !clause.isBeAuxiliary,
     );
     final firstAuxiliaryVerbListItem = FirstAuxiliaryVerbListItem(
       editingFirstAuxiliaryVerb: editingFirstAuxiliaryVerb,
       clause: clause,
       setSettings: setSettings,
-      showOrHideBottomAppBar: showOrHideBottomAppBar,
+      checkCanSave: checkCanSave,
       toggleEditingFirstAuxiliaryVerb: toggleEditingFirstAuxiliaryVerb,
       setModalVerb: setModalVerb,
       setVerb: setVerb,
       verbEditingController: verbEditingController,
     );
 
-    return RootLayout(
+    return SentenceScaffold(
       title: 'Independent Clause',
-      showBottomAppBar: isBottomAppBarShown,
-      bottomAppBarChildren: [
-        IconButton(
-            onPressed: () => onSavePage(context),
-            icon: const Icon(Icons.save)
-        ),
-      ],
-      header: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      // bottomActions: [
+      //   IconButton(
+      //       onPressed: canSave? () => saveItem(context) : null,
+      //       icon: const Icon(Icons.save)
+      //   ),
+      //   IconButton(
+      //       onPressed: () {},
+      //       icon: const Icon(Icons.clear)
+      //   ),
+      // ],
+      body: ItemEditorLayout(
+        header: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => setState(() => index = index == 0? 1 : 0),
+                child: const Icon(Icons.chevron_left),
+              ),
+              IndexedStack(
+                index: index,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () => setState(() => index = index == 0? 1 : 0),
-                    child: const Icon(Icons.chevron_left),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownMenu<Tense>(
+                      initialSelection: settings.tense,
+                      label: const Text('Tense'),
+                      dropdownMenuEntries: Tense.values
+                          .map<DropdownMenuEntry<Tense>>(
+                              (Tense item) => DropdownMenuEntry<Tense>(
+                            value: item,
+                            label: item.name,
+                          )).toList(),
+                      onSelected: (Tense? tense) => setTense(tense!),
+                    ),
                   ),
-                  IndexedStack(
-                    index: index,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownMenu<Tense>(
-                          initialSelection: settings.tense,
-                          label: const Text('Tense'),
-                          dropdownMenuEntries: Tense.values
-                              .map<DropdownMenuEntry<Tense>>(
-                                  (Tense item) => DropdownMenuEntry<Tense>(
-                                value: item,
-                                label: item.name,
-                              )).toList(),
-                          onSelected: (Tense? tense) => setTense(tense!),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownMenu<ClauseType>(
-                          initialSelection: settings.clauseType,
-                          label: const Text('Clause type'),
-                          dropdownMenuEntries: ClauseType.values
-                              .map<DropdownMenuEntry<ClauseType>>(
-                                  (ClauseType item) => DropdownMenuEntry<ClauseType>(
-                                value: item,
-                                label: item.name,
-                              ))
-                              .toList(),
-                          onSelected: (ClauseType? type) => setClauseType(type!),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => setState(() => index = index == 0? 1 : 0),
-                    child: const Icon(Icons.chevron_right),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownMenu<ClauseType>(
+                      initialSelection: settings.clauseType,
+                      label: const Text('Clause type'),
+                      dropdownMenuEntries: ClauseType.values
+                          .map<DropdownMenuEntry<ClauseType>>(
+                              (ClauseType item) => DropdownMenuEntry<ClauseType>(
+                            value: item,
+                            label: item.name,
+                          ))
+                          .toList(),
+                      onSelected: (ClauseType? type) => setClauseType(type!),
+                    ),
                   ),
                 ],
+              ),
+              GestureDetector(
+                onTap: () => setState(() => index = index == 0? 1 : 0),
+                child: const Icon(Icons.chevron_right),
               ),
             ],
           ),
@@ -133,83 +137,79 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             title: ClauseText(clause: clause),
           ),
         ],
-      ),
-      body: Card(
-        child: Column(
-          children: [
-            SentenceItemTile(
-              color: IndependentClausePartColor.adverb.color,
-              label: clause.undefinedFrontAdverb.toString(),
-              value: clause.frontAdverb?.toString(),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => navigateToAdverbPage(context, AdverbPosition.front),
-              hide: settings.isInterrogative,
-            ),
-            if (settings.isInterrogative)
-              firstAuxiliaryVerbListItem,
-            SentenceItemTile(
-              color: IndependentClausePartColor.noun.color,
-              label: clause.undefinedSubject.toString(),
-              value: clause.subject?.toString(),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => navigateToSubjectPage(context),
-              required: true,
-            ),
-            if (!settings.isInterrogative)
-              firstAuxiliaryVerbListItem,
-            SentenceItemTile(
-              color: IndependentClausePartColor.adverb.color,
-              label: clause.undefinedMiddleAdverb.toString(),
-              value: clause.midAdverb?.toString(),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => navigateToAdverbPage(context, AdverbPosition.mid),
-            ),
-            SentenceItemTile(
-              color: IndependentClausePartColor.verb.color,
-              label: clause.undefinedSecondAuxiliaryVerb,
-              value: clause.secondAuxiliaryVerb,
-              // trailing: const Icon(Icons.arrow_forward_ios),
-              hide: clause.secondAuxiliaryVerb == null,
-            ),
-            SentenceItemTile(
-              color: IndependentClausePartColor.verb.color,
-              label: clause.undefinedThirdAuxiliaryVerb,
-              value: clause.thirdAuxiliaryVerb,
-              // trailing: const Icon(Icons.arrow_forward_ios),
-              hide: clause.thirdAuxiliaryVerb == null,
-            ),
-            if (!clause.isBeAuxiliary) verbListItem,
-            SentenceItemTile(
-              color: IndependentClausePartColor.noun.color,
-              label: clause.undefinedIndirectObject.toString(),
-              value: clause.indirectObject?.toString(),
-              hide: !safeVerb.isDitransitive,
-              trailing: const Icon(Icons.arrow_forward_ios),
-            ),
-            SentenceItemTile(
-              color: IndependentClausePartColor.noun.color,
-              label: clause.undefinedDirectObject.toString(),
-              value: clause.directObject?.toString(),
-              hide: !safeVerb.isTransitive,
-              trailing: const Icon(Icons.arrow_forward_ios),
-            ),
-            SentenceItemTile(
-              color: IndependentClausePartColor.noun.color,
-              label: clause.undefinedSubjectComplement.toString(),
-              value: clause.subjectComplement?.toString(),
-              hide: !safeVerb.isLinkingVerb,
-              trailing: const Icon(Icons.arrow_forward_ios),
-              required: true,
-            ),
-            SentenceItemTile(
-              color: IndependentClausePartColor.adverb.color,
-              label: clause.undefinedEndAdverb.toString(),
-              value: clause.endAdverb?.toString(),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => navigateToAdverbPage(context, AdverbPosition.end),
-            ),
-          ],
-        ),
+        body: [
+          SentenceItemTile(
+            color: IndependentClausePartColor.adverb.color,
+            label: clause.undefinedFrontAdverb.toString(),
+            value: clause.frontAdverb?.toString(),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToAdverbPage(context, AdverbPosition.front),
+            show: settings.isInterrogative,
+          ),
+          if (settings.isInterrogative)
+            firstAuxiliaryVerbListItem,
+          SentenceItemTile(
+            color: IndependentClausePartColor.noun.color,
+            label: clause.undefinedSubject.toString(),
+            value: clause.subject?.toString(),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToSubjectPage(context),
+            required: true,
+          ),
+          if (!settings.isInterrogative)
+            firstAuxiliaryVerbListItem,
+          SentenceItemTile(
+            color: IndependentClausePartColor.adverb.color,
+            label: clause.undefinedMiddleAdverb.toString(),
+            value: clause.midAdverb?.toString(),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToAdverbPage(context, AdverbPosition.mid),
+          ),
+          SentenceItemTile(
+            color: IndependentClausePartColor.verb.color,
+            label: clause.undefinedSecondAuxiliaryVerb,
+            value: clause.secondAuxiliaryVerb,
+            // trailing: const Icon(Icons.arrow_forward_ios),
+            show: clause.secondAuxiliaryVerb != null,
+          ),
+          SentenceItemTile(
+            color: IndependentClausePartColor.verb.color,
+            label: clause.undefinedThirdAuxiliaryVerb,
+            value: clause.thirdAuxiliaryVerb,
+            // trailing: const Icon(Icons.arrow_forward_ios),
+            show: clause.thirdAuxiliaryVerb != null,
+          ),
+          if (!clause.isBeAuxiliary) verbListItem,
+          SentenceItemTile(
+            color: IndependentClausePartColor.noun.color,
+            label: clause.undefinedIndirectObject.toString(),
+            value: clause.indirectObject?.toString(),
+            show: safeVerb.isDitransitive,
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+          SentenceItemTile(
+            color: IndependentClausePartColor.noun.color,
+            label: clause.undefinedDirectObject.toString(),
+            value: clause.directObject?.toString(),
+            show: safeVerb.isTransitive,
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+          SentenceItemTile(
+            color: IndependentClausePartColor.noun.color,
+            label: clause.undefinedSubjectComplement.toString(),
+            value: clause.subjectComplement?.toString(),
+            show: safeVerb.isLinkingVerb,
+            trailing: const Icon(Icons.arrow_forward_ios),
+            required: true,
+          ),
+          SentenceItemTile(
+            color: IndependentClausePartColor.adverb.color,
+            label: clause.undefinedEndAdverb.toString(),
+            value: clause.endAdverb?.toString(),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToAdverbPage(context, AdverbPosition.end),
+          ),
+        ],
       ),
     );
   }
@@ -234,16 +234,16 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
 
   setClauseType(ClauseType type) => setSettings(settings.copyWith(clauseType: type));
 
-  onSavePage(BuildContext context) => Navigator.pop(context, clause);
-
-  toggleEditingSettings() => setState(() => editingSettings = !editingSettings);
+  saveItem(BuildContext context) => Navigator.pop(context, clause);
 
   toggleEditingFirstAuxiliaryVerb() =>
       setState(() => editingFirstAuxiliaryVerb = !editingFirstAuxiliaryVerb);
 
   toggleEditingVerb() => setState(() => editingVerb = !editingVerb);
 
-  showOrHideBottomAppBar() => setState(() => isBottomAppBarShown =
+  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
+
+  checkCanSave() => setCanSave(
       clause.modalVerb is! UndefinedModalVerb && clause.verb is! UndefinedVerb
   );
   
@@ -252,11 +252,12 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
         context,
         MaterialPageRoute(
             builder: (context) => SubjectPage(
-              subjectType: settings.subjectType,
               subject: clause.subject,
             )));
     if (subject is AnyNoun) {
       setSubject(subject);
+    } else if(subject is bool && !subject) {
+      setSubject(null);
     }
   }
 
@@ -278,12 +279,12 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
         case AdverbPosition.mid: setMidAdverb(adverb); break;
         case _: setEndAdverb(adverb); break;
       }
+    } else if(adverb is bool && !adverb) {
+      switch(position) {
+        case AdverbPosition.front: setFrontAdverb(null); break;
+        case AdverbPosition.mid: setMidAdverb(null); break;
+        case _: setEndAdverb(null); break;
+      }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    clause = widget.clause ?? IndependentClause();
   }
 }

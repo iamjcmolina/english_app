@@ -6,29 +6,25 @@ import '../../../model/sentence/noun/noun.dart';
 import '../../../model/sentence/phrase/determiner.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../service/vocabulary_service.dart';
+import '../../item_editor_layout.dart';
+import '../dropdown_tile.dart';
 import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
 
-class NounPhraseForm extends StatefulWidget {
-  final void Function(NounPhrase?) setNounPhrase;
+class NounPhraseForm extends StatelessWidget {
+  final Function(bool) setCanSave;
+  final Widget settingsControl;
   final NounPhrase? nounPhrase;
+  final void Function(NounPhrase?) setNounPhrase;
+
+  NounPhrase get safePhrase => nounPhrase ?? NounPhrase();
 
   const NounPhraseForm({
     super.key,
+    required this.setCanSave,
+    required this.settingsControl,
+    required this.nounPhrase,
     required this.setNounPhrase,
-    this.nounPhrase,
   });
-
-  @override
-  State<NounPhraseForm> createState() => _NounPhraseFormState();
-}
-
-class _NounPhraseFormState extends State<NounPhraseForm> {
-  bool settingQuantifierOf = false;
-  bool settingDeterminer = false;
-  bool settingNumber = false;
-  bool settingAdjective = false;
-  bool settingNoun = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,217 +38,154 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
 
     final vocabularyService = Provider.of<VocabularyService>(context);
 
-    List<Determiner> articles = vocabularyService.articles(nounPhrase.noun);
+    List<Determiner> articles = vocabularyService.articles(safePhrase.noun);
     List<Determiner> possessives = vocabularyService.possessives();
-    List<Determiner> demonstratives = vocabularyService.demonstratives(nounPhrase.noun);
-    List<Determiner> distributives = vocabularyService.distributives(nounPhrase.noun);
-    List<Determiner> quantifiers = vocabularyService.quantifiers(nounPhrase.noun);
-    List<Determiner> numbers = vocabularyService.numbers(nounPhrase.noun);
-    List<Determiner> allNumbers = vocabularyService.numbers(nounPhrase.noun, true);
+    List<Determiner> demonstratives = vocabularyService.demonstratives(safePhrase.noun);
+    List<Determiner> distributives = vocabularyService.distributives(safePhrase.noun);
+    List<Determiner> quantifiers = vocabularyService.quantifiers(safePhrase.noun);
+    List<Determiner> numbers = vocabularyService.numbers(safePhrase.noun);
+    List<Determiner> allNumbers = vocabularyService.numbers(safePhrase.noun, true);
     List<String> adjectives = vocabularyService.adjectives();
-    List<Noun> nouns = vocabularyService.nouns(nounPhrase.determiner);
+    List<Noun> nouns = vocabularyService.nouns(safePhrase.determiner);
     List<Determiner> determiners = [...articles, ...possessives
       ,...demonstratives,...distributives,...quantifiers, ...numbers];
 
-    return Expanded(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text.rich(TextSpan(
-              children: [
-                if (nounPhrase.allowQuantifierOf && nounPhrase.quantifierOf != null) TextSpan(
-                  text: nounPhrase.quantifierOf == null? '<QuantifierOf> '
-                      : '${nounPhrase.quantifierOfText} ',
-                  style: nounPhrase.quantifierOf == null? unsetTextStyle
-                      : TextStyle(color: quantifierOfColor),
-                ),
-                TextSpan(
-                  text: nounPhrase.determiner == null? '<Determiner> '
-                      : '${nounPhrase.determiner} ',
-                  style: nounPhrase.determiner == null? unsetTextStyle
-                      : TextStyle(color: determinerColor),
-                ),
-                if (nounPhrase.allowNumber && nounPhrase.number != null) TextSpan(
-                  text: nounPhrase.number == null? '<Number> '
-                      : '${nounPhrase.number} ',
-                  style: nounPhrase.number == null? unsetTextStyle
-                      : TextStyle(color: numberColor),
-                ),
-                if (nounPhrase.allowAdjective && nounPhrase.adjective != null) TextSpan(
-                  text: nounPhrase.adjective == null? '<Adjective> '
-                      : '${nounPhrase.adjective} ',
-                  style: nounPhrase.adjective == null? unsetTextStyle
-                      : TextStyle(color: adjectiveColor),
-                ),
-                TextSpan(
-                  text: nounPhrase.noun == null? '<Noun>' : nounPhrase.noun.toString(),
-                  style: nounPhrase.noun == null? unsetTextStyle
-                      : TextStyle(color: nounColor),
-                ),
-              ],
-            )),
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                Card(
-                  child: Column(
-                    children: [
-                      if (nounPhrase.allowQuantifierOf)
-                        SentenceItemTile(
-                          color: quantifierOfColor,
-                          label: '<QuantifierOf>',
-                          value: nounPhrase.quantifierOfText,
-                          trailing: Icon(settingQuantifierOf? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                          onTap: toggleEditionQuantifierOf,
-                        ),
-                      if (nounPhrase.allowQuantifierOf && settingQuantifierOf) SentenceItemField<Determiner>(
-                        label: 'QuantifierOf',
-                        value: nounPhrase.quantifierOf,
-                        options: quantifiers,
-                        //displayStringForOption: (option) => option.toString(),
-                        onSelected: onQuantifierOfSelected,
-                        onChanged: (text) => onQuantifierOfChanged(),
-                      ),
-                      SentenceItemTile(
-                        color: determinerColor,
-                        label: '<Determiner>',
-                        value: nounPhrase.determiner?.value,
-                        trailing: Icon(settingDeterminer? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                        onTap: toggleEditionDeterminer,
-                        required: true,
-                      ),
-                      if(settingDeterminer) SentenceItemField<Determiner>(
-                        label: 'Determiner',
-                        value: nounPhrase.determiner,
-                        options: determiners,
-                        //displayStringForOption: (option) => option.toString(),
-                        onSelected: onDeterminerSelected,
-                        onChanged: (text) => onDeterminerChanged(),
-                      ),
-                      if (nounPhrase.allowNumber)
-                        SentenceItemTile(
-                          color: numberColor,
-                          label: '<Number>',
-                          value: nounPhrase.number?.value,
-                          trailing: Icon(settingNumber? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                          onTap: toggleEditionNumber,
-                        ),
-                      if(nounPhrase.allowNumber && settingNumber) SentenceItemField<Determiner>(
-                        label: 'Number',
-                        value: nounPhrase.number,
-                        options: allNumbers,
-                        //displayStringForOption: (option) => option.toString(),
-                        onSelected: onNumberSelected,
-                        onChanged: (text) => onNumberChanged(),
-                      ),
-                      if (nounPhrase.allowAdjective) SentenceItemTile(
-                        color: adjectiveColor,
-                        label: '<Adjective>',
-                        value: nounPhrase.adjective,
-                        trailing: Icon(settingAdjective? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                        onTap: toggleEditionAdjective,
-                      ),
-                      if(nounPhrase.allowAdjective && settingAdjective) SentenceItemField<String>(
-                        label: 'Adjective',
-                        value: nounPhrase.adjective,
-                        options: adjectives,
-                        //displayStringForOption: (option) => option.toString(),
-                        onSelected: onAdjectiveSelected,
-                        onChanged: (text) => onAdjectiveChanged(),
-                      ),
-                      SentenceItemTile(
-                        color: nounColor,
-                        label: '<Noun>',
-                        value: nounPhrase.noun?.value,
-                        trailing: Icon(settingNoun? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                        onTap: toggleEditionNoun,
-                        required: true,
-                      ),
-                      if(settingNoun) SentenceItemField<Noun>(
-                        label: 'Noun',
-                        value: nounPhrase.noun,
-                        options: nouns,
-                        //displayStringForOption: (option) => option.toString(),
-                        onSelected: onNounSelected,
-                        onChanged: (text) => onNounChanged(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    return ItemEditorLayout(
+      header: [
+        settingsControl,
+        ListTile(
+          title: Text.rich(TextSpan(
+            children: [
+              if (safePhrase.allowQuantifier && safePhrase.quantifier != null) TextSpan(
+                text: safePhrase.quantifier == null? '<QuantifierOf> '
+                    : '${safePhrase.quantifierText} ',
+                style: safePhrase.quantifier == null? unsetTextStyle
+                    : TextStyle(color: quantifierOfColor),
+              ),
+              TextSpan(
+                text: safePhrase.determiner == null? '<Determiner> '
+                    : '${safePhrase.determiner} ',
+                style: safePhrase.determiner == null? unsetTextStyle
+                    : TextStyle(color: determinerColor),
+              ),
+              if (safePhrase.allowNumber && safePhrase.number != null) TextSpan(
+                text: safePhrase.number == null? '<Number> '
+                    : '${safePhrase.number} ',
+                style: safePhrase.number == null? unsetTextStyle
+                    : TextStyle(color: numberColor),
+              ),
+              if (safePhrase.allowAdjective && safePhrase.adjective != null) TextSpan(
+                text: safePhrase.adjective == null? '<Adjective> '
+                    : '${safePhrase.adjective} ',
+                style: safePhrase.adjective == null? unsetTextStyle
+                    : TextStyle(color: adjectiveColor),
+              ),
+              TextSpan(
+                text: safePhrase.noun == null? '<Noun>' : safePhrase.noun.toString(),
+                style: safePhrase.noun == null? unsetTextStyle
+                    : TextStyle(color: nounColor),
+              ),
+            ],
+          )),
+        ),
+      ],
+      body: [
+        DropdownTile(
+            color: quantifierOfColor,
+            title: 'Quantifier',
+            textValue: safePhrase.quantifierText,
+            show: safePhrase.allowQuantifier,
+            fields: [
+              SentenceItemField<Determiner>(
+                label: 'Quantifier',
+                value: safePhrase.quantifier,
+                options: quantifiers,
+                onSelected: (determiner) => setQuantifier(determiner),
+                onChanged: (text) => setQuantifier(null),
+              ),
+            ],
+        ),
+        DropdownTile(
+          color: determinerColor,
+          title: 'Determiner',
+          textValue: safePhrase.determiner?.value,
+          required: true,
+          fields: [
+            SentenceItemField<Determiner>(
+              label: 'Determiner',
+              value: safePhrase.determiner,
+              options: determiners,
+              onSelected: (determiner) => setDeterminer(determiner),
+              onChanged: (text) => setDeterminer(null),
             )
-          ),
-        ],
-      ),
+          ],
+        ),
+        DropdownTile(
+          color: numberColor,
+          title: 'Number',
+          textValue: safePhrase.number?.value,
+          show: safePhrase.allowNumber,
+          fields: [
+            SentenceItemField<Determiner>(
+              label: 'Number',
+              value: safePhrase.number,
+              options: allNumbers,
+              onSelected: (number) => setNumber(number),
+              onChanged: (text) => setNumber(null),
+            ),
+          ],
+        ),
+        DropdownTile(
+          color: adjectiveColor,
+          title: 'Adjective',
+          textValue: safePhrase.adjective,
+          show: safePhrase.allowAdjective,
+          fields: [
+            SentenceItemField<String>(
+              label: 'Adjective',
+              value: safePhrase.adjective,
+              options: adjectives,
+              onSelected: (adjective) => setAdjective(adjective),
+              onChanged: (text) => setAdjective(null),
+            ),
+          ],
+        ),
+        DropdownTile(
+          color: nounColor,
+          title: 'Noun',
+          textValue: safePhrase.noun?.value,
+          required: true,
+          fields: [
+            SentenceItemField<Noun>(
+              label: 'Noun',
+              value: safePhrase.noun,
+              options: nouns,
+              onSelected: (noun) => setNoun(noun),
+              onChanged: (text) => setNoun(null),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
-  void onQuantifierOfSelected(Determiner determiner) {
-    setQuantifierOf(determiner);
-  }
+  setQuantifier(quantifierOf) =>
+      validateAndSet(safePhrase.copyWith(quantifierOf: Nullable(quantifierOf)));
 
-  onQuantifierOfChanged() {
-    setQuantifierOf(null);
-  }
+  setDeterminer(determiner) =>
+      validateAndSet(safePhrase.copyWith(determiner: Nullable(determiner)));
 
-  void onDeterminerSelected(Determiner determiner) {
-    setDeterminer(determiner);
-  }
+  setAdjective(adjective) =>
+      validateAndSet(safePhrase.copyWith(adjective: Nullable(adjective)));
 
-  onDeterminerChanged() {
-    setDeterminer(null);
-  }
+  setNumber(number) =>
+      validateAndSet(safePhrase.copyWith(number: Nullable(number)));
 
-  void onAdjectiveSelected(String adjective) {
-    setAdjective(adjective);
-  }
+  setNoun(noun) =>
+      validateAndSet(safePhrase.copyWith(noun: Nullable(noun)));
 
-  onAdjectiveChanged() {
-    setAdjective(null);
-  }
-
-  void onNumberSelected(Determiner number) {
-    setNumber(number);
-  }
-
-  onNumberChanged() {
-    setNumber(null);
-  }
-
-  void onNounSelected(Noun noun) {
-    setNoun(noun);
-  }
-
-  onNounChanged() {
-    setNoun(null);
-  }
-
-  setQuantifierOf(Determiner? quantifierOf) =>
-      widget.setNounPhrase(nounPhrase.copyWith(quantifierOf: Nullable(quantifierOf)));
-
-  setDeterminer(Determiner? determiner) =>
-      widget.setNounPhrase(nounPhrase.copyWith(determiner: Nullable(determiner)));
-
-  setAdjective(String? adjective) =>
-      widget.setNounPhrase(nounPhrase.copyWith(adjective: Nullable(adjective)));
-
-  setNumber(Determiner? number) =>
-      widget.setNounPhrase(nounPhrase.copyWith(number: Nullable(number)));
-
-  setNoun(Noun? noun) =>
-      widget.setNounPhrase(nounPhrase.copyWith(noun: Nullable(noun)));
-
-  toggleEditionQuantifierOf() => setState(() => settingQuantifierOf = !settingQuantifierOf);
-  toggleEditionDeterminer() => setState(() => settingDeterminer = !settingDeterminer);
-  toggleEditionAdjective() => setState(() => settingAdjective = !settingAdjective);
-  toggleEditionNumber() => setState(() => settingNumber = !settingNumber);
-  toggleEditionNoun() => setState(() => settingNoun = !settingNoun);
-
-  NounPhrase get nounPhrase => widget.nounPhrase ?? NounPhrase();
-
-  @override
-  void initState() {
-    super.initState();
+  validateAndSet(NounPhrase phrase) {
+    setCanSave(phrase.determiner != null && phrase.noun != null);
+    setNounPhrase(phrase);
   }
 }

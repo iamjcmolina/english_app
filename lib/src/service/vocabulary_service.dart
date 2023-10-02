@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../model/sentence/adverb/adverb.dart';
-import '../model/sentence/adverb/any_adverb.dart';
 import '../model/sentence/adverb/value/adverb_position.dart';
 import '../model/sentence/noun/any_noun.dart';
 import '../model/sentence/noun/noun.dart';
@@ -248,15 +247,15 @@ class VocabularyService extends ChangeNotifier {
     Adverb.evaluative('unfortunately'),
   ];
 
-  List<AnyAdverb> frontAdverbs() =>
+  List<Adverb> frontAdverbs() =>
     allAdverbs.where((adverb) => adverb.positions.contains(AdverbPosition.front))
         .toList();
 
-  List<AnyAdverb> midAdverbs() =>
+  List<Adverb> midAdverbs() =>
       allAdverbs.where((adverb) => adverb.positions.contains(AdverbPosition.mid))
           .toList();
 
-  List<AnyAdverb> endAdverbs() =>
+  List<Adverb> endAdverbs() =>
       allAdverbs.where((adverb) => adverb.positions.contains(AdverbPosition.end))
           .toList();
 }

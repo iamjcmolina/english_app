@@ -18,7 +18,7 @@ class ClauseText extends StatelessWidget {
 
     final firstAuxiliaryVerbSpan = TextSpan(
         text: clause.firstAuxiliaryVerb == null
-            ? '${clause.undefinedFirstAuxiliaryVerb} '
+            ? ''
             : '${clause.firstAuxiliaryVerb} ',
         style: (clause.firstAuxiliaryVerb == null)? unsetTextStyle
             : TextStyle(color: IndependentClausePartColor.verb.color)

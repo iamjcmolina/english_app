@@ -9,7 +9,6 @@ class IndependentClauseSettings {
   final bool negativeContraction;
   final ClauseType clauseType;
   final Tense tense;
-  final SubjectType subjectType;
 
   const IndependentClauseSettings({
     this.modalVerb = false,
@@ -18,7 +17,6 @@ class IndependentClauseSettings {
     this.negativeContraction = false,
     this.clauseType = ClauseType.affirmative,
     this.tense = Tense.simplePresent,
-    this.subjectType = SubjectType.pronoun,
   });
 
   IndependentClauseSettings copyWith({
@@ -36,7 +34,6 @@ class IndependentClauseSettings {
     negativeContraction: negativeContraction ?? this.negativeContraction,
     clauseType: clauseType ?? this.clauseType,
     tense: tense ?? this.tense,
-    subjectType: subjectType ?? this.subjectType,
   );
 
   bool get isAffirmative => clauseType == ClauseType.affirmative;

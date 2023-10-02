@@ -14,7 +14,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
   final bool editingFirstAuxiliaryVerb;
   final IndependentClause clause;
   final void Function(IndependentClauseSettings settings) setSettings;
-  final void Function() showOrHideBottomAppBar;
+  final void Function() checkCanSave;
   final void Function() toggleEditingFirstAuxiliaryVerb;
   final void Function(ModalVerb? modalVerb) setModalVerb;
   final void Function(AnyVerb? verb) setVerb;
@@ -25,7 +25,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
     required this.editingFirstAuxiliaryVerb,
     required this.clause,
     required this.setSettings,
-    required this.showOrHideBottomAppBar,
+    required this.checkCanSave,
     required this.toggleEditingFirstAuxiliaryVerb,
     required this.setModalVerb,
     required this.setVerb,
@@ -56,7 +56,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
           clause: clause,
           editingVerb: editingFirstAuxiliaryVerb,
           toggleEditingVerb: toggleEditingFirstAuxiliaryVerb,
-          showOrHideBottomAppBar: showOrHideBottomAppBar,
+          checkCanSave: checkCanSave,
           setVerb: setVerb,
           verbEditingController: verbEditingController,
         ),

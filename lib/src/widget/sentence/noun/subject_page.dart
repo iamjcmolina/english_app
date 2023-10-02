@@ -6,15 +6,14 @@ import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/subject_type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../service/vocabulary_service.dart';
-import '../../root_layout.dart';
+import '../../sentence_scaffold.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
 class SubjectPage extends StatefulWidget {
-  final SubjectType subjectType;
   final AnyNoun? subject;
 
-  const SubjectPage({super.key, required this.subjectType, this.subject});
+  const SubjectPage({super.key, required this.subject});
 
   @override
   State<SubjectPage> createState() => _SubjectPageState();
@@ -23,7 +22,18 @@ class SubjectPage extends StatefulWidget {
 class _SubjectPageState extends State<SubjectPage> {
   late SubjectType subjectType;
   AnyNoun? subject;
-  bool showBottomAppBar = false;
+  bool canSave = false;
+
+  @override
+  void initState() {
+    super.initState();
+    subject = widget.subject;
+    canSave = subject != null;
+    subjectType = switch(widget.subject.runtimeType) {
+      NounPhrase => SubjectType.nounPhrase,
+      _ => SubjectType.pronoun,
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,47 +41,46 @@ class _SubjectPageState extends State<SubjectPage> {
 
     List<Pronoun> pronouns = vocabularyService.subjectPronouns();
 
-    return RootLayout(
+    final settingsControl = Center(
+      child: DropdownButton<SubjectType>(
+        value: subjectType,
+        onChanged: (SubjectType? value) => setSubjectType(value!),
+        items: SubjectType.values.map<DropdownMenuItem<SubjectType>>(
+                (SubjectType item) => DropdownMenuItem<SubjectType>(
+              value: item,
+              child: Text(item.name),
+            )
+        ).toList(),
+      ),
+    );
+
+    return SentenceScaffold(
       title: 'Subject',
-      showBottomAppBar: showBottomAppBar,
-      bottomAppBarChildren: [
+      bottomActions: [
         IconButton(
-          onPressed: () => Navigator.pop(context, subject),
-          icon: const Icon(Icons.save)
+          onPressed: canSave? () => Navigator.pop(context, subject) : null,
+          icon: const Icon(Icons.save),
+        ),
+        IconButton(
+            onPressed: () => Navigator.pop(context, false),
+            icon: const Icon(Icons.clear),
         ),
       ],
-      header: Column(
-        children: [
-          Center(
-            child: DropdownButton<SubjectType>(
-              value: subjectType,
-              onChanged: (SubjectType? value) => setSubjectType(value!),
-              items: SubjectType.values.map<DropdownMenuItem<SubjectType>>(
-                      (SubjectType item) => DropdownMenuItem<SubjectType>(
-                    value: item,
-                    child: Text(item.name),
-                  )
-              ).toList(),
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          if (subjectType == SubjectType.pronoun)
-            PronounForm(
-                pronouns: pronouns,
-                setPronoun: setSubject,
-                pronoun: subject is Pronoun? subject as Pronoun : null,
-                setShowBottomAppBar: setShowBottomAppBar
-            ),
-          if (subjectType == SubjectType.nounPhrase)
-            NounPhraseForm(
-              setNounPhrase: setSubject,
-              nounPhrase: subject is NounPhrase? subject as NounPhrase : null,
-            ),
-        ],
-      ),
+      body: switch(subjectType) {
+        SubjectType.nounPhrase => NounPhraseForm(
+          setNounPhrase: setSubject,
+          nounPhrase: subject is NounPhrase? subject as NounPhrase : null,
+          settingsControl: settingsControl,
+          setCanSave: setCanSave,
+        ),
+        _ => PronounForm(
+          pronouns: pronouns,
+          setPronoun: setSubject,
+          pronoun: subject is Pronoun? subject as Pronoun : null,
+          setCanSave: setCanSave,
+          settingsControl: settingsControl,
+        ),
+      },
     );
   }
 
@@ -79,13 +88,5 @@ class _SubjectPageState extends State<SubjectPage> {
 
   setSubjectType(SubjectType type) => setState(() => subjectType = type);
 
-  setShowBottomAppBar(bool show) => setState(() => showBottomAppBar = show);
-
-  @override
-  void initState() {
-    super.initState();
-    subjectType = widget.subjectType;
-    subject = widget.subject;
-    showBottomAppBar = subject != null;
-  }
+  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

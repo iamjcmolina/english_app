@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 class SentenceItemTile extends StatelessWidget {
   final Color color;
   final String label;
-  final String? value;
-  final bool hide;
-  final Widget? trailing;
   final String? subtitle;
+  final String? value;
+  final Widget? trailing;
   final void Function()? onTap;
+  final bool show;
   final bool required;
 
   const SentenceItemTile({
     super.key,
     required this.color,
     required this.label,
-    this.value,
-    this.hide = false,
-    this.trailing,
     this.subtitle,
+    this.value,
+    this.trailing,
     this.onTap,
+    this.show = true,
     this.required = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (hide) {
+    if (!show) {
       return const SizedBox.shrink();
     }
     bool emptyValue = value == null || value!.isEmpty;
