@@ -1,4 +1,4 @@
-import '../noun/value/subject_type.dart';
+import '../noun/value/noun_type.dart';
 import 'value/clause_type.dart';
 import 'value/tense.dart';
 
@@ -26,7 +26,7 @@ class IndependentClauseSettings {
     bool? negativeContraction,
     ClauseType? clauseType,
     Tense? tense,
-    SubjectType? subjectType,
+    NounType? subjectType,
   }) => IndependentClauseSettings(
     modalVerb: modalVerb ?? this.modalVerb,
     affirmativeEmphasis: affirmativeEmphasis ?? this.affirmativeEmphasis,

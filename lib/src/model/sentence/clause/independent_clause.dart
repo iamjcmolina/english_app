@@ -2,8 +2,6 @@ import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../adverb/undefined_adverb.dart';
 import '../noun/any_noun.dart';
-import '../noun/direct_object.dart';
-import '../noun/indirect_object.dart';
 import '../noun/subject_complement.dart';
 import '../noun/undefined_direct_object.dart';
 import '../noun/undefined_indirect_object.dart';
@@ -24,8 +22,8 @@ class IndependentClause {
   ModalVerb? modalVerb;
   AnyAdverb? midAdverb;
   AnyVerb? verb;
-  IndirectObject? indirectObject;
-  DirectObject? directObject;
+  AnyNoun? indirectObject;
+  AnyNoun? directObject;
   SubjectComplement? subjectComplement;
   AnyAdverb? endAdverb;
 
@@ -49,8 +47,8 @@ class IndependentClause {
     Nullable<ModalVerb>? modalVerb,
     Nullable<AnyAdverb>? midAdverb,
     Nullable<AnyVerb>? verb,
-    Nullable<IndirectObject>? indirectObject,
-    Nullable<DirectObject>? directObject,
+    Nullable<AnyNoun>? indirectObject,
+    Nullable<AnyNoun>? directObject,
     Nullable<SubjectComplement>? subjectComplement,
     Nullable<AnyAdverb>? endAdverb,
   }) => IndependentClause(
@@ -74,8 +72,8 @@ class IndependentClause {
   ModalVerb get undefinedModalVerb => const UndefinedModalVerb();
   AnyAdverb get undefinedMiddleAdverb => const UndefinedAdverb('<MiddleAdverb>');
   AnyVerb get undefinedVerb => const UndefinedVerb();
-  IndirectObject get undefinedIndirectObject => const UndefinedIndirectObject();
-  DirectObject get undefinedDirectObject => const UndefinedDirectObject();
+  AnyNoun get undefinedIndirectObject => const UndefinedIndirectObject();
+  AnyNoun get undefinedDirectObject => const UndefinedDirectObject();
   SubjectComplement get undefinedSubjectComplement => const UndefinedSubjectComplement();
   AnyAdverb get undefinedEndAdverb => const UndefinedAdverb('<EndAdverb>');
 
@@ -87,8 +85,8 @@ class IndependentClause {
   ModalVerb get safeModalVerb => modalVerb ?? undefinedModalVerb;
   AnyAdverb get safeMiddleAdverb => midAdverb ?? undefinedMiddleAdverb;
   AnyVerb get safeVerb => verb ?? undefinedVerb;
-  IndirectObject get safeIndirectObject => indirectObject ?? undefinedIndirectObject;
-  DirectObject get safeDirectObject => directObject ?? undefinedDirectObject;
+  AnyNoun get safeIndirectObject => indirectObject ?? undefinedIndirectObject;
+  AnyNoun get safeDirectObject => directObject ?? undefinedDirectObject;
   SubjectComplement get safeSubjectComplement => subjectComplement ?? undefinedSubjectComplement;
   AnyAdverb get safeEndAdverb => endAdverb ?? undefinedEndAdverb;
 

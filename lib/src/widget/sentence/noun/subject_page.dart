@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
-import '../../../model/sentence/noun/value/subject_type.dart';
+import '../../../model/sentence/noun/value/noun_type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../service/vocabulary_service.dart';
 import '../../sentence_scaffold.dart';
@@ -20,7 +20,7 @@ class SubjectPage extends StatefulWidget {
 }
 
 class _SubjectPageState extends State<SubjectPage> {
-  late SubjectType subjectType;
+  late NounType nounType;
   AnyNoun? subject;
   bool canSave = false;
 
@@ -29,9 +29,9 @@ class _SubjectPageState extends State<SubjectPage> {
     super.initState();
     subject = widget.subject;
     canSave = subject != null;
-    subjectType = switch(widget.subject.runtimeType) {
-      NounPhrase => SubjectType.nounPhrase,
-      _ => SubjectType.pronoun,
+    nounType = switch(widget.subject.runtimeType) {
+      NounPhrase => NounType.nounPhrase,
+      _ => NounType.pronoun,
     };
   }
 
@@ -42,11 +42,11 @@ class _SubjectPageState extends State<SubjectPage> {
     List<Pronoun> pronouns = vocabularyService.subjectPronouns();
 
     final settingsControl = Center(
-      child: DropdownButton<SubjectType>(
-        value: subjectType,
-        onChanged: (SubjectType? value) => setSubjectType(value!),
-        items: SubjectType.values.map<DropdownMenuItem<SubjectType>>(
-                (SubjectType item) => DropdownMenuItem<SubjectType>(
+      child: DropdownButton<NounType>(
+        value: nounType,
+        onChanged: (NounType? value) => setNounType(value!),
+        items: NounType.values.map<DropdownMenuItem<NounType>>(
+                (NounType item) => DropdownMenuItem<NounType>(
               value: item,
               child: Text(item.name),
             )
@@ -66,8 +66,8 @@ class _SubjectPageState extends State<SubjectPage> {
             icon: const Icon(Icons.clear),
         ),
       ],
-      body: switch(subjectType) {
-        SubjectType.nounPhrase => NounPhraseForm(
+      body: switch(nounType) {
+        NounType.nounPhrase => NounPhraseForm(
           setNounPhrase: setSubject,
           nounPhrase: subject is NounPhrase? subject as NounPhrase : null,
           settingsControl: settingsControl,
@@ -86,7 +86,7 @@ class _SubjectPageState extends State<SubjectPage> {
 
   setSubject(AnyNoun? subject) => setState(() => this.subject = subject);
 
-  setSubjectType(SubjectType type) => setState(() => subjectType = type);
+  setNounType(NounType type) => setState(() => nounType = type);
 
   setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

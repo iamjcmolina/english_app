@@ -16,6 +16,7 @@ import '../../../model/sentence/verb/undefined_modal_verb.dart';
 import '../../../model/sentence/verb/undefined_verb.dart';
 import '../../item_editor_layout.dart';
 import '../adverb/adverb_page.dart';
+import '../noun/object_page.dart';
 import '../noun/subject_page.dart';
 import '../verb/first_auxiliary_verb_list_item.dart';
 import '../verb/verb_list_item.dart';
@@ -169,14 +170,12 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             color: IndependentClausePartColor.verb.color,
             label: clause.undefinedSecondAuxiliaryVerb,
             value: clause.secondAuxiliaryVerb,
-            // trailing: const Icon(Icons.arrow_forward_ios),
             show: clause.secondAuxiliaryVerb != null,
           ),
           SentenceItemTile(
             color: IndependentClausePartColor.verb.color,
             label: clause.undefinedThirdAuxiliaryVerb,
             value: clause.thirdAuxiliaryVerb,
-            // trailing: const Icon(Icons.arrow_forward_ios),
             show: clause.thirdAuxiliaryVerb != null,
           ),
           if (!clause.isBeAuxiliary) verbListItem,
@@ -186,6 +185,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             value: clause.indirectObject?.toString(),
             show: safeVerb.isDitransitive,
             trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToObjectPage(context, true),
           ),
           SentenceItemTile(
             color: IndependentClausePartColor.noun.color,
@@ -193,6 +193,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             value: clause.directObject?.toString(),
             show: safeVerb.isTransitive,
             trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToObjectPage(context, false),
           ),
           SentenceItemTile(
             color: IndependentClausePartColor.noun.color,
@@ -226,6 +227,10 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
 
   setVerb(AnyVerb? verb) => setClause(clause.copyWith(verb: Nullable(verb)));
 
+  setIndirectObject(AnyNoun? object) => setClause(clause.copyWith(indirectObject: Nullable(object)));
+
+  setDirectObject(AnyNoun? object) => setClause(clause.copyWith(directObject: Nullable(object)));
+
   setEndAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(endAdverb: Nullable(adverb)));
 
   setSettings(IndependentClauseSettings options) => setClause(clause.copyWith(settings: options));
@@ -258,6 +263,31 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
       setSubject(subject);
     } else if(subject is bool && !subject) {
       setSubject(null);
+    }
+  }
+
+  navigateToObjectPage(BuildContext context, bool isIndirectObject) async {
+    final object = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ObjectPage(
+              object: isIndirectObject? clause.indirectObject
+                  : clause.directObject,
+              isDitransitiveVerb: safeVerb.isDitransitive,
+              isIndirectObject: isIndirectObject,
+            )));
+    if (object is AnyNoun) {
+      if (isIndirectObject) {
+        setIndirectObject(object);
+      } else {
+        setDirectObject(object);
+      }
+    } else if(object is bool && !object) {
+      if (isIndirectObject) {
+        setIndirectObject(null);
+      } else {
+        setDirectObject(null);
+      }
     }
   }
 

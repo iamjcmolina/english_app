@@ -1,4 +1,4 @@
-enum SubjectType {
+enum NounType {
   pronoun("Pronoun"),
   nounPhrase("Noun Phrase"),
   gerundPhrase("Gerund Phrase"),
@@ -7,5 +7,5 @@ enum SubjectType {
 
   final String name;
 
-  const SubjectType(this.name);
+  const NounType(this.name);
 }
