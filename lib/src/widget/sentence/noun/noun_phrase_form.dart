@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/nullable.dart';
+import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/noun/noun.dart';
 import '../../../model/sentence/phrase/determiner.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
@@ -45,7 +46,7 @@ class NounPhraseForm extends StatelessWidget {
     List<Determiner> quantifiers = vocabularyService.quantifiers(safePhrase.noun);
     List<Determiner> numbers = vocabularyService.numbers(safePhrase.noun);
     List<Determiner> allNumbers = vocabularyService.numbers(safePhrase.noun, true);
-    List<String> adjectives = vocabularyService.adjectives();
+    List<Adjective> adjectives = vocabularyService.adjectives();
     List<Noun> nouns = vocabularyService.nouns(safePhrase.determiner);
     List<Determiner> determiners = [...articles, ...possessives
       ,...demonstratives,...distributives,...quantifiers, ...numbers];
@@ -138,10 +139,10 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: adjectiveColor,
           title: 'Adjective',
-          textValue: safePhrase.adjective,
+          textValue: safePhrase.adjective?.value,
           show: safePhrase.allowAdjective,
           fields: [
-            SentenceItemField<String>(
+            SentenceItemField<Adjective>(
               label: 'Adjective',
               value: safePhrase.adjective,
               options: adjectives,
@@ -170,7 +171,7 @@ class NounPhraseForm extends StatelessWidget {
   }
 
   setQuantifier(quantifierOf) =>
-      validateAndSet(safePhrase.copyWith(quantifierOf: Nullable(quantifierOf)));
+      validateAndSet(safePhrase.copyWith(quantifier: Nullable(quantifierOf)));
 
   setDeterminer(determiner) =>
       validateAndSet(safePhrase.copyWith(determiner: Nullable(determiner)));

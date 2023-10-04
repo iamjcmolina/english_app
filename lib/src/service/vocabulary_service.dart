@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../model/sentence/adjective/adjective.dart';
 import '../model/sentence/adverb/adverb.dart';
 import '../model/sentence/adverb/value/adverb_position.dart';
 import '../model/sentence/noun/any_noun.dart';
@@ -45,6 +46,10 @@ class VocabularyService extends ChangeNotifier {
   List<Pronoun> objectPronouns() {
     const List<String> receivers = ['me','you','him','her','it','us','them'];
     return receivers.map((e) => Pronoun(e)).toList();
+  }
+
+  List<Pronoun> possessiveAdjectivePronouns() {
+    return possessivePronouns.map((e) => Pronoun(e)).toList();
   }
 
   List<Determiner> articles(Noun? noun) {
@@ -195,8 +200,9 @@ class VocabularyService extends ChangeNotifier {
     ];
   }
 
-  List<String> adjectives() {
-    return ['beautiful', 'small','big','intelligent','round','lazy','old'];
+  List<Adjective> adjectives() {
+    return ['beautiful', 'small','big','intelligent','round','lazy','old']
+        .map((e)=> Adjective(e)).toList();
   }
 
   List<Noun> nouns(Determiner? determiner) {

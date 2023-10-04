@@ -1,4 +1,5 @@
 import '../../nullable.dart';
+import '../adjective/adjective.dart';
 import '../noun/any_noun.dart';
 import '../noun/noun.dart';
 import '../sentence_buffer.dart';
@@ -9,7 +10,7 @@ class NounPhrase extends AnyNoun {
   Determiner? quantifier;
   Determiner? determiner;
   Determiner? number;
-  String? adjective;
+  Adjective? adjective;
   Noun? noun;
 
   NounPhrase({
@@ -21,13 +22,13 @@ class NounPhrase extends AnyNoun {
   });
 
   NounPhrase copyWith({
-    Nullable<Determiner>? quantifierOf,
+    Nullable<Determiner>? quantifier,
     Nullable<Determiner>? determiner,
     Nullable<Determiner>? number,
-    Nullable<String>? adjective,
+    Nullable<Adjective>? adjective,
     Nullable<Noun>? noun,
   }) => NounPhrase(
-    quantifier: quantifierOf == null? this.quantifier : quantifierOf.value,
+    quantifier: quantifier == null? this.quantifier : quantifier.value,
     determiner: determiner == null? this.determiner : determiner.value,
     number: number == null? this.number : number.value,
     adjective: adjective == null? this.adjective : adjective.value,

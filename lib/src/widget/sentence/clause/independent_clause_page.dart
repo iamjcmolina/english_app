@@ -9,6 +9,7 @@ import '../../../model/sentence/clause/value/clause_type.dart';
 import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
 import '../../../model/sentence/clause/value/tense.dart';
 import '../../../model/sentence/noun/any_noun.dart';
+import '../../../model/sentence/noun/subject_complement.dart';
 import '../../../model/sentence/noun/undefined_subject.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
@@ -17,6 +18,7 @@ import '../../../model/sentence/verb/undefined_verb.dart';
 import '../../item_editor_layout.dart';
 import '../adverb/adverb_page.dart';
 import '../noun/object_page.dart';
+import '../noun/subject_complement_page.dart';
 import '../noun/subject_page.dart';
 import '../verb/first_auxiliary_verb_list_item.dart';
 import '../verb/verb_list_item.dart';
@@ -201,6 +203,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             value: clause.subjectComplement?.toString(),
             show: safeVerb.isLinkingVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => navigateToComplementPage(context),
             required: true,
           ),
           SentenceItemTile(
@@ -215,43 +218,6 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     );
   }
 
-  setClause(IndependentClause clause) => setState(()=> this.clause = clause);
-
-  setFrontAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(frontAdverb: Nullable(adverb)));
-
-  setSubject(AnyNoun? subject) => setClause(clause.copyWith(subject: Nullable(subject)));
-
-  setModalVerb(ModalVerb? modalVerb) => setClause(clause.copyWith(modalVerb: Nullable(modalVerb)));
-
-  setMidAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(midAdverb: Nullable(adverb)));
-
-  setVerb(AnyVerb? verb) => setClause(clause.copyWith(verb: Nullable(verb)));
-
-  setIndirectObject(AnyNoun? object) => setClause(clause.copyWith(indirectObject: Nullable(object)));
-
-  setDirectObject(AnyNoun? object) => setClause(clause.copyWith(directObject: Nullable(object)));
-
-  setEndAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(endAdverb: Nullable(adverb)));
-
-  setSettings(IndependentClauseSettings options) => setClause(clause.copyWith(settings: options));
-
-  setTense(Tense tense) => setSettings(settings.copyWith(tense: tense));
-
-  setClauseType(ClauseType type) => setSettings(settings.copyWith(clauseType: type));
-
-  saveItem(BuildContext context) => Navigator.pop(context, clause);
-
-  toggleEditingFirstAuxiliaryVerb() =>
-      setState(() => editingFirstAuxiliaryVerb = !editingFirstAuxiliaryVerb);
-
-  toggleEditingVerb() => setState(() => editingVerb = !editingVerb);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
-
-  checkCanSave() => setCanSave(
-      clause.modalVerb is! UndefinedModalVerb && clause.verb is! UndefinedVerb
-  );
-  
   navigateToSubjectPage(BuildContext context) async {
     final subject = await Navigator.push(
         context,
@@ -291,6 +257,20 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     }
   }
 
+  navigateToComplementPage(BuildContext context) async {
+    final complement = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SubjectComplementPage(
+              complement: clause.subjectComplement,
+            )));
+    if (complement is SubjectComplement) {
+      setComplement(complement);
+    } else if(complement is bool && !complement) {
+      setComplement(null);
+    }
+  }
+
   navigateToAdverbPage(BuildContext context, AdverbPosition position) async {
     final adverb = await Navigator.push(
         context,
@@ -317,4 +297,44 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
       }
     }
   }
+
+  setClause(IndependentClause clause) => setState(()=> this.clause = clause);
+
+  setFrontAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(frontAdverb: Nullable(adverb)));
+
+  setSubject(AnyNoun? subject) => setClause(clause.copyWith(subject: Nullable(subject)));
+
+  setModalVerb(ModalVerb? modalVerb) => setClause(clause.copyWith(modalVerb: Nullable(modalVerb)));
+
+  setMidAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(midAdverb: Nullable(adverb)));
+
+  setVerb(AnyVerb? verb) => setClause(clause.copyWith(verb: Nullable(verb)));
+
+  setIndirectObject(AnyNoun? object) => setClause(clause.copyWith(indirectObject: Nullable(object)));
+
+  setDirectObject(AnyNoun? object) => setClause(clause.copyWith(directObject: Nullable(object)));
+
+  setComplement(SubjectComplement? complement) =>
+      setClause(clause.copyWith(subjectComplement: Nullable(complement)));
+
+  setEndAdverb(AnyAdverb? adverb) => setClause(clause.copyWith(endAdverb: Nullable(adverb)));
+
+  setSettings(IndependentClauseSettings options) => setClause(clause.copyWith(settings: options));
+
+  setTense(Tense tense) => setSettings(settings.copyWith(tense: tense));
+
+  setClauseType(ClauseType type) => setSettings(settings.copyWith(clauseType: type));
+
+  saveItem(BuildContext context) => Navigator.pop(context, clause);
+
+  toggleEditingFirstAuxiliaryVerb() =>
+      setState(() => editingFirstAuxiliaryVerb = !editingFirstAuxiliaryVerb);
+
+  toggleEditingVerb() => setState(() => editingVerb = !editingVerb);
+
+  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
+
+  checkCanSave() => setCanSave(
+      clause.modalVerb is! UndefinedModalVerb && clause.verb is! UndefinedVerb
+  );
 }
