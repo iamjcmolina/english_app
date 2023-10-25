@@ -5,7 +5,7 @@ import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/noun_type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
-import '../../../service/vocabulary_service.dart';
+import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
@@ -29,7 +29,7 @@ class _SubjectPageState extends State<SubjectPage> {
     super.initState();
     subject = widget.subject;
     canSave = subject != null;
-    nounType = switch(widget.subject.runtimeType) {
+    nounType = switch (widget.subject.runtimeType) {
       NounPhrase => NounType.nounPhrase,
       _ => NounType.pronoun,
     };
@@ -37,20 +37,21 @@ class _SubjectPageState extends State<SubjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    final vocabularyService = Provider.of<VocabularyService>(context);
+    final nounRepository = Provider.of<NounRepository>(context);
 
-    List<Pronoun> pronouns = vocabularyService.subjectPronouns();
+    List<Pronoun> pronouns = nounRepository.subjectPronouns();
 
     final settingsControl = Center(
       child: DropdownButton<NounType>(
         value: nounType,
         onChanged: (NounType? value) => setNounType(value!),
-        items: NounType.values.map<DropdownMenuItem<NounType>>(
+        items: NounType.values
+            .map<DropdownMenuItem<NounType>>(
                 (NounType item) => DropdownMenuItem<NounType>(
-              value: item,
-              child: Text(item.name),
-            )
-        ).toList(),
+                      value: item,
+                      child: Text(item.name),
+                    ))
+            .toList(),
       ),
     );
 
@@ -58,28 +59,28 @@ class _SubjectPageState extends State<SubjectPage> {
       title: 'Subject',
       bottomActions: [
         IconButton(
-          onPressed: canSave? () => Navigator.pop(context, subject) : null,
+          onPressed: canSave ? () => Navigator.pop(context, subject) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
-            onPressed: () => Navigator.pop(context, false),
-            icon: const Icon(Icons.clear),
+          onPressed: () => Navigator.pop(context, false),
+          icon: const Icon(Icons.clear),
         ),
       ],
-      body: switch(nounType) {
+      body: switch (nounType) {
         NounType.nounPhrase => NounPhraseForm(
-          setNounPhrase: setSubject,
-          nounPhrase: subject is NounPhrase? subject as NounPhrase : null,
-          settingsControl: settingsControl,
-          setCanSave: setCanSave,
-        ),
+            setNounPhrase: setSubject,
+            nounPhrase: subject is NounPhrase ? subject as NounPhrase : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+          ),
         _ => PronounForm(
-          pronouns: pronouns,
-          setPronoun: setSubject,
-          pronoun: subject is Pronoun? subject as Pronoun : null,
-          setCanSave: setCanSave,
-          settingsControl: settingsControl,
-        ),
+            pronouns: pronouns,
+            setPronoun: setSubject,
+            pronoun: subject is Pronoun ? subject as Pronoun : null,
+            setCanSave: setCanSave,
+            settingsControl: settingsControl,
+          ),
       },
     );
   }

@@ -1,18 +1,25 @@
 import 'any_noun.dart';
 
 class Noun extends AnyNoun {
-  final String value;
+  @override
+  final String en;
+  @override
+  final String es;
   @override
   final Countability countability;
 
-  Noun(this.value,this.countability);
+  @override
+  PersonalPronoun get asPronoun =>
+      isPlural ? PersonalPronoun.they : PersonalPronoun.it;
 
   @override
   bool get isSingularFirstPerson => false;
 
   @override
-  bool get isSingularThirdPerson => countability == Countability.singular;
+  bool get isSingularThirdPerson => isSingular;
+
+  const Noun(this.en, this.es, this.countability);
 
   @override
-  String toString() => value;
+  String toString() => en;
 }

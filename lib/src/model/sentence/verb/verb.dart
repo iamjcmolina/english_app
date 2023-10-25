@@ -1,70 +1,96 @@
-import '../../../util/util.dart';
 import 'any_verb.dart';
 
 class Verb extends AnyVerb {
   @override
-  bool isTransitive;
+  final String infinitive;
+  final String past;
   @override
-  bool isDitransitive;
+  final String pastParticiple;
   @override
-  bool isLinkingVerb;
+  final String infinitiveEs;
   @override
-  String infinitive;
-  String past;
+  final String pastParticipleEs;
   @override
-  String pastParticiple;
+  final String progressiveEs;
+  @override
+  final String presentIEs;
+  @override
+  final String presentSingularYouEs;
+  @override
+  final String presentHeEs;
+  @override
+  final String presentWeEs;
+  @override
+  final String presentTheyEs;
+  @override
+  final String pastIEs;
+  @override
+  final String pastSingularYouEs;
+  @override
+  final String pastHeEs;
+  @override
+  final String pastWeEs;
+  @override
+  final String pastTheyEs;
+  @override
+  final String futureIEs;
+  @override
+  final String futureSingularYouEs;
+  @override
+  final String futureHeEs;
+  @override
+  final String futureWeEs;
+  @override
+  final String futureTheyEs;
+  @override
+  final String conditionalIEs;
+  @override
+  final String conditionalSingularYouEs;
+  @override
+  final String conditionalHeEs;
+  @override
+  final String conditionalWeEs;
+  @override
+  final String conditionalTheyEs;
+  @override
+  final bool isTransitive;
+  @override
+  final bool isDitransitive;
+  @override
+  final bool isLinkingVerb;
 
-  Verb({
-    required this.isTransitive,
-    required this.isDitransitive,
-    this.isLinkingVerb = false,
+  @override
+  String get progressive => '${infinitive}ing';
+
+  const Verb({
     required this.infinitive,
     required this.past,
     required this.pastParticiple,
-  });
-
-  Verb.regular({
+    required this.infinitiveEs,
+    required this.pastParticipleEs,
+    required this.progressiveEs,
+    required this.presentIEs,
+    required this.presentSingularYouEs,
+    required this.presentHeEs,
+    required this.presentWeEs,
+    required this.presentTheyEs,
+    required this.pastIEs,
+    required this.pastSingularYouEs,
+    required this.pastHeEs,
+    required this.pastWeEs,
+    required this.pastTheyEs,
+    required this.futureIEs,
+    required this.futureSingularYouEs,
+    required this.futureHeEs,
+    required this.futureWeEs,
+    required this.futureTheyEs,
+    required this.conditionalIEs,
+    required this.conditionalSingularYouEs,
+    required this.conditionalHeEs,
+    required this.conditionalWeEs,
+    required this.conditionalTheyEs,
     required this.isTransitive,
     required this.isDitransitive,
-    required this.infinitive,
-    required this.past,
-  }): pastParticiple = past, isLinkingVerb = false;
-
-  @override
-  String get presentParticiple => '${infinitive}ing';
-
-  @override
-  String present({
-    required bool singularFirstPerson,
-    required bool singularThirdPerson,
-    required bool contraction,
-    required bool negativeContraction,
-    required bool negative,
-  }) => singularThirdPerson? _presentForSingularThirdPerson : infinitive;
-
-  @override
-  String simplePast({
-    required bool isPlural,
-    required bool negativeContraction,
-    required bool negative,
-  }) => past;
-
-  String get _presentForSingularThirdPerson {
-    String penultimateLetter =
-    infinitive.substring(infinitive.length - 2, infinitive.length - 1);
-    String lastLetter = infinitive.substring(infinitive.length - 1);
-    String lastTwoLetters = infinitive.substring(infinitive.length - 2);
-    if (lastLetter == 'o' ||
-        lastTwoLetters == 'sh' ||
-        lastTwoLetters == 'ch' ||
-        lastTwoLetters == 'ss' ||
-        lastLetter == 'x' ||
-        lastLetter == 'z') {
-      return '${infinitive}es';
-    } else if (lastLetter == 'y' && Util.isConsonant(penultimateLetter)) {
-      String newWord = infinitive.substring(0, infinitive.length - 1);
-      return '${newWord}ies';
-    }
-    return '${infinitive}s';
-  }
+    this.isLinkingVerb = false,
+  });
 }

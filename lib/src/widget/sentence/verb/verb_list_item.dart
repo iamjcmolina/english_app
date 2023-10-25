@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
-import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
+import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../service/vocabulary_service.dart';
+import '../../../repository/verb_repository.dart';
 import '../sentence_item_field.dart';
 import '../sentence_item_tile.dart';
 
@@ -30,38 +30,41 @@ class VerbListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(!show) {
+    if (!show) {
       const SizedBox.shrink();
     }
-    final vocabularyService = Provider.of<VocabularyService>(context);
+    final verbRepository = Provider.of<VerbRepository>(context);
 
-    List<AnyVerb> verbs = vocabularyService.verbs();
+    List<AnyVerb> verbs = verbRepository.findAll();
 
-    String verbLabel = AnyVerb.verbToString(clause.undefinedVerb, clause.safeSubject, clause.settings);
-    String auxiliaryVerbLabel = clause.isBeAuxiliary
-        ? ', ${clause.undefinedFirstAuxiliaryVerb}' : '';
+    final auxiliaryVerbLabel =
+        clause.isBeAuxiliary ? ', ${clause.firstAuxiliaryVerbPlaceholder}' : '';
 
     return Column(
       children: [
         SentenceItemTile(
-          color: IndependentClausePartColor.verb.color,
-          label: '$verbLabel$auxiliaryVerbLabel',
-          value: clause.verb == null ? null
-              : AnyVerb.verbToString(clause.safeVerb, clause.safeSubject, clause.settings),
-          subtitle: clause.isBeAuxiliary? clause.auxiliaryConfig : null,
-          trailing: Icon(editingVerb? Icons.arrow_drop_up : Icons.arrow_drop_down),
+          color: SentenceItem.verb.color,
+          label: '${clause.verbPlaceholder}$auxiliaryVerbLabel',
+          value: clause.verbAsString(),
+          valueEs: clause.verbAsStringEs(),
+          subtitle: clause.isBeAuxiliary
+              ? clause.firstAuxiliaryVerbDescription
+              : null,
+          trailing:
+              Icon(editingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingVerb,
           required: true,
         ),
-        if(editingVerb) SentenceItemField<AnyVerb>(
-          label: AnyVerb.verbToString(clause.undefinedVerb, clause.safeSubject, clause.settings),
-          value: clause.verb,
-          options: verbs,
-          displayStringForOption: (verb) => AnyVerb.verbToString(verb, clause.safeSubject, clause.settings),
-          onSelected: onVerbSelected,
-          onChanged: (text) => onVerbChanged(),
-          textEditingController: verbEditingController,
-        ),
+        if (editingVerb)
+          SentenceItemField<AnyVerb>(
+            label: clause.verbPlaceholder,
+            value: clause.verb,
+            options: verbs,
+            displayStringForOption: (verb) => clause.verbAsString(verb),
+            onSelected: onVerbSelected,
+            onChanged: (text) => onVerbChanged(),
+            textEditingController: verbEditingController,
+          ),
       ],
     );
   }

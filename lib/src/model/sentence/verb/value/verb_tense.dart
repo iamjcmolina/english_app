@@ -2,8 +2,10 @@ enum VerbTense {
   infinitive('Infinitive'),
   present('Present'),
   past('Past'),
-  presentParticiple('Present Participle'),
-  pastParticiple('Past Participle');
+  future('Future'),
+  progressive('Progressive'),
+  pastParticiple('Past Participle'),
+  conditional('Conditional');
 
   final String name;
 

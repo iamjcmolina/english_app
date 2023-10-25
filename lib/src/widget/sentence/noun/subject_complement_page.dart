@@ -5,7 +5,7 @@ import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/subject_complement.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
-import '../../../service/vocabulary_service.dart';
+import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
 import 'adjective_form.dart';
 import 'noun_phrase_form.dart';
@@ -33,7 +33,7 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
     super.initState();
     complement = widget.complement;
     canSave = complement != null;
-    type = switch(complement.runtimeType) {
+    type = switch (complement.runtimeType) {
       NounPhrase => ComplementType.nounPhrase,
       Adjective => ComplementType.adjective,
       _ => ComplementType.possessivePronoun,
@@ -42,9 +42,9 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
 
   @override
   Widget build(BuildContext context) {
-    final vocabularyService = Provider.of<VocabularyService>(context);
+    final nounRepository = Provider.of<NounRepository>(context);
 
-    List<Pronoun> pronouns = vocabularyService.possessiveAdjectivePronouns();
+    List<Pronoun> pronouns = nounRepository.possessivePronouns();
 
     final settingsControl = Center(
       child: DropdownButton<ComplementType>(
@@ -53,10 +53,10 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
         items: ComplementType.values
             .map<DropdownMenuItem<ComplementType>>(
                 (ComplementType item) => DropdownMenuItem<ComplementType>(
-              value: item,
-              child: Text(item.name),
-            )
-        ).toList(),
+                      value: item,
+                      child: Text(item.name),
+                    ))
+            .toList(),
       ),
     );
 
@@ -64,7 +64,7 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
       title: 'Subject complement',
       bottomActions: [
         IconButton(
-          onPressed: canSave? () => Navigator.pop(context, complement) : null,
+          onPressed: canSave ? () => Navigator.pop(context, complement) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
@@ -72,31 +72,33 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
           icon: const Icon(Icons.clear),
         ),
       ],
-      body: switch(type) {
+      body: switch (type) {
         ComplementType.nounPhrase => NounPhraseForm(
-          setNounPhrase: setComplement,
-          nounPhrase: complement is NounPhrase? complement as NounPhrase : null,
-          settingsControl: settingsControl,
-          setCanSave: setCanSave,
-        ),
+            setNounPhrase: setComplement,
+            nounPhrase:
+                complement is NounPhrase ? complement as NounPhrase : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+          ),
         ComplementType.adjective => AdjectiveForm(
-          setAdjective: setComplement,
-          adjective: complement is Adjective? complement as Adjective : null,
-          settingsControl: settingsControl,
-          setCanSave: setCanSave,
-        ),
+            setAdjective: setComplement,
+            adjective: complement is Adjective ? complement as Adjective : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+          ),
         _ => PronounForm(
-          pronouns: pronouns,
-          setPronoun: setComplement,
-          pronoun: complement is Pronoun? complement as Pronoun : null,
-          setCanSave: setCanSave,
-          settingsControl: settingsControl,
-        ),
+            pronouns: pronouns,
+            setPronoun: setComplement,
+            pronoun: complement is Pronoun ? complement as Pronoun : null,
+            setCanSave: setCanSave,
+            settingsControl: settingsControl,
+          ),
       },
     );
   }
 
-  setComplement(SubjectComplement? complement) => setState(() => this.complement = complement);
+  setComplement(SubjectComplement? complement) =>
+      setState(() => this.complement = complement);
 
   setType(ComplementType type) => setState(() => this.type = type);
 

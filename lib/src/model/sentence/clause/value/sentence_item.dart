@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-enum IndependentClausePartColor {
+enum SentenceItem {
   noun(Colors.orange),
   verb(Colors.blue),
   adverb(Colors.purple);
+
   final Color color;
 
-  const IndependentClausePartColor(this.color);
+  const SentenceItem(this.color);
 }

@@ -1,24 +1,28 @@
 import 'any_noun.dart';
 
 class Pronoun extends AnyNoun {
-  String value;
-
-  Pronoun(this.value);
+  @override
+  final String en;
+  @override
+  final String es;
+  @override
+  final PersonalPronoun asPronoun;
 
   @override
-  bool get isSingularFirstPerson => value.toLowerCase() == 'i';
+  Countability get countability =>
+      ['you', 'we', 'they'].contains(en.toLowerCase())
+          ? Countability.plural
+          : Countability.singular;
 
   @override
-  bool get isSingularThirdPerson => ['he','she','it'].contains(value.toLowerCase());
+  bool get isSingularFirstPerson => en.toLowerCase() == 'i';
 
   @override
-  Countability get countability {
-    if (['you','we','they'].contains(value.toLowerCase())) {
-      return Countability.plural;
-    }
-    return Countability.singular;
-  }
+  bool get isSingularThirdPerson =>
+      ['he', 'she', 'it'].contains(en.toLowerCase());
+
+  const Pronoun(this.en, this.es, this.asPronoun);
 
   @override
-  String toString() => value;
+  String toString() => en;
 }

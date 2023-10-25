@@ -31,8 +31,9 @@ class PronounForm extends StatelessWidget {
         settingsControl,
         ListTile(
           title: Text(
-            pronoun == null? '<Pronoun>' : pronoun.toString(),
-            style: pronoun == null? unsetTextStyle
+            pronoun == null ? '<Pronoun>' : pronoun.toString(),
+            style: pronoun == null
+                ? unsetTextStyle
                 : const TextStyle(color: pronounColor),
           ),
         ),
@@ -41,13 +42,13 @@ class PronounForm extends StatelessWidget {
         DropdownTile(
           color: pronounColor,
           title: 'Pronoun',
-          textValue: pronoun?.value,
+          textValue: pronoun?.en,
           fields: [
             SentenceItemField<Pronoun>(
               label: 'Pronoun',
               value: pronoun,
               options: pronouns,
-              displayStringForOption: (pronoun) => pronoun.value,
+              displayStringForOption: (pronoun) => pronoun.en,
               onSelected: (pronoun) => validateAndSet(pronoun),
               onChanged: (text) => validateAndSet(null),
             ),

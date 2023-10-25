@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/adverb/value/adverb_position.dart';
-import '../../../model/sentence/clause/value/independent_clause_part_color.dart';
-import '../../../service/vocabulary_service.dart';
+import '../../../model/sentence/clause/value/sentence_item.dart';
+import '../../../repository/adverb_repository.dart';
 import '../../item_editor_layout.dart';
 import '../dropdown_tile.dart';
 import '../sentence_item_field.dart';
@@ -28,15 +28,15 @@ class AdverbForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final vocabularyService = Provider.of<VocabularyService>(context);
+    final adverbRepository = Provider.of<AdverbRepository>(context);
 
-    List<Adverb> adverbs = switch(position) {
-      AdverbPosition.front => vocabularyService.frontAdverbs(),
-      AdverbPosition.mid => vocabularyService.midAdverbs(),
-      _ => vocabularyService.endAdverbs(),
+    List<Adverb> adverbs = switch (position) {
+      AdverbPosition.front => adverbRepository.frontAdverbs(),
+      AdverbPosition.mid => adverbRepository.midAdverbs(),
+      _ => adverbRepository.endAdverbs(),
     };
 
-    String label = switch(position) {
+    String label = switch (position) {
       AdverbPosition.front => 'FrontAdverb',
       AdverbPosition.mid => 'MidAdverb',
       _ => 'EndAdverb',
@@ -50,18 +50,18 @@ class AdverbForm extends StatelessWidget {
             children: <TextSpan>[
               TextSpan(
                   text: '${adverb ?? '<$label>'}',
-                  style: (adverb == null)? unsetTextStyle
-                      : TextStyle(color: IndependentClausePartColor.adverb.color)
-              ),
+                  style: (adverb == null)
+                      ? unsetTextStyle
+                      : TextStyle(color: SentenceItem.adverb.color)),
             ],
           )),
         ),
       ],
       body: [
         DropdownTile(
-          color: IndependentClausePartColor.adverb.color,
+          color: SentenceItem.adverb.color,
           title: label,
-          textValue: adverb?.value,
+          textValue: adverb?.en,
           required: true,
           fields: [
             SentenceItemField<Adverb>(

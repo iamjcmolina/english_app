@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/adjective/adjective.dart';
-import '../../../service/vocabulary_service.dart';
+import '../../../repository/noun_repository.dart';
 import '../../item_editor_layout.dart';
 import '../dropdown_tile.dart';
 import '../sentence_item_field.dart';
@@ -27,9 +27,9 @@ class AdjectiveForm extends StatelessWidget {
 
     Color adjectiveColor = Colors.green;
 
-    final vocabularyService = Provider.of<VocabularyService>(context);
+    final nounRepository = Provider.of<NounRepository>(context);
 
-    List<Adjective> adjectives = vocabularyService.adjectives();
+    List<Adjective> adjectives = nounRepository.adjectives();
 
     return ItemEditorLayout(
       header: [
@@ -38,8 +38,9 @@ class AdjectiveForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: adjective == null? '<Adjective> ' : '$adjective ',
-                style: adjective == null? unsetTextStyle
+                text: adjective == null ? '<Adjective> ' : '$adjective ',
+                style: adjective == null
+                    ? unsetTextStyle
                     : TextStyle(color: adjectiveColor),
               ),
             ],

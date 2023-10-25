@@ -1,7 +1,12 @@
 import 'any_adjective.dart';
 
 class Adjective extends AnyAdjective {
-  String value;
+  final String value;
+  final String singularEs;
+  final String pluralEs;
 
-  Adjective(this.value);
+  const Adjective(this.value, this.singularEs, this.pluralEs);
+
+  @override
+  String toString() => value;
 }

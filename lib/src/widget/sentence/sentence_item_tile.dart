@@ -5,6 +5,7 @@ class SentenceItemTile extends StatelessWidget {
   final String label;
   final String? subtitle;
   final String? value;
+  final String? valueEs;
   final Widget? trailing;
   final void Function()? onTap;
   final bool show;
@@ -16,6 +17,7 @@ class SentenceItemTile extends StatelessWidget {
     required this.label,
     this.subtitle,
     this.value,
+    this.valueEs,
     this.trailing,
     this.onTap,
     this.show = true,
@@ -27,31 +29,40 @@ class SentenceItemTile extends StatelessWidget {
     if (!show) {
       return const SizedBox.shrink();
     }
-    bool emptyValue = value == null || value!.isEmpty;
+    final isEmptyValue = value == null || value!.isEmpty;
     return ListTile(
       title: Text.rich(TextSpan(
         children: [
-          if (!emptyValue) TextSpan(
-            text: value,
-            style: TextStyle(color: color),
-          ),
+          if (!isEmptyValue)
+            TextSpan(
+              text: value,
+              style: TextStyle(color: color),
+            ),
           TextSpan(
-            text: emptyValue? label : ' $label',
+            text: isEmptyValue ? label : ' $label',
             style: TextStyle(
-              fontSize: emptyValue? 14 : 12,
+              fontSize: isEmptyValue ? 14 : 12,
             ),
           ),
           TextSpan(
-            text: required? ' *' : '',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            )
-          )
+              text: required ? ' *' : '',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              )),
+          TextSpan(
+            text: valueEs == null ? '' : '\n$valueEs',
+            style: TextStyle(
+              color: isEmptyValue ? null : color,
+              fontSize: isEmptyValue ? 14 : 12,
+            ),
+          ),
         ],
       )),
-      subtitle: subtitle == null || subtitle!.isEmpty? null
-          : Text(subtitle!, style: const TextStyle(fontStyle: FontStyle.italic)),
+      subtitle: subtitle == null || subtitle!.isEmpty
+          ? null
+          : Text(subtitle!,
+              style: const TextStyle(fontStyle: FontStyle.italic)),
       trailing: trailing,
       onTap: onTap,
     );

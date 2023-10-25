@@ -13,49 +13,8 @@ class NounPhrase extends AnyNoun {
   Adjective? adjective;
   Noun? noun;
 
-  NounPhrase({
-    this.quantifier,
-    this.determiner,
-    this.number,
-    this.adjective,
-    this.noun
-  });
-
-  NounPhrase copyWith({
-    Nullable<Determiner>? quantifier,
-    Nullable<Determiner>? determiner,
-    Nullable<Determiner>? number,
-    Nullable<Adjective>? adjective,
-    Nullable<Noun>? noun,
-  }) => NounPhrase(
-    quantifier: quantifier == null? this.quantifier : quantifier.value,
-    determiner: determiner == null? this.determiner : determiner.value,
-    number: number == null? this.number : number.value,
-    adjective: adjective == null? this.adjective : adjective.value,
-    noun: noun == null? this.noun : noun.value,
-  );
-
   @override
-  Countability get countability => noun?.countability ?? Countability.singular;
-
-  @override
-  bool get isSingularFirstPerson => noun?.isSingularFirstPerson ?? false;
-
-  @override
-  bool get isSingularThirdPerson => noun?.isSingularThirdPerson ?? true;
-
-  bool get allowQuantifier => number == null && adjective == null
-      && determiner?.type == DeterminerType.possessive;
-  bool get allowNumber => quantifier == null && determiner?.type != null
-      && determiner?.type != DeterminerType.number;
-  bool get allowAdjective => quantifier == null;
-
-  String? get quantifierText => quantifier == null? null : '$quantifier'
-  '${quantifier!.value.contains('of')? '' : ' of'}';
-
-
-  @override
-  String toString() {
+  String get en {
     SentenceBuffer buffer = SentenceBuffer();
     buffer.add(quantifier, when: allowQuantifier, disablePrefixWhen: true);
     buffer.add(determiner);
@@ -64,4 +23,78 @@ class NounPhrase extends AnyNoun {
     buffer.add(noun);
     return buffer.toString();
   }
+
+  @override
+  String get es {
+    SentenceBuffer buffer = SentenceBuffer();
+    buffer.add(quantifier?.es, when: allowQuantifier, disablePrefixWhen: true);
+    buffer.add(determiner?.es);
+    buffer.add(number?.es, when: allowNumber);
+    buffer.add(noun?.es);
+    buffer.add(adjectiveEs, when: allowAdjective);
+    return buffer.toString();
+  }
+
+  @override
+  Countability get countability => noun?.countability ?? Countability.singular;
+
+  @override
+  PersonalPronoun get asPronoun => noun?.asPronoun ?? PersonalPronoun.it;
+
+  @override
+  bool get isSingularFirstPerson => noun?.isSingularFirstPerson ?? false;
+
+  @override
+  bool get isSingularThirdPerson => noun?.isSingularThirdPerson ?? true;
+
+  bool get allowQuantifier =>
+      number == null &&
+      adjective == null &&
+      determiner?.type == DeterminerType.possessive;
+
+  bool get allowNumber =>
+      quantifier == null &&
+      determiner?.type != null &&
+      determiner?.type != DeterminerType.number;
+
+  bool get allowAdjective => quantifier == null;
+
+  String? get quantifierOf => quantifier == null
+      ? null
+      : '$quantifier'
+          '${quantifier!.en.contains('of') ? '' : ' of'}';
+
+  String? get quantifierOfEs => quantifier == null
+      ? null
+      : '${quantifier!.es}'
+          '${quantifier!.en.contains('of') ? '' : ' de'}';
+
+  String? get adjectiveEs =>
+      isPlural ? adjective?.pluralEs : adjective?.singularEs;
+
+  NounPhrase({
+    this.quantifier,
+    this.determiner,
+    this.number,
+    this.adjective,
+    this.noun,
+  });
+
+  NounPhrase copyWith({
+    Nullable<Determiner>? quantifier,
+    Nullable<Determiner>? determiner,
+    Nullable<Determiner>? number,
+    Nullable<Adjective>? adjective,
+    Nullable<Noun>? noun,
+  }) =>
+      NounPhrase(
+        quantifier: quantifier == null ? this.quantifier : quantifier.value,
+        determiner: determiner == null ? this.determiner : determiner.value,
+        number: number == null ? this.number : number.value,
+        adjective: adjective == null ? this.adjective : adjective.value,
+        noun: noun == null ? this.noun : noun.value,
+      );
+
+  @override
+  String toString() => en;
 }

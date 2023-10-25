@@ -3,75 +3,100 @@ import 'value/adverb_position.dart';
 import 'value/adverb_type.dart';
 
 class Adverb extends AnyAdverb {
-  final String value;
+  @override
+  final String en;
+  @override
+  final String es;
   final AdverbType type;
   final Set<AdverbPosition> positions;
 
-  Adverb(this.value, this.type, this.positions);
+  Adverb(this.en, this.es, this.type, this.positions);
 
-  Adverb.manner(String value): this(
-    value,
-    AdverbType.manner,
-    {AdverbPosition.end, AdverbPosition.mid},
-  );
-
-  Adverb.place(String value): this(
-    value,
-    AdverbType.place,
-    {AdverbPosition.end, AdverbPosition.front},
-  );
-
-  Adverb.time(String value): this(
-    value,
-    AdverbType.time,
-    {AdverbPosition.end, AdverbPosition.front},
-  );
-
-  Adverb.duration(String value): this(
-    value,
-    AdverbType.duration,
-    {AdverbPosition.end},
-  );
-
-  Adverb.frequency(String value,
-      [Set<AdverbPosition> positions =
-      const {AdverbPosition.mid, AdverbPosition.front, AdverbPosition.end}])
+  Adverb.manner(String value, String es)
       : this(
-    value,
-    AdverbType.frequency,
-    positions,
-  );
+          value,
+          es,
+          AdverbType.manner,
+          {AdverbPosition.end, AdverbPosition.mid},
+        );
 
-  Adverb.degree(String value, Set<AdverbPosition> positions): this(
-    value,
-    AdverbType.degree,
-    positions,
-  );
+  Adverb.place(String value, String es)
+      : this(
+          value,
+          es,
+          AdverbType.place,
+          {AdverbPosition.end, AdverbPosition.front},
+        );
 
-  Adverb.focusing(String value): this(
-    value,
-    AdverbType.focusing,
-    {AdverbPosition.mid},
-  );
+  Adverb.time(String value, String es)
+      : this(
+          value,
+          es,
+          AdverbType.time,
+          {AdverbPosition.end, AdverbPosition.front},
+        );
 
-  Adverb.certainty(String value, Set<AdverbPosition> positions): this(
-    value,
-    AdverbType.certainty,
-    positions,
-  );
+  Adverb.duration(String value, String es)
+      : this(
+          value,
+          es,
+          AdverbType.duration,
+          {AdverbPosition.end},
+        );
 
-  Adverb.viewpoint(String value): this(
-    value,
-    AdverbType.viewpoint,
-    {AdverbPosition.front, AdverbPosition.mid},
-  );
+  Adverb.frequency(String value, String es,
+      [Set<AdverbPosition> positions = const {
+        AdverbPosition.mid,
+        AdverbPosition.front,
+        AdverbPosition.end
+      }])
+      : this(
+          value,
+          es,
+          AdverbType.frequency,
+          positions,
+        );
 
-  Adverb.evaluative(String value): this(
-    value,
-    AdverbType.evaluative,
-    {AdverbPosition.front, AdverbPosition.mid, AdverbPosition.end},
-  );
+  Adverb.degree(String value, String es, Set<AdverbPosition> positions)
+      : this(
+          value,
+          es,
+          AdverbType.degree,
+          positions,
+        );
+
+  Adverb.focusing(String value, String es)
+      : this(
+          value,
+          es,
+          AdverbType.focusing,
+          {AdverbPosition.mid},
+        );
+
+  Adverb.certainty(String value, String es, Set<AdverbPosition> positions)
+      : this(
+          value,
+          es,
+          AdverbType.certainty,
+          positions,
+        );
+
+  Adverb.viewpoint(String value, String es)
+      : this(
+          value,
+          es,
+          AdverbType.viewpoint,
+          {AdverbPosition.front, AdverbPosition.mid},
+        );
+
+  Adverb.evaluative(String value, String es)
+      : this(
+          value,
+          es,
+          AdverbType.evaluative,
+          {AdverbPosition.front, AdverbPosition.mid, AdverbPosition.end},
+        );
 
   @override
-  String toString() => value;
+  String toString() => en;
 }

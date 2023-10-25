@@ -5,7 +5,7 @@ import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/noun_type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
-import '../../../service/vocabulary_service.dart';
+import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
@@ -31,27 +31,29 @@ class _ObjectPageState extends State<ObjectPage> {
   AnyNoun? object;
   bool canSave = false;
 
-  bool get mustAllowPronouns => !widget.isDitransitiveVerb || widget.isIndirectObject;
+  bool get mustAllowPronouns =>
+      !widget.isDitransitiveVerb || widget.isIndirectObject;
 
   @override
   void initState() {
     super.initState();
     object = widget.object;
     canSave = object != null;
-    nounType = mustAllowPronouns ?
-    switch(object.runtimeType) {
-      NounPhrase => NounType.nounPhrase,
-      _ => NounType.pronoun,
-    } : switch(object.runtimeType) {
-      _ => NounType.nounPhrase,
-    };
+    nounType = mustAllowPronouns
+        ? switch (object.runtimeType) {
+            NounPhrase => NounType.nounPhrase,
+            _ => NounType.pronoun,
+          }
+        : switch (object.runtimeType) {
+            _ => NounType.nounPhrase,
+          };
   }
 
   @override
   Widget build(BuildContext context) {
-    final vocabularyService = Provider.of<VocabularyService>(context);
+    final nounRepository = Provider.of<NounRepository>(context);
 
-    List<Pronoun> pronouns = vocabularyService.objectPronouns();
+    List<Pronoun> pronouns = nounRepository.objectPronouns();
 
     final settingsControl = Center(
       child: DropdownButton<NounType>(
@@ -61,18 +63,18 @@ class _ObjectPageState extends State<ObjectPage> {
             .where((e) => mustAllowPronouns ? true : e != NounType.pronoun)
             .map<DropdownMenuItem<NounType>>(
                 (NounType item) => DropdownMenuItem<NounType>(
-              value: item,
-              child: Text(item.name),
-            )
-        ).toList(),
+                      value: item,
+                      child: Text(item.name),
+                    ))
+            .toList(),
       ),
     );
 
     return SentenceScaffold(
-      title: widget.isIndirectObject? 'Indirect Object' : 'Direct Object',
+      title: widget.isIndirectObject ? 'Indirect Object' : 'Direct Object',
       bottomActions: [
         IconButton(
-          onPressed: canSave? () => Navigator.pop(context, object) : null,
+          onPressed: canSave ? () => Navigator.pop(context, object) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
@@ -80,28 +82,32 @@ class _ObjectPageState extends State<ObjectPage> {
           icon: const Icon(Icons.clear),
         ),
       ],
-      body: mustAllowPronouns ? switch(nounType) {
-        NounType.nounPhrase => NounPhraseForm(
-          setNounPhrase: setObject,
-          nounPhrase: object is NounPhrase? object as NounPhrase : null,
-          settingsControl: settingsControl,
-          setCanSave: setCanSave,
-        ),
-        _ => PronounForm(
-          pronouns: pronouns,
-          setPronoun: setObject,
-          pronoun: object is Pronoun? object as Pronoun : null,
-          setCanSave: setCanSave,
-          settingsControl: settingsControl,
-        ),
-      } : switch(nounType) {
-        _ => NounPhraseForm(
-          setNounPhrase: setObject,
-          nounPhrase: object is NounPhrase? object as NounPhrase : null,
-          settingsControl: settingsControl,
-          setCanSave: setCanSave,
-        ),
-      },
+      body: mustAllowPronouns
+          ? switch (nounType) {
+              NounType.nounPhrase => NounPhraseForm(
+                  setNounPhrase: setObject,
+                  nounPhrase:
+                      object is NounPhrase ? object as NounPhrase : null,
+                  settingsControl: settingsControl,
+                  setCanSave: setCanSave,
+                ),
+              _ => PronounForm(
+                  pronouns: pronouns,
+                  setPronoun: setObject,
+                  pronoun: object is Pronoun ? object as Pronoun : null,
+                  setCanSave: setCanSave,
+                  settingsControl: settingsControl,
+                ),
+            }
+          : switch (nounType) {
+              _ => NounPhraseForm(
+                  setNounPhrase: setObject,
+                  nounPhrase:
+                      object is NounPhrase ? object as NounPhrase : null,
+                  settingsControl: settingsControl,
+                  setCanSave: setCanSave,
+                ),
+            },
     );
   }
 
