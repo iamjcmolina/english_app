@@ -1,54 +1,125 @@
-import 'package:flutter/cupertino.dart';
-
 import '../model/sentence/adverb/adverb.dart';
-import '../model/sentence/adverb/value/adverb_position.dart';
+import 'vocabulary_provider.dart';
 
-class AdverbRepository extends ChangeNotifier {
-  List<Adverb> allAdverbs = [
-    Adverb.manner('quickly', 'rápidamente'),
-    Adverb.place('here', 'aquí'),
-    Adverb.place('there', 'allá'),
-    Adverb.place('outside', 'afuera'),
-    Adverb.time('today', 'hoy'),
-    Adverb.time('tomorrow', 'mañana'),
-    Adverb.duration('long', 'mucho tiempo'),
-    Adverb.frequency(
-        'always', 'siempre', {AdverbPosition.mid, AdverbPosition.end}),
-    Adverb.frequency('usually', 'usualmente'),
-    Adverb.frequency('normally', 'normalmente'),
-    Adverb.frequency('often', 'a menudo'),
-    Adverb.frequency('sometimes', 'algunas veces'),
-    Adverb.frequency('occasionally', 'ocasionalmente'),
-    Adverb.frequency('rarely', 'raramente'),
-    Adverb.frequency(
-        'never', 'nunca', {AdverbPosition.mid, AdverbPosition.end}),
-    Adverb.degree('really', 'realmente', {AdverbPosition.mid}),
-    Adverb.degree('very', 'muy', {AdverbPosition.mid}),
-    Adverb.degree('quite', 'bastante', {AdverbPosition.mid}),
-    Adverb.degree('a lot', 'mucho', {AdverbPosition.end}),
-    Adverb.degree('a bit', 'un poco', {AdverbPosition.end}),
-    Adverb.focusing('simply', 'simplemente'),
-    Adverb.certainty('probably', 'probablemente', {AdverbPosition.mid}),
-    Adverb.certainty('possibly', 'posiblemente', {AdverbPosition.mid}),
-    Adverb.certainty('certainly', 'ciertamente', {AdverbPosition.mid}),
-    Adverb.certainty(
-        'maybe', 'tal vez', {AdverbPosition.front, AdverbPosition.end}),
-    Adverb.certainty(
-        'perhaps', 'tal vez', {AdverbPosition.front, AdverbPosition.end}),
-    Adverb.viewpoint('personally', 'personalmente'),
-    Adverb.viewpoint('frankly', 'francamente'),
-    Adverb.evaluative('unfortunately', 'desafortunadamente'),
-  ];
+class AdverbRepository extends VocabularyProvider {
+  final List<Adverb> _mannerAdverbs = [];
+  final List<Adverb> _placeAdverbs = [];
+  final List<Adverb> _timeAdverbs = [];
+  final List<Adverb> _durationAdverbs = [];
+  final List<Adverb> _degreeAdverbs = [];
+  final List<Adverb> _focusingAdverbs = [];
+  final List<Adverb> _certaintyAdverbs = [];
+  final List<Adverb> _viewpointAdverbs = [];
+  final List<Adverb> _evaluativeAdverbs = [];
 
-  List<Adverb> frontAdverbs() => allAdverbs
-      .where((adverb) => adverb.positions.contains(AdverbPosition.front))
-      .toList();
+  AdverbRepository(super.context) {
+    _loadData();
+  }
 
-  List<Adverb> midAdverbs() => allAdverbs
-      .where((adverb) => adverb.positions.contains(AdverbPosition.mid))
-      .toList();
+  List<Adverb> adverbs() => [
+        ..._certaintyAdverbs,
+        ..._degreeAdverbs,
+        ..._durationAdverbs,
+        ..._evaluativeAdverbs,
+        ..._focusingAdverbs,
+        ..._mannerAdverbs,
+        ..._placeAdverbs,
+        ..._timeAdverbs,
+        ..._viewpointAdverbs,
+      ];
 
-  List<Adverb> endAdverbs() => allAdverbs
-      .where((adverb) => adverb.positions.contains(AdverbPosition.end))
-      .toList();
+  List<Adverb> frontAdverbs() =>
+      adverbs().where((adverb) => adverb.isAllowedInFront).toList();
+
+  List<Adverb> midAdverbs() =>
+      adverbs().where((adverb) => adverb.isAllowedInTheMiddle).toList();
+
+  List<Adverb> endAdverbs() =>
+      adverbs().where((adverb) => adverb.isAllowedInTheEnd).toList();
+
+  Future<void> _loadData() async {
+    _mannerAdverbs.addAll(await _getMannerAdverbs());
+    _placeAdverbs.addAll(await _getPlaceAdverbs());
+    _timeAdverbs.addAll(await _getTimeAdverbs());
+    _durationAdverbs.addAll(await _getDurationAdverbs());
+    _degreeAdverbs.addAll(await _getDegreeAdverbs());
+    _focusingAdverbs.addAll(await _getFocusingAdverbs());
+    _certaintyAdverbs.addAll(await _getCertaintyAdverbs());
+    _viewpointAdverbs.addAll(await _getViewpointAdverbs());
+    _evaluativeAdverbs.addAll(await _getEvaluativeAdverbs());
+    notifyListeners();
+  }
+
+  Future<List<Adverb>> _getMannerAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/manner');
+    return rows
+        .map((row) => Adverb.manner(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getPlaceAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/place');
+    return rows
+        .map((row) => Adverb.place(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getTimeAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/time');
+    return rows
+        .map((row) => Adverb.time(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getDurationAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/duration');
+    return rows
+        .map((row) => Adverb.duration(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getDegreeAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/degree');
+    return rows
+        .map((row) => Adverb.degree(
+            row.elementAt(0),
+            row.elementAt(1),
+            row.elementAt(2) == '1',
+            row.elementAt(3) == '1',
+            row.elementAt(4) == '1'))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getFocusingAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/focusing');
+    return rows
+        .map((row) => Adverb.focusing(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getCertaintyAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/certainty');
+    return rows
+        .map((row) => Adverb.certainty(
+            row.elementAt(0),
+            row.elementAt(1),
+            row.elementAt(2) == '1',
+            row.elementAt(3) == '1',
+            row.elementAt(4) == '1'))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getViewpointAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/viewpoint');
+    return rows
+        .map((row) => Adverb.viewpoint(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
+
+  Future<List<Adverb>> _getEvaluativeAdverbs() async {
+    List<List<dynamic>> rows = await getCsvData('adverbs/evaluative');
+    return rows
+        .map((row) => Adverb.evaluative(row.elementAt(0), row.elementAt(1)))
+        .toList();
+  }
 }

@@ -1,0 +1,11 @@
+en,es,isUncountableAllowed,isSingularAllowed,isPluralAllowed
+some,algún/alguna/algunos(as),1,1,1
+much,mucho(a)/muchos(as),1,0,0
+many,demasiados(as),0,0,1
+a lot of,mucho(a)/muchos(as),1,0,1
+a few,algunos(as),0,0,1
+a little,un poco de,1,0,0
+a bit of,un poquito de,1,0,0
+the few,los pocos/las pocas,0,0,1
+enough,suficiente(s),1,0,1
+several,varios(as),0,0,1

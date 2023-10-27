@@ -29,9 +29,9 @@ class EnglishApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final adverbRepository = AdverbRepository();
-    final nounRepository = NounRepository();
-    final verbRepository = VerbRepository();
+    final adverbRepository = AdverbRepository(context);
+    final nounRepository = NounRepository(context);
+    final verbRepository = VerbRepository(context);
     final clauseService = IndependentClauseService();
     final clauseCubit = IndependentClauseCubit(clauseService);
 

@@ -4,80 +4,80 @@ class Determiner {
   final String en;
   final String es;
   final DeterminerType type;
-  final bool allowsUncountable;
-  final bool allowsSingular;
-  final bool allowsPlural;
+  final bool isUncountableAllowed;
+  final bool isSingularAllowed;
+  final bool isPluralAllowed;
 
   const Determiner({
     required this.en,
     required this.es,
     required this.type,
-    required this.allowsUncountable,
-    required this.allowsSingular,
-    required this.allowsPlural,
+    required this.isUncountableAllowed,
+    required this.isSingularAllowed,
+    required this.isPluralAllowed,
   });
 
-  Determiner.article(
+  const Determiner.article(
     this.en,
     this.es,
-    this.allowsUncountable,
-    this.allowsSingular,
-    this.allowsPlural,
+    this.isUncountableAllowed,
+    this.isSingularAllowed,
+    this.isPluralAllowed,
   ) : type = DeterminerType.article;
 
-  Determiner.possessive(this.en, this.es)
+  const Determiner.possessive(this.en, this.es)
       : type = DeterminerType.possessive,
-        allowsUncountable = true,
-        allowsSingular = true,
-        allowsPlural = true;
+        isUncountableAllowed = true,
+        isSingularAllowed = true,
+        isPluralAllowed = true;
 
-  Determiner.demonstrative(
+  const Determiner.demonstrative(
     this.en,
     this.es,
-    this.allowsUncountable,
-    this.allowsSingular,
-    this.allowsPlural,
+    this.isUncountableAllowed,
+    this.isSingularAllowed,
+    this.isPluralAllowed,
   ) : type = DeterminerType.demonstrative;
 
-  Determiner.distributive(
+  const Determiner.distributiveAdjective(
     this.en,
     this.es,
-    this.allowsUncountable,
-    this.allowsSingular,
-    this.allowsPlural,
+    this.isUncountableAllowed,
+    this.isSingularAllowed,
+    this.isPluralAllowed,
   ) : type = DeterminerType.distributive;
 
-  Determiner.quantifier(
+  const Determiner.quantifier(
     this.en,
     this.es,
-    this.allowsUncountable,
-    this.allowsSingular,
-    this.allowsPlural,
+    this.isUncountableAllowed,
+    this.isSingularAllowed,
+    this.isPluralAllowed,
   ) : type = DeterminerType.quantifier;
 
-  Determiner.one()
+  const Determiner.one()
       : type = DeterminerType.number,
         en = 'one',
         es = 'uno/una',
-        allowsUncountable = false,
-        allowsSingular = true,
-        allowsPlural = false;
+        isUncountableAllowed = false,
+        isSingularAllowed = true,
+        isPluralAllowed = false;
 
-  Determiner.naturalNumber(
+  const Determiner.naturalNumber(
     this.en,
     this.es,
   )   : type = DeterminerType.number,
-        allowsUncountable = false,
-        allowsSingular = false,
-        allowsPlural = true;
+        isUncountableAllowed = false,
+        isSingularAllowed = false,
+        isPluralAllowed = true;
 
-  Determiner.ordinalNumber(
+  const Determiner.ordinalNumber(
     this.en,
     this.es,
   )   : type = DeterminerType.number,
-        allowsUncountable = false,
-        allowsSingular = true,
-        allowsPlural = false;
+        isUncountableAllowed = false,
+        isSingularAllowed = true,
+        isPluralAllowed = false;
 
   @override
   String toString() => en;

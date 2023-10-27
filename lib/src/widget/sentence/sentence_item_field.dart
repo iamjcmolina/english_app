@@ -8,7 +8,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
   final bool enable;
   final void Function(T) onSelected;
   final void Function(String)? onChanged;
-  final TextEditingController? textEditingController;
+  final TextEditingController? textController;
 
   const SentenceItemField({
     super.key,
@@ -19,34 +19,25 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     this.enable = true,
     required this.onSelected,
     required this.onChanged,
-    this.textEditingController,
+    this.textController,
   });
 
   @override
   Widget build(BuildContext context) {
-    final textEditingController = this.textEditingController ?? TextEditingController();
-    textEditingController.text = value != null? nullableToString(value) : '';
+    final textController = this.textController ?? TextEditingController();
+    textController.text = value != null ? safe(value) : '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
       child: RawAutocomplete<T>(
         displayStringForOption: displayStringForOption,
         focusNode: FocusNode(),
-        textEditingController: textEditingController,
-        optionsBuilder: (TextEditingValue textEditingValue) {
-          if (textEditingValue.text == '') {
-            return options;
-          }
-          return options.where((T option) {
-            return nullableToString(option).contains(textEditingValue.text.toLowerCase());
-          });
-        },
+        textEditingController: textController,
+        optionsBuilder: optionsBuilder,
         onSelected: onSelected,
-        fieldViewBuilder: (
-            BuildContext context,
+        fieldViewBuilder: (BuildContext context,
             TextEditingController textEditingController,
             FocusNode focusNode,
-            VoidCallback onFieldSubmitted
-            ) {
+            VoidCallback onFieldSubmitted) {
           return TextFormField(
             keyboardType: TextInputType.none,
             controller: textEditingController,
@@ -54,23 +45,20 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
             decoration: InputDecoration(
               label: Text(label),
               suffixIcon: IconButton(
-                onPressed: () {
-                  textEditingController.clear();
-                  if (onChanged != null) onChanged!('');
-                },
+                onPressed: () => onClear(textEditingController),
                 icon: const Icon(Icons.clear),
               ),
             ),
-            validator: (value) => optionFound(value)? null : 'Choose a valid $label',
+            validator: validator,
             autovalidateMode: AutovalidateMode.always,
             onChanged: onChanged,
           );
         },
         optionsViewBuilder: (
-            BuildContext context,
-            AutocompleteOnSelected<T> onSelected,
-            Iterable<T> options,
-            ) {
+          BuildContext context,
+          AutocompleteOnSelected<T> onSelected,
+          Iterable<T> options,
+        ) {
           return Align(
             alignment: Alignment.topLeft,
             child: Material(
@@ -98,7 +86,22 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     );
   }
 
-  String nullableToString(T? value) => (value == null)? '' : displayStringForOption(value);
+  String safe(T? value) => value == null ? '' : displayStringForOption(value);
 
-  optionFound(value) => options.any((option) => nullableToString(option) == value);
+  void onClear(TextEditingController textController) {
+    textController.clear();
+    if (onChanged != null) onChanged!('');
+  }
+
+  Iterable<T> optionsBuilder(TextEditingValue textValue) => textValue.text == ''
+      ? options
+      : options.where((T option) => displayStringForOption(option)
+          .contains(textValue.text.toLowerCase()));
+
+  String? validator(String? value) =>
+      isOptionFound(value) ? null : 'Choose a valid $label';
+
+  bool isOptionFound(String? value) => value == null
+      ? false
+      : options.any((option) => displayStringForOption(option) == value);
 }

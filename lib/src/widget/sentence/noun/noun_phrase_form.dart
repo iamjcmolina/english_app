@@ -39,26 +39,6 @@ class NounPhraseForm extends StatelessWidget {
 
     final nounRepository = Provider.of<NounRepository>(context);
 
-    List<Determiner> articles = nounRepository.articles(safePhrase.noun);
-    List<Determiner> possessives = nounRepository.possessives();
-    List<Determiner> demonstratives =
-        nounRepository.demonstrativeAdjectives(safePhrase.noun);
-    List<Determiner> distributiveAdjectives =
-        nounRepository.distributiveAdjectives(safePhrase.noun);
-    List<Determiner> quantifiers = nounRepository.quantifiers(safePhrase.noun);
-    List<Determiner> numbers = nounRepository.numbers(safePhrase.noun);
-    List<Determiner> allNumbers = nounRepository.numbers(safePhrase.noun, true);
-    List<Adjective> adjectives = nounRepository.adjectives();
-    List<Noun> nouns = nounRepository.nouns(safePhrase.determiner);
-    List<Determiner> determiners = [
-      ...articles,
-      ...possessives,
-      ...demonstratives,
-      ...distributiveAdjectives,
-      ...quantifiers,
-      ...numbers
-    ];
-
     return ItemEditorLayout(
       header: [
         settingsControl,
@@ -123,7 +103,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Determiner>(
               label: 'Quantifier',
               value: safePhrase.quantifier,
-              options: quantifiers,
+              options: nounRepository.quantifiers(safePhrase.noun),
               onSelected: (determiner) => setQuantifier(determiner),
               onChanged: (text) => setQuantifier(null),
             ),
@@ -139,7 +119,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Determiner>(
               label: 'Determiner',
               value: safePhrase.determiner,
-              options: determiners,
+              options: determiners(nounRepository),
               onSelected: (determiner) => setDeterminer(determiner),
               onChanged: (text) => setDeterminer(null),
             )
@@ -155,7 +135,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Determiner>(
               label: 'Number',
               value: safePhrase.number,
-              options: allNumbers,
+              options: nounRepository.numbers(safePhrase.noun, true),
               onSelected: (number) => setNumber(number),
               onChanged: (text) => setNumber(null),
             ),
@@ -164,14 +144,14 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: adjectiveColor,
           title: 'Adjective',
-          textValue: safePhrase.adjective?.value,
+          textValue: safePhrase.adjective?.en,
           textValueEs: safePhrase.adjectiveEs,
           show: safePhrase.allowAdjective,
           fields: [
             SentenceItemField<Adjective>(
               label: 'Adjective',
               value: safePhrase.adjective,
-              options: adjectives,
+              options: nounRepository.adjectives(),
               onSelected: (adjective) => setAdjective(adjective),
               onChanged: (text) => setAdjective(null),
             ),
@@ -187,7 +167,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Noun>(
               label: 'Noun',
               value: safePhrase.noun,
-              options: nouns,
+              options: nounRepository.nouns(safePhrase.determiner),
               onSelected: (noun) => setNoun(noun),
               onChanged: (text) => setNoun(null),
             ),
@@ -215,4 +195,13 @@ class NounPhraseForm extends StatelessWidget {
     setCanSave(phrase.determiner != null && phrase.noun != null);
     setNounPhrase(phrase);
   }
+
+  List<Determiner> determiners(NounRepository nounRepository) => [
+        ...nounRepository.articles(safePhrase.noun),
+        ...nounRepository.possessiveAdjectives(),
+        ...nounRepository.demonstrativeAdjectives(safePhrase.noun),
+        ...nounRepository.distributiveAdjectives(safePhrase.noun),
+        ...nounRepository.quantifiers(safePhrase.noun),
+        ...nounRepository.numbers(safePhrase.noun)
+      ];
 }

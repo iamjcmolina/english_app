@@ -1,0 +1,6 @@
+en,es,isUncountableAllowed,isSingularAllowed,isPluralAllowed
+each,cada,0,1,0
+every,todos(as),0,1,0
+both,ambos,0,0,1
+any,cualquier(a),1,1,1
+none,ningún/ninguno(a),0,0,1

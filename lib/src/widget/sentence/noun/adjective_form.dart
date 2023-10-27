@@ -29,8 +29,6 @@ class AdjectiveForm extends StatelessWidget {
 
     final nounRepository = Provider.of<NounRepository>(context);
 
-    List<Adjective> adjectives = nounRepository.adjectives();
-
     return ItemEditorLayout(
       header: [
         settingsControl,
@@ -51,12 +49,12 @@ class AdjectiveForm extends StatelessWidget {
         DropdownTile(
           color: adjectiveColor,
           title: 'Adjective',
-          textValue: adjective?.value,
+          textValue: adjective?.en,
           fields: [
             SentenceItemField<Adjective>(
               label: 'Adjective',
               value: adjective,
-              options: adjectives,
+              options: nounRepository.adjectives(),
               onSelected: (adjective) => validateAndSet(adjective),
               onChanged: (text) => validateAndSet(null),
             ),

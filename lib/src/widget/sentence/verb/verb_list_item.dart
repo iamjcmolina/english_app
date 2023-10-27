@@ -35,8 +35,6 @@ class VerbListItem extends StatelessWidget {
     }
     final verbRepository = Provider.of<VerbRepository>(context);
 
-    List<AnyVerb> verbs = verbRepository.findAll();
-
     final auxiliaryVerbLabel =
         clause.isBeAuxiliary ? ', ${clause.firstAuxiliaryVerbPlaceholder}' : '';
 
@@ -59,11 +57,11 @@ class VerbListItem extends StatelessWidget {
           SentenceItemField<AnyVerb>(
             label: clause.verbPlaceholder,
             value: clause.verb,
-            options: verbs,
+            options: verbRepository.verbs(),
             displayStringForOption: (verb) => clause.verbAsString(verb),
             onSelected: onVerbSelected,
             onChanged: (text) => onVerbChanged(),
-            textEditingController: verbEditingController,
+            textController: verbEditingController,
           ),
       ],
     );

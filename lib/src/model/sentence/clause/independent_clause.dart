@@ -147,9 +147,7 @@ class IndependentClause {
                 : verb is Be
                     ? _presentBe
                     : isNegativeContractionEnabled
-                        ? hasSingularThirdPersonSubject
-                            ? "doesn't"
-                            : "don't"
+                        ? (hasSingularThirdPersonSubject ? "doesn't" : "don't")
                         : hasSingularThirdPersonSubject
                             ? 'does not'
                             : 'do not'
@@ -158,9 +156,7 @@ class IndependentClause {
                 : verb is Be
                     ? _presentBe
                     : isInterrogative || isAffirmativeEmphasisEnabled
-                        ? hasSingularThirdPersonSubject
-                            ? 'does'
-                            : 'do'
+                        ? (hasSingularThirdPersonSubject ? 'does' : 'do')
                         : null,
       );
 
@@ -168,9 +164,7 @@ class IndependentClause {
       first: isNegative
           ? verb is Be
               ? _pastBe
-              : isNegativeContractionEnabled
-                  ? "didn't"
-                  : 'did not'
+              : (isNegativeContractionEnabled ? "didn't" : 'did not')
           : verb is Be
               ? _pastBe
               : isInterrogative || isAffirmativeEmphasisEnabled
@@ -181,53 +175,31 @@ class IndependentClause {
       first: isNegative
           ? isVerbContractionEnabled
               ? "'ll not"
-              : isNegativeContractionEnabled
-                  ? "won't"
-                  : 'will not'
-          : !isInterrogative && isVerbContractionEnabled
-              ? "'ll"
-              : 'will');
+              : (isNegativeContractionEnabled ? "won't" : 'will not')
+          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'));
 
   AuxiliaryVerbs get _simplePresentPerfect => AuxiliaryVerbs(
       first: isNegative
           ? isVerbContractionEnabled
-              ? hasSingularThirdPersonSubject
-                  ? "'s not"
-                  : "'ve not"
+              ? (hasSingularThirdPersonSubject ? "'s not" : "'ve not")
               : isNegativeContractionEnabled
-                  ? hasSingularThirdPersonSubject
-                      ? "hasn't"
-                      : "haven't"
-                  : hasSingularThirdPersonSubject
-                      ? 'has not'
-                      : 'have not'
-          : !isInterrogative && isVerbContractionEnabled
-              ? hasSingularThirdPersonSubject
-                  ? "'s"
-                  : "'ve"
-              : hasSingularThirdPersonSubject
-                  ? 'has'
-                  : 'have');
+                  ? (hasSingularThirdPersonSubject ? "hasn't" : "haven't")
+                  : (hasSingularThirdPersonSubject ? 'has not' : 'have not')
+          : isAffirmative && isVerbContractionEnabled
+              ? (hasSingularThirdPersonSubject ? "'s" : "'ve")
+              : (hasSingularThirdPersonSubject ? 'has' : 'have'));
 
   AuxiliaryVerbs get _simplePastPerfect => AuxiliaryVerbs(
       first: isNegative
-          ? isVerbContractionEnabled
-              ? "'d not"
-              : "had not"
-          : !isInterrogative && isVerbContractionEnabled
-              ? "'d"
-              : "had");
+          ? (isVerbContractionEnabled ? "'d not" : "had not")
+          : (isAffirmative && isVerbContractionEnabled ? "'d" : "had"));
 
   AuxiliaryVerbs get _simpleFuturePerfect => AuxiliaryVerbs(
       first: isNegative
           ? isVerbContractionEnabled
               ? "'ll not"
-              : isNegativeContractionEnabled
-                  ? "won't"
-                  : 'will not'
-          : !isInterrogative && isVerbContractionEnabled
-              ? "'ll"
-              : 'will',
+              : (isNegativeContractionEnabled ? "won't" : 'will not')
+          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
       second: 'have');
 
   AuxiliaryVerbs get _continuousPresent => AuxiliaryVerbs(
@@ -240,69 +212,47 @@ class IndependentClause {
       first: isNegative
           ? isVerbContractionEnabled
               ? "'ll not"
-              : isNegativeContractionEnabled
-                  ? "won't"
-                  : 'will not'
-          : !isInterrogative && isVerbContractionEnabled
-              ? "'ll"
-              : 'will',
+              : (isNegativeContractionEnabled ? "won't" : 'will not')
+          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
       second: 'be');
 
   AuxiliaryVerbs get _continuousPresentPerfect => AuxiliaryVerbs(
       first: isNegative
           ? isVerbContractionEnabled
-              ? hasSingularThirdPersonSubject
-                  ? "'s not"
-                  : "'ve not"
+              ? (hasSingularThirdPersonSubject ? "'s not" : "'ve not")
               : isNegativeContractionEnabled
-                  ? hasSingularThirdPersonSubject
-                      ? "hasn't"
-                      : "haven't"
-                  : hasSingularThirdPersonSubject
-                      ? 'has not'
-                      : 'have not'
-          : !isInterrogative && isVerbContractionEnabled
-              ? hasSingularThirdPersonSubject
-                  ? "'s"
-                  : "'ve"
-              : hasSingularThirdPersonSubject
-                  ? 'has'
-                  : 'have',
+                  ? (hasSingularThirdPersonSubject ? "hasn't" : "haven't")
+                  : (hasSingularThirdPersonSubject ? 'has not' : 'have not')
+          : isAffirmative && isVerbContractionEnabled
+              ? (hasSingularThirdPersonSubject ? "'s" : "'ve")
+              : (hasSingularThirdPersonSubject ? 'has' : 'have'),
       second: 'been');
 
   AuxiliaryVerbs get _continuousPastPerfect => AuxiliaryVerbs(
       first: isNegative
           ? isVerbContractionEnabled
               ? "'d not"
-              : isNegativeContractionEnabled
-                  ? "hadn't"
-                  : "had not"
-          : !isInterrogative && isVerbContractionEnabled
-              ? "'d"
-              : "had",
+              : (isNegativeContractionEnabled ? "hadn't" : "had not")
+          : (isAffirmative && isVerbContractionEnabled ? "'d" : "had"),
       second: 'been');
 
   AuxiliaryVerbs get _continuousFuturePerfect => AuxiliaryVerbs(
       first: isNegative
           ? isVerbContractionEnabled
               ? "'ll not"
-              : isNegativeContractionEnabled
-                  ? "won't"
-                  : 'will not'
-          : !isInterrogative && isVerbContractionEnabled
-              ? "'ll"
-              : 'will',
+              : (isNegativeContractionEnabled ? "won't" : 'will not')
+          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
       second: 'have',
       third: 'been');
 
   VerbTense get verbTense => isSimplePresent
-      ? !isAffirmative || isAffirmativeEmphasisEnabled || isModalVerbEnabled
-          ? VerbTense.infinitive
-          : VerbTense.present
+      ? isAffirmative && !isAffirmativeEmphasisEnabled && !isModalVerbEnabled
+          ? VerbTense.present
+          : VerbTense.infinitive
       : isSimplePast
-          ? !isAffirmative || isAffirmativeEmphasisEnabled
-              ? VerbTense.infinitive
-              : VerbTense.past
+          ? isAffirmative && !isAffirmativeEmphasisEnabled
+              ? VerbTense.past
+              : VerbTense.infinitive
           : isSimpleFuture
               ? VerbTense.infinitive
               : isSimplePresentPerfect ||
@@ -311,44 +261,27 @@ class IndependentClause {
                   ? VerbTense.pastParticiple
                   : VerbTense.progressive;
 
-  String get _presentBe {
-    final isVerbContractionEnabled =
-        !isInterrogative && this.isVerbContractionEnabled;
-    if (isNegative) {
-      if (hasSingularFirstPersonSubject) {
-        return isVerbContractionEnabled ? "'m not" : 'am not';
-      } else if (hasSingularThirdPersonSubject) {
-        return isNegativeContractionEnabled
-            ? "isn't"
-            : isVerbContractionEnabled
-                ? "'s not"
-                : 'is not';
-      }
-      return isNegativeContractionEnabled
-          ? "aren't"
-          : isVerbContractionEnabled
-              ? "'re not"
-              : 'are not';
-    }
-    if (hasSingularFirstPersonSubject) {
-      return isVerbContractionEnabled ? "'m" : 'am';
-    } else if (hasSingularThirdPersonSubject) {
-      return isVerbContractionEnabled ? "'s" : 'is';
-    }
-    return isVerbContractionEnabled ? "'re" : 'are';
-  }
+  String get _presentBe => isNegative
+      ? hasSingularFirstPersonSubject
+          ? (isVerbContractionEnabled ? "'m not" : 'am not')
+          : hasSingularThirdPersonSubject
+              ? isVerbContractionEnabled
+                  ? "'s not"
+                  : (isNegativeContractionEnabled ? "isn't" : 'is not')
+              : isVerbContractionEnabled
+                  ? "'re not"
+                  : (isNegativeContractionEnabled ? "aren't" : 'are not')
+      : hasSingularFirstPersonSubject
+          ? (isAffirmative && isVerbContractionEnabled ? "'m" : 'am')
+          : hasSingularThirdPersonSubject
+              ? (isAffirmative && isVerbContractionEnabled ? "'s" : 'is')
+              : (isAffirmative && isVerbContractionEnabled ? "'re" : 'are');
 
   String get _pastBe => isNegative
       ? isNegativeContractionEnabled
-          ? hasPluralSubject
-              ? "weren't"
-              : "wasn't"
-          : hasPluralSubject
-              ? 'were not'
-              : 'was not'
-      : hasPluralSubject
-          ? 'were'
-          : 'was';
+          ? (hasPluralSubject ? "weren't" : "wasn't")
+          : (hasPluralSubject ? 'were not' : 'was not')
+      : (hasPluralSubject ? 'were' : 'was');
 
   String get modalVerbPlaceholderEs => isNegative
       ? isVerbContractionEnabled

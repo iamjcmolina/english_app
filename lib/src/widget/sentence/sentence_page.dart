@@ -13,10 +13,7 @@ class SentencePage extends StatefulWidget {
 }
 
 class _SentencePageState extends State<SentencePage> {
-  Sentence sentence = Sentence(
-      independentClause: IndependentClause()
-  );
-
+  Sentence sentence = Sentence(independentClause: const IndependentClause());
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +26,7 @@ class _SentencePageState extends State<SentencePage> {
         children: [
           ListTile(
             title: Text(sentence.toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold)
-            ),
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
             child: ListView(
@@ -44,11 +40,10 @@ class _SentencePageState extends State<SentencePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => IndependentClausePage(
-                                clause: sentence.independentClause,
-                              ),
-                          )
-                      );
+                            builder: (context) => IndependentClausePage(
+                              clause: sentence.independentClause,
+                            ),
+                          ));
                     },
                   ),
                 ),
