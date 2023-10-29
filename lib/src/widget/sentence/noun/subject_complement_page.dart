@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/subject_complement.dart';
+import '../../../model/sentence/noun/value/complement-type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
