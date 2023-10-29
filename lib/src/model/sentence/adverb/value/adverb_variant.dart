@@ -1,5 +1,6 @@
 enum AdverbVariant {
-  word('Adverb Word');
+  word('Adverb Word'),
+  infinitivePhrase('Infinitive phrase');
 
   final String name;
 

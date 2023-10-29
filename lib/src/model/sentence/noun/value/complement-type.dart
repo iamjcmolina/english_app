@@ -1,9 +1,10 @@
 enum ComplementType {
+  adjective('Adjective'),
   possessivePronoun('Possessive pronoun'),
   nounPhrase('Noun phrase'),
-  nounClause('Noun clause'),
-  adjective('Adjective'),
-  prepositionalPhrase('Prepositional phrase');
+  infinitivePhrase('Infinitive phrase');
+  //prepositionalPhrase('Prepositional phrase');
+  //nounClause('Noun clause');
 
   final String name;
 

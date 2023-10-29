@@ -5,9 +5,11 @@ import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/indefinite_pronoun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/noun_type.dart';
+import '../../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
+import '../phrase/infinitive_phrase_form.dart';
 import 'indefinite_pronoun_form.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
@@ -97,6 +99,15 @@ class _ObjectPageState extends State<ObjectPage> {
             pronoun: object is IndefinitePronoun
                 ? object as IndefinitePronoun
                 : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.isNegative,
+          ),
+        NounType.infinitivePhrase => InfinitivePhraseForm(
+            setPhrase: setObject,
+            phrase: object is InfinitivePhrase
+                ? object as InfinitivePhrase
+                : const InfinitivePhrase(),
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,

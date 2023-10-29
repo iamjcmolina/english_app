@@ -254,6 +254,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
         MaterialPageRoute(
             builder: (context) => SubjectComplementPage(
                   complement: clause.subjectComplement,
+                  isNegative: clause.isNegative,
                 )));
     if (complement is SubjectComplement) {
       setComplement(complement);
@@ -273,6 +274,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                     _ => clause.endAdverb,
                   },
                   position: position,
+                  isNegative: clause.isNegative,
                 )));
     if (adverb is AnyAdverb) {
       switch (position) {

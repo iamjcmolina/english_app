@@ -62,6 +62,7 @@ class AdverbForm extends StatelessWidget {
           color: SentenceItem.adverb.color,
           title: label,
           textValue: adverb?.en,
+          textValueEs: adverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
@@ -70,7 +71,7 @@ class AdverbForm extends StatelessWidget {
               options: adverbs,
               filterValuesEn: [(Adverb e) => e.en],
               filterValuesEs: [(Adverb e) => e.es],
-              onSelected: (adverb) => validateAndSet(adverb),
+              onSelected: (e) => validateAndSet(e),
               onChanged: (text) => validateAndSet(null),
             ),
           ],
@@ -79,7 +80,7 @@ class AdverbForm extends StatelessWidget {
     );
   }
 
-  validateAndSet(Adverb? adverb) {
+  void validateAndSet(Adverb? adverb) {
     setCanSave(adverb != null);
     setAdverb(adverb);
   }

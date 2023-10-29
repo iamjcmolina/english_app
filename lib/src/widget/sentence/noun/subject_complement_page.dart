@@ -5,19 +5,23 @@ import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/subject_complement.dart';
 import '../../../model/sentence/noun/value/complement-type.dart';
+import '../../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
+import '../phrase/infinitive_phrase_form.dart';
 import 'adjective_form.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
 class SubjectComplementPage extends StatefulWidget {
   final SubjectComplement? complement;
+  final bool isNegative;
 
   const SubjectComplementPage({
     super.key,
     required this.complement,
+    required this.isNegative,
   });
 
   @override
@@ -74,6 +78,13 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
         ),
       ],
       body: switch (type) {
+        ComplementType.possessivePronoun => PronounForm(
+            pronouns: pronouns,
+            setPronoun: setComplement,
+            pronoun: complement is Pronoun ? complement as Pronoun : null,
+            setCanSave: setCanSave,
+            settingsControl: settingsControl,
+          ),
         ComplementType.nounPhrase => NounPhraseForm(
             setNounPhrase: setComplement,
             nounPhrase:
@@ -81,18 +92,20 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
           ),
-        ComplementType.adjective => AdjectiveForm(
+        ComplementType.infinitivePhrase => InfinitivePhraseForm(
+            setPhrase: setComplement,
+            phrase: complement is InfinitivePhrase
+                ? complement as InfinitivePhrase
+                : const InfinitivePhrase(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.isNegative,
+          ),
+        _ => AdjectiveForm(
             setAdjective: setComplement,
             adjective: complement is Adjective ? complement as Adjective : null,
             settingsControl: settingsControl,
             setCanSave: setCanSave,
-          ),
-        _ => PronounForm(
-            pronouns: pronouns,
-            setPronoun: setComplement,
-            pronoun: complement is Pronoun ? complement as Pronoun : null,
-            setCanSave: setCanSave,
-            settingsControl: settingsControl,
           ),
       },
     );
