@@ -104,6 +104,10 @@ class NounPhraseForm extends StatelessWidget {
               label: 'Quantifier',
               value: safePhrase.quantifier,
               options: nounRepository.quantifiers(safePhrase.noun),
+              filterValues: [
+                (Determiner e) => e.en,
+                (Determiner e) => e.es,
+              ],
               onSelected: (determiner) => setQuantifier(determiner),
               onChanged: (text) => setQuantifier(null),
             ),
@@ -120,6 +124,10 @@ class NounPhraseForm extends StatelessWidget {
               label: 'Determiner',
               value: safePhrase.determiner,
               options: determiners(nounRepository),
+              filterValues: [
+                (Determiner e) => e.en,
+                (Determiner e) => e.es,
+              ],
               onSelected: (determiner) => setDeterminer(determiner),
               onChanged: (text) => setDeterminer(null),
             )
@@ -136,6 +144,10 @@ class NounPhraseForm extends StatelessWidget {
               label: 'Number',
               value: safePhrase.number,
               options: nounRepository.numbers(safePhrase.noun, true),
+              filterValues: [
+                (Determiner e) => e.en,
+                (Determiner e) => e.es,
+              ],
               onSelected: (number) => setNumber(number),
               onChanged: (text) => setNumber(null),
             ),
@@ -152,6 +164,11 @@ class NounPhraseForm extends StatelessWidget {
               label: 'Adjective',
               value: safePhrase.adjective,
               options: nounRepository.adjectives(),
+              filterValues: [
+                (Adjective e) => e.en,
+                (Adjective e) => e.singularEs,
+                (Adjective e) => e.pluralEs,
+              ],
               onSelected: (adjective) => setAdjective(adjective),
               onChanged: (text) => setAdjective(null),
             ),
@@ -168,6 +185,10 @@ class NounPhraseForm extends StatelessWidget {
               label: 'Noun',
               value: safePhrase.noun,
               options: nounRepository.nouns(safePhrase.determiner),
+              filterValues: [
+                (Noun e) => e.en,
+                (Noun e) => e.es,
+              ],
               onSelected: (noun) => setNoun(noun),
               onChanged: (text) => setNoun(null),
             ),

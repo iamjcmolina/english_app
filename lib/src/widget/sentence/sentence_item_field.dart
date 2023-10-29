@@ -5,6 +5,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
   final T? value;
   final List<T> options;
   final String Function(T) displayStringForOption;
+  final Iterable<String Function(T)> filterValues;
   final bool enable;
   final void Function(T) onSelected;
   final void Function(String)? onChanged;
@@ -16,6 +17,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     required this.value,
     required this.options,
     this.displayStringForOption = RawAutocomplete.defaultStringForOption,
+    this.filterValues = const [],
     this.enable = true,
     required this.onSelected,
     required this.onChanged,
@@ -93,10 +95,11 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     if (onChanged != null) onChanged!('');
   }
 
-  Iterable<T> optionsBuilder(TextEditingValue textValue) => textValue.text == ''
-      ? options
-      : options.where((T option) => displayStringForOption(option)
-          .contains(textValue.text.toLowerCase()));
+  Iterable<T> optionsBuilder(TextEditingValue textValue) =>
+      textValue.text == '' ? options : filter(textValue.text.toLowerCase());
+
+  Iterable<T> filter(String text) =>
+      options.where((T e) => filterValues.any((f) => f(e).contains(text)));
 
   String? validator(String? value) =>
       isOptionFound(value) ? null : 'Choose a valid $label';

@@ -97,6 +97,16 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
             label: 'Modal Verb',
             value: clause.modalVerb,
             options: modalVerbs,
+            filterValues: [
+              (ModalVerb e) => e.verb,
+              (ModalVerb e) => e.verbContraction,
+              (ModalVerb e) => e.negativeContraction,
+              (ModalVerb e) => e.affirmativeIEs,
+              (ModalVerb e) => e.affirmativeYouEs,
+              (ModalVerb e) => e.affirmativeHeEs,
+              (ModalVerb e) => e.affirmativeWeEs,
+              (ModalVerb e) => e.affirmativeTheyEs,
+            ],
             displayStringForOption: (modalVerb) =>
                 clause.modalVerbAsString(modalVerb),
             onSelected: onModalVerbSelected,

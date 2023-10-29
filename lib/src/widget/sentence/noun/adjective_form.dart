@@ -55,6 +55,11 @@ class AdjectiveForm extends StatelessWidget {
               label: 'Adjective',
               value: adjective,
               options: nounRepository.adjectives(),
+              filterValues: [
+                (Adjective e) => e.en,
+                (Adjective e) => e.singularEs,
+                (Adjective e) => e.pluralEs,
+              ],
               onSelected: (adjective) => validateAndSet(adjective),
               onChanged: (text) => validateAndSet(null),
             ),
