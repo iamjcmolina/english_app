@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/noun/any_noun.dart';
+import '../../../model/sentence/noun/indefinite_pronoun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/noun_type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
+import 'indefinite_pronoun_form.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
@@ -14,12 +16,14 @@ class ObjectPage extends StatefulWidget {
   final AnyNoun? object;
   final bool isIndirectObject;
   final bool isDitransitiveVerb;
+  final bool isNegative;
 
   const ObjectPage({
     super.key,
     required this.object,
     required this.isIndirectObject,
     required this.isDitransitiveVerb,
+    required this.isNegative,
   });
 
   @override
@@ -39,13 +43,12 @@ class _ObjectPageState extends State<ObjectPage> {
     super.initState();
     object = widget.object;
     canSave = object != null;
-    nounType = mustAllowPronouns
-        ? switch (object.runtimeType) {
-            NounPhrase => NounType.nounPhrase,
-            _ => NounType.pronoun,
-          }
+    nounType = object == null
+        ? (mustAllowPronouns ? NounType.pronoun : NounType.nounPhrase)
         : switch (object.runtimeType) {
-            _ => NounType.nounPhrase,
+            NounPhrase => NounType.nounPhrase,
+            IndefinitePronoun => NounType.indefinitePronoun,
+            _ => NounType.pronoun,
           };
   }
 
@@ -82,32 +85,30 @@ class _ObjectPageState extends State<ObjectPage> {
           icon: const Icon(Icons.clear),
         ),
       ],
-      body: mustAllowPronouns
-          ? switch (nounType) {
-              NounType.nounPhrase => NounPhraseForm(
-                  setNounPhrase: setObject,
-                  nounPhrase:
-                      object is NounPhrase ? object as NounPhrase : null,
-                  settingsControl: settingsControl,
-                  setCanSave: setCanSave,
-                ),
-              _ => PronounForm(
-                  pronouns: pronouns,
-                  setPronoun: setObject,
-                  pronoun: object is Pronoun ? object as Pronoun : null,
-                  setCanSave: setCanSave,
-                  settingsControl: settingsControl,
-                ),
-            }
-          : switch (nounType) {
-              _ => NounPhraseForm(
-                  setNounPhrase: setObject,
-                  nounPhrase:
-                      object is NounPhrase ? object as NounPhrase : null,
-                  settingsControl: settingsControl,
-                  setCanSave: setCanSave,
-                ),
-            },
+      body: switch (nounType) {
+        NounType.nounPhrase => NounPhraseForm(
+            setNounPhrase: setObject,
+            nounPhrase: object is NounPhrase ? object as NounPhrase : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+          ),
+        NounType.indefinitePronoun => IndefinitePronounForm(
+            setPronoun: setObject,
+            pronoun: object is IndefinitePronoun
+                ? object as IndefinitePronoun
+                : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.isNegative,
+          ),
+        _ => PronounForm(
+            pronouns: pronouns,
+            setPronoun: setObject,
+            pronoun: object is Pronoun ? object as Pronoun : null,
+            setCanSave: setCanSave,
+            settingsControl: settingsControl,
+          ),
+      },
     );
   }
 

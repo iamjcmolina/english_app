@@ -1,10 +1,9 @@
 enum NounType {
   pronoun("Pronoun"),
   indefinitePronoun("Indefinite pronoun"),
-  nounPhrase("Noun Phrase"),
-  gerundPhrase("Gerund Phrase"),
-  infinitivePhrase("Infinitive Phrase");
-  // nounPhraseVariant("Determiner Number Possessive-adjective? Noun");
+  nounPhrase("Noun Phrase");
+  // gerundPhrase("Gerund Phrase"),
+  // infinitivePhrase("Infinitive Phrase");
 
   final String name;
 

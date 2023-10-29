@@ -231,6 +231,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                       : clause.directObject,
                   isDitransitiveVerb: clause.hasDitransitiveVerb,
                   isIndirectObject: isIndirectObject,
+                  isNegative: clause.isNegative,
                 )));
     if (object is AnyNoun) {
       if (isIndirectObject) {
