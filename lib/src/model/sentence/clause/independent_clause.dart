@@ -78,6 +78,8 @@ class IndependentClause {
   PersonalPronoun get subjectAsPronoun =>
       subject?.asPronoun ?? PersonalPronoun.I;
 
+  bool get isWouldModalVerb => modalVerb?.isWould ?? false;
+
   bool get hasTransitiveVerb => verb?.isTransitive ?? false;
   bool get hasDitransitiveVerb => verb?.isDitransitive ?? false;
   bool get hasLinkingVerb => verb?.isLinkingVerb ?? false;
@@ -380,7 +382,7 @@ class IndependentClause {
 
   VerbTense get verbTenseEs => isSimplePresent
       ? isModalVerbEnabled
-          ? VerbTense.infinitive
+          ? (isWouldModalVerb ? VerbTense.conditional : VerbTense.infinitive)
           : VerbTense.present
       : isSimplePast
           ? VerbTense.past
@@ -606,15 +608,6 @@ class IndependentClause {
       return verbPlaceholderEs;
     }
     if (verbTenseEs == VerbTense.present) {
-      if (isModalVerbEnabled && (modalVerb?.isWould ?? false)) {
-        return switch (subjectAsPronoun) {
-          PersonalPronoun.I => verb.conditionalIEs,
-          PersonalPronoun.you => verb.conditionalYouEs,
-          PersonalPronoun.we => verb.conditionalWeEs,
-          PersonalPronoun.they => verb.conditionalTheyEs,
-          _ => verb.conditionalHeEs,
-        };
-      }
       return switch (subjectAsPronoun) {
         PersonalPronoun.I => verb.presentIEs,
         PersonalPronoun.you => verb.presentYouEs,
@@ -637,6 +630,14 @@ class IndependentClause {
         PersonalPronoun.we => verb.futureWeEs,
         PersonalPronoun.they => verb.futureTheyEs,
         _ => verb.futureHeEs,
+      };
+    } else if (verbTenseEs == VerbTense.conditional) {
+      return switch (subjectAsPronoun) {
+        PersonalPronoun.I => verb.conditionalIEs,
+        PersonalPronoun.you => verb.conditionalYouEs,
+        PersonalPronoun.we => verb.conditionalWeEs,
+        PersonalPronoun.they => verb.conditionalTheyEs,
+        _ => verb.conditionalHeEs,
       };
     } else if (verbTenseEs == VerbTense.progressive) {
       return verb.progressiveEs;
