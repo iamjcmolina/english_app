@@ -7,6 +7,7 @@ import '../verb/any_verb.dart';
 import '../verb/auxiliary_verbs.dart';
 import '../verb/be.dart';
 import '../verb/modal_verb.dart';
+import '../verb/phrasal-verb.dart';
 import '../verb/value/verb_tense.dart';
 import '../verb/verb.dart';
 import 'value/clause_type.dart';
@@ -543,7 +544,8 @@ class IndependentClause {
   }
 
   String verbAsString([AnyVerb? otherVerb]) {
-    final verb = otherVerb ?? this.verb;
+    AnyVerb? verb = otherVerb ?? this.verb;
+    verb = verb is PhrasalVerb ? verb.verb : verb;
     return verb == null
         ? verbPlaceholder
         : verbTense == VerbTense.present

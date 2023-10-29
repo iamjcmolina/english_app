@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/value/sentence_item.dart';
+import '../../../model/sentence/verb/phrasal-verb.dart';
 
 class ClauseText extends StatelessWidget {
   final IndependentClause clause;
@@ -65,6 +66,10 @@ class ClauseText extends StatelessWidget {
             TextSpan(
                 text: '${clause.directObject} ',
                 style: TextStyle(color: SentenceItem.noun.color)),
+          if (clause.verb is PhrasalVerb)
+            TextSpan(
+                text: '${(clause.verb as PhrasalVerb).particle} ',
+                style: TextStyle(color: SentenceItem.verb.color)),
           if (clause.hasLinkingVerb && clause.subjectComplement != null)
             TextSpan(
                 text: '${clause.subjectComplement} ',

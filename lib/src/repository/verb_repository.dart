@@ -1,6 +1,7 @@
 import '../model/sentence/verb/any_verb.dart';
 import '../model/sentence/verb/be.dart';
 import '../model/sentence/verb/modal_verb.dart';
+import '../model/sentence/verb/phrasal-verb.dart';
 import '../model/sentence/verb/verb.dart';
 import 'vocabulary_provider.dart';
 
@@ -102,6 +103,7 @@ class VerbRepository extends VocabularyProvider {
       conditionalWeEs: 'seríamos',
       conditionalTheyEs: 'serían');
   final List<AnyVerb> _verbs = [];
+  final List<AnyVerb> _phrasalVerbs = [];
 
   VerbRepository(super.context) {
     _loadData();
@@ -109,10 +111,13 @@ class VerbRepository extends VocabularyProvider {
 
   List<ModalVerb> modalVerbs() => _modalVerbs;
 
-  List<AnyVerb> verbs() => [_be, ..._verbs];
+  List<AnyVerb> verbs() => _verbs;
+
+  List<AnyVerb> phrasalVerbs() => _phrasalVerbs;
 
   Future<void> _loadData() async {
     _verbs.addAll([_be, ...await _getVerbs()]);
+    _phrasalVerbs.addAll(await _getPhrasalVerbs());
     notifyListeners();
   }
 
@@ -132,6 +137,27 @@ class VerbRepository extends VocabularyProvider {
               isTransitive: row.elementAt(9) == '1',
               isDitransitive: row.elementAt(10) == '1',
               isLinkingVerb: row.elementAt(11) == '1',
+            ))
+        .toList();
+  }
+
+  Future<List<PhrasalVerb>> _getPhrasalVerbs() async {
+    final rows = await getCsvData('phrasal-verbs');
+    return rows
+        .map((row) => PhrasalVerb(
+              infinitiveVerb: row.elementAt(0),
+              pastVerb: row.elementAt(1),
+              pastParticipleVerb: row.elementAt(2),
+              particle: row.elementAt(3),
+              infinitiveEs: row.elementAt(4),
+              pastParticipleEs: row.elementAt(5),
+              progressiveEs: row.elementAt(6),
+              presentHeEs: row.elementAt(7),
+              pastIEs: row.elementAt(8),
+              pastWeEs: row.elementAt(9),
+              separable: row.elementAt(10) == '1',
+              isTransitive: row.elementAt(11) == '1',
+              isDitransitive: row.elementAt(12) == '1',
             ))
         .toList();
   }
