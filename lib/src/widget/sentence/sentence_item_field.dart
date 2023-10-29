@@ -5,7 +5,8 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
   final T? value;
   final List<T> options;
   final String Function(T) displayStringForOption;
-  final Iterable<String Function(T)> filterValues;
+  final Iterable<String Function(T)> filterValuesEn;
+  final Iterable<String Function(T)> filterValuesEs;
   final bool enable;
   final void Function(T) onSelected;
   final void Function(String)? onChanged;
@@ -17,7 +18,8 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     required this.value,
     required this.options,
     this.displayStringForOption = RawAutocomplete.defaultStringForOption,
-    this.filterValues = const [],
+    this.filterValuesEn = const [],
+    this.filterValuesEs = const [],
     this.enable = true,
     required this.onSelected,
     required this.onChanged,
@@ -76,6 +78,9 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
                       onTap: () => onSelected(option),
                       child: ListTile(
                         title: Text(displayStringForOption(option)),
+                        subtitle: Text(
+                            '${filterValuesEn.map((f) => f(option)).join(',')}\n'
+                            '${filterValuesEs.map((f) => f(option)).join(',')}'),
                       ),
                     );
                   },
@@ -98,8 +103,8 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
   Iterable<T> optionsBuilder(TextEditingValue textValue) =>
       textValue.text == '' ? options : filter(textValue.text.toLowerCase());
 
-  Iterable<T> filter(String text) =>
-      options.where((T e) => filterValues.any((f) => f(e).contains(text)));
+  Iterable<T> filter(String text) => options.where((T e) =>
+      [...filterValuesEn, ...filterValuesEs].any((f) => f(e).contains(text)));
 
   String? validator(String? value) =>
       isOptionFound(value) ? null : 'Choose a valid $label';

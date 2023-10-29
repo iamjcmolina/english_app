@@ -54,10 +54,8 @@ class IndefinitePronounForm extends StatelessWidget {
               label: 'Indefinite Pronoun',
               value: pronoun,
               options: pronouns,
-              filterValues: [
-                (IndefinitePronoun e) => e.en,
-                (IndefinitePronoun e) => e.es,
-              ],
+              filterValuesEn: [(IndefinitePronoun e) => e.en],
+              filterValuesEs: [(IndefinitePronoun e) => e.es],
               displayStringForOption: (pronoun) => pronoun.en,
               onSelected: (pronoun) => validateAndSet(pronoun),
               onChanged: (text) => validateAndSet(null),

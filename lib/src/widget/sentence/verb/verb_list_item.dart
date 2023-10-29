@@ -58,10 +58,12 @@ class VerbListItem extends StatelessWidget {
             label: clause.verbPlaceholder,
             value: clause.verb,
             options: verbRepository.verbs(),
-            filterValues: [
+            filterValuesEn: [
               (AnyVerb e) => e.infinitive,
               (AnyVerb e) => e.pastParticiple,
               (AnyVerb e) => e.progressive,
+            ],
+            filterValuesEs: [
               (AnyVerb e) => e.infinitiveEs,
               (AnyVerb e) => e.pastParticipleEs,
               (AnyVerb e) => e.progressiveEs,
