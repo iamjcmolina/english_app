@@ -116,33 +116,13 @@ class VerbRepository extends VocabularyProvider {
   List<AnyVerb> phrasalVerbs() => _phrasalVerbs;
 
   Future<void> _loadData() async {
-    _verbs.addAll([_be, ...await _getVerbs()]);
     _phrasalVerbs.addAll(await _getPhrasalVerbs());
+    _verbs.addAll([_be, ...await _getVerbs()]);
     notifyListeners();
   }
 
-  Future<List<Verb>> _getVerbs() async {
-    final rows = await getCsvData('verbs');
-    return rows
-        .map((row) => Verb(
-              infinitive: row.elementAt(0),
-              past: row.elementAt(1),
-              pastParticiple: row.elementAt(2),
-              infinitiveEs: row.elementAt(3),
-              pastParticipleEs: row.elementAt(4),
-              progressiveEs: row.elementAt(5),
-              presentHeEs: row.elementAt(6),
-              pastIEs: row.elementAt(7),
-              pastWeEs: row.elementAt(8),
-              isTransitive: row.elementAt(9) == '1',
-              isDitransitive: row.elementAt(10) == '1',
-              isLinkingVerb: row.elementAt(11) == '1',
-            ))
-        .toList();
-  }
-
   Future<List<PhrasalVerb>> _getPhrasalVerbs() async {
-    final rows = await getCsvData('phrasal-verbs');
+    final rows = await getCsvData('verbs/phrasal-verbs');
     return rows
         .map((row) => PhrasalVerb(
               infinitiveVerb: row.elementAt(0),
@@ -158,6 +138,26 @@ class VerbRepository extends VocabularyProvider {
               separable: row.elementAt(10) == '1',
               isTransitive: row.elementAt(11) == '1',
               isDitransitive: row.elementAt(12) == '1',
+            ))
+        .toList();
+  }
+
+  Future<List<Verb>> _getVerbs() async {
+    final rows = await getCsvData('verbs/verbs');
+    return rows
+        .map((row) => Verb(
+              infinitive: row.elementAt(0),
+              past: row.elementAt(1),
+              pastParticiple: row.elementAt(2),
+              infinitiveEs: row.elementAt(3),
+              pastParticipleEs: row.elementAt(4),
+              progressiveEs: row.elementAt(5),
+              presentHeEs: row.elementAt(6),
+              pastIEs: row.elementAt(7),
+              pastWeEs: row.elementAt(8),
+              isTransitive: row.elementAt(9) == '1',
+              isDitransitive: row.elementAt(10) == '1',
+              isLinkingVerb: row.elementAt(11) == '1',
             ))
         .toList();
   }

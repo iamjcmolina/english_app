@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/noun/any_noun.dart';
+import '../../../model/sentence/noun/indefinite_pronoun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/noun_type.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
+import 'indefinite_pronoun_form.dart';
 import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
 class SubjectPage extends StatefulWidget {
-  final AnyNoun? subject;
+  final IndependentClause clause;
 
-  const SubjectPage({super.key, required this.subject});
+  const SubjectPage({super.key, required this.clause});
 
   @override
   State<SubjectPage> createState() => _SubjectPageState();
@@ -27,9 +30,9 @@ class _SubjectPageState extends State<SubjectPage> {
   @override
   void initState() {
     super.initState();
-    subject = widget.subject;
+    subject = widget.clause.subject;
     canSave = subject != null;
-    nounType = switch (widget.subject.runtimeType) {
+    nounType = switch (widget.clause.subject.runtimeType) {
       NounPhrase => NounType.nounPhrase,
       _ => NounType.pronoun,
     };
@@ -73,6 +76,15 @@ class _SubjectPageState extends State<SubjectPage> {
             nounPhrase: subject is NounPhrase ? subject as NounPhrase : null,
             settingsControl: settingsControl,
             setCanSave: setCanSave,
+          ),
+        NounType.indefinitePronoun => IndefinitePronounForm(
+            setPronoun: setSubject,
+            pronoun: subject is IndefinitePronoun
+                ? subject as IndefinitePronoun
+                : null,
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.clause.isNegative,
           ),
         _ => PronounForm(
             pronouns: pronouns,

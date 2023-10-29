@@ -212,12 +212,8 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   }
 
   navigateToSubjectPage(BuildContext context) async {
-    final subject = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SubjectPage(
-                  subject: clause.subject,
-                )));
+    final subject = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SubjectPage(clause: clause)));
     if (subject is AnyNoun) {
       setSubject(subject);
     } else if (subject is bool && !subject) {

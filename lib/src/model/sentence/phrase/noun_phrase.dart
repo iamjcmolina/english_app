@@ -39,7 +39,7 @@ class NounPhrase extends AnyNoun {
   Countability get countability => noun?.countability ?? Countability.singular;
 
   @override
-  PersonalPronoun get asPronoun => noun?.asPronoun ?? PersonalPronoun.it;
+  DoerPronoun get asPronoun => noun?.asPronoun ?? DoerPronoun.it;
 
   @override
   bool get isSingularFirstPerson => noun?.isSingularFirstPerson ?? false;

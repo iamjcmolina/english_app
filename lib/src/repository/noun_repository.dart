@@ -1,5 +1,6 @@
 import '../model/sentence/adjective/adjective.dart';
 import '../model/sentence/noun/any_noun.dart';
+import '../model/sentence/noun/indefinite_pronoun.dart';
 import '../model/sentence/noun/noun.dart';
 import '../model/sentence/noun/pronoun.dart';
 import '../model/sentence/phrase/determiner.dart';
@@ -8,40 +9,37 @@ import 'vocabulary_provider.dart';
 
 class NounRepository extends VocabularyProvider {
   static const List<Pronoun> _subjectPronouns = [
-    Pronoun('I', 'yo', PersonalPronoun.I),
-    Pronoun('you', 'tu/ustedes', PersonalPronoun.you),
-    Pronoun('he', 'él', PersonalPronoun.he),
-    Pronoun('she', 'ella', PersonalPronoun.she),
-    Pronoun('it', 'eso', PersonalPronoun.it),
-    Pronoun('we', 'nosotros', PersonalPronoun.we),
-    Pronoun('they', 'ellos', PersonalPronoun.they)
+    Pronoun('I', 'yo', DoerPronoun.I),
+    Pronoun('you', 'tu/ustedes', DoerPronoun.you),
+    Pronoun('he', 'él', DoerPronoun.he),
+    Pronoun('she', 'ella', DoerPronoun.she),
+    Pronoun('it', 'eso', DoerPronoun.it),
+    Pronoun('we', 'nosotros', DoerPronoun.we),
+    Pronoun('they', 'ellos', DoerPronoun.they)
   ];
   static const List<Pronoun> _objectPronouns = [
-    Pronoun('me', 'me', PersonalPronoun.I),
-    Pronoun('you', 'te', PersonalPronoun.you),
-    Pronoun('him', 'lo/le', PersonalPronoun.he),
-    Pronoun('her', 'lo/le', PersonalPronoun.she),
-    Pronoun('it', 'lo/le', PersonalPronoun.it),
-    Pronoun('us', 'nos', PersonalPronoun.we),
-    Pronoun('them', 'les', PersonalPronoun.they)
+    Pronoun('me', 'me', DoerPronoun.I),
+    Pronoun('you', 'te', DoerPronoun.you),
+    Pronoun('him', 'lo/le', DoerPronoun.he),
+    Pronoun('her', 'lo/le', DoerPronoun.she),
+    Pronoun('it', 'lo/le', DoerPronoun.it),
+    Pronoun('us', 'nos', DoerPronoun.we),
+    Pronoun('them', 'les', DoerPronoun.they)
   ];
   static const List<Pronoun> _possessivePronouns = [
-    Pronoun(
-        'mine', 'mio(a)/el mio/la mia/los míos/las mías', PersonalPronoun.I),
+    Pronoun('mine', 'mio(a)/el mio/la mia/los míos/las mías', DoerPronoun.I),
     Pronoun(
         'yours',
         'tuyo/el tuyo/la tuya/los tuyos(as)/suyo/el suyo/la suya/las suyas',
-        PersonalPronoun.you),
+        DoerPronoun.you),
+    Pronoun('his', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.he),
     Pronoun(
-        'his', 'suyo/el suyo/la suya/los suyos/las suyas', PersonalPronoun.he),
-    Pronoun('hers', 'suyo/el suyo/la suya/los suyos/las suyas',
-        PersonalPronoun.she),
-    Pronoun(
-        'its', 'suyo/el suyo/la suya/los suyos/las suyas', PersonalPronoun.it),
+        'hers', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.she),
+    Pronoun('its', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.it),
     Pronoun('ours', 'nuestro/el nuestro/la nuestra/los nuestros/las nuestras',
-        PersonalPronoun.we),
-    Pronoun('theirs', 'suyo/el suyo/la suya/los suyos/las suyas',
-        PersonalPronoun.they)
+        DoerPronoun.we),
+    Pronoun(
+        'theirs', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.they)
   ];
   static const List<Determiner> _articles = [
     Determiner.article('a', 'un/una', false, true, false),
@@ -69,6 +67,7 @@ class NounRepository extends VocabularyProvider {
   final List<Determiner> _naturalNumbers = [];
   final List<Adjective> _adjectives = [];
   final List<Noun> _nouns = [];
+  final List<IndefinitePronoun> _indefinitePronouns = [];
 
   NounRepository(super.context) {
     _loadData();
@@ -143,6 +142,10 @@ class NounRepository extends VocabularyProvider {
               e.isPlural && determiner.isPluralAllowed;
         }).toList();
 
+  List<IndefinitePronoun> indefinitePronouns(bool isNegative) => isNegative
+      ? _indefinitePronouns.where((e) => e.isNegativeOnlyAllowed).toList()
+      : _indefinitePronouns.where((e) => !e.isNegativeOnlyAllowed).toList();
+
   Future<void> _loadData() async {
     _distributiveAdjectives.addAll(await _getDistributiveAdjectives());
     _quantifiers.addAll(await _getQuantifiers());
@@ -150,6 +153,7 @@ class NounRepository extends VocabularyProvider {
     _naturalNumbers.addAll(await _getNaturalNumbers());
     _adjectives.addAll(await _getAdjectives());
     _nouns.addAll(await _getNouns());
+    _indefinitePronouns.addAll(await _getIndefinitePronouns());
     notifyListeners();
   }
 
@@ -212,16 +216,36 @@ class NounRepository extends VocabularyProvider {
         .toList();
   }
 
+  Future<List<IndefinitePronoun>> _getIndefinitePronouns() async {
+    final rows = await getCsvData('nouns/indefinite-pronouns');
+    return rows
+        .map((row) => IndefinitePronoun(
+            row.elementAt(0),
+            row.elementAt(1),
+            switch (row.elementAt(2)) {
+              'singular' => Countability.singular,
+              'plural' => Countability.plural,
+              _ => Countability.uncountable,
+            },
+            switch (row.elementAt(3)) {
+              'singular' => Countability.singular,
+              'plural' => Countability.plural,
+              _ => Countability.uncountable,
+            },
+            row.elementAt(4)))
+        .toList();
+  }
+
   Future<List<Noun>> _getNouns() async {
-    final rows = await getCsvData('nouns');
+    final rows = await getCsvData('nouns/nouns');
     return rows
         .map((row) => Noun(
             row.elementAt(0),
             row.elementAt(1),
             switch (row.elementAt(2)) {
-              'uncountable' => Countability.uncountable,
               'singular' => Countability.singular,
-              _ => Countability.plural,
+              'plural' => Countability.plural,
+              _ => Countability.uncountable,
             }))
         .toList();
   }

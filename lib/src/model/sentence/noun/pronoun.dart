@@ -6,7 +6,7 @@ class Pronoun extends AnyNoun {
   @override
   final String es;
   @override
-  final PersonalPronoun asPronoun;
+  final DoerPronoun asPronoun;
 
   @override
   Countability get countability =>

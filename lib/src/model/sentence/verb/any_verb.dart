@@ -7,18 +7,18 @@ abstract class AnyVerb {
   String get infinitiveEs;
   String get pastParticipleEs;
   String get progressiveEs;
-  String get presentIEs => '${Util.removeLast(presentHeEs)}o';
+  String get presentIEs => Util.replaceLast(presentHeEs, 'o');
   String get presentSingularYouEs => '${presentHeEs}s';
   String get presentYouEs => '$presentSingularYouEs/$presentTheyEs';
   String get presentHeEs;
-  String get presentWeEs => '${Util.removeLast(infinitiveEs)}mos';
+  String get presentWeEs => '${Util.lessLast(infinitiveEs)}mos';
   String get presentTheyEs => '${presentHeEs}n';
   String get pastIEs;
-  String get pastSingularYouEs => '${Util.removeLast(pastWeEs, 3)}ste';
+  String get pastSingularYouEs => Util.replaceLast(pastWeEs, 'ste');
   String get pastYouEs => '$pastSingularYouEs/$pastTheyEs';
   String get pastHeEs => '$_progressiveEsLess4ó';
   String get pastWeEs;
-  String get pastTheyEs => switch (Util.last(progressiveEs, 4)) {
+  String get pastTheyEs => switch (_progressiveEsLess4) {
         'ando' => '${_progressiveEsLess4}aron',
         _ => '${_progressiveEsLess4}eron',
       };
@@ -38,7 +38,7 @@ abstract class AnyVerb {
   bool get isDitransitive;
   bool get isLinkingVerb;
 
-  String get _progressiveEsLess4 => Util.removeLast(progressiveEs, 4);
+  String get _progressiveEsLess4 => Util.lessLast(progressiveEs, 4);
 
   const AnyVerb();
 }

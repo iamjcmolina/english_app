@@ -1,0 +1,28 @@
+en,es,countability,countabilityEs,description
+another,otro,singular,singular,Usálo si hablas de algo similar
+other,otro,singular,singular,Usálo si hablas de algo diferente
+anyone,alguien,singular,singular,Igual a anybody pero formal
+anybody,cualquiera,singular,singular,Igual a anyone pero informal
+everyone,todos,singular,plural,Igual a everybody pero formal
+everybody,todos,singular,plural,Igual a everyone pero informal
+no one,nadie,singular,singular,Igual a nobody pero formal
+nobody,nadie,singular,singular,Igual a no one pero informal
+someone,alguien,singular,singular,Igual a somebody pero formal
+somebody,alguien,singular,singular,Igual a someone pero informal
+whoever,quien,singular,singular,""
+whosoever,cualquiera que,singular,singular,""
+whomever,quienquiera,singular,singular,""
+whomsoever,quienquiera,singular,singular,""
+anything,cualquier cosa,singular,singular,""
+everything,todo,singular,singular,""
+nothing,nada,singular,singular,""
+something,algo,singular,singular,""
+whatever,lo que,singular,,""
+whichever,cualquiera,singular,singular,""
+everywhere,en todos lados,singular,plural,""
+somewhere,en algún lugar,singular,singular,""
+anywhere,en cualquier lugar,singular,singular,""
+nowhere,en ningún lugar,singular,singular,""
+both,ambos,plural,plural,""
+few,pocos,plural,plural,""
+others,otros,plural,plural,""

@@ -2,6 +2,7 @@ import '../../../util/util.dart';
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
+import '../noun/indefinite_pronoun.dart';
 import '../noun/subject_complement.dart';
 import '../verb/any_verb.dart';
 import '../verb/auxiliary_verbs.dart';
@@ -75,8 +76,7 @@ class IndependentClause {
   bool get hasSingularThirdPersonSubject =>
       subject?.isSingularThirdPerson ?? false;
   bool get hasPluralSubject => subject?.isPlural ?? false;
-  PersonalPronoun get subjectAsPronoun =>
-      subject?.asPronoun ?? PersonalPronoun.I;
+  DoerPronoun get subjectAsPronoun => subject?.asPronoun ?? DoerPronoun.I;
 
   bool get isWouldModalVerb => modalVerb?.isWould ?? false;
 
@@ -358,14 +358,11 @@ class IndependentClause {
   AuxiliaryVerbs get _continuousFutureEs => AuxiliaryVerbs(
       first: isNegative ? 'no' : '',
       second: switch (subjectAsPronoun) {
-        PersonalPronoun.I => 'estaré',
-        PersonalPronoun.you => 'estarás/estarán',
-        PersonalPronoun.we => 'estaremos',
-        PersonalPronoun.they => 'estarán',
-        PersonalPronoun.he ||
-        PersonalPronoun.she ||
-        PersonalPronoun.it =>
-          'estará',
+        DoerPronoun.I => 'estaré',
+        DoerPronoun.you => 'estarás/estarán',
+        DoerPronoun.we => 'estaremos',
+        DoerPronoun.they => 'estarán',
+        DoerPronoun.he || DoerPronoun.she || DoerPronoun.it => 'estará',
       });
 
   AuxiliaryVerbs get _continuousPresentPerfectEs =>
@@ -396,10 +393,10 @@ class IndependentClause {
 
   String get _presentBeEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => 'soy',
-      PersonalPronoun.you => 'eres/son',
-      PersonalPronoun.we => 'somos',
-      PersonalPronoun.they => 'son',
+      DoerPronoun.I => 'soy',
+      DoerPronoun.you => 'eres/son',
+      DoerPronoun.we => 'somos',
+      DoerPronoun.they => 'son',
       _ => 'es',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -407,10 +404,10 @@ class IndependentClause {
 
   String get _pastBeEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => 'fui',
-      PersonalPronoun.you => 'fuiste/fueron',
-      PersonalPronoun.we => 'fuimos',
-      PersonalPronoun.they => 'fueron',
+      DoerPronoun.I => 'fui',
+      DoerPronoun.you => 'fuiste/fueron',
+      DoerPronoun.we => 'fuimos',
+      DoerPronoun.they => 'fueron',
       _ => 'fue',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -418,10 +415,10 @@ class IndependentClause {
 
   String get _presentBeAsEstarEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => 'estoy',
-      PersonalPronoun.you => 'estás/están',
-      PersonalPronoun.we => 'estamos',
-      PersonalPronoun.they => 'están',
+      DoerPronoun.I => 'estoy',
+      DoerPronoun.you => 'estás/están',
+      DoerPronoun.we => 'estamos',
+      DoerPronoun.they => 'están',
       _ => 'está',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -429,10 +426,10 @@ class IndependentClause {
 
   String get _pastBeAsEstarEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => 'estuve',
-      PersonalPronoun.you => 'estuviste/estuvieron',
-      PersonalPronoun.we => 'estuvimos',
-      PersonalPronoun.they => 'estuvieron',
+      DoerPronoun.I => 'estuve',
+      DoerPronoun.you => 'estuviste/estuvieron',
+      DoerPronoun.we => 'estuvimos',
+      DoerPronoun.they => 'estuvieron',
       _ => 'estuvo',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -440,10 +437,10 @@ class IndependentClause {
 
   String get _presentHaveEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => 'he',
-      PersonalPronoun.you => 'has/han',
-      PersonalPronoun.we => 'hemos',
-      PersonalPronoun.they => 'han',
+      DoerPronoun.I => 'he',
+      DoerPronoun.you => 'has/han',
+      DoerPronoun.we => 'hemos',
+      DoerPronoun.they => 'han',
       _ => 'ha',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -451,9 +448,9 @@ class IndependentClause {
 
   String get _pastHaveEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.you => 'habías/habían',
-      PersonalPronoun.we => 'habíamos',
-      PersonalPronoun.they => 'habían',
+      DoerPronoun.you => 'habías/habían',
+      DoerPronoun.we => 'habíamos',
+      DoerPronoun.they => 'habían',
       _ => 'había',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -461,10 +458,10 @@ class IndependentClause {
 
   String get _futureHaveEs {
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => 'habré',
-      PersonalPronoun.you => 'habrás/habrán',
-      PersonalPronoun.we => 'habremos',
-      PersonalPronoun.they => 'habrán',
+      DoerPronoun.I => 'habré',
+      DoerPronoun.you => 'habrás/habrán',
+      DoerPronoun.we => 'habremos',
+      DoerPronoun.they => 'habrán',
       _ => 'habrá',
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -593,10 +590,10 @@ class IndependentClause {
       return modalVerbPlaceholderEs;
     }
     final affirmative = switch (subjectAsPronoun) {
-      PersonalPronoun.I => modalVerb.affirmativeIEs,
-      PersonalPronoun.you => modalVerb.affirmativeYouEs,
-      PersonalPronoun.we => modalVerb.affirmativeWeEs,
-      PersonalPronoun.they => modalVerb.affirmativeTheyEs,
+      DoerPronoun.I => modalVerb.affirmativeIEs,
+      DoerPronoun.you => modalVerb.affirmativeYouEs,
+      DoerPronoun.we => modalVerb.affirmativeWeEs,
+      DoerPronoun.they => modalVerb.affirmativeTheyEs,
       _ => modalVerb.affirmativeHeEs,
     };
     return isNegative ? 'no $affirmative' : affirmative;
@@ -607,36 +604,40 @@ class IndependentClause {
     if (verb == null) {
       return verbPlaceholderEs;
     }
+
+    final subjectAsPronoun = subject is IndefinitePronoun
+        ? (subject as IndefinitePronoun).asPronounEs
+        : this.subjectAsPronoun;
     if (verbTenseEs == VerbTense.present) {
       return switch (subjectAsPronoun) {
-        PersonalPronoun.I => verb.presentIEs,
-        PersonalPronoun.you => verb.presentYouEs,
-        PersonalPronoun.we => verb.presentWeEs,
-        PersonalPronoun.they => verb.presentTheyEs,
+        DoerPronoun.I => verb.presentIEs,
+        DoerPronoun.you => verb.presentYouEs,
+        DoerPronoun.we => verb.presentWeEs,
+        DoerPronoun.they => verb.presentTheyEs,
         _ => verb.presentHeEs,
       };
     } else if (verbTenseEs == VerbTense.past) {
       return switch (subjectAsPronoun) {
-        PersonalPronoun.I => verb.pastIEs,
-        PersonalPronoun.you => verb.pastYouEs,
-        PersonalPronoun.we => verb.pastWeEs,
-        PersonalPronoun.they => verb.pastTheyEs,
+        DoerPronoun.I => verb.pastIEs,
+        DoerPronoun.you => verb.pastYouEs,
+        DoerPronoun.we => verb.pastWeEs,
+        DoerPronoun.they => verb.pastTheyEs,
         _ => verb.pastHeEs,
       };
     } else if (verbTenseEs == VerbTense.future) {
       return switch (subjectAsPronoun) {
-        PersonalPronoun.I => verb.futureIEs,
-        PersonalPronoun.you => verb.futureYouEs,
-        PersonalPronoun.we => verb.futureWeEs,
-        PersonalPronoun.they => verb.futureTheyEs,
+        DoerPronoun.I => verb.futureIEs,
+        DoerPronoun.you => verb.futureYouEs,
+        DoerPronoun.we => verb.futureWeEs,
+        DoerPronoun.they => verb.futureTheyEs,
         _ => verb.futureHeEs,
       };
     } else if (verbTenseEs == VerbTense.conditional) {
       return switch (subjectAsPronoun) {
-        PersonalPronoun.I => verb.conditionalIEs,
-        PersonalPronoun.you => verb.conditionalYouEs,
-        PersonalPronoun.we => verb.conditionalWeEs,
-        PersonalPronoun.they => verb.conditionalTheyEs,
+        DoerPronoun.I => verb.conditionalIEs,
+        DoerPronoun.you => verb.conditionalYouEs,
+        DoerPronoun.we => verb.conditionalWeEs,
+        DoerPronoun.they => verb.conditionalTheyEs,
         _ => verb.conditionalHeEs,
       };
     } else if (verbTenseEs == VerbTense.progressive) {

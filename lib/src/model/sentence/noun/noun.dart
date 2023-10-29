@@ -9,11 +9,7 @@ class Noun extends AnyNoun {
   final Countability countability;
 
   @override
-  PersonalPronoun get asPronoun =>
-      isPlural ? PersonalPronoun.they : PersonalPronoun.it;
-
-  @override
-  bool get isSingularFirstPerson => false;
+  DoerPronoun get asPronoun => isPlural ? DoerPronoun.they : DoerPronoun.it;
 
   @override
   bool get isSingularThirdPerson => isSingular;
