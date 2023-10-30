@@ -1,10 +1,11 @@
 import '../../nullable.dart';
+import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../sentence_buffer.dart';
 import '../verb/any_verb.dart';
 
-class InfinitivePhrase implements AnyNoun, AnyAdverb {
+class InfinitivePhrase implements AnyNoun, AnyAdjective, AnyAdverb {
   @override
   final DoerPronoun asPronoun = DoerPronoun.it;
   @override

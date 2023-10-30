@@ -5,8 +5,10 @@ import '../../../model/sentence/adverb/any_adverb.dart';
 import '../../../model/sentence/adverb/value/adverb_position.dart';
 import '../../../model/sentence/adverb/value/adverb_variant.dart';
 import '../../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../../model/sentence/phrase/prepositional_phrase.dart';
 import '../../sentence_scaffold.dart';
 import '../phrase/infinitive_phrase_form.dart';
+import '../phrase/prepositional_phrase_form.dart';
 import 'adverb_form.dart';
 
 class AdverbPage extends StatefulWidget {
@@ -77,6 +79,15 @@ class _AdverbPageState extends State<AdverbPage> {
               phrase: adverb is InfinitivePhrase
                   ? adverb as InfinitivePhrase
                   : const InfinitivePhrase(),
+              settingsControl: settingsControl,
+              setCanSave: setCanSave,
+              isNegative: widget.isNegative,
+            ),
+          AdverbVariant.prepositionalPhrase => PrepositionalPhraseForm(
+              setPhrase: setAdverb,
+              phrase: adverb is PrepositionalPhrase
+                  ? adverb as PrepositionalPhrase
+                  : const PrepositionalPhrase(),
               settingsControl: settingsControl,
               setCanSave: setCanSave,
               isNegative: widget.isNegative,
