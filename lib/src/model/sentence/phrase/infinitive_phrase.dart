@@ -33,7 +33,8 @@ class InfinitivePhrase implements AnyNoun, AnyAdjective, AnyAdverb {
   @override
   String get en {
     SentenceBuffer buffer = SentenceBuffer();
-    buffer.add('to $verb', disablePrefixWhen: true);
+    buffer.add('to', disablePrefixWhen: true);
+    buffer.add(verb?.infinitive ?? '<InfinitiveVerb>');
     buffer.add(object, when: object != null);
     buffer.add(modifier, when: modifier != null);
     return buffer.toString();

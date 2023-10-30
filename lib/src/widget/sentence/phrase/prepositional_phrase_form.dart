@@ -68,6 +68,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
             SentenceItemField<Preposition>(
               label: 'Preposition',
               value: phrase.preposition,
+              displayStringForOption: (e) => e.en,
               options: commonRepository.prepositions(),
               filterValuesEn: [(Preposition e) => e.en],
               filterValuesEs: [(Preposition e) => e.es],

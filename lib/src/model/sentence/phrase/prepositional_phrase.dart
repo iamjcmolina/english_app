@@ -41,4 +41,7 @@ class PrepositionalPhrase implements AnyAdjective, AnyAdverb {
         preposition: preposition == null ? this.preposition : preposition.value,
         object: object == null ? this.object : object.value,
       );
+
+  @override
+  String toString() => en;
 }

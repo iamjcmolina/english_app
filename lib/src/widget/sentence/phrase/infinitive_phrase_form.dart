@@ -76,6 +76,7 @@ class InfinitivePhraseForm extends StatelessWidget {
             SentenceItemField<AnyVerb>(
               label: 'Verb',
               value: phrase.verb,
+              displayStringForOption: (e) => e.infinitive,
               options: verbRepository.verbs(),
               filterValuesEn: [(AnyVerb e) => e.infinitive],
               filterValuesEs: [(AnyVerb e) => e.infinitiveEs],

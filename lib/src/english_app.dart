@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'repository/adverb_repository.dart';
+import 'repository/common_repository.dart';
 import 'repository/noun_repository.dart';
 import 'repository/verb_repository.dart';
 import 'service/independent_clause_cubit.dart';
@@ -29,6 +30,7 @@ class EnglishApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final commonRepository = CommonRepository(context);
     final adverbRepository = AdverbRepository(context);
     final nounRepository = NounRepository(context);
     final verbRepository = VerbRepository(context);
@@ -42,6 +44,7 @@ class EnglishApp extends StatelessWidget {
         child: MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (_) => adverbRepository),
+              ChangeNotifierProvider(create: (_) => commonRepository),
               ChangeNotifierProvider(create: (_) => nounRepository),
               ChangeNotifierProvider(create: (_) => verbRepository),
               ChangeNotifierProvider(create: (_) => clauseService),

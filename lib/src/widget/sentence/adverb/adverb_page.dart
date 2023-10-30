@@ -102,8 +102,7 @@ class _AdverbPageState extends State<AdverbPage> {
         });
   }
 
-  setAdverb(AnyAdverb? adverb) =>
-      setState(() => this.adverb = adverb as Adverb?);
+  setAdverb(AnyAdverb? adverb) => setState(() => this.adverb = adverb);
 
   setVariant(AdverbVariant variant) => setState(() => this.variant = variant);
 
