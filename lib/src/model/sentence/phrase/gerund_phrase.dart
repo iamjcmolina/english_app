@@ -36,7 +36,7 @@ class GerundPhrase implements AnyNoun {
   @override
   String get es {
     SentenceBuffer buffer = SentenceBuffer();
-    buffer.add(verb?.progressiveEs, disablePrefixWhen: true);
+    buffer.add(verb?.infinitiveEs, disablePrefixWhen: true);
     buffer.add(object?.es, when: object != null);
     buffer.add(modifier?.es, when: modifier != null);
     return buffer.toString();

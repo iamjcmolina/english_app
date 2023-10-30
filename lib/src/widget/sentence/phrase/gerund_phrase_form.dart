@@ -75,7 +75,7 @@ class GerundPhraseForm extends StatelessWidget {
           color: SentenceItem.verb.color,
           title: 'ProgressiveVerb',
           textValue: phrase.verb?.progressive,
-          textValueEs: phrase.verb?.progressiveEs,
+          textValueEs: phrase.verb?.infinitiveEs,
           required: true,
           fields: [
             SentenceItemField<AnyVerb>(
@@ -84,7 +84,7 @@ class GerundPhraseForm extends StatelessWidget {
               displayStringForOption: (e) => e.progressive,
               options: verbRepository.actionVerbs(),
               filterValuesEn: [(AnyVerb e) => e.progressive],
-              filterValuesEs: [(AnyVerb e) => e.progressiveEs],
+              filterValuesEs: [(AnyVerb e) => e.infinitiveEs],
               onSelected: (e) => setVerb(e),
               onChanged: (text) => setVerb(null),
             ),
