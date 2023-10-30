@@ -6,13 +6,15 @@ import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/noun/indefinite_pronoun.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/value/noun_type.dart';
+import '../../../model/sentence/phrase/gerund_phrase.dart';
 import '../../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
+import '../phrase/gerund_phrase_form.dart';
 import '../phrase/infinitive_phrase_form.dart';
+import '../phrase/noun_phrase_form.dart';
 import 'indefinite_pronoun_form.dart';
-import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
 class SubjectPage extends StatefulWidget {
@@ -93,6 +95,15 @@ class _SubjectPageState extends State<SubjectPage> {
             phrase: subject is InfinitivePhrase
                 ? subject as InfinitivePhrase
                 : const InfinitivePhrase(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.clause.isNegative,
+          ),
+        NounType.gerundPhrase => GerundPhraseForm(
+            setPhrase: setSubject,
+            phrase: subject is GerundPhrase
+                ? subject as GerundPhrase
+                : const GerundPhrase(),
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,

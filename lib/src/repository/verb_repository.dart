@@ -113,6 +113,8 @@ class VerbRepository extends VocabularyProvider {
 
   List<AnyVerb> verbs() => _verbs;
 
+  List<AnyVerb> actionVerbs() => _verbs.where((e) => !e.isLinkingVerb).toList();
+
   List<AnyVerb> phrasalVerbs() => _phrasalVerbs;
 
   Future<void> _loadData() async {

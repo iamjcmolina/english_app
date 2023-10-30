@@ -10,8 +10,8 @@ import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
 import '../phrase/infinitive_phrase_form.dart';
+import '../phrase/noun_phrase_form.dart';
 import 'adjective_form.dart';
-import 'noun_phrase_form.dart';
 import 'pronoun_form.dart';
 
 class SubjectComplementPage extends StatefulWidget {

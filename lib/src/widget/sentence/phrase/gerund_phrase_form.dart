@@ -6,7 +6,7 @@ import '../../../model/sentence/adverb/any_adverb.dart';
 import '../../../model/sentence/adverb/value/adverb_position.dart';
 import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/noun/any_noun.dart';
-import '../../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../../model/sentence/phrase/gerund_phrase.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../repository/verb_repository.dart';
 import '../../item_editor_layout.dart';
@@ -16,14 +16,14 @@ import '../noun/object_page.dart';
 import '../sentence_item_field.dart';
 import '../sentence_item_tile.dart';
 
-class InfinitivePhraseForm extends StatelessWidget {
+class GerundPhraseForm extends StatelessWidget {
   final Function(bool) setCanSave;
   final Widget settingsControl;
-  final InfinitivePhrase phrase;
-  final void Function(InfinitivePhrase?) setPhrase;
+  final GerundPhrase phrase;
+  final void Function(GerundPhrase?) setPhrase;
   final bool isNegative;
 
-  const InfinitivePhraseForm({
+  const GerundPhraseForm({
     super.key,
     required this.setCanSave,
     required this.settingsControl,
@@ -45,8 +45,8 @@ class InfinitivePhraseForm extends StatelessWidget {
             children: [
               TextSpan(
                 text: phrase.verb == null
-                    ? '<InfinitiveVerb> '
-                    : 'to ${phrase.verb!.infinitive} ',
+                    ? '<ProgressiveVerb> '
+                    : '${phrase.verb!.progressive} ',
                 style: phrase.verb == null
                     ? unsetTextStyle
                     : TextStyle(color: SentenceItem.verb.color),
@@ -73,18 +73,18 @@ class InfinitivePhraseForm extends StatelessWidget {
       body: [
         DropdownTile(
           color: SentenceItem.verb.color,
-          title: 'InfinitiveVerb',
-          textValue: phrase.verb?.infinitive,
-          textValueEs: phrase.verb?.infinitiveEs,
+          title: 'ProgressiveVerb',
+          textValue: phrase.verb?.progressive,
+          textValueEs: phrase.verb?.progressiveEs,
           required: true,
           fields: [
             SentenceItemField<AnyVerb>(
-              label: 'InfinitiveVerb',
+              label: 'ProgressiveVerb',
               value: phrase.verb,
-              displayStringForOption: (e) => e.infinitive,
-              options: verbRepository.verbs(),
-              filterValuesEn: [(AnyVerb e) => e.infinitive],
-              filterValuesEs: [(AnyVerb e) => e.infinitiveEs],
+              displayStringForOption: (e) => e.progressive,
+              options: verbRepository.actionVerbs(),
+              filterValuesEn: [(AnyVerb e) => e.progressive],
+              filterValuesEs: [(AnyVerb e) => e.progressiveEs],
               onSelected: (e) => setVerb(e),
               onChanged: (text) => setVerb(null),
             ),
@@ -119,7 +119,7 @@ class InfinitivePhraseForm extends StatelessWidget {
   void setModifier(AnyAdverb? modifier) =>
       validateAndSet(phrase.copyWith(modifier: Nullable(modifier)));
 
-  void validateAndSet(InfinitivePhrase phrase) {
+  void validateAndSet(GerundPhrase phrase) {
     setCanSave(phrase.verb != null &&
         (phrase.object != null || phrase.modifier != null));
     setPhrase(phrase);
