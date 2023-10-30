@@ -1,5 +1,9 @@
 import '../noun/subject_complement.dart';
 
-class AnyAdjective extends SubjectComplement {
+abstract class AnyAdjective extends SubjectComplement {
+  String get en;
+  String get singularEs;
+  String get pluralEs;
+
   const AnyAdjective();
 }

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
+import '../../../model/sentence/adjective/any_adjective.dart';
+import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/noun/noun.dart';
 import '../../../model/sentence/phrase/determiner.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
@@ -10,21 +12,25 @@ import '../../../repository/noun_repository.dart';
 import '../../item_editor_layout.dart';
 import '../dropdown_tile.dart';
 import '../sentence_item_field.dart';
+import '../sentence_item_tile.dart';
+import 'noun_phrase_post_modifier_page.dart';
 
 class NounPhraseForm extends StatelessWidget {
   final Function(bool) setCanSave;
   final Widget settingsControl;
-  final NounPhrase? nounPhrase;
-  final void Function(NounPhrase?) setNounPhrase;
+  final NounPhrase? phrase;
+  final void Function(NounPhrase?) setPhrase;
+  final bool isNegative;
 
-  NounPhrase get safePhrase => nounPhrase ?? NounPhrase();
+  NounPhrase get safePhrase => phrase ?? NounPhrase();
 
   const NounPhraseForm({
     super.key,
     required this.setCanSave,
     required this.settingsControl,
-    required this.nounPhrase,
-    required this.setNounPhrase,
+    required this.phrase,
+    required this.setPhrase,
+    required this.isNegative,
   });
 
   @override
@@ -186,6 +192,14 @@ class NounPhraseForm extends StatelessWidget {
             ),
           ],
         ),
+        SentenceItemTile(
+          color: SentenceItem.adjective.color,
+          label: '<PostModifierAdjective>',
+          value: safePhrase.postModifier?.toString(),
+          valueEs: safePhrase.postModifier?.singularEs,
+          trailing: const Icon(Icons.arrow_forward_ios),
+          onTap: () => navigateToPostModifierPage(context),
+        ),
       ],
     );
   }
@@ -204,9 +218,12 @@ class NounPhraseForm extends StatelessWidget {
 
   setNoun(noun) => validateAndSet(safePhrase.copyWith(noun: Nullable(noun)));
 
+  setPostModifier(AnyAdjective? modifier) =>
+      validateAndSet(safePhrase.copyWith(postModifier: Nullable(modifier)));
+
   validateAndSet(NounPhrase phrase) {
     setCanSave(phrase.determiner != null && phrase.noun != null);
-    setNounPhrase(phrase);
+    setPhrase(phrase);
   }
 
   List<Determiner> determiners(NounRepository nounRepository) => [
@@ -217,4 +234,19 @@ class NounPhraseForm extends StatelessWidget {
         ...nounRepository.quantifiers(safePhrase.noun),
         ...nounRepository.numbers(safePhrase.noun)
       ];
+
+  navigateToPostModifierPage(BuildContext context) async {
+    final modifier = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NounPhrasePostModifierPage(
+                  modifier: safePhrase.postModifier,
+                  isNegative: isNegative,
+                )));
+    if (modifier is AnyAdjective) {
+      setPostModifier(modifier);
+    } else if (modifier is bool && !modifier) {
+      setPostModifier(null);
+    }
+  }
 }

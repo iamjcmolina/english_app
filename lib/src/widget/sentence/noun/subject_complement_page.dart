@@ -86,11 +86,11 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
             settingsControl: settingsControl,
           ),
         ComplementType.nounPhrase => NounPhraseForm(
-            setNounPhrase: setComplement,
-            nounPhrase:
-                complement is NounPhrase ? complement as NounPhrase : null,
+            setPhrase: setComplement,
+            phrase: complement is NounPhrase ? complement as NounPhrase : null,
             settingsControl: settingsControl,
             setCanSave: setCanSave,
+            isNegative: widget.isNegative,
           ),
         ComplementType.infinitivePhrase => InfinitivePhraseForm(
             setPhrase: setComplement,

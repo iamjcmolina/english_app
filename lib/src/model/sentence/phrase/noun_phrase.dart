@@ -1,5 +1,6 @@
 import '../../nullable.dart';
 import '../adjective/adjective.dart';
+import '../adjective/any_adjective.dart';
 import '../noun/any_noun.dart';
 import '../noun/noun.dart';
 import '../sentence_buffer.dart';
@@ -12,6 +13,7 @@ class NounPhrase extends AnyNoun {
   Determiner? number;
   Adjective? adjective;
   Noun? noun;
+  AnyAdjective? postModifier;
 
   @override
   String get en {
@@ -78,6 +80,7 @@ class NounPhrase extends AnyNoun {
     this.number,
     this.adjective,
     this.noun,
+    this.postModifier,
   });
 
   NounPhrase copyWith({
@@ -86,6 +89,7 @@ class NounPhrase extends AnyNoun {
     Nullable<Determiner>? number,
     Nullable<Adjective>? adjective,
     Nullable<Noun>? noun,
+    Nullable<AnyAdjective>? postModifier,
   }) =>
       NounPhrase(
         quantifier: quantifier == null ? this.quantifier : quantifier.value,
@@ -93,6 +97,8 @@ class NounPhrase extends AnyNoun {
         number: number == null ? this.number : number.value,
         adjective: adjective == null ? this.adjective : adjective.value,
         noun: noun == null ? this.noun : noun.value,
+        postModifier:
+            postModifier == null ? this.postModifier : postModifier.value,
       );
 
   @override

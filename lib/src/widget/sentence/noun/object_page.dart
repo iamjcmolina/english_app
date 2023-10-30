@@ -91,10 +91,11 @@ class _ObjectPageState extends State<ObjectPage> {
       ],
       body: switch (nounType) {
         NounType.nounPhrase => NounPhraseForm(
-            setNounPhrase: setObject,
-            nounPhrase: object is NounPhrase ? object as NounPhrase : null,
+            setPhrase: setObject,
+            phrase: object is NounPhrase ? object as NounPhrase : null,
             settingsControl: settingsControl,
             setCanSave: setCanSave,
+            isNegative: widget.isNegative,
           ),
         NounType.indefinitePronoun => IndefinitePronounForm(
             setPronoun: setObject,

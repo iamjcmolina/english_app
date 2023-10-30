@@ -31,6 +31,12 @@ class PrepositionalPhrase implements AnyAdjective, AnyAdverb {
     return buffer.toString();
   }
 
+  @override
+  String get pluralEs => es;
+
+  @override
+  String get singularEs => es;
+
   const PrepositionalPhrase({this.preposition, this.object});
 
   PrepositionalPhrase copyWith({

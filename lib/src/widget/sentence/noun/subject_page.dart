@@ -76,10 +76,11 @@ class _SubjectPageState extends State<SubjectPage> {
       ],
       body: switch (nounType) {
         NounType.nounPhrase => NounPhraseForm(
-            setNounPhrase: setSubject,
-            nounPhrase: subject is NounPhrase ? subject as NounPhrase : null,
+            setPhrase: setSubject,
+            phrase: subject is NounPhrase ? subject as NounPhrase : null,
             settingsControl: settingsControl,
             setCanSave: setCanSave,
+            isNegative: widget.clause.isNegative,
           ),
         NounType.indefinitePronoun => IndefinitePronounForm(
             setPronoun: setSubject,
