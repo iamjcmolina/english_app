@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../model/sentence/adjective/any_adjective.dart';
 import '../../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../../model/sentence/phrase/past_participle_phrase.dart';
 import '../../../model/sentence/phrase/prepositional_phrase.dart';
 import '../../../model/sentence/phrase/present_participle_phrase.dart';
 import '../../../model/sentence/phrase/value/noun_phrase_post_modifier_type.dart';
 import '../../sentence_scaffold.dart';
 import '../phrase/infinitive_phrase_form.dart';
+import 'past_participle_phrase_form.dart';
 import 'prepositional_phrase_form.dart';
 import 'present_participle_phrase_form.dart';
 
@@ -86,6 +88,16 @@ class _NounPhrasePostModifierPageState
             phrase: modifier is PresentParticiplePhrase
                 ? modifier as PresentParticiplePhrase
                 : const PresentParticiplePhrase(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.isNegative,
+          ),
+        NounPhrasePostModifierType.pastParticiplePhrase =>
+          PastParticiplePhraseForm(
+            setPhrase: setModifier,
+            phrase: modifier is PastParticiplePhrase
+                ? modifier as PastParticiplePhrase
+                : const PastParticiplePhrase(),
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
