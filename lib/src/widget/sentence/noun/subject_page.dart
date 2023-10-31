@@ -81,6 +81,7 @@ class _SubjectPageState extends State<SubjectPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
+            isPlural: widget.clause.hasPluralSubject,
           ),
         NounType.indefinitePronoun => IndefinitePronounForm(
             setPronoun: setSubject,
@@ -99,6 +100,7 @@ class _SubjectPageState extends State<SubjectPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
+            isPlural: widget.clause.hasPluralSubject,
           ),
         NounType.gerundPhrase => GerundPhraseForm(
             setPhrase: setSubject,
@@ -108,6 +110,7 @@ class _SubjectPageState extends State<SubjectPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
+            isPlural: widget.clause.hasPluralSubject,
           ),
         _ => PronounForm(
             pronouns: pronouns,

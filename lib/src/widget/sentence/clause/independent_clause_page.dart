@@ -232,6 +232,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   isDitransitiveVerb: clause.hasDitransitiveVerb,
                   isIndirectObject: isIndirectObject,
                   isNegative: clause.isNegative,
+                  isPlural: clause.hasPluralSubject,
                 )));
     if (object is AnyNoun) {
       if (isIndirectObject) {
@@ -255,6 +256,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             builder: (context) => SubjectComplementPage(
                   complement: clause.subjectComplement,
                   isNegative: clause.isNegative,
+                  isPlural: clause.hasPluralSubject,
                 )));
     if (complement is SubjectComplement) {
       setComplement(complement);
@@ -275,6 +277,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   },
                   position: position,
                   isNegative: clause.isNegative,
+                  isPlural: clause.hasPluralSubject,
                 )));
     if (adverb is AnyAdverb) {
       switch (position) {

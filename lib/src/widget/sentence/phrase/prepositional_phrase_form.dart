@@ -19,6 +19,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
   final PrepositionalPhrase phrase;
   final void Function(PrepositionalPhrase?) setPhrase;
   final bool isNegative;
+  final bool isPlural;
 
   const PrepositionalPhraseForm({
     super.key,
@@ -27,6 +28,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
     required this.phrase,
     required this.setPhrase,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -109,6 +111,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
                   isDitransitiveVerb: false,
                   isIndirectObject: false,
                   isNegative: isNegative,
+                  isPlural: isPlural,
                 )));
     if (object is AnyNoun) {
       setObject(object);

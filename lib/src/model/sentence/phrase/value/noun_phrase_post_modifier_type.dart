@@ -1,4 +1,6 @@
 enum NounPhrasePostModifierType {
+  adverbPlusAdjective('Adverb + Adjective'),
+  adjectivePlusComplement('Adjective + Complement'),
   prepositionalPhrase('Prepositional Phrase'),
   presentParticiplePhrase('Present Participle Phrase'),
   pastParticiplePhrase('Past Participle Phrase'),

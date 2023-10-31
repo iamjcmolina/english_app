@@ -22,6 +22,7 @@ class InfinitivePhraseForm extends StatelessWidget {
   final InfinitivePhrase phrase;
   final void Function(InfinitivePhrase?) setPhrase;
   final bool isNegative;
+  final bool isPlural;
 
   const InfinitivePhraseForm({
     super.key,
@@ -30,6 +31,7 @@ class InfinitivePhraseForm extends StatelessWidget {
     required this.phrase,
     required this.setPhrase,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -134,6 +136,7 @@ class InfinitivePhraseForm extends StatelessWidget {
                   isDitransitiveVerb: false,
                   isIndirectObject: false,
                   isNegative: isNegative,
+                  isPlural: isPlural,
                 )));
     if (object is AnyNoun) {
       setObject(object);
@@ -147,10 +150,10 @@ class InfinitivePhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdverbPage(
-                  adverb: phrase.modifier,
-                  position: AdverbPosition.end,
-                  isNegative: isNegative,
-                )));
+                adverb: phrase.modifier,
+                position: AdverbPosition.end,
+                isNegative: isNegative,
+                isPlural: isPlural)));
     if (adverb is AnyAdverb) {
       setModifier(adverb);
     } else if (adverb is bool && !adverb) {

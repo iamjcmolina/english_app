@@ -17,12 +17,14 @@ class AdverbPage extends StatefulWidget {
   final AdverbPosition position;
   final AnyAdverb? adverb;
   final bool isNegative;
+  final bool isPlural;
 
   const AdverbPage({
     super.key,
     required this.position,
     required this.adverb,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -92,6 +94,7 @@ class _AdverbPageState extends State<AdverbPage> {
               settingsControl: settingsControl,
               setCanSave: setCanSave,
               isNegative: widget.isNegative,
+              isPlural: widget.isPlural,
             ),
           AdverbVariant.prepositionalPhrase => PrepositionalPhraseForm(
               setPhrase: setAdverb,
@@ -101,6 +104,7 @@ class _AdverbPageState extends State<AdverbPage> {
               settingsControl: settingsControl,
               setCanSave: setCanSave,
               isNegative: widget.isNegative,
+              isPlural: widget.isPlural,
             ),
           _ => AdverbForm(
               settingsControl: settingsControl,

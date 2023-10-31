@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/adjective/any_adjective.dart';
+import '../../../model/sentence/phrase/adjective_plus_complement.dart';
+import '../../../model/sentence/phrase/adverb_plus_adjective.dart';
 import '../../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../../model/sentence/phrase/past_participle_phrase.dart';
 import '../../../model/sentence/phrase/prepositional_phrase.dart';
@@ -8,6 +10,8 @@ import '../../../model/sentence/phrase/present_participle_phrase.dart';
 import '../../../model/sentence/phrase/value/noun_phrase_post_modifier_type.dart';
 import '../../sentence_scaffold.dart';
 import '../phrase/infinitive_phrase_form.dart';
+import 'adjective_plus_complement_form.dart';
+import 'adverb_plus_adjective_form.dart';
 import 'past_participle_phrase_form.dart';
 import 'prepositional_phrase_form.dart';
 import 'present_participle_phrase_form.dart';
@@ -15,11 +19,13 @@ import 'present_participle_phrase_form.dart';
 class NounPhrasePostModifierPage extends StatefulWidget {
   final AnyAdjective? modifier;
   final bool isNegative;
+  final bool isPlural;
 
   const NounPhrasePostModifierPage({
     super.key,
     required this.modifier,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -81,6 +87,7 @@ class _NounPhrasePostModifierPageState
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         NounPhrasePostModifierType.presentParticiplePhrase =>
           PresentParticiplePhraseForm(
@@ -91,6 +98,7 @@ class _NounPhrasePostModifierPageState
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         NounPhrasePostModifierType.pastParticiplePhrase =>
           PastParticiplePhraseForm(
@@ -101,6 +109,28 @@ class _NounPhrasePostModifierPageState
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
+          ),
+        NounPhrasePostModifierType.adverbPlusAdjective =>
+          AdverbPlusAdjectiveForm(
+            setPhrase: setModifier,
+            phrase: modifier is AdverbPlusAdjective
+                ? modifier as AdverbPlusAdjective
+                : const AdverbPlusAdjective(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isPlural: widget.isPlural,
+          ),
+        NounPhrasePostModifierType.adjectivePlusComplement =>
+          AdjectivePlusComplementForm(
+            setPhrase: setModifier,
+            phrase: modifier is AdjectivePlusComplement
+                ? modifier as AdjectivePlusComplement
+                : const AdjectivePlusComplement(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         NounPhrasePostModifierType.infinitivePhrase => InfinitivePhraseForm(
             setPhrase: setModifier,
@@ -110,6 +140,7 @@ class _NounPhrasePostModifierPageState
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
       },
     );

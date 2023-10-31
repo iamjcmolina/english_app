@@ -4,11 +4,15 @@ import 'package:provider/provider.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/sentence/noun/subject_complement.dart';
-import '../../../model/sentence/noun/value/complement-type.dart';
+import '../../../model/sentence/noun/value/subject_complement_type.dart';
+import '../../../model/sentence/phrase/adjective_plus_complement.dart';
+import '../../../model/sentence/phrase/adverb_plus_adjective.dart';
 import '../../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../repository/noun_repository.dart';
 import '../../sentence_scaffold.dart';
+import '../phrase/adjective_plus_complement_form.dart';
+import '../phrase/adverb_plus_adjective_form.dart';
 import '../phrase/infinitive_phrase_form.dart';
 import '../phrase/noun_phrase_form.dart';
 import 'adjective_form.dart';
@@ -17,11 +21,13 @@ import 'pronoun_form.dart';
 class SubjectComplementPage extends StatefulWidget {
   final SubjectComplement? complement;
   final bool isNegative;
+  final bool isPlural;
 
   const SubjectComplementPage({
     super.key,
     required this.complement,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -29,7 +35,7 @@ class SubjectComplementPage extends StatefulWidget {
 }
 
 class _SubjectComplementState extends State<SubjectComplementPage> {
-  late ComplementType type;
+  late SubjectComplementType type;
   SubjectComplement? complement;
   bool canSave = false;
 
@@ -39,9 +45,9 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
     complement = widget.complement;
     canSave = complement != null;
     type = switch (complement.runtimeType) {
-      NounPhrase => ComplementType.nounPhrase,
-      Adjective => ComplementType.adjective,
-      _ => ComplementType.possessivePronoun,
+      NounPhrase => SubjectComplementType.nounPhrase,
+      Adjective => SubjectComplementType.adjective,
+      _ => SubjectComplementType.possessivePronoun,
     };
   }
 
@@ -52,12 +58,13 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
     List<Pronoun> pronouns = nounRepository.possessivePronouns();
 
     final settingsControl = Center(
-      child: DropdownButton<ComplementType>(
+      child: DropdownButton<SubjectComplementType>(
         value: type,
-        onChanged: (ComplementType? value) => setType(value!),
-        items: ComplementType.values
-            .map<DropdownMenuItem<ComplementType>>(
-                (ComplementType item) => DropdownMenuItem<ComplementType>(
+        onChanged: (SubjectComplementType? value) => setType(value!),
+        items: SubjectComplementType.values
+            .map<DropdownMenuItem<SubjectComplementType>>(
+                (SubjectComplementType item) =>
+                    DropdownMenuItem<SubjectComplementType>(
                       value: item,
                       child: Text(item.name),
                     ))
@@ -78,21 +85,22 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
         ),
       ],
       body: switch (type) {
-        ComplementType.possessivePronoun => PronounForm(
+        SubjectComplementType.possessivePronoun => PronounForm(
             pronouns: pronouns,
             setPronoun: setComplement,
             pronoun: complement is Pronoun ? complement as Pronoun : null,
             setCanSave: setCanSave,
             settingsControl: settingsControl,
           ),
-        ComplementType.nounPhrase => NounPhraseForm(
+        SubjectComplementType.nounPhrase => NounPhraseForm(
             setPhrase: setComplement,
             phrase: complement is NounPhrase ? complement as NounPhrase : null,
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
-        ComplementType.infinitivePhrase => InfinitivePhraseForm(
+        SubjectComplementType.infinitivePhrase => InfinitivePhraseForm(
             setPhrase: setComplement,
             phrase: complement is InfinitivePhrase
                 ? complement as InfinitivePhrase
@@ -100,6 +108,27 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
+          ),
+        SubjectComplementType.adverbPlusAdjective => AdverbPlusAdjectiveForm(
+            setPhrase: setComplement,
+            phrase: complement is AdverbPlusAdjective
+                ? complement as AdverbPlusAdjective
+                : const AdverbPlusAdjective(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isPlural: widget.isPlural,
+          ),
+        SubjectComplementType.adjectivePlusComplement =>
+          AdjectivePlusComplementForm(
+            setPhrase: setComplement,
+            phrase: complement is AdjectivePlusComplement
+                ? complement as AdjectivePlusComplement
+                : const AdjectivePlusComplement(),
+            settingsControl: settingsControl,
+            setCanSave: setCanSave,
+            isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         _ => AdjectiveForm(
             setAdjective: setComplement,
@@ -114,7 +143,7 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
   setComplement(SubjectComplement? complement) =>
       setState(() => this.complement = complement);
 
-  setType(ComplementType type) => setState(() => this.type = type);
+  setType(SubjectComplementType type) => setState(() => this.type = type);
 
   setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

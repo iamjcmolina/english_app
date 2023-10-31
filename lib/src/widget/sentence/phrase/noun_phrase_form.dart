@@ -21,6 +21,7 @@ class NounPhraseForm extends StatelessWidget {
   final NounPhrase? phrase;
   final void Function(NounPhrase?) setPhrase;
   final bool isNegative;
+  final bool isPlural;
 
   NounPhrase get safePhrase => phrase ?? NounPhrase();
 
@@ -31,6 +32,7 @@ class NounPhraseForm extends StatelessWidget {
     required this.phrase,
     required this.setPhrase,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -242,6 +244,7 @@ class NounPhraseForm extends StatelessWidget {
             builder: (context) => NounPhrasePostModifierPage(
                   modifier: safePhrase.postModifier,
                   isNegative: isNegative,
+                  isPlural: isPlural,
                 )));
     if (modifier is AnyAdjective) {
       setPostModifier(modifier);

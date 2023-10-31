@@ -20,6 +20,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
   final PastParticiplePhrase phrase;
   final void Function(PastParticiplePhrase?) setPhrase;
   final bool isNegative;
+  final bool isPlural;
 
   const PastParticiplePhraseForm({
     super.key,
@@ -28,6 +29,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
     required this.phrase,
     required this.setPhrase,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -109,10 +111,10 @@ class PastParticiplePhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdverbPage(
-                  adverb: phrase.modifier,
-                  position: AdverbPosition.end,
-                  isNegative: isNegative,
-                )));
+                adverb: phrase.modifier,
+                position: AdverbPosition.end,
+                isNegative: isNegative,
+                isPlural: isPlural)));
     if (adverb is AnyAdverb) {
       setModifier(adverb);
     } else if (adverb is bool && !adverb) {

@@ -21,6 +21,7 @@ class ObjectPage extends StatefulWidget {
   final bool isIndirectObject;
   final bool isDitransitiveVerb;
   final bool isNegative;
+  final bool isPlural;
 
   const ObjectPage({
     super.key,
@@ -28,6 +29,7 @@ class ObjectPage extends StatefulWidget {
     required this.isIndirectObject,
     required this.isDitransitiveVerb,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -96,6 +98,7 @@ class _ObjectPageState extends State<ObjectPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         NounType.indefinitePronoun => IndefinitePronounForm(
             setPronoun: setObject,
@@ -114,6 +117,7 @@ class _ObjectPageState extends State<ObjectPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         NounType.gerundPhrase => GerundPhraseForm(
             setPhrase: setObject,
@@ -123,6 +127,7 @@ class _ObjectPageState extends State<ObjectPage> {
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.isNegative,
+            isPlural: widget.isPlural,
           ),
         _ => PronounForm(
             pronouns: pronouns,

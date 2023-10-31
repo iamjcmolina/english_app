@@ -1,5 +1,7 @@
-enum ComplementType {
+enum SubjectComplementType {
   adjective('Adjective'),
+  adverbPlusAdjective('Adverb+Adjective'),
+  adjectivePlusComplement('Adjective+Complement'),
   possessivePronoun('Possessive pronoun'),
   nounPhrase('Noun phrase'),
   infinitivePhrase('Infinitive phrase');
@@ -8,5 +10,5 @@ enum ComplementType {
 
   final String name;
 
-  const ComplementType(this.name);
+  const SubjectComplementType(this.name);
 }

@@ -22,6 +22,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
   final PresentParticiplePhrase phrase;
   final void Function(PresentParticiplePhrase?) setPhrase;
   final bool isNegative;
+  final bool isPlural;
 
   const PresentParticiplePhraseForm({
     super.key,
@@ -30,6 +31,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
     required this.phrase,
     required this.setPhrase,
     required this.isNegative,
+    required this.isPlural,
   });
 
   @override
@@ -134,6 +136,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
                   isDitransitiveVerb: false,
                   isIndirectObject: false,
                   isNegative: isNegative,
+                  isPlural: isPlural,
                 )));
     if (object is AnyNoun) {
       setObject(object);
@@ -150,6 +153,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
                   adverb: phrase.modifier,
                   position: AdverbPosition.end,
                   isNegative: isNegative,
+                  isPlural: isPlural,
                 )));
     if (adverb is AnyAdverb) {
       setModifier(adverb);
