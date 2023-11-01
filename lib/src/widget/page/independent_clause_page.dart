@@ -126,7 +126,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             en: clause.frontAdverb?.toString(),
             es: clause.frontAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToAdverbPage(context, AdverbPosition.front),
+            onTap: () => goToAdverbPage(context, AdverbPosition.front),
             isShown: clause.isInterrogative,
           ),
           if (clause.isInterrogative) firstAuxiliaryVerbListItem,
@@ -136,7 +136,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             en: clause.subject?.toString(),
             es: clause.subject?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToSubjectPage(context),
+            onTap: () => goToSubjectPage(context),
             isRequired: true,
           ),
           if (!clause.isInterrogative) firstAuxiliaryVerbListItem,
@@ -146,7 +146,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             en: clause.midAdverb?.toString(),
             es: clause.midAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToAdverbPage(context, AdverbPosition.mid),
+            onTap: () => goToAdverbPage(context, AdverbPosition.mid),
           ),
           SentenceItemTile(
             style: SentenceItem.verb.style,
@@ -170,7 +170,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             es: clause.indirectObject?.es,
             isShown: clause.hasDitransitiveVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToObjectPage(context, true),
+            onTap: () => goToObjectPage(context, true),
           ),
           SentenceItemTile(
             style: SentenceItem.noun.style,
@@ -179,7 +179,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             es: clause.directObject?.es,
             isShown: clause.hasTransitiveVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToObjectPage(context, false),
+            onTap: () => goToObjectPage(context, false),
           ),
           SentenceItemTile(
             style: SentenceItem.noun.style,
@@ -188,7 +188,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             es: clause.subjectComplement?.es,
             isShown: clause.hasLinkingVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToComplementPage(context),
+            onTap: () => goToComplementPage(context),
             isRequired: true,
           ),
           SentenceItemTile(
@@ -197,25 +197,21 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             en: clause.endAdverb?.toString(),
             es: clause.endAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => navigateToAdverbPage(context, AdverbPosition.end),
+            onTap: () => goToAdverbPage(context, AdverbPosition.end),
           ),
         ],
       ),
     );
   }
 
-  navigateToSubjectPage(BuildContext context) async {
-    final subject = await Navigator.push(context,
+  goToSubjectPage(BuildContext context) async {
+    final response = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => SubjectPage(clause: clause)));
-    if (subject is AnyNoun) {
-      setSubject(subject);
-    } else if (subject is bool && !subject) {
-      setSubject(null);
-    }
+    setSubject(response is AnyNoun ? response : null);
   }
 
-  navigateToObjectPage(BuildContext context, bool isIndirectObject) async {
-    final object = await Navigator.push(
+  goToObjectPage(BuildContext context, bool isIndirectObject) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ObjectPage(
@@ -227,23 +223,15 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   isNegative: clause.isNegative,
                   isPlural: clause.hasPluralSubject,
                 )));
-    if (object is AnyNoun) {
-      if (isIndirectObject) {
-        setIndirectObject(object);
-      } else {
-        setDirectObject(object);
-      }
-    } else if (object is bool && !object) {
-      if (isIndirectObject) {
-        setIndirectObject(null);
-      } else {
-        setDirectObject(null);
-      }
+    if (isIndirectObject) {
+      setIndirectObject(response is AnyNoun ? response : null);
+    } else {
+      setDirectObject(response is AnyNoun ? response : null);
     }
   }
 
-  navigateToComplementPage(BuildContext context) async {
-    final complement = await Navigator.push(
+  goToComplementPage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SubjectComplementPage(
@@ -251,51 +239,32 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   isNegative: clause.isNegative,
                   isPlural: clause.hasPluralSubject,
                 )));
-    if (complement is SubjectComplement) {
-      setComplement(complement);
-    } else if (complement is bool && !complement) {
-      setComplement(null);
-    }
+    setComplement(response is SubjectComplement ? response : null);
   }
 
-  navigateToAdverbPage(BuildContext context, AdverbPosition position) async {
-    final adverb = await Navigator.push(
+  goToAdverbPage(BuildContext context, AdverbPosition position) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AdverbialPhrasePage(
-                  adverb: switch (position) {
-                    AdverbPosition.front => clause.frontAdverb,
-                    AdverbPosition.mid => clause.midAdverb,
-                    _ => clause.endAdverb,
-                  },
-                  position: position,
-                  isNegative: clause.isNegative,
-                  isPlural: clause.hasPluralSubject,
-                )));
-    if (adverb is AnyAdverb) {
-      switch (position) {
-        case AdverbPosition.front:
-          setFrontAdverb(adverb);
-          break;
-        case AdverbPosition.mid:
-          setMidAdverb(adverb);
-          break;
-        case _:
-          setEndAdverb(adverb);
-          break;
-      }
-    } else if (adverb is bool && !adverb) {
-      switch (position) {
-        case AdverbPosition.front:
-          setFrontAdverb(null);
-          break;
-        case AdverbPosition.mid:
-          setMidAdverb(null);
-          break;
-        case _:
-          setEndAdverb(null);
-          break;
-      }
+                adverb: switch (position) {
+                  AdverbPosition.front => clause.frontAdverb,
+                  AdverbPosition.mid => clause.midAdverb,
+                  _ => clause.endAdverb,
+                },
+                position: position,
+                isNegative: clause.isNegative,
+                isPlural: clause.hasPluralSubject)));
+    switch (position) {
+      case AdverbPosition.front:
+        setFrontAdverb(response is AnyAdverb ? response : null);
+        break;
+      case AdverbPosition.mid:
+        setMidAdverb(response is AnyAdverb ? response : null);
+        break;
+      case _:
+        setEndAdverb(response is AnyAdverb ? response : null);
+        break;
     }
   }
 
