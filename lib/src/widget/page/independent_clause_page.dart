@@ -17,7 +17,7 @@ import '../common/sentence_scaffold.dart';
 import '../sentence/clause/clause_text.dart';
 import '../sentence/verb/first_auxiliary_verb_tile.dart';
 import '../sentence/verb/verb_tile.dart';
-import 'adverb_page.dart';
+import 'adverbial_phrase_page.dart';
 import 'object_page.dart';
 import 'subject_complement_page.dart';
 import 'subject_page.dart';
@@ -86,32 +86,25 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownMenu<Tense>(
+                      label: const Text('Clause Tense'),
                       initialSelection: clause.tense,
-                      label: const Text('Tense'),
                       dropdownMenuEntries: Tense.values
-                          .map<DropdownMenuEntry<Tense>>(
-                              (Tense item) => DropdownMenuEntry<Tense>(
-                                    value: item,
-                                    label: item.name,
-                                  ))
+                          .map(
+                              (e) => DropdownMenuEntry(value: e, label: e.name))
                           .toList(),
-                      onSelected: (Tense? tense) => setTense(tense!),
+                      onSelected: (e) => setTense(e!),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownMenu<ClauseType>(
+                      label: const Text('Clause Type'),
                       initialSelection: clause.clauseType,
-                      label: const Text('Clause type'),
                       dropdownMenuEntries: ClauseType.values
-                          .map<DropdownMenuEntry<ClauseType>>(
-                              (ClauseType item) =>
-                                  DropdownMenuEntry<ClauseType>(
-                                    value: item,
-                                    label: item.name,
-                                  ))
+                          .map(
+                              (e) => DropdownMenuEntry(value: e, label: e.name))
                           .toList(),
-                      onSelected: (ClauseType? type) => setClauseType(type!),
+                      onSelected: (e) => setClauseType(e!),
                     ),
                   ),
                 ],
@@ -269,7 +262,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     final adverb = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => AdverbPage(
+            builder: (context) => AdverbialPhrasePage(
                   adverb: switch (position) {
                     AdverbPosition.front => clause.frontAdverb,
                     AdverbPosition.mid => clause.midAdverb,

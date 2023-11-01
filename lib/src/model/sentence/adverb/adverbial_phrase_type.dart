@@ -1,4 +1,4 @@
-enum AdverbVariant {
+enum AdverbialPhraseType {
   word('Adverb Word'),
   adverbPlusAdverb('Adverb + Adverb Phrase'),
   infinitivePhrase('Infinitive Phrase'),
@@ -6,5 +6,5 @@ enum AdverbVariant {
 
   final String name;
 
-  const AdverbVariant(this.name);
+  const AdverbialPhraseType(this.name);
 }

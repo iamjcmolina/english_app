@@ -13,7 +13,7 @@ import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
-import '../../page/noun_end_adjective_page.dart';
+import '../../page/adjectival_phrase_page.dart';
 
 class NounPhraseForm extends StatelessWidget {
   final Widget settingsControl;
@@ -185,32 +185,27 @@ class NounPhraseForm extends StatelessWidget {
           en: phrase.endAdjective?.toString(),
           es: phrase.endAdjective?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => navigateToPostModifierPage(context),
+          onTap: () => goToAdjectivalPhrasePage(context),
         ),
       ],
     );
   }
 
   setQuantifier(quantifierOf) =>
-      validateAndSet(phrase.copyWith(quantifier: Nullable(quantifierOf)));
+      setPhrase(phrase.copyWith(quantifier: Nullable(quantifierOf)));
 
   setDeterminer(determiner) =>
-      validateAndSet(phrase.copyWith(determiner: Nullable(determiner)));
+      setPhrase(phrase.copyWith(determiner: Nullable(determiner)));
 
   setAdjective(adjective) =>
-      validateAndSet(phrase.copyWith(adjective: Nullable(adjective)));
+      setPhrase(phrase.copyWith(adjective: Nullable(adjective)));
 
-  setNumber(number) =>
-      validateAndSet(phrase.copyWith(number: Nullable(number)));
+  setNumber(number) => setPhrase(phrase.copyWith(number: Nullable(number)));
 
-  setNoun(noun) => validateAndSet(phrase.copyWith(noun: Nullable(noun)));
+  setNoun(noun) => setPhrase(phrase.copyWith(noun: Nullable(noun)));
 
-  setPostModifier(AnyAdjective? adjective) =>
-      validateAndSet(phrase.copyWith(endAdjective: Nullable(adjective)));
-
-  validateAndSet(NounPhrase phrase) {
-    setPhrase(phrase);
-  }
+  setAdjectivalPhrase(AnyAdjective? adjective) =>
+      setPhrase(phrase.copyWith(endAdjective: Nullable(adjective)));
 
   List<Determiner> determiners(VocabularyRepository vocabularyRepository) => [
         ...vocabularyRepository.articles(phrase.noun),
@@ -221,19 +216,15 @@ class NounPhraseForm extends StatelessWidget {
         ...vocabularyRepository.numbers(phrase.noun)
       ];
 
-  navigateToPostModifierPage(BuildContext context) async {
-    final modifier = await Navigator.push(
+  goToAdjectivalPhrasePage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => NounEndAdjectivePage(
+            builder: (context) => AdjectivalPhrasePage(
                   adjective: phrase.endAdjective,
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));
-    if (modifier is AnyAdjective) {
-      setPostModifier(modifier);
-    } else if (modifier is bool && !modifier) {
-      setPostModifier(null);
-    }
+    setAdjectivalPhrase(response is AnyAdjective ? response : null);
   }
 }

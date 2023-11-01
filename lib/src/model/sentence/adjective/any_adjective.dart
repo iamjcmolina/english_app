@@ -5,6 +5,7 @@ abstract class AnyAdjective extends SubjectComplement {
   static const adjectiveComplementPlaceholder = '<AdjectiveComplement>';
   static const adjectivePlaceholderEs = '<Adjetivo>';
   static const adjectiveComplementPlaceholderEs = '<ComplementoDelAdjetivo>';
+  @override
   final bool isValid = true;
   @override
   String get en;

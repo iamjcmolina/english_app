@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../model/sentence/adjective/any_adjective.dart';
+import '../../model/sentence/phrase/adjectival_phrase_type.dart';
 import '../../model/sentence/phrase/adjective_plus_complement.dart';
 import '../../model/sentence/phrase/adverb_plus_adjective.dart';
-import '../../model/sentence/phrase/end_adjective_type.dart';
 import '../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../model/sentence/phrase/past_participle_phrase.dart';
 import '../../model/sentence/phrase/prepositional_phrase.dart';
@@ -16,12 +16,12 @@ import '../sentence/phrase/past_participle_phrase_form.dart';
 import '../sentence/phrase/prepositional_phrase_form.dart';
 import '../sentence/phrase/present_participle_phrase_form.dart';
 
-class NounEndAdjectivePage extends StatefulWidget {
+class AdjectivalPhrasePage extends StatefulWidget {
   final AnyAdjective? adjective;
   final bool isNegative;
   final bool isPlural;
 
-  const NounEndAdjectivePage({
+  const AdjectivalPhrasePage({
     super.key,
     required this.adjective,
     required this.isNegative,
@@ -29,12 +29,12 @@ class NounEndAdjectivePage extends StatefulWidget {
   });
 
   @override
-  State<NounEndAdjectivePage> createState() => _NounEndAdjectivePageState();
+  State<AdjectivalPhrasePage> createState() => _AdjectivalPhrasePageState();
 }
 
-class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
-  EndAdjectiveType type = EndAdjectiveType.prepositionalPhrase;
+class _AdjectivalPhrasePageState extends State<AdjectivalPhrasePage> {
   AnyAdjective? adjective;
+  late AdjectivalPhraseType type;
 
   bool get isValid => adjective?.isValid ?? false;
 
@@ -42,26 +42,27 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
   void initState() {
     super.initState();
     adjective = widget.adjective;
+    type = AdjectivalPhraseType.prepositionalPhrase;
   }
 
   @override
   Widget build(BuildContext context) {
     final settingsControl = Center(
-      child: DropdownButton<EndAdjectiveType>(
-        value: type,
-        onChanged: (EndAdjectiveType? value) => setEndAdjectiveType(value!),
-        items: EndAdjectiveType.values
-            .map<DropdownMenuItem<EndAdjectiveType>>(
-                (EndAdjectiveType item) => DropdownMenuItem<EndAdjectiveType>(
-                      value: item,
-                      child: Text(item.name),
-                    ))
-            .toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownMenu<AdjectivalPhraseType>(
+          label: const Text('Adjectival Phrase Type'),
+          initialSelection: type,
+          dropdownMenuEntries: AdjectivalPhraseType.values
+              .map((e) => DropdownMenuEntry(value: e, label: e.name))
+              .toList(),
+          onSelected: (e) => setType(e!),
+        ),
       ),
     );
 
     return SentenceScaffold(
-      title: 'Post Modifier (Adjective Phrase)',
+      title: 'Adjectival Phrase',
       bottomActions: [
         IconButton(
           onPressed: isValid ? () => Navigator.pop(context, adjective) : null,
@@ -73,7 +74,7 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
         ),
       ],
       body: switch (type) {
-        EndAdjectiveType.prepositionalPhrase => PrepositionalPhraseForm(
+        AdjectivalPhraseType.prepositionalPhrase => PrepositionalPhraseForm(
             setPhrase: setAdjective,
             phrase: adjective is PrepositionalPhrase
                 ? adjective as PrepositionalPhrase
@@ -82,7 +83,8 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        EndAdjectiveType.presentParticiplePhrase => PresentParticiplePhraseForm(
+        AdjectivalPhraseType.presentParticiplePhrase =>
+          PresentParticiplePhraseForm(
             setPhrase: setAdjective,
             phrase: adjective is PresentParticiplePhrase
                 ? adjective as PresentParticiplePhrase
@@ -91,7 +93,7 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        EndAdjectiveType.pastParticiplePhrase => PastParticiplePhraseForm(
+        AdjectivalPhraseType.pastParticiplePhrase => PastParticiplePhraseForm(
             setPhrase: setAdjective,
             phrase: adjective is PastParticiplePhrase
                 ? adjective as PastParticiplePhrase
@@ -100,7 +102,7 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        EndAdjectiveType.adverbPlusAdjective => AdverbPlusAdjectiveForm(
+        AdjectivalPhraseType.adverbPlusAdjective => AdverbPlusAdjectiveForm(
             setPhrase: setAdjective,
             phrase: adjective is AdverbPlusAdjective
                 ? adjective as AdverbPlusAdjective
@@ -108,7 +110,8 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
             settingsControl: settingsControl,
             isPlural: widget.isPlural,
           ),
-        EndAdjectiveType.adjectivePlusComplement => AdjectivePlusComplementForm(
+        AdjectivalPhraseType.adjectivePlusComplement =>
+          AdjectivePlusComplementForm(
             setPhrase: setAdjective,
             phrase: adjective is AdjectivePlusComplement
                 ? adjective as AdjectivePlusComplement
@@ -117,7 +120,7 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        EndAdjectiveType.infinitivePhrase => InfinitivePhraseForm(
+        AdjectivalPhraseType.infinitivePhrase => InfinitivePhraseForm(
             setPhrase: setAdjective,
             phrase: adjective is InfinitivePhrase
                 ? adjective as InfinitivePhrase
@@ -133,6 +136,5 @@ class _NounEndAdjectivePageState extends State<NounEndAdjectivePage> {
   setAdjective(AnyAdjective? adjective) =>
       setState(() => this.adjective = adjective);
 
-  setEndAdjectiveType(EndAdjectiveType type) =>
-      setState(() => this.type = type);
+  setType(AdjectivalPhraseType type) => setState(() => this.type = type);
 }

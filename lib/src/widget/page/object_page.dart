@@ -38,7 +38,7 @@ class ObjectPage extends StatefulWidget {
 
 class _ObjectPageState extends State<ObjectPage> {
   AnyNoun? object;
-  late NounType nounType;
+  late NounType type;
 
   bool get isValid => object?.isValid ?? false;
 
@@ -49,7 +49,7 @@ class _ObjectPageState extends State<ObjectPage> {
   void initState() {
     super.initState();
     object = widget.object;
-    nounType = object == null
+    type = object == null
         ? (mustAllowPronouns ? NounType.pronoun : NounType.nounPhrase)
         : switch (object.runtimeType) {
             NounPhrase => NounType.nounPhrase,
@@ -62,22 +62,17 @@ class _ObjectPageState extends State<ObjectPage> {
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
-    List<Pronoun> pronouns = vocabularyRepository.objectPronouns();
-
     final settingsControl = Center(
-      child: DropdownButton<NounType>(
-        value: nounType,
-        onChanged: (NounType? value) => setNounType(value!),
-        items: NounType.values
-            .where((e) => mustAllowPronouns ? true : e != NounType.pronoun)
-            .map<DropdownMenuItem<NounType>>(
-                (NounType item) => DropdownMenuItem<NounType>(
-                      value: item,
-                      child: Text(item.name),
-                    ))
-            .toList(),
-      ),
-    );
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownMenu<NounType>(
+                label: const Text('Noun Object Type'),
+                initialSelection: type,
+                dropdownMenuEntries: NounType.values
+                    .where((e) => mustAllowPronouns || e != NounType.pronoun)
+                    .map((e) => DropdownMenuEntry(value: e, label: e.name))
+                    .toList(),
+                onSelected: (e) => setType(e!))));
 
     return SentenceScaffold(
       title: widget.isIndirectObject ? 'Indirect Object' : 'Direct Object',
@@ -91,7 +86,7 @@ class _ObjectPageState extends State<ObjectPage> {
           icon: const Icon(Icons.clear),
         ),
       ],
-      body: switch (nounType) {
+      body: switch (type) {
         NounType.nounPhrase => NounPhraseForm(
             setPhrase: setObject,
             phrase: object is NounPhrase
@@ -128,7 +123,7 @@ class _ObjectPageState extends State<ObjectPage> {
             isPlural: widget.isPlural,
           ),
         _ => PronounForm(
-            pronouns: pronouns,
+            pronouns: vocabularyRepository.objectPronouns(),
             setPronoun: setObject,
             pronoun: object is Pronoun ? object as Pronoun : null,
             settingsControl: settingsControl,
@@ -139,5 +134,5 @@ class _ObjectPageState extends State<ObjectPage> {
 
   setObject(AnyNoun? object) => setState(() => this.object = object);
 
-  setNounType(NounType type) => setState(() => nounType = type);
+  setType(NounType type) => setState(() => this.type = type);
 }

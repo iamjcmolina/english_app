@@ -13,7 +13,7 @@ import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
-import '../../page/adverb_page.dart';
+import '../../page/adverbial_phrase_page.dart';
 import '../../page/object_page.dart';
 
 class GerundPhraseForm extends StatelessWidget {
@@ -94,7 +94,7 @@ class GerundPhraseForm extends StatelessWidget {
           en: phrase.object?.en,
           es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => navigateToObjectPage(context),
+          onTap: () => goToObjectPage(context),
         ),
         SentenceItemTile(
           style: SentenceItem.adverb.style,
@@ -102,57 +102,42 @@ class GerundPhraseForm extends StatelessWidget {
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => navigateToAdverbPage(context),
+          onTap: () => goToAdverbialPhrasePage(context),
         ),
       ],
     );
   }
 
-  void setVerb(AnyVerb? verb) =>
-      validateAndSet(phrase.copyWith(verb: Nullable(verb)));
+  setVerb(AnyVerb? verb) => setPhrase(phrase.copyWith(verb: Nullable(verb)));
 
-  void setObject(AnyNoun? object) =>
-      validateAndSet(phrase.copyWith(object: Nullable(object)));
+  setObject(AnyNoun? object) =>
+      setPhrase(phrase.copyWith(object: Nullable(object)));
 
-  void setModifier(AnyAdverb? adverb) =>
-      validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
+  setAdverbialPhrase(AnyAdverb? adverb) =>
+      setPhrase(phrase.copyWith(adverb: Nullable(adverb)));
 
-  void validateAndSet(GerundPhrase phrase) {
-    setPhrase(phrase);
-  }
-
-  void navigateToObjectPage(BuildContext context) async {
-    final object = await Navigator.push(
+  goToObjectPage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ObjectPage(
-                  object: phrase.object,
-                  isDitransitiveVerb: false,
-                  isIndirectObject: false,
-                  isNegative: isNegative,
-                  isPlural: isPlural,
-                )));
-    if (object is AnyNoun) {
-      setObject(object);
-    } else if (object is bool && !object) {
-      setObject(null);
-    }
+                object: phrase.object,
+                isDitransitiveVerb: false,
+                isIndirectObject: false,
+                isNegative: isNegative,
+                isPlural: isPlural)));
+    setObject(response is AnyNoun ? response : null);
   }
 
-  void navigateToAdverbPage(BuildContext context) async {
-    final adverb = await Navigator.push(
+  goToAdverbialPhrasePage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => AdverbPage(
-                  adverb: phrase.adverb,
-                  position: AdverbPosition.end,
-                  isNegative: isNegative,
-                  isPlural: isPlural,
-                )));
-    if (adverb is AnyAdverb) {
-      setModifier(adverb);
-    } else if (adverb is bool && !adverb) {
-      setModifier(null);
-    }
+            builder: (context) => AdverbialPhrasePage(
+                adverb: phrase.adverb,
+                position: AdverbPosition.end,
+                isNegative: isNegative,
+                isPlural: isPlural)));
+    setAdverbialPhrase(response is AnyAdverb ? response : null);
   }
 }

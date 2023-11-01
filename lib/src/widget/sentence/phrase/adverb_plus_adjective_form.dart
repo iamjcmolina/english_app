@@ -101,12 +101,8 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
   }
 
   void setAdverb(Adverb? adverb) =>
-      validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
+      setPhrase(phrase.copyWith(adverb: Nullable(adverb)));
 
   void setAdjective(Adjective? adjective) =>
-      validateAndSet(phrase.copyWith(adjective: Nullable(adjective)));
-
-  void validateAndSet(AdverbPlusAdjective phrase) {
-    setPhrase(phrase);
-  }
+      setPhrase(phrase.copyWith(adjective: Nullable(adjective)));
 }

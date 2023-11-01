@@ -87,24 +87,20 @@ class AdjectivePlusComplementForm extends StatelessWidget {
           en: phrase.complement?.en,
           es: phrase.complement?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => navigateToComplementPage(context),
+          onTap: () => goToComplementPage(context),
         ),
       ],
     );
   }
 
   void setAdjective(Adjective? adjective) =>
-      validateAndSet(phrase.copyWith(adjective: Nullable(adjective)));
+      setPhrase(phrase.copyWith(adjective: Nullable(adjective)));
 
   void setComplement(AdjectiveComplement? complement) =>
-      validateAndSet(phrase.copyWith(complement: Nullable(complement)));
+      setPhrase(phrase.copyWith(complement: Nullable(complement)));
 
-  void validateAndSet(AdjectivePlusComplement phrase) {
-    setPhrase(phrase);
-  }
-
-  navigateToComplementPage(BuildContext context) async {
-    final complement = await Navigator.push(
+  goToComplementPage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AdjectiveComplementPage(
@@ -112,10 +108,6 @@ class AdjectivePlusComplementForm extends StatelessWidget {
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));
-    if (complement is AdjectiveComplement) {
-      setComplement(complement);
-    } else if (complement is bool && !complement) {
-      setComplement(null);
-    }
+    setComplement(response is AdjectiveComplement ? response : null);
   }
 }

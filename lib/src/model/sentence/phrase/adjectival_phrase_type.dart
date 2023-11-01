@@ -1,4 +1,4 @@
-enum EndAdjectiveType {
+enum AdjectivalPhraseType {
   adverbPlusAdjective('Adverb + Adjective'),
   adjectivePlusComplement('Adjective + Complement'),
   prepositionalPhrase('Prepositional Phrase'),
@@ -9,5 +9,5 @@ enum EndAdjectiveType {
 
   final String name;
 
-  const EndAdjectiveType(this.name);
+  const AdjectivalPhraseType(this.name);
 }

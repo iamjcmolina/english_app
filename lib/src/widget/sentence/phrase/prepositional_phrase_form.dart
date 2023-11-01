@@ -81,37 +81,28 @@ class PrepositionalPhraseForm extends StatelessWidget {
           en: phrase.object?.en,
           es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => navigateToObjectPage(context),
+          onTap: () => goToObjectPage(context),
         ),
       ],
     );
   }
 
   void setVerb(Preposition? val) =>
-      validateAndSet(phrase.copyWith(preposition: Nullable(val)));
+      setPhrase(phrase.copyWith(preposition: Nullable(val)));
 
   void setObject(AnyNoun? object) =>
-      validateAndSet(phrase.copyWith(object: Nullable(object)));
+      setPhrase(phrase.copyWith(object: Nullable(object)));
 
-  void validateAndSet(PrepositionalPhrase phrase) {
-    setPhrase(phrase);
-  }
-
-  void navigateToObjectPage(BuildContext context) async {
-    final object = await Navigator.push(
+  void goToObjectPage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ObjectPage(
-                  object: phrase.object,
-                  isDitransitiveVerb: false,
-                  isIndirectObject: false,
-                  isNegative: isNegative,
-                  isPlural: isPlural,
-                )));
-    if (object is AnyNoun) {
-      setObject(object);
-    } else if (object is bool && !object) {
-      setObject(null);
-    }
+                object: phrase.object,
+                isDitransitiveVerb: false,
+                isIndirectObject: false,
+                isNegative: isNegative,
+                isPlural: isPlural)));
+    setObject(response is AnyNoun ? response : null);
   }
 }

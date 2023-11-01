@@ -3,8 +3,11 @@ import 'doer_pronoun.dart';
 import 'subject_complement.dart';
 
 abstract class AnyNoun extends SubjectComplement {
+  @override
   bool get isValid;
+  @override
   String get en;
+  @override
   String get es;
   Countability get countability;
   DoerPronoun get asPronoun;

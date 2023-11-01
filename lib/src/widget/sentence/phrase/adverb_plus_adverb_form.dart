@@ -95,13 +95,9 @@ class AdverbPlusAdverbForm extends StatelessWidget {
     );
   }
 
-  void setIntensifierOrMitigator(Adverb? adverb) => validateAndSet(
+  void setIntensifierOrMitigator(Adverb? adverb) => setPhrase(
       phrase.copyWith(intensifierOrMitigatorAdverb: Nullable(adverb)));
 
   void setAdverb(Adverb? adverb) =>
-      validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
-
-  void validateAndSet(AdverbPlusAdverb phrase) {
-    setPhrase(phrase);
-  }
+      setPhrase(phrase.copyWith(adverb: Nullable(adverb)));
 }

@@ -12,7 +12,7 @@ import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
-import '../../page/adverb_page.dart';
+import '../../page/adverbial_phrase_page.dart';
 
 class PastParticiplePhraseForm extends StatelessWidget {
   final Widget settingsControl;
@@ -86,35 +86,27 @@ class PastParticiplePhraseForm extends StatelessWidget {
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
-          onTap: () => navigateToAdverbPage(context),
+          onTap: () => goToAdverbialPhrasePage(context),
         ),
       ],
     );
   }
 
   void setVerb(AnyVerb? verb) =>
-      validateAndSet(phrase.copyWith(verb: Nullable(verb)));
+      setPhrase(phrase.copyWith(verb: Nullable(verb)));
 
-  void setModifier(AnyAdverb? modifier) =>
-      validateAndSet(phrase.copyWith(adverb: Nullable(modifier)));
+  void setAdverbialPhrase(AnyAdverb? adverb) =>
+      setPhrase(phrase.copyWith(adverb: Nullable(adverb)));
 
-  void validateAndSet(PastParticiplePhrase phrase) {
-    setPhrase(phrase);
-  }
-
-  void navigateToAdverbPage(BuildContext context) async {
-    final adverb = await Navigator.push(
+  void goToAdverbialPhrasePage(BuildContext context) async {
+    final response = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => AdverbPage(
+            builder: (context) => AdverbialPhrasePage(
                 adverb: phrase.adverb,
                 position: AdverbPosition.end,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    if (adverb is AnyAdverb) {
-      setModifier(adverb);
-    } else if (adverb is bool && !adverb) {
-      setModifier(null);
-    }
+    setAdverbialPhrase(response is AnyAdverb ? response : null);
   }
 }

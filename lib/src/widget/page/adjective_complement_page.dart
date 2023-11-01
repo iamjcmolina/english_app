@@ -43,22 +43,21 @@ class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
   @override
   Widget build(BuildContext context) {
     final settingsControl = Center(
-      child: DropdownButton<AdjectiveComplementType>(
-        value: type,
-        onChanged: (AdjectiveComplementType? value) => setType(value!),
-        items: AdjectiveComplementType.values
-            .map<DropdownMenuItem<AdjectiveComplementType>>(
-                (AdjectiveComplementType item) =>
-                    DropdownMenuItem<AdjectiveComplementType>(
-                      value: item,
-                      child: Text(item.name),
-                    ))
-            .toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownMenu<AdjectiveComplementType>(
+          label: const Text('Adjective Complement Type'),
+          initialSelection: type,
+          dropdownMenuEntries: AdjectiveComplementType.values
+              .map((e) => DropdownMenuEntry(value: e, label: e.name))
+              .toList(),
+          onSelected: (e) => setType(e!),
+        ),
       ),
     );
 
     return SentenceScaffold(
-      title: 'Subject complement',
+      title: 'Adjective complement',
       bottomActions: [
         IconButton(
           onPressed: isValid ? () => Navigator.pop(context, complement) : null,

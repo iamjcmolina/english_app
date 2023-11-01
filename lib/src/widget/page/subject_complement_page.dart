@@ -35,8 +35,8 @@ class SubjectComplementPage extends StatefulWidget {
 }
 
 class _SubjectComplementState extends State<SubjectComplementPage> {
-  late SubjectComplementType type;
   SubjectComplement? complement;
+  late SubjectComplementType type;
 
   bool get isValid => complement?.isValid ?? false;
 
@@ -58,17 +58,16 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
     List<Pronoun> pronouns = vocabularyRepository.possessivePronouns();
 
     final settingsControl = Center(
-      child: DropdownButton<SubjectComplementType>(
-        value: type,
-        onChanged: (SubjectComplementType? value) => setType(value!),
-        items: SubjectComplementType.values
-            .map<DropdownMenuItem<SubjectComplementType>>(
-                (SubjectComplementType item) =>
-                    DropdownMenuItem<SubjectComplementType>(
-                      value: item,
-                      child: Text(item.name),
-                    ))
-            .toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownMenu<SubjectComplementType>(
+          initialSelection: type,
+          label: const Text('Subject Complement Type'),
+          dropdownMenuEntries: SubjectComplementType.values
+              .map((e) => DropdownMenuEntry(value: e, label: e.name))
+              .toList(),
+          onSelected: (e) => setType(e!),
+        ),
       ),
     );
 

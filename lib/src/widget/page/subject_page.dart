@@ -28,7 +28,7 @@ class SubjectPage extends StatefulWidget {
 
 class _SubjectPageState extends State<SubjectPage> {
   AnyNoun? subject;
-  late NounType nounType;
+  late NounType type;
 
   bool get isValid => subject?.isValid ?? false;
 
@@ -36,7 +36,7 @@ class _SubjectPageState extends State<SubjectPage> {
   void initState() {
     super.initState();
     subject = widget.clause.subject;
-    nounType = switch (widget.clause.subject.runtimeType) {
+    type = switch (widget.clause.subject.runtimeType) {
       NounPhrase => NounType.nounPhrase,
       _ => NounType.pronoun,
     };
@@ -46,19 +46,17 @@ class _SubjectPageState extends State<SubjectPage> {
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
-    List<Pronoun> pronouns = vocabularyRepository.subjectPronouns();
-
     final settingsControl = Center(
-      child: DropdownButton<NounType>(
-        value: nounType,
-        onChanged: (NounType? value) => setNounType(value!),
-        items: NounType.values
-            .map<DropdownMenuItem<NounType>>(
-                (NounType item) => DropdownMenuItem<NounType>(
-                      value: item,
-                      child: Text(item.name),
-                    ))
-            .toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownMenu<NounType>(
+          label: const Text('Subject Type'),
+          initialSelection: type,
+          dropdownMenuEntries: NounType.values
+              .map((e) => DropdownMenuEntry(value: e, label: e.name))
+              .toList(),
+          onSelected: (e) => setType(e!),
+        ),
       ),
     );
 
@@ -74,7 +72,7 @@ class _SubjectPageState extends State<SubjectPage> {
           icon: const Icon(Icons.clear),
         ),
       ],
-      body: switch (nounType) {
+      body: switch (type) {
         NounType.nounPhrase => NounPhraseForm(
             setPhrase: setSubject,
             phrase: subject is NounPhrase
@@ -111,7 +109,7 @@ class _SubjectPageState extends State<SubjectPage> {
             isPlural: widget.clause.hasPluralSubject,
           ),
         _ => PronounForm(
-            pronouns: pronouns,
+            pronouns: vocabularyRepository.subjectPronouns(),
             setPronoun: setSubject,
             pronoun: subject is Pronoun ? subject as Pronoun : null,
             settingsControl: settingsControl,
@@ -122,5 +120,5 @@ class _SubjectPageState extends State<SubjectPage> {
 
   setSubject(AnyNoun? subject) => setState(() => this.subject = subject);
 
-  setNounType(NounType type) => setState(() => nounType = type);
+  setType(NounType type) => setState(() => this.type = type);
 }
