@@ -10,37 +10,32 @@ class AdverbPlusAdverb implements AnyAdverb {
   final bool isAllowedInTheMiddle = false;
   @override
   final bool isAllowedInTheEnd = false;
-  final Adverb? modifier;
-  final Adverb? regularAdverb;
+  final Adverb? intensifierOrMitigatorAdverb;
+  final Adverb? adverb;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(modifier?.en ?? '<IntensifierOrMitigatorAdverb>',
-        disablePrefixWhen: true);
-    buffer.add(regularAdverb?.en ?? '<RegularAdverb>');
-    return buffer.toString();
-  }
+  String get en => TextBuffer()
+      .add(intensifierOrMitigatorAdverb?.en)
+      .add(adverb?.en)
+      .toString();
 
   @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(modifier?.es ?? '<AdverbioIntensificadorOMitigador>',
-        disablePrefixWhen: true);
-    buffer.add(regularAdverb?.es ?? '<AdverbioRegular>');
-    return buffer.toString();
-  }
+  String get es => TextBuffer()
+      .add(intensifierOrMitigatorAdverb?.es)
+      .add(adverb?.es)
+      .toString();
 
-  const AdverbPlusAdverb({this.modifier, this.regularAdverb});
+  const AdverbPlusAdverb({this.intensifierOrMitigatorAdverb, this.adverb});
 
   AdverbPlusAdverb copyWith({
-    Nullable<Adverb>? modifier,
-    Nullable<Adverb>? regularAdverb,
+    Nullable<Adverb>? intensifierOrMitigatorAdverb,
+    Nullable<Adverb>? adverb,
   }) =>
       AdverbPlusAdverb(
-        modifier: modifier == null ? this.modifier : modifier.value,
-        regularAdverb:
-            regularAdverb == null ? this.regularAdverb : regularAdverb.value,
+        intensifierOrMitigatorAdverb: intensifierOrMitigatorAdverb == null
+            ? this.intensifierOrMitigatorAdverb
+            : intensifierOrMitigatorAdverb.value,
+        adverb: adverb == null ? this.adverb : adverb.value,
       );
 
   @override

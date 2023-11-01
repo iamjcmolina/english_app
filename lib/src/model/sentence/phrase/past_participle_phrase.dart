@@ -6,23 +6,15 @@ import '../verb/any_verb.dart';
 
 class PastParticiplePhrase implements AnyAdjective {
   final AnyVerb? verb;
-  final AnyAdverb? modifier;
+  final AnyAdverb? adverb;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.pastParticiple, disablePrefixWhen: true);
-    buffer.add(modifier);
-    return buffer.toString();
-  }
+  String get en =>
+      TextBuffer().add(verb?.pastParticiple).add(adverb?.en).toString();
 
   @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.pastParticipleEs, disablePrefixWhen: true);
-    buffer.add(modifier?.es);
-    return buffer.toString();
-  }
+  String get es =>
+      TextBuffer().add(verb?.pastParticipleEs).add(adverb?.es).toString();
 
   @override
   String get pluralEs => es;
@@ -30,15 +22,15 @@ class PastParticiplePhrase implements AnyAdjective {
   @override
   String get singularEs => es;
 
-  const PastParticiplePhrase({this.verb, this.modifier});
+  const PastParticiplePhrase({this.verb, this.adverb});
 
   PastParticiplePhrase copyWith({
     Nullable<AnyVerb>? verb,
-    Nullable<AnyAdverb>? modifier,
+    Nullable<AnyAdverb>? adverb,
   }) =>
       PastParticiplePhrase(
         verb: verb == null ? this.verb : verb.value,
-        modifier: modifier == null ? this.modifier : modifier.value,
+        adverb: adverb == null ? this.adverb : adverb.value,
       );
 
   @override

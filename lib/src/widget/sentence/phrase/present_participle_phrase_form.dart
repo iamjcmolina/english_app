@@ -52,7 +52,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
                     ? SentenceItem.placeholder.style
                     : SentenceItem.verb.style,
               ),
-              if (phrase.object != null && phrase.modifier != null)
+              if (phrase.object != null && phrase.adverb != null)
                 TextSpan(
                   text: '<ObjectOrAdverb> ',
                   style: SentenceItem.placeholder.style,
@@ -62,9 +62,9 @@ class PresentParticiplePhraseForm extends StatelessWidget {
                   text: '${phrase.object!.en} ',
                   style: SentenceItem.noun.style,
                 ),
-              if (phrase.modifier != null)
+              if (phrase.adverb != null)
                 TextSpan(
-                  text: '${phrase.modifier!.en} ',
+                  text: '${phrase.adverb!.en} ',
                   style: SentenceItem.adverb.style,
                 ),
             ],
@@ -102,8 +102,8 @@ class PresentParticiplePhraseForm extends StatelessWidget {
         SentenceItemTile(
           style: SentenceItem.adverb.style,
           placeholder: "<Adverb>",
-          en: phrase.modifier?.en,
-          es: phrase.modifier?.es,
+          en: phrase.adverb?.en,
+          es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToAdverbPage(context),
         ),
@@ -118,11 +118,11 @@ class PresentParticiplePhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(object: Nullable(object)));
 
   void setModifier(AnyAdverb? modifier) =>
-      validateAndSet(phrase.copyWith(modifier: Nullable(modifier)));
+      validateAndSet(phrase.copyWith(adverb: Nullable(modifier)));
 
   void validateAndSet(PresentParticiplePhrase phrase) {
     setCanSave(phrase.verb != null &&
-        (phrase.object != null || phrase.modifier != null));
+        (phrase.object != null || phrase.adverb != null));
     setPhrase(phrase);
   }
 
@@ -149,7 +149,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdverbPage(
-                  adverb: phrase.modifier,
+                  adverb: phrase.adverb,
                   position: AdverbPosition.end,
                   isNegative: isNegative,
                   isPlural: isPlural,

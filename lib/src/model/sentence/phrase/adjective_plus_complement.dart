@@ -9,28 +9,16 @@ class AdjectivePlusComplement extends AnyAdjective {
   final AdjectiveComplement? complement;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(adjective?.en ?? '<Adjective>', disablePrefixWhen: true);
-    buffer.add(complement?.en ?? '<AdjectiveComplement>');
-    return buffer.toString();
-  }
+  String get en =>
+      TextBuffer().add(adjective?.en).add(complement?.en).toString();
 
   @override
-  String get pluralEs {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(adjective?.pluralEs ?? '<Adjetivo>', disablePrefixWhen: true);
-    buffer.add(complement?.es ?? '<ComplementoDelAdjetivo>');
-    return buffer.toString();
-  }
+  String get pluralEs =>
+      TextBuffer().add(adjective?.pluralEs).add(complement?.es).toString();
 
   @override
-  String get singularEs {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(adjective?.singularEs ?? '<Adjetivo>', disablePrefixWhen: true);
-    buffer.add(complement?.es ?? '<ComplementoDelAdjetivo>');
-    return buffer.toString();
-  }
+  String get singularEs =>
+      TextBuffer().add(adjective?.singularEs).add(complement?.es).toString();
 
   const AdjectivePlusComplement({this.adjective, this.complement});
 

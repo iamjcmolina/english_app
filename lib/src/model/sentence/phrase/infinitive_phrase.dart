@@ -32,17 +32,22 @@ class InfinitivePhrase
   final bool isAllowedInTheEnd = true;
   final AnyVerb? verb;
   final AnyNoun? object;
-  final AnyAdverb? modifier;
+  final AnyAdverb? adverb;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add('to', disablePrefixWhen: true);
-    buffer.add(verb?.infinitive ?? '<InfinitiveVerb>');
-    buffer.add(object, when: object != null);
-    buffer.add(modifier, when: modifier != null);
-    return buffer.toString();
-  }
+  String get en => TextBuffer()
+      .add('to')
+      .add(verb?.infinitive)
+      .add(object?.en)
+      .add(adverb?.en)
+      .toString();
+
+  @override
+  String get es => TextBuffer()
+      .add(verb?.infinitiveEs)
+      .add(object?.es)
+      .add(adverb?.es)
+      .toString();
 
   @override
   String get pluralEs => es;
@@ -50,26 +55,17 @@ class InfinitivePhrase
   @override
   String get singularEs => es;
 
-  @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.infinitiveEs, disablePrefixWhen: true);
-    buffer.add(object?.es, when: object != null);
-    buffer.add(modifier?.es, when: modifier != null);
-    return buffer.toString();
-  }
-
-  const InfinitivePhrase({this.verb, this.object, this.modifier});
+  const InfinitivePhrase({this.verb, this.object, this.adverb});
 
   InfinitivePhrase copyWith({
     Nullable<AnyVerb>? verb,
     Nullable<AnyNoun>? object,
-    Nullable<AnyAdverb>? modifier,
+    Nullable<AnyAdverb>? adverb,
   }) =>
       InfinitivePhrase(
         verb: verb == null ? this.verb : verb.value,
         object: object == null ? this.object : object.value,
-        modifier: modifier == null ? this.modifier : modifier.value,
+        adverb: adverb == null ? this.adverb : adverb.value,
       );
 
   @override

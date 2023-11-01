@@ -1,17 +1,20 @@
-class TextBuffer {
-  StringBuffer buffer = StringBuffer();
+import '../../util/util.dart';
 
-  void add(Object? partOfSpeech,
-      {bool when = true, bool disablePrefixWhen = false}) {
-    if (partOfSpeech == null || !when || partOfSpeech.toString().isEmpty) {
-      return;
+class TextBuffer {
+  final StringBuffer buffer = StringBuffer();
+
+  TextBuffer add(String? string,
+      {bool when = true, bool skipEndSpace = false}) {
+    if (string != null && string.isNotEmpty && when) {
+      buffer.write(skipEndSpace ? string : '$string ');
     }
-    buffer.write(disablePrefixWhen ? partOfSpeech : ' $partOfSpeech');
+    return this;
   }
 
   @override
   String toString() {
-    final speech = buffer.toString();
+    String speech = buffer.toString();
+    speech = Util.last(speech) == ' ' ? Util.lessLast(speech) : speech;
     return speech.substring(0, 1).toUpperCase() +
         speech.substring(1).toLowerCase();
   }

@@ -9,28 +9,15 @@ class AdverbPlusAdjective extends AnyAdjective {
   final Adjective? adjective;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(adverb?.en ?? '<Adverb>', disablePrefixWhen: true);
-    buffer.add(adjective?.en ?? '<Adjective>');
-    return buffer.toString();
-  }
+  String get en => TextBuffer().add(adverb?.en).add(adjective?.en).toString();
 
   @override
-  String get pluralEs {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(adverb?.es ?? '<Adverbio>', disablePrefixWhen: true);
-    buffer.add(adjective?.pluralEs ?? '<Adjetivo>');
-    return buffer.toString();
-  }
+  String get pluralEs =>
+      TextBuffer().add(adverb?.es).add(adjective?.pluralEs).toString();
 
   @override
-  String get singularEs {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(adverb?.es ?? '<Adverbio>', disablePrefixWhen: true);
-    buffer.add(adjective?.singularEs ?? '<Adjetivo>');
-    return buffer.toString();
-  }
+  String get singularEs =>
+      TextBuffer().add(adverb?.es).add(adjective?.singularEs).toString();
 
   const AdverbPlusAdjective({this.adjective, this.adverb});
 

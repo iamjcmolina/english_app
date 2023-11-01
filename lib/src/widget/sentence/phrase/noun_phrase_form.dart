@@ -184,8 +184,8 @@ class NounPhraseForm extends StatelessWidget {
         SentenceItemTile(
           style: SentenceItem.adjective.style,
           placeholder: '<PostModifierAdjective>',
-          en: phrase.postModifier?.toString(),
-          es: phrase.postModifier?.singularEs,
+          en: phrase.endAdjective?.toString(),
+          es: phrase.endAdjective?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToPostModifierPage(context),
         ),
@@ -207,8 +207,8 @@ class NounPhraseForm extends StatelessWidget {
 
   setNoun(noun) => validateAndSet(phrase.copyWith(noun: Nullable(noun)));
 
-  setPostModifier(AnyAdjective? modifier) =>
-      validateAndSet(phrase.copyWith(postModifier: Nullable(modifier)));
+  setPostModifier(AnyAdjective? adjective) =>
+      validateAndSet(phrase.copyWith(endAdjective: Nullable(adjective)));
 
   validateAndSet(NounPhrase phrase) {
     setCanSave(phrase.determiner != null && phrase.noun != null);
@@ -229,7 +229,7 @@ class NounPhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => NounPhrasePostModifierPage(
-                  modifier: phrase.postModifier,
+                  modifier: phrase.endAdjective,
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));

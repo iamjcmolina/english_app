@@ -8,26 +8,21 @@ import '../verb/any_verb.dart';
 class PresentParticiplePhrase implements AnyAdjective {
   final AnyVerb? verb;
   final AnyNoun? object;
-  final AnyAdverb? modifier;
+  final AnyAdverb? adverb;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.progressive ?? '<ProgressiveVerb>',
-        disablePrefixWhen: true);
-    buffer.add(object, when: object != null);
-    buffer.add(modifier, when: modifier != null);
-    return buffer.toString();
-  }
+  String get en => TextBuffer()
+      .add(verb?.progressive)
+      .add(object?.en)
+      .add(adverb?.en)
+      .toString();
 
   @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.pastParticipleEs, disablePrefixWhen: true);
-    buffer.add(object?.es, when: object != null);
-    buffer.add(modifier?.es, when: modifier != null);
-    return buffer.toString();
-  }
+  String get es => TextBuffer()
+      .add(verb?.pastParticipleEs)
+      .add(object?.es)
+      .add(adverb?.es)
+      .toString();
 
   @override
   String get pluralEs => es;
@@ -38,18 +33,18 @@ class PresentParticiplePhrase implements AnyAdjective {
   const PresentParticiplePhrase({
     this.verb,
     this.object,
-    this.modifier,
+    this.adverb,
   });
 
   PresentParticiplePhrase copyWith({
     Nullable<AnyVerb>? verb,
     Nullable<AnyNoun>? object,
-    Nullable<AnyAdverb>? modifier,
+    Nullable<AnyAdverb>? adverb,
   }) =>
       PresentParticiplePhrase(
         verb: verb == null ? this.verb : verb.value,
         object: object == null ? this.object : object.value,
-        modifier: modifier == null ? this.modifier : modifier.value,
+        adverb: adverb == null ? this.adverb : adverb.value,
       );
 
   @override

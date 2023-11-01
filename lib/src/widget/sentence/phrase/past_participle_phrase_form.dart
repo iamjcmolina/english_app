@@ -51,9 +51,9 @@ class PastParticiplePhraseForm extends StatelessWidget {
                     : SentenceItem.verb.style,
               ),
               TextSpan(
-                text: phrase.modifier == null
+                text: phrase.adverb == null
                     ? '<Adverb> '
-                    : '${phrase.modifier!.en} ',
+                    : '${phrase.adverb!.en} ',
                 style: phrase.verb == null
                     ? SentenceItem.placeholder.style
                     : SentenceItem.adverb.style,
@@ -85,8 +85,8 @@ class PastParticiplePhraseForm extends StatelessWidget {
         SentenceItemTile(
           style: SentenceItem.adverb.style,
           placeholder: "<Adverb>",
-          en: phrase.modifier?.en,
-          es: phrase.modifier?.es,
+          en: phrase.adverb?.en,
+          es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToAdverbPage(context),
         ),
@@ -98,10 +98,10 @@ class PastParticiplePhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(verb: Nullable(verb)));
 
   void setModifier(AnyAdverb? modifier) =>
-      validateAndSet(phrase.copyWith(modifier: Nullable(modifier)));
+      validateAndSet(phrase.copyWith(adverb: Nullable(modifier)));
 
   void validateAndSet(PastParticiplePhrase phrase) {
-    setCanSave(phrase.verb != null && phrase.modifier != null);
+    setCanSave(phrase.verb != null && phrase.adverb != null);
     setPhrase(phrase);
   }
 
@@ -110,7 +110,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdverbPage(
-                adverb: phrase.modifier,
+                adverb: phrase.adverb,
                 position: AdverbPosition.end,
                 isNegative: isNegative,
                 isPlural: isPlural)));

@@ -15,29 +15,25 @@ class NounPhrase extends AnyNoun {
   final Determiner? number;
   final Adjective? adjective;
   final Noun? noun;
-  final AnyAdjective? postModifier;
+  final AnyAdjective? endAdjective;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(quantifier, when: allowQuantifier, disablePrefixWhen: true);
-    buffer.add(determiner);
-    buffer.add(number, when: allowNumber);
-    buffer.add(adjective, when: allowAdjective);
-    buffer.add(noun);
-    return buffer.toString();
-  }
+  String get en => TextBuffer()
+      .add(quantifier?.en, when: allowQuantifier)
+      .add(determiner?.en)
+      .add(number?.en, when: allowNumber)
+      .add(adjective?.en, when: allowAdjective)
+      .add(noun?.en)
+      .toString();
 
   @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(quantifier?.es, when: allowQuantifier, disablePrefixWhen: true);
-    buffer.add(determiner?.es);
-    buffer.add(number?.es, when: allowNumber);
-    buffer.add(noun?.es);
-    buffer.add(adjectiveEs, when: allowAdjective);
-    return buffer.toString();
-  }
+  String get es => TextBuffer()
+      .add(quantifier?.es, when: allowQuantifier)
+      .add(determiner?.es)
+      .add(number?.es, when: allowNumber)
+      .add(noun?.es)
+      .add(adjectiveEs, when: allowAdjective)
+      .toString();
 
   @override
   Countability get countability => noun?.countability ?? Countability.singular;
@@ -82,7 +78,7 @@ class NounPhrase extends AnyNoun {
     this.number,
     this.adjective,
     this.noun,
-    this.postModifier,
+    this.endAdjective,
   });
 
   NounPhrase copyWith({
@@ -91,7 +87,7 @@ class NounPhrase extends AnyNoun {
     Nullable<Determiner>? number,
     Nullable<Adjective>? adjective,
     Nullable<Noun>? noun,
-    Nullable<AnyAdjective>? postModifier,
+    Nullable<AnyAdjective>? endAdjective,
   }) =>
       NounPhrase(
         quantifier: quantifier == null ? this.quantifier : quantifier.value,
@@ -99,8 +95,8 @@ class NounPhrase extends AnyNoun {
         number: number == null ? this.number : number.value,
         adjective: adjective == null ? this.adjective : adjective.value,
         noun: noun == null ? this.noun : noun.value,
-        postModifier:
-            postModifier == null ? this.postModifier : postModifier.value,
+        endAdjective:
+            endAdjective == null ? this.endAdjective : endAdjective.value,
       );
 
   @override

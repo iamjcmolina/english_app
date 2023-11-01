@@ -35,18 +35,18 @@ class AdverbPlusAdverbForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.modifier == null
+                text: phrase.intensifierOrMitigatorAdverb == null
                     ? '<IntensifierOrMitigatorAdverb> '
-                    : '${phrase.modifier!.en} ',
-                style: phrase.modifier == null
+                    : '${phrase.intensifierOrMitigatorAdverb!.en} ',
+                style: phrase.intensifierOrMitigatorAdverb == null
                     ? SentenceItem.placeholder.style
                     : SentenceItem.adverb.style,
               ),
               TextSpan(
-                text: phrase.regularAdverb == null
+                text: phrase.adverb == null
                     ? '<Adverb> '
-                    : '${phrase.regularAdverb!.en} ',
-                style: phrase.regularAdverb == null
+                    : '${phrase.adverb!.en} ',
+                style: phrase.adverb == null
                     ? SentenceItem.placeholder.style
                     : SentenceItem.adverb.style,
               ),
@@ -58,38 +58,38 @@ class AdverbPlusAdverbForm extends StatelessWidget {
         DropdownTile(
           style: SentenceItem.verb.style,
           title: '<IntensifierOrMitigatorAdverb>',
-          textValue: phrase.modifier?.en,
-          textValueEs: phrase.modifier?.es,
+          textValue: phrase.intensifierOrMitigatorAdverb?.en,
+          textValueEs: phrase.intensifierOrMitigatorAdverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
               label: '<IntensifierOrMitigatorAdverb>',
-              value: phrase.modifier,
+              value: phrase.intensifierOrMitigatorAdverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => e.es],
-              onSelected: (e) => setModifier(e),
-              onChanged: (text) => setModifier(null),
+              onSelected: (e) => setIntensifierOrMitigator(e),
+              onChanged: (text) => setIntensifierOrMitigator(null),
             ),
           ],
         ),
         DropdownTile(
           style: SentenceItem.verb.style,
           title: '<Adverb>',
-          textValue: phrase.regularAdverb?.en,
-          textValueEs: phrase.regularAdverb?.es,
+          textValue: phrase.adverb?.en,
+          textValueEs: phrase.adverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
               label: '<Adverb>',
-              value: phrase.regularAdverb,
+              value: phrase.adverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => e.es],
-              onSelected: (e) => setModifier(e),
-              onChanged: (text) => setModifier(null),
+              onSelected: (e) => setIntensifierOrMitigator(e),
+              onChanged: (text) => setIntensifierOrMitigator(null),
             ),
           ],
         ),
@@ -97,14 +97,15 @@ class AdverbPlusAdverbForm extends StatelessWidget {
     );
   }
 
-  void setModifier(Adverb? adverb) =>
-      validateAndSet(phrase.copyWith(modifier: Nullable(adverb)));
+  void setIntensifierOrMitigator(Adverb? adverb) => validateAndSet(
+      phrase.copyWith(intensifierOrMitigatorAdverb: Nullable(adverb)));
 
-  void setRegularAdverb(Adverb? adverb) =>
-      validateAndSet(phrase.copyWith(regularAdverb: Nullable(adverb)));
+  void setAdverb(Adverb? adverb) =>
+      validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
 
   void validateAndSet(AdverbPlusAdverb phrase) {
-    setCanSave(phrase.modifier != null && phrase.regularAdverb != null);
+    setCanSave(
+        phrase.intensifierOrMitigatorAdverb != null && phrase.adverb != null);
     setPhrase(phrase);
   }
 }

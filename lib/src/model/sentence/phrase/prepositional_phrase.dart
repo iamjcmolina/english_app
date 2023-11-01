@@ -18,20 +18,10 @@ class PrepositionalPhrase
   final AnyNoun? object;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(preposition?.en, disablePrefixWhen: true);
-    buffer.add(object?.en, when: object != null);
-    return buffer.toString();
-  }
+  String get en => TextBuffer().add(preposition?.en).add(object?.en).toString();
 
   @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(preposition?.es, disablePrefixWhen: true);
-    buffer.add(object?.es, when: object != null);
-    return buffer.toString();
-  }
+  String get es => TextBuffer().add(preposition?.es).add(object?.es).toString();
 
   @override
   String get pluralEs => es;

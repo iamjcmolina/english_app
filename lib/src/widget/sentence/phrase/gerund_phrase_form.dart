@@ -53,7 +53,7 @@ class GerundPhraseForm extends StatelessWidget {
                     : SentenceItem.verb.style,
               ),
               TextSpan(
-                text: phrase.object == null && phrase.modifier == null
+                text: phrase.object == null && phrase.adverb == null
                     ? '<ObjectOrModifier> '
                     : '',
                 style: SentenceItem.placeholder.style,
@@ -63,7 +63,7 @@ class GerundPhraseForm extends StatelessWidget {
                 style: SentenceItem.noun.style,
               ),
               TextSpan(
-                text: phrase.modifier == null ? '' : '${phrase.modifier!.en} ',
+                text: phrase.adverb == null ? '' : '${phrase.adverb!.en} ',
                 style: SentenceItem.adverb.style,
               ),
             ],
@@ -101,8 +101,8 @@ class GerundPhraseForm extends StatelessWidget {
         SentenceItemTile(
           style: SentenceItem.adverb.style,
           placeholder: "<Modifier>",
-          en: phrase.modifier?.en,
-          es: phrase.modifier?.es,
+          en: phrase.adverb?.en,
+          es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToAdverbPage(context),
         ),
@@ -116,12 +116,12 @@ class GerundPhraseForm extends StatelessWidget {
   void setObject(AnyNoun? object) =>
       validateAndSet(phrase.copyWith(object: Nullable(object)));
 
-  void setModifier(AnyAdverb? modifier) =>
-      validateAndSet(phrase.copyWith(modifier: Nullable(modifier)));
+  void setModifier(AnyAdverb? adverb) =>
+      validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
 
   void validateAndSet(GerundPhrase phrase) {
     setCanSave(phrase.verb != null &&
-        (phrase.object != null || phrase.modifier != null));
+        (phrase.object != null || phrase.adverb != null));
     setPhrase(phrase);
   }
 
@@ -148,7 +148,7 @@ class GerundPhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdverbPage(
-                  adverb: phrase.modifier,
+                  adverb: phrase.adverb,
                   position: AdverbPosition.end,
                   isNegative: isNegative,
                   isPlural: isPlural,

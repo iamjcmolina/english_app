@@ -23,38 +23,33 @@ class GerundPhrase implements AnyNoun {
   final bool isUncountable = false;
   final AnyVerb? verb;
   final AnyNoun? object;
-  final AnyAdverb? modifier;
+  final AnyAdverb? adverb;
 
   @override
-  String get en {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.progressive ?? '<ProgressiveVerb>',
-        disablePrefixWhen: true);
-    buffer.add(object, when: object != null);
-    buffer.add(modifier, when: modifier != null);
-    return buffer.toString();
-  }
+  String get en => TextBuffer()
+      .add(verb?.progressive)
+      .add(object?.en)
+      .add(adverb?.en)
+      .toString();
 
   @override
-  String get es {
-    TextBuffer buffer = TextBuffer();
-    buffer.add(verb?.infinitiveEs, disablePrefixWhen: true);
-    buffer.add(object?.es, when: object != null);
-    buffer.add(modifier?.es, when: modifier != null);
-    return buffer.toString();
-  }
+  String get es => TextBuffer()
+      .add(verb?.infinitiveEs)
+      .add(object?.es)
+      .add(adverb?.es)
+      .toString();
 
-  const GerundPhrase({this.verb, this.object, this.modifier});
+  const GerundPhrase({this.verb, this.object, this.adverb});
 
   GerundPhrase copyWith({
     Nullable<AnyVerb>? verb,
     Nullable<AnyNoun>? object,
-    Nullable<AnyAdverb>? modifier,
+    Nullable<AnyAdverb>? adverb,
   }) =>
       GerundPhrase(
         verb: verb == null ? this.verb : verb.value,
         object: object == null ? this.object : object.value,
-        modifier: modifier == null ? this.modifier : modifier.value,
+        adverb: adverb == null ? this.adverb : adverb.value,
       );
 
   @override
