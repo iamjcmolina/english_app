@@ -12,7 +12,6 @@ import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 
 class AdverbPlusAdjectiveForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final AdverbPlusAdjective phrase;
   final void Function(AdverbPlusAdjective?) setPhrase;
@@ -20,7 +19,6 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
 
   const AdverbPlusAdjectiveForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -109,7 +107,6 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(adjective: Nullable(adjective)));
 
   void validateAndSet(AdverbPlusAdjective phrase) {
-    setCanSave(phrase.adverb != null && phrase.adjective != null);
     setPhrase(phrase);
   }
 }

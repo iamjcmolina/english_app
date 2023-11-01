@@ -13,10 +13,9 @@ import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
-import '../../page/noun_phrase_post_modifier_page.dart';
+import '../../page/noun_end_adjective_page.dart';
 
 class NounPhraseForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final NounPhrase phrase;
   final void Function(NounPhrase?) setPhrase;
@@ -25,7 +24,6 @@ class NounPhraseForm extends StatelessWidget {
 
   const NounPhraseForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -211,7 +209,6 @@ class NounPhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(endAdjective: Nullable(adjective)));
 
   validateAndSet(NounPhrase phrase) {
-    setCanSave(phrase.determiner != null && phrase.noun != null);
     setPhrase(phrase);
   }
 
@@ -228,8 +225,8 @@ class NounPhraseForm extends StatelessWidget {
     final modifier = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => NounPhrasePostModifierPage(
-                  modifier: phrase.endAdjective,
+            builder: (context) => NounEndAdjectivePage(
+                  adjective: phrase.endAdjective,
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));

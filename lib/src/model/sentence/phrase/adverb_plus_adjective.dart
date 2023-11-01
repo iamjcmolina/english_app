@@ -19,6 +19,8 @@ class AdverbPlusAdjective extends AnyAdjective {
   String get singularEs =>
       TextBuffer().add(adverb?.es).add(adjective?.singularEs).toString();
 
+  bool get isValid => adverb != null && adjective != null;
+
   const AdverbPlusAdjective({this.adjective, this.adverb});
 
   AdverbPlusAdjective copyWith({

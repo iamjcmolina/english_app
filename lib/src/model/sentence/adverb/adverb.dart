@@ -14,6 +14,9 @@ class Adverb extends AnyAdverb {
   @override
   final bool isAllowedInTheEnd;
 
+  @override
+  bool get isValid => true;
+
   const Adverb(this.en, this.es, this.type, this.isAllowedInFront,
       this.isAllowedInTheMiddle, this.isAllowedInTheEnd);
 

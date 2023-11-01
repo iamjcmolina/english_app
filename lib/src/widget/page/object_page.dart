@@ -37,9 +37,10 @@ class ObjectPage extends StatefulWidget {
 }
 
 class _ObjectPageState extends State<ObjectPage> {
-  late NounType nounType;
   AnyNoun? object;
-  bool canSave = false;
+  late NounType nounType;
+
+  bool get isValid => object?.isValid ?? false;
 
   bool get mustAllowPronouns =>
       !widget.isDitransitiveVerb || widget.isIndirectObject;
@@ -48,7 +49,6 @@ class _ObjectPageState extends State<ObjectPage> {
   void initState() {
     super.initState();
     object = widget.object;
-    canSave = object != null;
     nounType = object == null
         ? (mustAllowPronouns ? NounType.pronoun : NounType.nounPhrase)
         : switch (object.runtimeType) {
@@ -83,7 +83,7 @@ class _ObjectPageState extends State<ObjectPage> {
       title: widget.isIndirectObject ? 'Indirect Object' : 'Direct Object',
       bottomActions: [
         IconButton(
-          onPressed: canSave ? () => Navigator.pop(context, object) : null,
+          onPressed: isValid ? () => Navigator.pop(context, object) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
@@ -98,7 +98,6 @@ class _ObjectPageState extends State<ObjectPage> {
                 ? object as NounPhrase
                 : const NounPhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -108,7 +107,6 @@ class _ObjectPageState extends State<ObjectPage> {
                 ? object as IndefinitePronoun
                 : null,
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
           ),
         NounType.infinitivePhrase => InfinitivePhraseForm(
@@ -117,7 +115,6 @@ class _ObjectPageState extends State<ObjectPage> {
                 ? object as InfinitivePhrase
                 : const InfinitivePhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -127,7 +124,6 @@ class _ObjectPageState extends State<ObjectPage> {
                 ? object as GerundPhrase
                 : const GerundPhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -135,7 +131,6 @@ class _ObjectPageState extends State<ObjectPage> {
             pronouns: pronouns,
             setPronoun: setObject,
             pronoun: object is Pronoun ? object as Pronoun : null,
-            setCanSave: setCanSave,
             settingsControl: settingsControl,
           ),
       },
@@ -145,6 +140,4 @@ class _ObjectPageState extends State<ObjectPage> {
   setObject(AnyNoun? object) => setState(() => this.object = object);
 
   setNounType(NounType type) => setState(() => nounType = type);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

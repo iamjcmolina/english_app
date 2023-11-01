@@ -72,6 +72,8 @@ class NounPhrase extends AnyNoun {
   String? get adjectiveEs =>
       isPlural ? adjective?.pluralEs : adjective?.singularEs;
 
+  bool get isValid => determiner != null && noun != null;
+
   const NounPhrase({
     this.quantifier,
     this.determiner,

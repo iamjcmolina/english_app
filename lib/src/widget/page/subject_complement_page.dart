@@ -37,13 +37,13 @@ class SubjectComplementPage extends StatefulWidget {
 class _SubjectComplementState extends State<SubjectComplementPage> {
   late SubjectComplementType type;
   SubjectComplement? complement;
-  bool canSave = false;
+
+  bool get isValid => complement?.isValid ?? false;
 
   @override
   void initState() {
     super.initState();
     complement = widget.complement;
-    canSave = complement != null;
     type = switch (complement.runtimeType) {
       NounPhrase => SubjectComplementType.nounPhrase,
       Adjective => SubjectComplementType.adjective,
@@ -76,7 +76,7 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
       title: 'Subject complement',
       bottomActions: [
         IconButton(
-          onPressed: canSave ? () => Navigator.pop(context, complement) : null,
+          onPressed: isValid ? () => Navigator.pop(context, complement) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
@@ -89,7 +89,6 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
             pronouns: pronouns,
             setPronoun: setComplement,
             pronoun: complement is Pronoun ? complement as Pronoun : null,
-            setCanSave: setCanSave,
             settingsControl: settingsControl,
           ),
         SubjectComplementType.nounPhrase => NounPhraseForm(
@@ -98,7 +97,6 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
                 ? complement as NounPhrase
                 : const NounPhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -108,7 +106,6 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
                 ? complement as InfinitivePhrase
                 : const InfinitivePhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -118,7 +115,6 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
                 ? complement as AdverbPlusAdjective
                 : const AdverbPlusAdjective(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isPlural: widget.isPlural,
           ),
         SubjectComplementType.adjectivePlusComplement =>
@@ -128,7 +124,6 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
                 ? complement as AdjectivePlusComplement
                 : const AdjectivePlusComplement(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -136,7 +131,6 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
             setAdjective: setComplement,
             adjective: complement is Adjective ? complement as Adjective : null,
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
           ),
       },
     );
@@ -146,6 +140,4 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
       setState(() => this.complement = complement);
 
   setType(SubjectComplementType type) => setState(() => this.type = type);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

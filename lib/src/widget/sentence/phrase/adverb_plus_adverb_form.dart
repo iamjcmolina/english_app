@@ -11,14 +11,12 @@ import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 
 class AdverbPlusAdverbForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final AdverbPlusAdverb phrase;
   final void Function(AdverbPlusAdverb?) setPhrase;
 
   const AdverbPlusAdverbForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -104,8 +102,6 @@ class AdverbPlusAdverbForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
 
   void validateAndSet(AdverbPlusAdverb phrase) {
-    setCanSave(
-        phrase.intensifierOrMitigatorAdverb != null && phrase.adverb != null);
     setPhrase(phrase);
   }
 }

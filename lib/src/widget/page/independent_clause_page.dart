@@ -15,8 +15,8 @@ import '../common/item_editor_layout.dart';
 import '../common/sentence_item_tile.dart';
 import '../common/sentence_scaffold.dart';
 import '../sentence/clause/clause_text.dart';
-import '../sentence/verb/first_auxiliary_verb_list_item.dart';
-import '../sentence/verb/verb_list_item.dart';
+import '../sentence/verb/first_auxiliary_verb_tile.dart';
+import '../sentence/verb/verb_tile.dart';
 import 'adverb_page.dart';
 import 'object_page.dart';
 import 'subject_complement_page.dart';
@@ -34,10 +34,11 @@ class IndependentClausePage extends StatefulWidget {
 class _IndependentClausePageState extends State<IndependentClausePage> {
   final verbEditingController = TextEditingController();
   late IndependentClause clause;
-  bool canSave = false;
   bool editingFirstAuxiliaryVerb = false;
   bool editingVerb = false;
   int index = 0;
+
+  bool get isValid => clause.isValid;
 
   @override
   void initState() {
@@ -50,20 +51,18 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     final auxiliaryVerbs = clause.auxiliaryVerbs;
     final auxiliaryVerbsEs = clause.auxiliaryVerbsEs;
 
-    final verbListItem = VerbListItem(
+    final verbListItem = VerbTile(
       clause: clause,
-      editingVerb: editingVerb,
+      isEditingVerb: editingVerb,
       toggleEditingVerb: toggleEditingVerb,
-      checkCanSave: checkCanSave,
       setVerb: setVerb,
       verbEditingController: verbEditingController,
-      show: !clause.isBeAuxiliary,
+      isShown: !clause.isBeAuxiliary,
     );
-    final firstAuxiliaryVerbListItem = FirstAuxiliaryVerbListItem(
-      editingFirstAuxiliaryVerb: editingFirstAuxiliaryVerb,
+    final firstAuxiliaryVerbListItem = FirstAuxiliaryVerbTile(
+      isEditingVerb: editingFirstAuxiliaryVerb,
       clause: clause,
       setClause: setClause,
-      checkCanSave: checkCanSave,
       toggleEditingFirstAuxiliaryVerb: toggleEditingFirstAuxiliaryVerb,
       setModalVerb: setModalVerb,
       setVerb: setVerb,
@@ -346,8 +345,4 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
       setState(() => editingFirstAuxiliaryVerb = !editingFirstAuxiliaryVerb);
 
   toggleEditingVerb() => setState(() => editingVerb = !editingVerb);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
-
-  checkCanSave() => setCanSave(clause.modalVerb != null && clause.verb != null);
 }

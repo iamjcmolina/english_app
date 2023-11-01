@@ -468,6 +468,8 @@ class IndependentClause {
     return isNegative ? 'no $affirmative' : affirmative;
   }
 
+  bool get isValid => false;
+
   const IndependentClause({
     this.isModalVerbEnabled = false,
     this.isAffirmativeEmphasisEnabled = false,

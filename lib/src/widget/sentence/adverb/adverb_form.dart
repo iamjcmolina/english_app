@@ -14,7 +14,6 @@ class AdverbForm extends StatelessWidget {
   final AdverbPosition position;
   final Adverb? adverb;
   final void Function(Adverb?) setAdverb;
-  final Function(bool) setCanSave;
 
   const AdverbForm({
     super.key,
@@ -22,7 +21,6 @@ class AdverbForm extends StatelessWidget {
     required this.adverb,
     required this.setAdverb,
     required this.position,
-    required this.setCanSave,
   });
 
   @override
@@ -80,7 +78,6 @@ class AdverbForm extends StatelessWidget {
   }
 
   void validateAndSet(Adverb? adverb) {
-    setCanSave(adverb != null);
     setAdverb(adverb);
   }
 }

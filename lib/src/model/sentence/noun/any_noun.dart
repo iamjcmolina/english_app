@@ -3,6 +3,7 @@ import 'doer_pronoun.dart';
 import 'subject_complement.dart';
 
 abstract class AnyNoun extends SubjectComplement {
+  bool get isValid;
   String get en;
   String get es;
   Countability get countability;

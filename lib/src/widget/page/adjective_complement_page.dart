@@ -25,15 +25,15 @@ class AdjectiveComplementPage extends StatefulWidget {
 }
 
 class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
-  late AdjectiveComplementType type;
   AdjectiveComplement? complement;
-  bool canSave = false;
+  late AdjectiveComplementType type;
+
+  bool get isValid => complement?.isValid ?? false;
 
   @override
   void initState() {
     super.initState();
     complement = widget.complement;
-    canSave = complement != null;
     type = switch (complement.runtimeType) {
       PrepositionalPhrase => AdjectiveComplementType.prepositionalPhrase,
       _ => AdjectiveComplementType.infinitivePhrase,
@@ -61,7 +61,7 @@ class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
       title: 'Subject complement',
       bottomActions: [
         IconButton(
-          onPressed: canSave ? () => Navigator.pop(context, complement) : null,
+          onPressed: isValid ? () => Navigator.pop(context, complement) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
@@ -76,7 +76,6 @@ class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
                 ? complement as InfinitivePhrase
                 : const InfinitivePhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -86,7 +85,6 @@ class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
                 ? complement as PrepositionalPhrase
                 : const PrepositionalPhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
@@ -98,6 +96,4 @@ class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
       setState(() => this.complement = complement);
 
   setType(AdjectiveComplementType type) => setState(() => this.type = type);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

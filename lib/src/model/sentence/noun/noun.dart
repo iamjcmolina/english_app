@@ -16,6 +16,9 @@ class Noun extends AnyNoun {
   @override
   bool get isSingularThirdPerson => isSingular;
 
+  @override
+  bool get isValid => true;
+
   const Noun(this.en, this.es, this.countability);
 
   @override

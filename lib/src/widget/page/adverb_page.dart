@@ -32,9 +32,10 @@ class AdverbPage extends StatefulWidget {
 }
 
 class _AdverbPageState extends State<AdverbPage> {
+  AnyAdverb? adverb;
   late AdverbVariant variant;
-  late AnyAdverb? adverb;
-  bool canSave = false;
+
+  bool get isValid => adverb?.isValid ?? false;
 
   @override
   void initState() {
@@ -69,7 +70,7 @@ class _AdverbPageState extends State<AdverbPage> {
         title: 'Independent Clause',
         bottomActions: [
           IconButton(
-            onPressed: canSave ? () => Navigator.pop(context, adverb) : null,
+            onPressed: isValid ? () => Navigator.pop(context, adverb) : null,
             icon: const Icon(Icons.save),
           ),
           IconButton(
@@ -84,7 +85,6 @@ class _AdverbPageState extends State<AdverbPage> {
                   ? adverb as AdverbPlusAdverb
                   : const AdverbPlusAdverb(),
               settingsControl: settingsControl,
-              setCanSave: setCanSave,
             ),
           AdverbVariant.infinitivePhrase => InfinitivePhraseForm(
               setPhrase: setAdverb,
@@ -92,7 +92,6 @@ class _AdverbPageState extends State<AdverbPage> {
                   ? adverb as InfinitivePhrase
                   : const InfinitivePhrase(),
               settingsControl: settingsControl,
-              setCanSave: setCanSave,
               isNegative: widget.isNegative,
               isPlural: widget.isPlural,
             ),
@@ -102,7 +101,6 @@ class _AdverbPageState extends State<AdverbPage> {
                   ? adverb as PrepositionalPhrase
                   : const PrepositionalPhrase(),
               settingsControl: settingsControl,
-              setCanSave: setCanSave,
               isNegative: widget.isNegative,
               isPlural: widget.isPlural,
             ),
@@ -111,7 +109,6 @@ class _AdverbPageState extends State<AdverbPage> {
               position: widget.position,
               adverb: adverb is Adverb ? adverb as Adverb : null,
               setAdverb: setAdverb,
-              setCanSave: setCanSave,
             ),
         });
   }
@@ -119,6 +116,4 @@ class _AdverbPageState extends State<AdverbPage> {
   setAdverb(AnyAdverb? adverb) => setState(() => this.adverb = adverb);
 
   setVariant(AdverbVariant variant) => setState(() => this.variant = variant);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

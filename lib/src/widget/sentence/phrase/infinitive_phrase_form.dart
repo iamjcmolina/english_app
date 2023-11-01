@@ -17,7 +17,6 @@ import '../../page/adverb_page.dart';
 import '../../page/object_page.dart';
 
 class InfinitivePhraseForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final InfinitivePhrase phrase;
   final void Function(InfinitivePhrase?) setPhrase;
@@ -26,7 +25,6 @@ class InfinitivePhraseForm extends StatelessWidget {
 
   const InfinitivePhraseForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -120,8 +118,6 @@ class InfinitivePhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(adverb: Nullable(modifier)));
 
   void validateAndSet(InfinitivePhrase phrase) {
-    setCanSave(phrase.verb != null &&
-        (phrase.object != null || phrase.adverb != null));
     setPhrase(phrase);
   }
 

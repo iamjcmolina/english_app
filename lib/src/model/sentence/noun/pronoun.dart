@@ -56,6 +56,9 @@ class Pronoun extends AnyNoun {
   bool get isSingularThirdPerson =>
       ['he', 'she', 'it'].contains(en.toLowerCase());
 
+  @override
+  bool get isValid => true;
+
   const Pronoun(this.en, this.es, this.asPronoun);
 
   @override

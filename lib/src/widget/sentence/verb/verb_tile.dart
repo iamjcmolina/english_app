@@ -8,29 +8,27 @@ import '../../../repository/vocabulary_repository.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
 
-class VerbListItem extends StatelessWidget {
+class VerbTile extends StatelessWidget {
+  final bool isShown;
+  final bool isEditingVerb;
   final IndependentClause clause;
-  final bool editingVerb;
   final void Function() toggleEditingVerb;
-  final void Function() checkCanSave;
   final void Function(AnyVerb? verb) setVerb;
   final TextEditingController? verbEditingController;
-  final bool show;
 
-  const VerbListItem({
+  const VerbTile({
     super.key,
+    this.isShown = true,
+    required this.isEditingVerb,
     required this.clause,
-    required this.editingVerb,
     required this.toggleEditingVerb,
-    required this.checkCanSave,
     required this.setVerb,
     this.verbEditingController,
-    this.show = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (!show) {
+    if (!isShown) {
       const SizedBox.shrink();
     }
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
@@ -49,11 +47,11 @@ class VerbListItem extends StatelessWidget {
               ? clause.firstAuxiliaryVerbDescription
               : null,
           trailing:
-              Icon(editingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+              Icon(isEditingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingVerb,
           isRequired: true,
         ),
-        if (editingVerb)
+        if (isEditingVerb)
           SentenceItemField<AnyVerb>(
             label: clause.verbPlaceholder,
             value: clause.verb,
@@ -84,11 +82,9 @@ class VerbListItem extends StatelessWidget {
   void onVerbSelected(AnyVerb verb) {
     setVerb(verb);
     toggleEditingVerb();
-    checkCanSave();
   }
 
   onVerbChanged() {
     setVerb(null);
-    checkCanSave();
   }
 }

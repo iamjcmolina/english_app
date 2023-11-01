@@ -9,7 +9,6 @@ import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 
 class IndefinitePronounForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final bool isNegative;
   final IndefinitePronoun? pronoun;
@@ -17,7 +16,6 @@ class IndefinitePronounForm extends StatelessWidget {
 
   const IndefinitePronounForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.isNegative,
     required this.pronoun,
@@ -65,7 +63,6 @@ class IndefinitePronounForm extends StatelessWidget {
   }
 
   void validateAndSet(IndefinitePronoun? pronoun) {
-    setCanSave(pronoun != null);
     setPronoun(pronoun);
   }
 }

@@ -10,24 +10,22 @@ import '../../../model/sentence_item.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
-import 'verb_list_item.dart';
+import 'verb_tile.dart';
 
-class FirstAuxiliaryVerbListItem extends StatelessWidget {
-  final bool editingFirstAuxiliaryVerb;
+class FirstAuxiliaryVerbTile extends StatelessWidget {
+  final bool isEditingVerb;
   final IndependentClause clause;
   final void Function(IndependentClause) setClause;
-  final void Function() checkCanSave;
   final void Function() toggleEditingFirstAuxiliaryVerb;
   final void Function(ModalVerb?) setModalVerb;
   final void Function(AnyVerb?) setVerb;
   final TextEditingController? verbController;
 
-  const FirstAuxiliaryVerbListItem({
+  const FirstAuxiliaryVerbTile({
     super.key,
-    required this.editingFirstAuxiliaryVerb,
+    required this.isEditingVerb,
     required this.clause,
     required this.setClause,
-    required this.checkCanSave,
     required this.toggleEditingFirstAuxiliaryVerb,
     required this.setModalVerb,
     required this.setVerb,
@@ -60,14 +58,11 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
       _ => !clause.isInterrogative,
     };
 
-    bool isModalVerbFieldShown =
-        editingFirstAuxiliaryVerb && isModalVerbEditable;
-    bool isModalVerbToggleShown =
-        editingFirstAuxiliaryVerb && isModalVerbAllowed;
-    bool isEmphasisToggleShown = editingFirstAuxiliaryVerb && isEmphasisAllowed;
-    bool isContractionToggleShown =
-        editingFirstAuxiliaryVerb && isContractionAllowed;
-    bool isNegativeToggleShown = editingFirstAuxiliaryVerb && clause.isNegative;
+    bool isModalVerbFieldShown = isEditingVerb && isModalVerbEditable;
+    bool isModalVerbToggleShown = isEditingVerb && isModalVerbAllowed;
+    bool isEmphasisToggleShown = isEditingVerb && isEmphasisAllowed;
+    bool isContractionToggleShown = isEditingVerb && isContractionAllowed;
+    bool isNegativeToggleShown = isEditingVerb && clause.isNegative;
 
     return Column(
       children: [
@@ -78,17 +73,15 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
             en: auxiliaryVerbs.first,
             es: auxiliaryVerbsEs.first,
             hint: clause.firstAuxiliaryVerbDescription,
-            trailing: Icon(editingFirstAuxiliaryVerb
-                ? Icons.arrow_drop_up
-                : Icons.arrow_drop_down),
+            trailing: Icon(
+                isEditingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
             onTap: toggleEditingFirstAuxiliaryVerb,
           ),
         if (clause.isBeAuxiliary)
-          VerbListItem(
+          VerbTile(
             clause: clause,
-            editingVerb: editingFirstAuxiliaryVerb,
+            isEditingVerb: isEditingVerb,
             toggleEditingVerb: toggleEditingFirstAuxiliaryVerb,
-            checkCanSave: checkCanSave,
             setVerb: setVerb,
             verbEditingController: verbController,
           ),
@@ -114,7 +107,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
             onSelected: onModalVerbSelected,
             onChanged: (text) => onModalVerbChanged(),
           ),
-        if (editingFirstAuxiliaryVerb)
+        if (isEditingVerb)
           SwitchListTile(
             title: const Text('Modal Verb'),
             secondary: const Icon(Icons.add),
@@ -124,7 +117,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
                 ? (bool value) => toggleModalVerb()
                 : null,
           ),
-        if (editingFirstAuxiliaryVerb)
+        if (isEditingVerb)
           SwitchListTile(
             secondary: const Icon(Icons.add),
             title: const Text('Affirmative emphasis'),
@@ -134,7 +127,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
                 ? (value) => toggleAffirmativeEmphasis()
                 : null,
           ),
-        if (editingFirstAuxiliaryVerb)
+        if (isEditingVerb)
           SwitchListTile(
             title: const Text('Contraction'),
             dense: true,
@@ -153,7 +146,7 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
                   }
                 : null,
           ),
-        if (editingFirstAuxiliaryVerb)
+        if (isEditingVerb)
           SwitchListTile(
             title: const Text('Negative Contraction'),
             dense: true,

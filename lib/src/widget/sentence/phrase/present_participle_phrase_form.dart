@@ -17,7 +17,6 @@ import '../../page/adverb_page.dart';
 import '../../page/object_page.dart';
 
 class PresentParticiplePhraseForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final PresentParticiplePhrase phrase;
   final void Function(PresentParticiplePhrase?) setPhrase;
@@ -26,7 +25,6 @@ class PresentParticiplePhraseForm extends StatelessWidget {
 
   const PresentParticiplePhraseForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -121,8 +119,6 @@ class PresentParticiplePhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(adverb: Nullable(modifier)));
 
   void validateAndSet(PresentParticiplePhrase phrase) {
-    setCanSave(phrase.verb != null &&
-        (phrase.object != null || phrase.adverb != null));
     setPhrase(phrase);
   }
 

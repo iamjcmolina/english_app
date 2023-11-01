@@ -1,4 +1,4 @@
-enum NounPhrasePostModifierType {
+enum EndAdjectiveType {
   adverbPlusAdjective('Adverb + Adjective'),
   adjectivePlusComplement('Adjective + Complement'),
   prepositionalPhrase('Prepositional Phrase'),
@@ -9,5 +9,5 @@ enum NounPhrasePostModifierType {
 
   final String name;
 
-  const NounPhrasePostModifierType(this.name);
+  const EndAdjectiveType(this.name);
 }

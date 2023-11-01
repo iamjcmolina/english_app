@@ -24,6 +24,9 @@ class IndefinitePronoun extends AnyNoun {
 
   bool get isNegativeOnlyAllowed => Util.startsWith(en, 'any');
 
+  @override
+  bool get isValid => true;
+
   const IndefinitePronoun(this.en, this.es, this.countability,
       this.countabilityEs, this.description);
 

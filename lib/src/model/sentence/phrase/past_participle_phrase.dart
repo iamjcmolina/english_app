@@ -22,6 +22,8 @@ class PastParticiplePhrase implements AnyAdjective {
   @override
   String get singularEs => es;
 
+  bool get isValid => verb != null && adverb != null;
+
   const PastParticiplePhrase({this.verb, this.adverb});
 
   PastParticiplePhrase copyWith({

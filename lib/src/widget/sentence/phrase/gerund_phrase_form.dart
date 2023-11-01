@@ -17,7 +17,6 @@ import '../../page/adverb_page.dart';
 import '../../page/object_page.dart';
 
 class GerundPhraseForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final GerundPhrase phrase;
   final void Function(GerundPhrase?) setPhrase;
@@ -26,7 +25,6 @@ class GerundPhraseForm extends StatelessWidget {
 
   const GerundPhraseForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -120,8 +118,6 @@ class GerundPhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(adverb: Nullable(adverb)));
 
   void validateAndSet(GerundPhrase phrase) {
-    setCanSave(phrase.verb != null &&
-        (phrase.object != null || phrase.adverb != null));
     setPhrase(phrase);
   }
 

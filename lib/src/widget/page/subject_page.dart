@@ -27,15 +27,15 @@ class SubjectPage extends StatefulWidget {
 }
 
 class _SubjectPageState extends State<SubjectPage> {
-  late NounType nounType;
   AnyNoun? subject;
-  bool canSave = false;
+  late NounType nounType;
+
+  bool get isValid => subject?.isValid ?? false;
 
   @override
   void initState() {
     super.initState();
     subject = widget.clause.subject;
-    canSave = subject != null;
     nounType = switch (widget.clause.subject.runtimeType) {
       NounPhrase => NounType.nounPhrase,
       _ => NounType.pronoun,
@@ -66,7 +66,7 @@ class _SubjectPageState extends State<SubjectPage> {
       title: 'Subject',
       bottomActions: [
         IconButton(
-          onPressed: canSave ? () => Navigator.pop(context, subject) : null,
+          onPressed: isValid ? () => Navigator.pop(context, subject) : null,
           icon: const Icon(Icons.save),
         ),
         IconButton(
@@ -81,7 +81,6 @@ class _SubjectPageState extends State<SubjectPage> {
                 ? subject as NounPhrase
                 : const NounPhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
             isPlural: widget.clause.hasPluralSubject,
           ),
@@ -91,7 +90,6 @@ class _SubjectPageState extends State<SubjectPage> {
                 ? subject as IndefinitePronoun
                 : null,
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
           ),
         NounType.infinitivePhrase => InfinitivePhraseForm(
@@ -100,7 +98,6 @@ class _SubjectPageState extends State<SubjectPage> {
                 ? subject as InfinitivePhrase
                 : const InfinitivePhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
             isPlural: widget.clause.hasPluralSubject,
           ),
@@ -110,7 +107,6 @@ class _SubjectPageState extends State<SubjectPage> {
                 ? subject as GerundPhrase
                 : const GerundPhrase(),
             settingsControl: settingsControl,
-            setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,
             isPlural: widget.clause.hasPluralSubject,
           ),
@@ -118,7 +114,6 @@ class _SubjectPageState extends State<SubjectPage> {
             pronouns: pronouns,
             setPronoun: setSubject,
             pronoun: subject is Pronoun ? subject as Pronoun : null,
-            setCanSave: setCanSave,
             settingsControl: settingsControl,
           ),
       },
@@ -128,6 +123,4 @@ class _SubjectPageState extends State<SubjectPage> {
   setSubject(AnyNoun? subject) => setState(() => this.subject = subject);
 
   setNounType(NounType type) => setState(() => nounType = type);
-
-  setCanSave(bool canSave) => setState(() => this.canSave = canSave);
 }

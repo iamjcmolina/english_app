@@ -14,7 +14,6 @@ import '../../common/sentence_item_tile.dart';
 import '../../page/adjective_complement_page.dart';
 
 class AdjectivePlusComplementForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final AdjectivePlusComplement phrase;
   final void Function(AdjectivePlusComplement?) setPhrase;
@@ -23,7 +22,6 @@ class AdjectivePlusComplementForm extends StatelessWidget {
 
   const AdjectivePlusComplementForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -102,7 +100,6 @@ class AdjectivePlusComplementForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(complement: Nullable(complement)));
 
   void validateAndSet(AdjectivePlusComplement phrase) {
-    setCanSave(phrase.adjective != null && phrase.complement != null);
     setPhrase(phrase);
   }
 

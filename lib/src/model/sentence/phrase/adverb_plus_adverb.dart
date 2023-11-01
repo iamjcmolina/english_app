@@ -25,6 +25,8 @@ class AdverbPlusAdverb implements AnyAdverb {
       .add(adverb?.es)
       .toString();
 
+  bool get isValid => intensifierOrMitigatorAdverb != null && adverb != null;
+
   const AdverbPlusAdverb({this.intensifierOrMitigatorAdverb, this.adverb});
 
   AdverbPlusAdverb copyWith({

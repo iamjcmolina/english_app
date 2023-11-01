@@ -9,14 +9,12 @@ import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
 
 class AdjectiveForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final Adjective? adjective;
   final void Function(Adjective?) setAdjective;
 
   const AdjectiveForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.adjective,
     required this.setAdjective,
@@ -67,7 +65,6 @@ class AdjectiveForm extends StatelessWidget {
   }
 
   validateAndSet(Adjective? adjective) {
-    setCanSave(adjective != null);
     setAdjective(adjective);
   }
 }

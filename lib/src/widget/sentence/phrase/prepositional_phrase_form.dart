@@ -14,7 +14,6 @@ import '../../common/sentence_item_tile.dart';
 import '../../page/object_page.dart';
 
 class PrepositionalPhraseForm extends StatelessWidget {
-  final Function(bool) setCanSave;
   final Widget settingsControl;
   final PrepositionalPhrase phrase;
   final void Function(PrepositionalPhrase?) setPhrase;
@@ -23,7 +22,6 @@ class PrepositionalPhraseForm extends StatelessWidget {
 
   const PrepositionalPhraseForm({
     super.key,
-    required this.setCanSave,
     required this.settingsControl,
     required this.phrase,
     required this.setPhrase,
@@ -96,7 +94,6 @@ class PrepositionalPhraseForm extends StatelessWidget {
       validateAndSet(phrase.copyWith(object: Nullable(object)));
 
   void validateAndSet(PrepositionalPhrase phrase) {
-    setCanSave(phrase.preposition != null && phrase.object != null);
     setPhrase(phrase);
   }
 
