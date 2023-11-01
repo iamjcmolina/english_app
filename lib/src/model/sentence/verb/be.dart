@@ -1,6 +1,54 @@
 import 'any_verb.dart';
 
 class Be extends AnyVerb {
+  static const ser = Be(
+      infinitiveEs: 'ser',
+      pastParticipleEs: 'sido',
+      progressiveEs: 'siendo',
+      presentIEs: 'soy',
+      presentSingularYouEs: 'eres',
+      presentHeEs: 'es',
+      presentWeEs: 'somos',
+      presentTheyEs: 'son',
+      pastIEs: 'fuí',
+      pastSingularYouEs: 'fuiste',
+      pastHeEs: 'fué',
+      pastWeEs: 'fuimos',
+      pastTheyEs: 'fueron',
+      futureIEs: 'seré',
+      futureSingularYouEs: 'serás',
+      futureHeEs: 'será',
+      futureWeEs: 'seremos',
+      futureTheyEs: 'serán',
+      conditionalIEs: 'sería',
+      conditionalSingularYouEs: 'serías',
+      conditionalHeEs: 'sería',
+      conditionalWeEs: 'seríamos',
+      conditionalTheyEs: 'serían');
+  static const estar = Be(
+      infinitiveEs: 'estar',
+      pastParticipleEs: 'estado',
+      progressiveEs: 'estando',
+      presentIEs: 'estoy',
+      presentSingularYouEs: 'estas',
+      presentHeEs: 'está',
+      presentWeEs: 'estamos',
+      presentTheyEs: 'están',
+      pastIEs: 'estuve',
+      pastSingularYouEs: 'estuviste',
+      pastHeEs: 'estuvo',
+      pastWeEs: 'estuvimos',
+      pastTheyEs: 'estuvieron',
+      futureIEs: 'estaré',
+      futureSingularYouEs: 'estarás',
+      futureHeEs: 'estará',
+      futureWeEs: 'estaremos',
+      futureTheyEs: 'estarán',
+      conditionalIEs: 'estaría',
+      conditionalSingularYouEs: 'estarías',
+      conditionalHeEs: 'estaría',
+      conditionalWeEs: 'estaremos',
+      conditionalTheyEs: 'estarían');
   @override
   final String infinitive = 'be';
   @override

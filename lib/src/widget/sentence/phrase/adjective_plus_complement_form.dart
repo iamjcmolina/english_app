@@ -3,15 +3,15 @@ import 'package:provider/provider.dart';
 
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
-import '../../../model/sentence/phrase/adjective_complement.dart';
+import '../../../model/sentence/adjective/adjective_complement.dart';
 import '../../../model/sentence/phrase/adjective_plus_complement.dart';
-import '../../../repository/noun_repository.dart';
-import '../../item_editor_layout.dart';
-import '../adjective/adjective_complement_page.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
+import '../../common/sentence_item_tile.dart';
+import '../../page/adjective_complement_page.dart';
 
 class AdjectivePlusComplementForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -34,7 +34,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final nounRepository = Provider.of<NounRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -76,7 +76,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
               label: '<Adjective>',
               value: phrase.adjective,
               displayStringForOption: (e) => e.en,
-              options: nounRepository.adjectives(),
+              options: vocabularyRepository.adjectives(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => isPlural ? e.pluralEs : e.singularEs],
               onSelected: (e) => setAdjective(e),

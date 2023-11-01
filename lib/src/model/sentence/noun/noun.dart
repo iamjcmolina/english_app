@@ -1,4 +1,6 @@
 import 'any_noun.dart';
+import 'countability.dart';
+import 'doer_pronoun.dart';
 
 class Noun extends AnyNoun {
   @override

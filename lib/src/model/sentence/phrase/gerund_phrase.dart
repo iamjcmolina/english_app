@@ -1,7 +1,9 @@
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
-import '../sentence_buffer.dart';
+import '../noun/countability.dart';
+import '../noun/doer_pronoun.dart';
+import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
 class GerundPhrase implements AnyNoun {
@@ -25,7 +27,7 @@ class GerundPhrase implements AnyNoun {
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.progressive ?? '<ProgressiveVerb>',
         disablePrefixWhen: true);
     buffer.add(object, when: object != null);
@@ -35,7 +37,7 @@ class GerundPhrase implements AnyNoun {
 
   @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.infinitiveEs, disablePrefixWhen: true);
     buffer.add(object?.es, when: object != null);
     buffer.add(modifier?.es, when: modifier != null);

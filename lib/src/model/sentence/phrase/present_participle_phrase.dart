@@ -2,7 +2,7 @@ import '../../nullable.dart';
 import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
-import '../sentence_buffer.dart';
+import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
 class PresentParticiplePhrase implements AnyAdjective {
@@ -12,7 +12,7 @@ class PresentParticiplePhrase implements AnyAdjective {
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.progressive ?? '<ProgressiveVerb>',
         disablePrefixWhen: true);
     buffer.add(object, when: object != null);
@@ -20,8 +20,9 @@ class PresentParticiplePhrase implements AnyAdjective {
     return buffer.toString();
   }
 
+  @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.pastParticipleEs, disablePrefixWhen: true);
     buffer.add(object?.es, when: object != null);
     buffer.add(modifier?.es, when: modifier != null);

@@ -1,6 +1,26 @@
-import 'value/determiner_type.dart';
+import 'determiner_type.dart';
 
 class Determiner {
+  static const articles = [
+    Determiner.article('a', 'un/una', false, true, false),
+    Determiner.article('an', 'un/una', false, true, false),
+    Determiner.article('the', 'el/la/los/las', true, true, true),
+  ];
+  static const possessiveAdjectives = [
+    Determiner.possessiveAdjective('my', 'mi/mis'),
+    Determiner.possessiveAdjective('your', 'tu/tus/su/sus'),
+    Determiner.possessiveAdjective('his', 'su/sus'),
+    Determiner.possessiveAdjective('her', 'su/sus'),
+    Determiner.possessiveAdjective('its', 'su/sus'),
+    Determiner.possessiveAdjective('our', 'nuestro/nuestros'),
+    Determiner.possessiveAdjective('their', 'su/sus'),
+  ];
+  static const demonstrativeAdjectives = [
+    Determiner.demonstrative('this', 'este/esta', true, true, false),
+    Determiner.demonstrative('that', 'ese/esa', true, true, false),
+    Determiner.demonstrative('these', 'estos/estas', false, false, true),
+    Determiner.demonstrative('those', 'esos/esas', false, false, true),
+  ];
   final String en;
   final String es;
   final DeterminerType type;
@@ -25,7 +45,7 @@ class Determiner {
     this.isPluralAllowed,
   ) : type = DeterminerType.article;
 
-  const Determiner.possessive(this.en, this.es)
+  const Determiner.possessiveAdjective(this.en, this.es)
       : type = DeterminerType.possessive,
         isUncountableAllowed = true,
         isSingularAllowed = true,

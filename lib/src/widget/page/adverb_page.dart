@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/sentence/adverb/adverb.dart';
-import '../../../model/sentence/adverb/any_adverb.dart';
-import '../../../model/sentence/adverb/value/adverb_position.dart';
-import '../../../model/sentence/adverb/value/adverb_variant.dart';
-import '../../../model/sentence/phrase/adverb_plus_adverb.dart';
-import '../../../model/sentence/phrase/infinitive_phrase.dart';
-import '../../../model/sentence/phrase/prepositional_phrase.dart';
-import '../../sentence_scaffold.dart';
-import '../phrase/adverb_plus_adverb_form.dart';
-import '../phrase/infinitive_phrase_form.dart';
-import '../phrase/prepositional_phrase_form.dart';
-import 'adverb_form.dart';
+import '../../model/sentence/adverb/adverb.dart';
+import '../../model/sentence/adverb/adverb_position.dart';
+import '../../model/sentence/adverb/adverb_variant.dart';
+import '../../model/sentence/adverb/any_adverb.dart';
+import '../../model/sentence/phrase/adverb_plus_adverb.dart';
+import '../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../model/sentence/phrase/prepositional_phrase.dart';
+import '../common/sentence_scaffold.dart';
+import '../sentence/adverb/adverb_form.dart';
+import '../sentence/phrase/adverb_plus_adverb_form.dart';
+import '../sentence/phrase/infinitive_phrase_form.dart';
+import '../sentence/phrase/prepositional_phrase_form.dart';
 
 class AdverbPage extends StatefulWidget {
   final AdverbPosition position;

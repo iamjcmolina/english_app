@@ -4,26 +4,24 @@ import 'package:provider/provider.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adjective/any_adjective.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
+import '../../../model/sentence/determiner/determiner.dart';
 import '../../../model/sentence/noun/noun.dart';
-import '../../../model/sentence/phrase/determiner.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
-import '../../../repository/noun_repository.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
-import 'noun_phrase_post_modifier_page.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
+import '../../common/sentence_item_tile.dart';
+import '../../page/noun_phrase_post_modifier_page.dart';
 
 class NounPhraseForm extends StatelessWidget {
   final Function(bool) setCanSave;
   final Widget settingsControl;
-  final NounPhrase? phrase;
+  final NounPhrase phrase;
   final void Function(NounPhrase?) setPhrase;
   final bool isNegative;
   final bool isPlural;
-
-  NounPhrase get safePhrase => phrase ?? NounPhrase();
 
   const NounPhraseForm({
     super.key,
@@ -45,7 +43,7 @@ class NounPhraseForm extends StatelessWidget {
     Color adjectiveColor = Colors.green;
     Color nounColor = Colors.orange;
 
-    final nounRepository = Provider.of<NounRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -53,46 +51,43 @@ class NounPhraseForm extends StatelessWidget {
         ListTile(
           title: Text.rich(TextSpan(
             children: [
-              if (safePhrase.allowQuantifier && safePhrase.quantifier != null)
+              if (phrase.allowQuantifier && phrase.quantifier != null)
                 TextSpan(
-                  text: safePhrase.quantifier == null
+                  text: phrase.quantifier == null
                       ? '<QuantifierOf> '
-                      : '${safePhrase.quantifierOf} ',
-                  style: safePhrase.quantifier == null
+                      : '${phrase.quantifierOf} ',
+                  style: phrase.quantifier == null
                       ? unsetTextStyle
                       : TextStyle(color: quantifierOfColor),
                 ),
               TextSpan(
-                text: safePhrase.determiner == null
+                text: phrase.determiner == null
                     ? '<Determiner> '
-                    : '${safePhrase.determiner} ',
-                style: safePhrase.determiner == null
+                    : '${phrase.determiner} ',
+                style: phrase.determiner == null
                     ? unsetTextStyle
                     : TextStyle(color: determinerColor),
               ),
-              if (safePhrase.allowNumber && safePhrase.number != null)
+              if (phrase.allowNumber && phrase.number != null)
                 TextSpan(
-                  text: safePhrase.number == null
-                      ? '<Number> '
-                      : '${safePhrase.number} ',
-                  style: safePhrase.number == null
+                  text:
+                      phrase.number == null ? '<Number> ' : '${phrase.number} ',
+                  style: phrase.number == null
                       ? unsetTextStyle
                       : TextStyle(color: numberColor),
                 ),
-              if (safePhrase.allowAdjective && safePhrase.adjective != null)
+              if (phrase.allowAdjective && phrase.adjective != null)
                 TextSpan(
-                  text: safePhrase.adjective == null
+                  text: phrase.adjective == null
                       ? '<Adjective> '
-                      : '${safePhrase.adjective} ',
-                  style: safePhrase.adjective == null
+                      : '${phrase.adjective} ',
+                  style: phrase.adjective == null
                       ? unsetTextStyle
                       : TextStyle(color: adjectiveColor),
                 ),
               TextSpan(
-                text: safePhrase.noun == null
-                    ? '<Noun>'
-                    : safePhrase.noun.toString(),
-                style: safePhrase.noun == null
+                text: phrase.noun == null ? '<Noun>' : phrase.noun.toString(),
+                style: phrase.noun == null
                     ? unsetTextStyle
                     : TextStyle(color: nounColor),
               ),
@@ -104,14 +99,14 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: quantifierOfColor,
           title: 'Quantifier',
-          textValue: safePhrase.quantifierOf,
-          textValueEs: safePhrase.quantifierOfEs,
-          show: safePhrase.allowQuantifier,
+          textValue: phrase.quantifierOf,
+          textValueEs: phrase.quantifierOfEs,
+          show: phrase.allowQuantifier,
           fields: [
             SentenceItemField<Determiner>(
               label: 'Quantifier',
-              value: safePhrase.quantifier,
-              options: nounRepository.quantifiers(safePhrase.noun),
+              value: phrase.quantifier,
+              options: vocabularyRepository.quantifiers(phrase.noun),
               filterValuesEn: [(Determiner e) => e.en],
               filterValuesEs: [(Determiner e) => e.es],
               onSelected: (determiner) => setQuantifier(determiner),
@@ -122,14 +117,14 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: determinerColor,
           title: 'Determiner',
-          textValue: safePhrase.determiner?.en,
-          textValueEs: safePhrase.determiner?.es,
+          textValue: phrase.determiner?.en,
+          textValueEs: phrase.determiner?.es,
           required: true,
           fields: [
             SentenceItemField<Determiner>(
               label: 'Determiner',
-              value: safePhrase.determiner,
-              options: determiners(nounRepository),
+              value: phrase.determiner,
+              options: determiners(vocabularyRepository),
               filterValuesEn: [(Determiner e) => e.en],
               filterValuesEs: [(Determiner e) => e.es],
               onSelected: (determiner) => setDeterminer(determiner),
@@ -140,14 +135,14 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: numberColor,
           title: 'Number',
-          textValue: safePhrase.number?.en,
-          textValueEs: safePhrase.number?.es,
-          show: safePhrase.allowNumber,
+          textValue: phrase.number?.en,
+          textValueEs: phrase.number?.es,
+          show: phrase.allowNumber,
           fields: [
             SentenceItemField<Determiner>(
               label: 'Number',
-              value: safePhrase.number,
-              options: nounRepository.numbers(safePhrase.noun, true),
+              value: phrase.number,
+              options: vocabularyRepository.numbers(phrase.noun, true),
               filterValuesEn: [(Determiner e) => e.en],
               filterValuesEs: [(Determiner e) => e.es],
               onSelected: (number) => setNumber(number),
@@ -158,14 +153,14 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: adjectiveColor,
           title: 'Adjective',
-          textValue: safePhrase.adjective?.en,
-          textValueEs: safePhrase.adjectiveEs,
-          show: safePhrase.allowAdjective,
+          textValue: phrase.adjective?.en,
+          textValueEs: phrase.adjectiveEs,
+          show: phrase.allowAdjective,
           fields: [
             SentenceItemField<Adjective>(
               label: 'Adjective',
-              value: safePhrase.adjective,
-              options: nounRepository.adjectives(),
+              value: phrase.adjective,
+              options: vocabularyRepository.adjectives(),
               filterValuesEn: [(Adjective e) => e.en],
               filterValuesEs: [
                 (Adjective e) => e.singularEs,
@@ -179,14 +174,14 @@ class NounPhraseForm extends StatelessWidget {
         DropdownTile(
           color: nounColor,
           title: 'Noun',
-          textValue: safePhrase.noun?.en,
-          textValueEs: safePhrase.noun?.es,
+          textValue: phrase.noun?.en,
+          textValueEs: phrase.noun?.es,
           required: true,
           fields: [
             SentenceItemField<Noun>(
               label: 'Noun',
-              value: safePhrase.noun,
-              options: nounRepository.nouns(safePhrase.determiner),
+              value: phrase.noun,
+              options: vocabularyRepository.nouns(phrase.determiner),
               filterValuesEn: [(Noun e) => e.en],
               filterValuesEs: [(Noun e) => e.es],
               onSelected: (noun) => setNoun(noun),
@@ -197,8 +192,8 @@ class NounPhraseForm extends StatelessWidget {
         SentenceItemTile(
           color: SentenceItem.adjective.color,
           label: '<PostModifierAdjective>',
-          value: safePhrase.postModifier?.toString(),
-          valueEs: safePhrase.postModifier?.singularEs,
+          value: phrase.postModifier?.toString(),
+          valueEs: phrase.postModifier?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToPostModifierPage(context),
         ),
@@ -207,34 +202,34 @@ class NounPhraseForm extends StatelessWidget {
   }
 
   setQuantifier(quantifierOf) =>
-      validateAndSet(safePhrase.copyWith(quantifier: Nullable(quantifierOf)));
+      validateAndSet(phrase.copyWith(quantifier: Nullable(quantifierOf)));
 
   setDeterminer(determiner) =>
-      validateAndSet(safePhrase.copyWith(determiner: Nullable(determiner)));
+      validateAndSet(phrase.copyWith(determiner: Nullable(determiner)));
 
   setAdjective(adjective) =>
-      validateAndSet(safePhrase.copyWith(adjective: Nullable(adjective)));
+      validateAndSet(phrase.copyWith(adjective: Nullable(adjective)));
 
   setNumber(number) =>
-      validateAndSet(safePhrase.copyWith(number: Nullable(number)));
+      validateAndSet(phrase.copyWith(number: Nullable(number)));
 
-  setNoun(noun) => validateAndSet(safePhrase.copyWith(noun: Nullable(noun)));
+  setNoun(noun) => validateAndSet(phrase.copyWith(noun: Nullable(noun)));
 
   setPostModifier(AnyAdjective? modifier) =>
-      validateAndSet(safePhrase.copyWith(postModifier: Nullable(modifier)));
+      validateAndSet(phrase.copyWith(postModifier: Nullable(modifier)));
 
   validateAndSet(NounPhrase phrase) {
     setCanSave(phrase.determiner != null && phrase.noun != null);
     setPhrase(phrase);
   }
 
-  List<Determiner> determiners(NounRepository nounRepository) => [
-        ...nounRepository.articles(safePhrase.noun),
-        ...nounRepository.possessiveAdjectives(),
-        ...nounRepository.demonstrativeAdjectives(safePhrase.noun),
-        ...nounRepository.distributiveAdjectives(safePhrase.noun),
-        ...nounRepository.quantifiers(safePhrase.noun),
-        ...nounRepository.numbers(safePhrase.noun)
+  List<Determiner> determiners(VocabularyRepository vocabularyRepository) => [
+        ...vocabularyRepository.articles(phrase.noun),
+        ...vocabularyRepository.possessiveAdjectives(),
+        ...vocabularyRepository.demonstrativeAdjectives(phrase.noun),
+        ...vocabularyRepository.distributiveAdjectives(phrase.noun),
+        ...vocabularyRepository.quantifiers(phrase.noun),
+        ...vocabularyRepository.numbers(phrase.noun)
       ];
 
   navigateToPostModifierPage(BuildContext context) async {
@@ -242,7 +237,7 @@ class NounPhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => NounPhrasePostModifierPage(
-                  modifier: safePhrase.postModifier,
+                  modifier: phrase.postModifier,
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));

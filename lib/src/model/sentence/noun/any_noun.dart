@@ -1,8 +1,6 @@
+import 'countability.dart';
+import 'doer_pronoun.dart';
 import 'subject_complement.dart';
-
-enum Countability { uncountable, singular, plural }
-
-enum DoerPronoun { I, you, he, she, it, we, they }
 
 abstract class AnyNoun extends SubjectComplement {
   String get en;

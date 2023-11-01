@@ -1,8 +1,8 @@
 import '../../nullable.dart';
 import '../adjective/adjective.dart';
+import '../adjective/adjective_complement.dart';
 import '../adjective/any_adjective.dart';
-import '../sentence_buffer.dart';
-import 'adjective_complement.dart';
+import '../text_buffer.dart';
 
 class AdjectivePlusComplement extends AnyAdjective {
   final Adjective? adjective;
@@ -10,7 +10,7 @@ class AdjectivePlusComplement extends AnyAdjective {
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(adjective?.en ?? '<Adjective>', disablePrefixWhen: true);
     buffer.add(complement?.en ?? '<AdjectiveComplement>');
     return buffer.toString();
@@ -18,7 +18,7 @@ class AdjectivePlusComplement extends AnyAdjective {
 
   @override
   String get pluralEs {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(adjective?.pluralEs ?? '<Adjetivo>', disablePrefixWhen: true);
     buffer.add(complement?.es ?? '<ComplementoDelAdjetivo>');
     return buffer.toString();
@@ -26,7 +26,7 @@ class AdjectivePlusComplement extends AnyAdjective {
 
   @override
   String get singularEs {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(adjective?.singularEs ?? '<Adjetivo>', disablePrefixWhen: true);
     buffer.add(complement?.es ?? '<ComplementoDelAdjetivo>');
     return buffer.toString();

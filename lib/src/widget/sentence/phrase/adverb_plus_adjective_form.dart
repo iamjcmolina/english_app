@@ -4,13 +4,12 @@ import 'package:provider/provider.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adverb/adverb.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/phrase/adverb_plus_adjective.dart';
-import '../../../repository/adverb_repository.dart';
-import '../../../repository/noun_repository.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
 
 class AdverbPlusAdjectiveForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -31,8 +30,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final nounRepository = Provider.of<NounRepository>(context);
-    final adverbRepository = Provider.of<AdverbRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -72,7 +70,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
               label: '<Adverb>',
               value: phrase.adverb,
               displayStringForOption: (e) => e.en,
-              options: adverbRepository.endAdverbs(),
+              options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => e.es],
               onSelected: (e) => setAdverb(e),
@@ -93,7 +91,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
               label: '<Adjective>',
               value: phrase.adjective,
               displayStringForOption: (e) => e.en,
-              options: nounRepository.adjectives(),
+              options: vocabularyRepository.adjectives(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => isPlural ? e.pluralEs : e.singularEs],
               onSelected: (e) => setAdjective(e),

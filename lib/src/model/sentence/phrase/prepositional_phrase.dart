@@ -1,10 +1,10 @@
 import '../../nullable.dart';
+import '../adjective/adjective_complement.dart';
 import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
-import '../sentence_buffer.dart';
-import 'adjective_complement.dart';
-import 'preposition.dart';
+import '../preposition/preposition.dart';
+import '../text_buffer.dart';
 
 class PrepositionalPhrase
     implements AnyAdjective, AnyAdverb, AdjectiveComplement {
@@ -19,7 +19,7 @@ class PrepositionalPhrase
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(preposition?.en, disablePrefixWhen: true);
     buffer.add(object?.en, when: object != null);
     return buffer.toString();
@@ -27,7 +27,7 @@ class PrepositionalPhrase
 
   @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(preposition?.es, disablePrefixWhen: true);
     buffer.add(object?.es, when: object != null);
     return buffer.toString();

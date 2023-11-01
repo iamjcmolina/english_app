@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/nullable.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/noun/any_noun.dart';
-import '../../../model/sentence/phrase/preposition.dart';
 import '../../../model/sentence/phrase/prepositional_phrase.dart';
-import '../../../repository/common_repository.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../noun/object_page.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
+import '../../../model/sentence/preposition/preposition.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
+import '../../common/sentence_item_tile.dart';
+import '../../page/object_page.dart';
 
 class PrepositionalPhraseForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -34,7 +34,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final commonRepository = Provider.of<CommonRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -71,7 +71,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
               label: 'Preposition',
               value: phrase.preposition,
               displayStringForOption: (e) => e.en,
-              options: commonRepository.prepositions(),
+              options: vocabularyRepository.prepositions(),
               filterValuesEn: [(Preposition e) => e.en],
               filterValuesEs: [(Preposition e) => e.es],
               onSelected: (e) => setVerb(e),

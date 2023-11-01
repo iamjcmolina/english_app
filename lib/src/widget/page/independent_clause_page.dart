@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/nullable.dart';
-import '../../../model/sentence/adverb/any_adverb.dart';
-import '../../../model/sentence/adverb/value/adverb_position.dart';
-import '../../../model/sentence/clause/independent_clause.dart';
-import '../../../model/sentence/clause/value/clause_type.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
-import '../../../model/sentence/clause/value/tense.dart';
-import '../../../model/sentence/noun/any_noun.dart';
-import '../../../model/sentence/noun/subject_complement.dart';
-import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence/verb/modal_verb.dart';
-import '../../item_editor_layout.dart';
-import '../../sentence_scaffold.dart';
-import '../adverb/adverb_page.dart';
-import '../noun/object_page.dart';
-import '../noun/subject_complement_page.dart';
-import '../noun/subject_page.dart';
-import '../sentence_item_tile.dart';
-import '../verb/first_auxiliary_verb_list_item.dart';
-import '../verb/verb_list_item.dart';
-import 'clause_text.dart';
+import '../../model/nullable.dart';
+import '../../model/sentence/adverb/adverb_position.dart';
+import '../../model/sentence/adverb/any_adverb.dart';
+import '../../model/sentence/clause/clause_type.dart';
+import '../../model/sentence/clause/independent_clause.dart';
+import '../../model/sentence/clause/tense.dart';
+import '../../model/sentence/noun/any_noun.dart';
+import '../../model/sentence/noun/subject_complement.dart';
+import '../../model/sentence/verb/any_verb.dart';
+import '../../model/sentence/verb/modal_verb.dart';
+import '../../model/sentence_item.dart';
+import '../common/item_editor_layout.dart';
+import '../common/sentence_item_tile.dart';
+import '../common/sentence_scaffold.dart';
+import '../sentence/clause/clause_text.dart';
+import '../sentence/verb/first_auxiliary_verb_list_item.dart';
+import '../sentence/verb/verb_list_item.dart';
+import 'adverb_page.dart';
+import 'object_page.dart';
+import 'subject_complement_page.dart';
+import 'subject_page.dart';
 
 class IndependentClausePage extends StatefulWidget {
   final IndependentClause? clause;

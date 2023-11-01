@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../english_app.dart';
 import '../../model/sentence/clause/independent_clause.dart';
 import '../../model/sentence/sentence.dart';
-import 'clause/independent_clause_page.dart';
+import '../common/sentence_scaffold.dart';
+import 'independent_clause_page.dart';
 
 class SentencePage extends StatefulWidget {
   const SentencePage({super.key});
@@ -17,11 +17,8 @@ class _SentencePageState extends State<SentencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sentence'),
-        actions: EnglishApp.globalActions,
-      ),
+    return SentenceScaffold(
+      title: 'Sentence',
       body: Column(
         children: [
           ListTile(

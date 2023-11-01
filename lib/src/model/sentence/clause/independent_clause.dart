@@ -2,17 +2,18 @@ import '../../../util/util.dart';
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
+import '../noun/doer_pronoun.dart';
 import '../noun/indefinite_pronoun.dart';
 import '../noun/subject_complement.dart';
 import '../verb/any_verb.dart';
 import '../verb/auxiliary_verbs.dart';
 import '../verb/be.dart';
 import '../verb/modal_verb.dart';
-import '../verb/phrasal-verb.dart';
-import '../verb/value/verb_tense.dart';
+import '../verb/phrasal_verb.dart';
 import '../verb/verb.dart';
-import 'value/clause_type.dart';
-import 'value/tense.dart';
+import '../verb/verb_tense.dart';
+import 'clause_type.dart';
+import 'tense.dart';
 
 class IndependentClause {
   final String frontAdverbPlaceholder = '<FrontAdverb>';

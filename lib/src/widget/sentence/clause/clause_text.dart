@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
-import '../../../model/sentence/verb/phrasal-verb.dart';
+import '../../../model/sentence/verb/phrasal_verb.dart';
+import '../../../model/sentence_item.dart';
 
 class ClauseText extends StatelessWidget {
   final IndependentClause clause;

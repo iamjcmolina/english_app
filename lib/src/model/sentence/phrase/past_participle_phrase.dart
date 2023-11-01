@@ -1,7 +1,7 @@
 import '../../nullable.dart';
 import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
-import '../sentence_buffer.dart';
+import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
 class PastParticiplePhrase implements AnyAdjective {
@@ -10,14 +10,15 @@ class PastParticiplePhrase implements AnyAdjective {
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.pastParticiple, disablePrefixWhen: true);
     buffer.add(modifier);
     return buffer.toString();
   }
 
+  @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.pastParticipleEs, disablePrefixWhen: true);
     buffer.add(modifier?.es);
     return buffer.toString();

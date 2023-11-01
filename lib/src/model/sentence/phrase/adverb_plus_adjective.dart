@@ -2,7 +2,7 @@ import '../../nullable.dart';
 import '../adjective/adjective.dart';
 import '../adjective/any_adjective.dart';
 import '../adverb/adverb.dart';
-import '../sentence_buffer.dart';
+import '../text_buffer.dart';
 
 class AdverbPlusAdjective extends AnyAdjective {
   final Adverb? adverb;
@@ -10,7 +10,7 @@ class AdverbPlusAdjective extends AnyAdjective {
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(adverb?.en ?? '<Adverb>', disablePrefixWhen: true);
     buffer.add(adjective?.en ?? '<Adjective>');
     return buffer.toString();
@@ -18,7 +18,7 @@ class AdverbPlusAdjective extends AnyAdjective {
 
   @override
   String get pluralEs {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(adverb?.es ?? '<Adverbio>', disablePrefixWhen: true);
     buffer.add(adjective?.pluralEs ?? '<Adjetivo>');
     return buffer.toString();
@@ -26,7 +26,7 @@ class AdverbPlusAdjective extends AnyAdjective {
 
   @override
   String get singularEs {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(adverb?.es ?? '<Adverbio>', disablePrefixWhen: true);
     buffer.add(adjective?.singularEs ?? '<Adjetivo>');
     return buffer.toString();

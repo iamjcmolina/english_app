@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/sentence/adjective/any_adjective.dart';
-import '../../../model/sentence/phrase/adjective_plus_complement.dart';
-import '../../../model/sentence/phrase/adverb_plus_adjective.dart';
-import '../../../model/sentence/phrase/infinitive_phrase.dart';
-import '../../../model/sentence/phrase/past_participle_phrase.dart';
-import '../../../model/sentence/phrase/prepositional_phrase.dart';
-import '../../../model/sentence/phrase/present_participle_phrase.dart';
-import '../../../model/sentence/phrase/value/noun_phrase_post_modifier_type.dart';
-import '../../sentence_scaffold.dart';
-import '../phrase/infinitive_phrase_form.dart';
-import 'adjective_plus_complement_form.dart';
-import 'adverb_plus_adjective_form.dart';
-import 'past_participle_phrase_form.dart';
-import 'prepositional_phrase_form.dart';
-import 'present_participle_phrase_form.dart';
+import '../../model/sentence/adjective/any_adjective.dart';
+import '../../model/sentence/phrase/adjective_plus_complement.dart';
+import '../../model/sentence/phrase/adverb_plus_adjective.dart';
+import '../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../model/sentence/phrase/noun_phrase_post_modifier_type.dart';
+import '../../model/sentence/phrase/past_participle_phrase.dart';
+import '../../model/sentence/phrase/prepositional_phrase.dart';
+import '../../model/sentence/phrase/present_participle_phrase.dart';
+import '../common/sentence_scaffold.dart';
+import '../sentence/phrase/adjective_plus_complement_form.dart';
+import '../sentence/phrase/adverb_plus_adjective_form.dart';
+import '../sentence/phrase/infinitive_phrase_form.dart';
+import '../sentence/phrase/past_participle_phrase_form.dart';
+import '../sentence/phrase/prepositional_phrase_form.dart';
+import '../sentence/phrase/present_participle_phrase_form.dart';
 
 class NounPhrasePostModifierPage extends StatefulWidget {
   final AnyAdjective? modifier;

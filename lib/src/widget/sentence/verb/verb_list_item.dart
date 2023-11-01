@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../repository/verb_repository.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/sentence_item_field.dart';
+import '../../common/sentence_item_tile.dart';
 
 class VerbListItem extends StatelessWidget {
   final IndependentClause clause;
@@ -33,7 +33,7 @@ class VerbListItem extends StatelessWidget {
     if (!show) {
       const SizedBox.shrink();
     }
-    final verbRepository = Provider.of<VerbRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     final auxiliaryVerbLabel =
         clause.isBeAuxiliary ? ', ${clause.firstAuxiliaryVerbPlaceholder}' : '';
@@ -57,7 +57,7 @@ class VerbListItem extends StatelessWidget {
           SentenceItemField<AnyVerb>(
             label: clause.verbPlaceholder,
             value: clause.verb,
-            options: verbRepository.verbs(),
+            options: vocabularyRepository.verbs(),
             filterValuesEn: [
               (AnyVerb e) => e.infinitive,
               (AnyVerb e) => e.pastParticiple,

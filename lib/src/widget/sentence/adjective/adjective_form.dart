@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/adjective/adjective.dart';
-import '../../../repository/noun_repository.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
 
 class AdjectiveForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -27,7 +27,7 @@ class AdjectiveForm extends StatelessWidget {
 
     Color adjectiveColor = Colors.green;
 
-    final nounRepository = Provider.of<NounRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -54,7 +54,7 @@ class AdjectiveForm extends StatelessWidget {
             SentenceItemField<Adjective>(
               label: 'Adjective',
               value: adjective,
-              options: nounRepository.adjectives(),
+              options: vocabularyRepository.adjectives(),
               filterValuesEn: [(Adjective e) => e.en],
               filterValuesEs: [
                 (Adjective e) => e.singularEs,

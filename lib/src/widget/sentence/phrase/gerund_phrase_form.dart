@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/nullable.dart';
+import '../../../model/sentence/adverb/adverb_position.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
-import '../../../model/sentence/adverb/value/adverb_position.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/phrase/gerund_phrase.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../repository/verb_repository.dart';
-import '../../item_editor_layout.dart';
-import '../adverb/adverb_page.dart';
-import '../dropdown_tile.dart';
-import '../noun/object_page.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
+import '../../common/sentence_item_tile.dart';
+import '../../page/adverb_page.dart';
+import '../../page/object_page.dart';
 
 class GerundPhraseForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -37,7 +37,7 @@ class GerundPhraseForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final verbRepository = Provider.of<VerbRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -84,7 +84,7 @@ class GerundPhraseForm extends StatelessWidget {
               label: 'ProgressiveVerb',
               value: phrase.verb,
               displayStringForOption: (e) => e.progressive,
-              options: verbRepository.actionVerbs(),
+              options: vocabularyRepository.actionVerbs(),
               filterValuesEn: [(AnyVerb e) => e.progressive],
               filterValuesEs: [(AnyVerb e) => e.infinitiveEs],
               onSelected: (e) => setVerb(e),

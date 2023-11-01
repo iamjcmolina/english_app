@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/noun/pronoun.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
 
 class PronounForm extends StatelessWidget {
   final Function(bool) setCanSave;

@@ -1,4 +1,19 @@
 class ModalVerb {
+  static const List<ModalVerb> modalVerbs = [
+    ModalVerb('can', "can", 'cannot', "can't", 'puedo', 'puedes', 'puede',
+        'podemos', 'pueden'),
+    ModalVerb('could', "could", 'could not', "couldn't", 'podría', 'podrías',
+        'podría', 'podríamos', 'podrían'),
+    ModalVerb('may', "may", 'may not', "mayn't", 'podría', 'podrías', 'podría',
+        'podríamos', 'podrían'),
+    ModalVerb('might', "might", 'might not', "mightn't", 'podría', 'podrías',
+        'podría', 'podríamos', 'podrían'),
+    ModalVerb('must', "must", 'must not', "mustn't", 'debo', 'debes', 'debe',
+        'debemos', 'deben'),
+    ModalVerb('should', "should", 'should not', "shouldn't", 'debería',
+        'deberías', 'debería', 'deberíamos', 'deberían'),
+    ModalVerb('would', "'d", 'would not', "wouldn't", '', '', '', '', ''),
+  ];
   final String verb;
   final String verbContraction;
   final String negative;
@@ -14,15 +29,15 @@ class ModalVerb {
   bool get isWould => verb.toLowerCase() == 'would';
   bool get hasVerbContraction => verb != verbContraction;
 
-  const ModalVerb({
-    required this.verb,
-    required this.verbContraction,
-    required this.negative,
-    required this.negativeContraction,
-    required this.affirmativeIEs,
-    required this.affirmativeSingularYouEs,
-    required this.affirmativeHeEs,
-    required this.affirmativeWeEs,
-    required this.affirmativeTheyEs,
-  });
+  const ModalVerb(
+    this.verb,
+    this.verbContraction,
+    this.negative,
+    this.negativeContraction,
+    this.affirmativeIEs,
+    this.affirmativeSingularYouEs,
+    this.affirmativeHeEs,
+    this.affirmativeWeEs,
+    this.affirmativeTheyEs,
+  );
 }

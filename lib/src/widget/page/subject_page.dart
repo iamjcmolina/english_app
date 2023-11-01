@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../model/sentence/clause/independent_clause.dart';
-import '../../../model/sentence/noun/any_noun.dart';
-import '../../../model/sentence/noun/indefinite_pronoun.dart';
-import '../../../model/sentence/noun/pronoun.dart';
-import '../../../model/sentence/noun/value/noun_type.dart';
-import '../../../model/sentence/phrase/gerund_phrase.dart';
-import '../../../model/sentence/phrase/infinitive_phrase.dart';
-import '../../../model/sentence/phrase/noun_phrase.dart';
-import '../../../repository/noun_repository.dart';
-import '../../sentence_scaffold.dart';
-import '../phrase/gerund_phrase_form.dart';
-import '../phrase/infinitive_phrase_form.dart';
-import '../phrase/noun_phrase_form.dart';
-import 'indefinite_pronoun_form.dart';
-import 'pronoun_form.dart';
+import '../../model/sentence/clause/independent_clause.dart';
+import '../../model/sentence/noun/any_noun.dart';
+import '../../model/sentence/noun/indefinite_pronoun.dart';
+import '../../model/sentence/noun/noun_type.dart';
+import '../../model/sentence/noun/pronoun.dart';
+import '../../model/sentence/phrase/gerund_phrase.dart';
+import '../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../model/sentence/phrase/noun_phrase.dart';
+import '../../repository/vocabulary_repository.dart';
+import '../common/sentence_scaffold.dart';
+import '../sentence/noun/indefinite_pronoun_form.dart';
+import '../sentence/noun/pronoun_form.dart';
+import '../sentence/phrase/gerund_phrase_form.dart';
+import '../sentence/phrase/infinitive_phrase_form.dart';
+import '../sentence/phrase/noun_phrase_form.dart';
 
 class SubjectPage extends StatefulWidget {
   final IndependentClause clause;
@@ -44,9 +44,9 @@ class _SubjectPageState extends State<SubjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    final nounRepository = Provider.of<NounRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
-    List<Pronoun> pronouns = nounRepository.subjectPronouns();
+    List<Pronoun> pronouns = vocabularyRepository.subjectPronouns();
 
     final settingsControl = Center(
       child: DropdownButton<NounType>(
@@ -77,7 +77,9 @@ class _SubjectPageState extends State<SubjectPage> {
       body: switch (nounType) {
         NounType.nounPhrase => NounPhraseForm(
             setPhrase: setSubject,
-            phrase: subject is NounPhrase ? subject as NounPhrase : null,
+            phrase: subject is NounPhrase
+                ? subject as NounPhrase
+                : const NounPhrase(),
             settingsControl: settingsControl,
             setCanSave: setCanSave,
             isNegative: widget.clause.isNegative,

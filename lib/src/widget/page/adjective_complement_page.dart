@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/sentence/phrase/adjective_complement.dart';
-import '../../../model/sentence/phrase/infinitive_phrase.dart';
-import '../../../model/sentence/phrase/prepositional_phrase.dart';
-import '../../../model/sentence/phrase/value/adjective_complement_type.dart';
-import '../../sentence_scaffold.dart';
-import '../phrase/infinitive_phrase_form.dart';
-import '../phrase/prepositional_phrase_form.dart';
+import '../../model/sentence/adjective/adjective_complement.dart';
+import '../../model/sentence/adjective/adjective_complement_type.dart';
+import '../../model/sentence/phrase/infinitive_phrase.dart';
+import '../../model/sentence/phrase/prepositional_phrase.dart';
+import '../common/sentence_scaffold.dart';
+import '../sentence/phrase/infinitive_phrase_form.dart';
+import '../sentence/phrase/prepositional_phrase_form.dart';
 
 class AdjectiveComplementPage extends StatefulWidget {
   final AdjectiveComplement? complement;

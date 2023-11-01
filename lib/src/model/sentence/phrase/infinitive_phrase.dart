@@ -1,10 +1,12 @@
 import '../../nullable.dart';
+import '../adjective/adjective_complement.dart';
 import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
-import '../sentence_buffer.dart';
+import '../noun/countability.dart';
+import '../noun/doer_pronoun.dart';
+import '../text_buffer.dart';
 import '../verb/any_verb.dart';
-import 'adjective_complement.dart';
 
 class InfinitivePhrase
     implements AnyNoun, AnyAdjective, AnyAdverb, AdjectiveComplement {
@@ -34,7 +36,7 @@ class InfinitivePhrase
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add('to', disablePrefixWhen: true);
     buffer.add(verb?.infinitive ?? '<InfinitiveVerb>');
     buffer.add(object, when: object != null);
@@ -50,7 +52,7 @@ class InfinitivePhrase
 
   @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(verb?.infinitiveEs, disablePrefixWhen: true);
     buffer.add(object?.es, when: object != null);
     buffer.add(modifier?.es, when: modifier != null);

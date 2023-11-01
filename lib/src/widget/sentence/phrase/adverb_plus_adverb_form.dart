@@ -3,12 +3,12 @@ import 'package:provider/provider.dart';
 
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
 import '../../../model/sentence/phrase/adverb_plus_adverb.dart';
-import '../../../repository/adverb_repository.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
 
 class AdverbPlusAdverbForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -27,7 +27,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const unsetTextStyle = TextStyle(fontSize: 12);
-    final adverbRepository = Provider.of<AdverbRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
@@ -67,7 +67,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
               label: '<IntensifierOrMitigatorAdverb>',
               value: phrase.modifier,
               displayStringForOption: (e) => e.en,
-              options: adverbRepository.endAdverbs(),
+              options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => e.es],
               onSelected: (e) => setModifier(e),
@@ -86,7 +86,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
               label: '<Adverb>',
               value: phrase.regularAdverb,
               displayStringForOption: (e) => e.en,
-              options: adverbRepository.endAdverbs(),
+              options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
               filterValuesEs: [(e) => e.es],
               onSelected: (e) => setModifier(e),

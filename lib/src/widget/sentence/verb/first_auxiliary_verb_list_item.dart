@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
-import '../../../model/sentence/clause/value/sentence_item.dart';
-import '../../../model/sentence/clause/value/tense.dart';
+import '../../../model/sentence/clause/tense.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/sentence/verb/be.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
-import '../../../repository/verb_repository.dart';
-import '../sentence_item_field.dart';
-import '../sentence_item_tile.dart';
+import '../../../model/sentence_item.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/sentence_item_field.dart';
+import '../../common/sentence_item_tile.dart';
 import 'verb_list_item.dart';
 
 class FirstAuxiliaryVerbListItem extends StatelessWidget {
@@ -36,9 +36,9 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final verbRepository = Provider.of<VerbRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
-    final modalVerbs = verbRepository.modalVerbs();
+    final modalVerbs = vocabularyRepository.modalVerbs();
     final auxiliaryVerbs = clause.auxiliaryVerbs;
     final auxiliaryVerbsEs = clause.auxiliaryVerbsEs;
     bool isModalVerbEditable =

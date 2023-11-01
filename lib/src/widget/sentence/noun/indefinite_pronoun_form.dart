@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/noun/indefinite_pronoun.dart';
-import '../../../repository/noun_repository.dart';
-import '../../item_editor_layout.dart';
-import '../dropdown_tile.dart';
-import '../sentence_item_field.dart';
+import '../../../repository/vocabulary_repository.dart';
+import '../../common/dropdown_tile.dart';
+import '../../common/item_editor_layout.dart';
+import '../../common/sentence_item_field.dart';
 
 class IndefinitePronounForm extends StatelessWidget {
   final Function(bool) setCanSave;
@@ -28,9 +28,9 @@ class IndefinitePronounForm extends StatelessWidget {
     const unsetTextStyle = TextStyle(fontSize: 12);
     const Color pronounColor = Colors.deepPurpleAccent;
 
-    final nounRepository = Provider.of<NounRepository>(context);
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
-    final pronouns = nounRepository.indefinitePronouns(isNegative);
+    final pronouns = vocabularyRepository.indefinitePronouns(isNegative);
 
     return ItemEditorLayout(
       header: [

@@ -1,5 +1,7 @@
 import '../../../util/util.dart';
 import 'any_noun.dart';
+import 'countability.dart';
+import 'doer_pronoun.dart';
 
 class IndefinitePronoun extends AnyNoun {
   @override

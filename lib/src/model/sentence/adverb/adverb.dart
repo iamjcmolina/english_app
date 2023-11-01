@@ -1,5 +1,5 @@
+import 'adverb_type.dart';
 import 'any_adverb.dart';
-import 'value/adverb_type.dart';
 
 class Adverb extends AnyAdverb {
   @override

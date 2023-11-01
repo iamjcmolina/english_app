@@ -1,7 +1,7 @@
 import '../../nullable.dart';
 import '../adverb/adverb.dart';
 import '../adverb/any_adverb.dart';
-import '../sentence_buffer.dart';
+import '../text_buffer.dart';
 
 class AdverbPlusAdverb implements AnyAdverb {
   @override
@@ -15,7 +15,7 @@ class AdverbPlusAdverb implements AnyAdverb {
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(modifier?.en ?? '<IntensifierOrMitigatorAdverb>',
         disablePrefixWhen: true);
     buffer.add(regularAdverb?.en ?? '<RegularAdverb>');
@@ -24,7 +24,7 @@ class AdverbPlusAdverb implements AnyAdverb {
 
   @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(modifier?.es ?? '<AdverbioIntensificadorOMitigador>',
         disablePrefixWhen: true);
     buffer.add(regularAdverb?.es ?? '<AdverbioRegular>');

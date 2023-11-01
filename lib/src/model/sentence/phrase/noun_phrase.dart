@@ -1,23 +1,25 @@
 import '../../nullable.dart';
 import '../adjective/adjective.dart';
 import '../adjective/any_adjective.dart';
+import '../determiner/determiner.dart';
+import '../determiner/determiner_type.dart';
 import '../noun/any_noun.dart';
+import '../noun/countability.dart';
+import '../noun/doer_pronoun.dart';
 import '../noun/noun.dart';
-import '../sentence_buffer.dart';
-import 'determiner.dart';
-import 'value/determiner_type.dart';
+import '../text_buffer.dart';
 
 class NounPhrase extends AnyNoun {
-  Determiner? quantifier;
-  Determiner? determiner;
-  Determiner? number;
-  Adjective? adjective;
-  Noun? noun;
-  AnyAdjective? postModifier;
+  final Determiner? quantifier;
+  final Determiner? determiner;
+  final Determiner? number;
+  final Adjective? adjective;
+  final Noun? noun;
+  final AnyAdjective? postModifier;
 
   @override
   String get en {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(quantifier, when: allowQuantifier, disablePrefixWhen: true);
     buffer.add(determiner);
     buffer.add(number, when: allowNumber);
@@ -28,7 +30,7 @@ class NounPhrase extends AnyNoun {
 
   @override
   String get es {
-    SentenceBuffer buffer = SentenceBuffer();
+    TextBuffer buffer = TextBuffer();
     buffer.add(quantifier?.es, when: allowQuantifier, disablePrefixWhen: true);
     buffer.add(determiner?.es);
     buffer.add(number?.es, when: allowNumber);
@@ -74,7 +76,7 @@ class NounPhrase extends AnyNoun {
   String? get adjectiveEs =>
       isPlural ? adjective?.pluralEs : adjective?.singularEs;
 
-  NounPhrase({
+  const NounPhrase({
     this.quantifier,
     this.determiner,
     this.number,
