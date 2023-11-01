@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/noun/pronoun.dart';
+import '../../../model/sentence_item.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
@@ -23,9 +24,6 @@ class PronounForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
-    const Color pronounColor = Colors.deepPurpleAccent;
-
     return ItemEditorLayout(
       header: [
         settingsControl,
@@ -33,14 +31,14 @@ class PronounForm extends StatelessWidget {
           title: Text(
             pronoun == null ? '<Pronoun>' : pronoun.toString(),
             style: pronoun == null
-                ? unsetTextStyle
-                : const TextStyle(color: pronounColor),
+                ? SentenceItem.placeholder.style
+                : SentenceItem.noun.style,
           ),
         ),
       ],
       body: [
         DropdownTile(
-          color: pronounColor,
+          style: SentenceItem.noun.style,
           title: 'Pronoun',
           textValue: pronoun?.en,
           fields: [

@@ -29,7 +29,6 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -43,16 +42,16 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
                     ? '<Adverb> '
                     : '${phrase.adverb!.en} ',
                 style: phrase.adverb == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adverb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adverb.style,
               ),
               TextSpan(
                 text: phrase.adjective == null
                     ? '<Adjective> '
                     : '${phrase.adjective!.en} ',
                 style: phrase.adjective == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adverb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adjective.style,
               ),
             ],
           )),
@@ -60,7 +59,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: '<Adverb>',
           textValue: phrase.adverb?.en,
           textValueEs: phrase.adverb?.es,
@@ -79,7 +78,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: '<Adjective>',
           textValue: phrase.adjective?.en,
           textValueEs: isPlural

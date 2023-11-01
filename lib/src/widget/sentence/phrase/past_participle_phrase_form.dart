@@ -34,7 +34,6 @@ class PastParticiplePhraseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -48,16 +47,16 @@ class PastParticiplePhraseForm extends StatelessWidget {
                     ? '<PastParticipleVerb> '
                     : '${phrase.verb!.pastParticiple} ',
                 style: phrase.verb == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.verb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.verb.style,
               ),
               TextSpan(
                 text: phrase.modifier == null
                     ? '<Adverb> '
                     : '${phrase.modifier!.en} ',
                 style: phrase.verb == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adverb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adverb.style,
               ),
             ],
           )),
@@ -65,7 +64,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: 'PastParticipleVerb',
           textValue: phrase.verb?.pastParticiple,
           textValueEs: phrase.verb?.pastParticipleEs,
@@ -84,10 +83,10 @@ class PastParticiplePhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          color: SentenceItem.adverb.color,
-          label: "<Adverb>",
-          value: phrase.modifier?.en,
-          valueEs: phrase.modifier?.es,
+          style: SentenceItem.adverb.style,
+          placeholder: "<Adverb>",
+          en: phrase.modifier?.en,
+          es: phrase.modifier?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToAdverbPage(context),
         ),

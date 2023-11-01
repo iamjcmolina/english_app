@@ -36,7 +36,6 @@ class PresentParticiplePhraseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -50,23 +49,23 @@ class PresentParticiplePhraseForm extends StatelessWidget {
                     ? '<ProgressiveVerb> '
                     : '${phrase.verb!.progressive} ',
                 style: phrase.verb == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.verb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.verb.style,
               ),
               if (phrase.object != null && phrase.modifier != null)
-                const TextSpan(
+                TextSpan(
                   text: '<ObjectOrAdverb> ',
-                  style: unsetTextStyle,
+                  style: SentenceItem.placeholder.style,
                 ),
               if (phrase.object != null)
                 TextSpan(
                   text: '${phrase.object!.en} ',
-                  style: TextStyle(color: SentenceItem.noun.color),
+                  style: SentenceItem.noun.style,
                 ),
               if (phrase.modifier != null)
                 TextSpan(
                   text: '${phrase.modifier!.en} ',
-                  style: TextStyle(color: SentenceItem.adverb.color),
+                  style: SentenceItem.adverb.style,
                 ),
             ],
           )),
@@ -74,7 +73,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: 'ProgressiveVerb',
           textValue: phrase.verb?.progressive,
           textValueEs: phrase.verb?.pastParticipleEs,
@@ -93,18 +92,18 @@ class PresentParticiplePhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          color: SentenceItem.noun.color,
-          label: "<Object>",
-          value: phrase.object?.en,
-          valueEs: phrase.object?.es,
+          style: SentenceItem.noun.style,
+          placeholder: "<Object>",
+          en: phrase.object?.en,
+          es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToObjectPage(context),
         ),
         SentenceItemTile(
-          color: SentenceItem.adverb.color,
-          label: "<Adverb>",
-          value: phrase.modifier?.en,
-          valueEs: phrase.modifier?.es,
+          style: SentenceItem.adverb.style,
+          placeholder: "<Adverb>",
+          en: phrase.modifier?.en,
+          es: phrase.modifier?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToAdverbPage(context),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/noun/indefinite_pronoun.dart';
+import '../../../model/sentence_item.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -25,9 +26,6 @@ class IndefinitePronounForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
-    const Color pronounColor = Colors.deepPurpleAccent;
-
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     final pronouns = vocabularyRepository.indefinitePronouns(isNegative);
@@ -39,14 +37,14 @@ class IndefinitePronounForm extends StatelessWidget {
           title: Text(
             pronoun == null ? '<IndefinitePronoun>' : pronoun.toString(),
             style: pronoun == null
-                ? unsetTextStyle
-                : const TextStyle(color: pronounColor),
+                ? SentenceItem.placeholder.style
+                : SentenceItem.noun.style,
           ),
         ),
       ],
       body: [
         DropdownTile(
-          color: pronounColor,
+          style: SentenceItem.noun.style,
           title: 'Indefinite Pronoun',
           textValue: pronoun?.en,
           fields: [

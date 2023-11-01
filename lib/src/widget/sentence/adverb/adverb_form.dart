@@ -27,7 +27,6 @@ class AdverbForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     List<Adverb> adverbs = switch (position) {
@@ -51,15 +50,15 @@ class AdverbForm extends StatelessWidget {
               TextSpan(
                   text: '${adverb ?? '<$label>'}',
                   style: (adverb == null)
-                      ? unsetTextStyle
-                      : TextStyle(color: SentenceItem.adverb.color)),
+                      ? SentenceItem.placeholder.style
+                      : SentenceItem.adverb.style),
             ],
           )),
         ),
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.adverb.color,
+          style: SentenceItem.adverb.style,
           title: label,
           textValue: adverb?.en,
           textValueEs: adverb?.es,

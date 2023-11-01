@@ -33,7 +33,6 @@ class AdjectivePlusComplementForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -47,16 +46,16 @@ class AdjectivePlusComplementForm extends StatelessWidget {
                     ? '<Adjective> '
                     : '${phrase.adjective!.en} ',
                 style: phrase.adjective == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adjective.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adjective.style,
               ),
               TextSpan(
                 text: phrase.complement == null
                     ? '<AdjectiveComplement> '
                     : '${phrase.complement!.en} ',
                 style: phrase.complement == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adjective.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adjective.style,
               ),
             ],
           )),
@@ -64,7 +63,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: '<Adjective>',
           textValue: phrase.adjective?.en,
           textValueEs: isPlural
@@ -85,10 +84,10 @@ class AdjectivePlusComplementForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          color: SentenceItem.adjective.color,
-          label: '<AdjectiveComplement>',
-          value: phrase.complement?.en,
-          valueEs: phrase.complement?.es,
+          style: SentenceItem.adjective.style,
+          placeholder: '<AdjectiveComplement>',
+          en: phrase.complement?.en,
+          es: phrase.complement?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToComplementPage(context),
         ),

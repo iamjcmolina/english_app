@@ -1,68 +1,57 @@
 import 'package:flutter/material.dart';
 
 class SentenceItemTile extends StatelessWidget {
-  final Color color;
-  final String label;
-  final String? subtitle;
-  final String? value;
-  final String? valueEs;
+  final TextStyle style;
+  final String placeholder;
+  final String? en;
+  final String? es;
+  final String? hint;
   final Widget? trailing;
   final void Function()? onTap;
-  final bool show;
-  final bool required;
+  final bool isShown;
+  final bool isRequired;
 
   const SentenceItemTile({
     super.key,
-    required this.color,
-    required this.label,
-    this.subtitle,
-    this.value,
-    this.valueEs,
+    required this.style,
+    required this.placeholder,
+    required this.en,
+    required this.es,
+    this.hint,
     this.trailing,
     this.onTap,
-    this.show = true,
-    this.required = false,
+    this.isShown = true,
+    this.isRequired = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (!show) {
+    if (!isShown) {
       return const SizedBox.shrink();
     }
-    final isEmptyValue = value == null || value!.isEmpty;
+    const smallFont = 12.0;
+    const starStyle = TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
+    const italicStyle = TextStyle(fontStyle: FontStyle.italic);
+    const smallFontStyle = TextStyle(fontSize: smallFont);
+    final isEnEmpty = en == null || en!.isEmpty;
+    final isEsEmpty = es == null || es!.isEmpty;
+    final isHintEmpty = hint == null || hint!.isEmpty;
+
     return ListTile(
       title: Text.rich(TextSpan(
         children: [
-          if (!isEmptyValue)
-            TextSpan(
-              text: value,
-              style: TextStyle(color: color),
-            ),
           TextSpan(
-            text: isEmptyValue ? label : ' $label',
-            style: TextStyle(
-              fontSize: isEmptyValue ? 14 : 12,
-            ),
-          ),
+              text: isEnEmpty ? '' : '$en ',
+              style: TextStyle(color: style.color)),
           TextSpan(
-              text: required ? ' *' : '',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
-              )),
+              text: '$placeholder ', style: isEnEmpty ? null : smallFontStyle),
+          TextSpan(text: isRequired ? '*' : '', style: starStyle),
           TextSpan(
-            text: valueEs == null ? '' : '\n$valueEs',
-            style: TextStyle(
-              color: isEmptyValue ? null : color,
-              fontSize: isEmptyValue ? 14 : 12,
-            ),
-          ),
+              text: isEsEmpty ? '' : '\n$es',
+              style: TextStyle(color: style.color, fontSize: smallFont)),
         ],
       )),
-      subtitle: subtitle == null || subtitle!.isEmpty
-          ? null
-          : Text(subtitle!,
-              style: const TextStyle(fontStyle: FontStyle.italic)),
+      subtitle: isHintEmpty ? null : Text(hint!, style: italicStyle),
       trailing: trailing,
       onTap: onTap,
     );

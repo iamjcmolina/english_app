@@ -33,7 +33,6 @@ class PrepositionalPhraseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -47,21 +46,20 @@ class PrepositionalPhraseForm extends StatelessWidget {
                     ? '<Preposition> '
                     : '${phrase.preposition!.en} ',
                 style: phrase.preposition == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.noun.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.preposition.style,
               ),
-              if (phrase.object != null)
-                TextSpan(
-                  text: '${phrase.object!.en} ',
-                  style: TextStyle(color: SentenceItem.noun.color),
-                ),
+              TextSpan(
+                text: phrase.object == null ? '' : '${phrase.object!.en} ',
+                style: SentenceItem.noun.style,
+              ),
             ],
           )),
         ),
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: 'Preposition',
           textValue: phrase.preposition?.en,
           textValueEs: phrase.preposition?.es,
@@ -80,10 +78,10 @@ class PrepositionalPhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          color: SentenceItem.noun.color,
-          label: "<VerbObject>",
-          value: phrase.object?.en,
-          valueEs: phrase.object?.es,
+          style: SentenceItem.noun.style,
+          placeholder: "<VerbObject>",
+          en: phrase.object?.en,
+          es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToObjectPage(context),
         ),

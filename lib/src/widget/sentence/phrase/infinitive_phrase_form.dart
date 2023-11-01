@@ -36,7 +36,6 @@ class InfinitivePhraseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -50,31 +49,30 @@ class InfinitivePhraseForm extends StatelessWidget {
                     ? '<InfinitiveVerb> '
                     : 'to ${phrase.verb!.infinitive} ',
                 style: phrase.verb == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.verb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.verb.style,
               ),
-              if (phrase.object != null && phrase.modifier != null)
-                const TextSpan(
-                  text: '<ObjectOrModifier> ',
-                  style: unsetTextStyle,
-                ),
-              if (phrase.object != null)
-                TextSpan(
-                  text: '${phrase.object!.en} ',
-                  style: TextStyle(color: SentenceItem.noun.color),
-                ),
-              if (phrase.modifier != null)
-                TextSpan(
-                  text: '${phrase.modifier!.en} ',
-                  style: TextStyle(color: SentenceItem.adverb.color),
-                ),
+              TextSpan(
+                text: phrase.object == null && phrase.modifier == null
+                    ? '<ObjectOrModifier> '
+                    : '',
+                style: SentenceItem.placeholder.style,
+              ),
+              TextSpan(
+                text: phrase.object == null ? '' : '${phrase.object!.en} ',
+                style: SentenceItem.noun.style,
+              ),
+              TextSpan(
+                text: phrase.modifier == null ? '' : '${phrase.modifier!.en} ',
+                style: SentenceItem.adverb.style,
+              ),
             ],
           )),
         ),
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: 'InfinitiveVerb',
           textValue: phrase.verb?.infinitive,
           textValueEs: phrase.verb?.infinitiveEs,
@@ -93,18 +91,18 @@ class InfinitivePhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          color: SentenceItem.noun.color,
-          label: "<Object>",
-          value: phrase.object?.en,
-          valueEs: phrase.object?.es,
+          style: SentenceItem.noun.style,
+          placeholder: "<Object>",
+          en: phrase.object?.en,
+          es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToObjectPage(context),
         ),
         SentenceItemTile(
-          color: SentenceItem.adverb.color,
-          label: "<Modifier>",
-          value: phrase.modifier?.en,
-          valueEs: phrase.modifier?.es,
+          style: SentenceItem.adverb.style,
+          placeholder: "<Modifier>",
+          en: phrase.modifier?.en,
+          es: phrase.modifier?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToAdverbPage(context),
         ),

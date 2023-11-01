@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'sentence_item_tile.dart';
 
 class DropdownTile extends StatefulWidget {
-  final Color color;
+  final TextStyle style;
   final String title;
   final String? subtitle;
   final String? textValue;
@@ -14,7 +14,7 @@ class DropdownTile extends StatefulWidget {
 
   const DropdownTile({
     super.key,
-    required this.color,
+    required this.style,
     required this.title,
     this.subtitle,
     this.textValue,
@@ -36,15 +36,15 @@ class _DropdownTileState extends State<DropdownTile> {
     return Column(
       children: [
         SentenceItemTile(
-          color: widget.color,
-          label: '<${widget.title}>',
-          value: widget.textValue,
-          valueEs: widget.textValueEs,
+          style: widget.style,
+          placeholder: '<${widget.title}>',
+          en: widget.textValue,
+          es: widget.textValueEs,
           trailing: Icon(
               isShowingFields ? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleFields,
-          show: widget.show,
-          required: widget.required,
+          isShown: widget.show,
+          isRequired: widget.required,
         ),
         if (widget.show && isShowingFields) ...widget.fields,
       ],

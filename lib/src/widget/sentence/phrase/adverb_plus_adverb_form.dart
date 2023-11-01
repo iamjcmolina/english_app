@@ -26,7 +26,6 @@ class AdverbPlusAdverbForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -40,16 +39,16 @@ class AdverbPlusAdverbForm extends StatelessWidget {
                     ? '<IntensifierOrMitigatorAdverb> '
                     : '${phrase.modifier!.en} ',
                 style: phrase.modifier == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adverb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adverb.style,
               ),
               TextSpan(
                 text: phrase.regularAdverb == null
                     ? '<Adverb> '
                     : '${phrase.regularAdverb!.en} ',
                 style: phrase.regularAdverb == null
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.adverb.color),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adverb.style,
               ),
             ],
           )),
@@ -57,7 +56,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: '<IntensifierOrMitigatorAdverb>',
           textValue: phrase.modifier?.en,
           textValueEs: phrase.modifier?.es,
@@ -76,7 +75,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          color: SentenceItem.verb.color,
+          style: SentenceItem.verb.style,
           title: '<Adverb>',
           textValue: phrase.regularAdverb?.en,
           textValueEs: phrase.regularAdverb?.es,

@@ -35,14 +35,6 @@ class NounPhraseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
-
-    Color quantifierOfColor = Colors.lightBlueAccent;
-    Color determinerColor = Colors.cyan;
-    Color numberColor = Colors.blueAccent;
-    Color adjectiveColor = Colors.green;
-    Color nounColor = Colors.orange;
-
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -57,24 +49,24 @@ class NounPhraseForm extends StatelessWidget {
                       ? '<QuantifierOf> '
                       : '${phrase.quantifierOf} ',
                   style: phrase.quantifier == null
-                      ? unsetTextStyle
-                      : TextStyle(color: quantifierOfColor),
+                      ? SentenceItem.placeholder.style
+                      : SentenceItem.determiner.style,
                 ),
               TextSpan(
                 text: phrase.determiner == null
                     ? '<Determiner> '
                     : '${phrase.determiner} ',
                 style: phrase.determiner == null
-                    ? unsetTextStyle
-                    : TextStyle(color: determinerColor),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.determiner.style,
               ),
               if (phrase.allowNumber && phrase.number != null)
                 TextSpan(
                   text:
                       phrase.number == null ? '<Number> ' : '${phrase.number} ',
                   style: phrase.number == null
-                      ? unsetTextStyle
-                      : TextStyle(color: numberColor),
+                      ? SentenceItem.placeholder.style
+                      : SentenceItem.determiner.style,
                 ),
               if (phrase.allowAdjective && phrase.adjective != null)
                 TextSpan(
@@ -82,14 +74,14 @@ class NounPhraseForm extends StatelessWidget {
                       ? '<Adjective> '
                       : '${phrase.adjective} ',
                   style: phrase.adjective == null
-                      ? unsetTextStyle
-                      : TextStyle(color: adjectiveColor),
+                      ? SentenceItem.placeholder.style
+                      : SentenceItem.adjective.style,
                 ),
               TextSpan(
                 text: phrase.noun == null ? '<Noun>' : phrase.noun.toString(),
                 style: phrase.noun == null
-                    ? unsetTextStyle
-                    : TextStyle(color: nounColor),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.noun.style,
               ),
             ],
           )),
@@ -97,7 +89,7 @@ class NounPhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: quantifierOfColor,
+          style: SentenceItem.determiner.style,
           title: 'Quantifier',
           textValue: phrase.quantifierOf,
           textValueEs: phrase.quantifierOfEs,
@@ -115,7 +107,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          color: determinerColor,
+          style: SentenceItem.determiner.style,
           title: 'Determiner',
           textValue: phrase.determiner?.en,
           textValueEs: phrase.determiner?.es,
@@ -133,7 +125,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          color: numberColor,
+          style: SentenceItem.determiner.style,
           title: 'Number',
           textValue: phrase.number?.en,
           textValueEs: phrase.number?.es,
@@ -151,7 +143,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          color: adjectiveColor,
+          style: SentenceItem.adjective.style,
           title: 'Adjective',
           textValue: phrase.adjective?.en,
           textValueEs: phrase.adjectiveEs,
@@ -172,7 +164,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          color: nounColor,
+          style: SentenceItem.noun.style,
           title: 'Noun',
           textValue: phrase.noun?.en,
           textValueEs: phrase.noun?.es,
@@ -190,10 +182,10 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          color: SentenceItem.adjective.color,
-          label: '<PostModifierAdjective>',
-          value: phrase.postModifier?.toString(),
-          valueEs: phrase.postModifier?.singularEs,
+          style: SentenceItem.adjective.style,
+          placeholder: '<PostModifierAdjective>',
+          en: phrase.postModifier?.toString(),
+          es: phrase.postModifier?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => navigateToPostModifierPage(context),
         ),

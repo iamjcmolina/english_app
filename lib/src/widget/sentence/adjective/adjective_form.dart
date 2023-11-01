@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/sentence/adjective/adjective.dart';
+import '../../../model/sentence_item.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -23,10 +24,6 @@ class AdjectiveForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const unsetTextStyle = TextStyle(fontSize: 12);
-
-    Color adjectiveColor = Colors.green;
-
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
@@ -38,8 +35,8 @@ class AdjectiveForm extends StatelessWidget {
               TextSpan(
                 text: adjective == null ? '<Adjective> ' : '$adjective ',
                 style: adjective == null
-                    ? unsetTextStyle
-                    : TextStyle(color: adjectiveColor),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.adjective.style,
               ),
             ],
           )),
@@ -47,7 +44,7 @@ class AdjectiveForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          color: adjectiveColor,
+          style: SentenceItem.adjective.style,
           title: 'Adjective',
           textValue: adjective?.en,
           fields: [

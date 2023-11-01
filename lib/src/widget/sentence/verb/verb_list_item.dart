@@ -41,17 +41,17 @@ class VerbListItem extends StatelessWidget {
     return Column(
       children: [
         SentenceItemTile(
-          color: SentenceItem.verb.color,
-          label: '${clause.verbPlaceholder}$auxiliaryVerbLabel',
-          value: clause.verbAsString(),
-          valueEs: clause.verbAsStringEs(),
-          subtitle: clause.isBeAuxiliary
+          style: SentenceItem.verb.style,
+          placeholder: '${clause.verbPlaceholder}$auxiliaryVerbLabel',
+          en: clause.verbAsString(),
+          es: clause.verbAsStringEs(),
+          hint: clause.isBeAuxiliary
               ? clause.firstAuxiliaryVerbDescription
               : null,
           trailing:
               Icon(editingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
           onTap: toggleEditingVerb,
-          required: true,
+          isRequired: true,
         ),
         if (editingVerb)
           SentenceItemField<AnyVerb>(

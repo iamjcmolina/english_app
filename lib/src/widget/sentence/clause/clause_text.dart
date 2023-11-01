@@ -16,13 +16,11 @@ class ClauseText extends StatelessWidget {
   Widget build(BuildContext context) {
     final auxiliaryVerbs = clause.auxiliaryVerbs;
 
-    const unsetTextStyle = TextStyle(fontSize: 12);
-
     final firstAuxiliaryVerbSpan = TextSpan(
         text: auxiliaryVerbs.first == null ? '' : '${auxiliaryVerbs.first} ',
-        style: (auxiliaryVerbs.first == null)
-            ? unsetTextStyle
-            : TextStyle(color: SentenceItem.verb.color));
+        style: auxiliaryVerbs.first == null
+            ? SentenceItem.placeholder.style
+            : SentenceItem.verb.style);
 
     return RichText(
       text: TextSpan(
@@ -31,53 +29,51 @@ class ClauseText extends StatelessWidget {
           if (!clause.isInterrogative && clause.frontAdverb != null)
             TextSpan(
                 text: '${clause.frontAdverb} ',
-                style: TextStyle(color: SentenceItem.adverb.color)),
+                style: SentenceItem.adverb.style),
           if (clause.isInterrogative) firstAuxiliaryVerbSpan,
           TextSpan(
               text: '${clause.subject ?? clause.subjectPlaceholder}'
                   '${clause.isVerbContractionActive ? '' : ' '}',
               style: (clause.subject == null)
-                  ? unsetTextStyle
-                  : TextStyle(color: SentenceItem.noun.color)),
+                  ? SentenceItem.placeholder.style
+                  : SentenceItem.noun.style),
           if (!clause.isInterrogative) firstAuxiliaryVerbSpan,
           if (clause.midAdverb != null)
             TextSpan(
-                text: '${clause.midAdverb} ',
-                style: TextStyle(color: SentenceItem.adverb.color)),
+                text: '${clause.midAdverb} ', style: SentenceItem.adverb.style),
           if (auxiliaryVerbs.second != null)
             TextSpan(
                 text: '${auxiliaryVerbs.second} ',
-                style: TextStyle(color: SentenceItem.verb.color)),
+                style: SentenceItem.verb.style),
           if (auxiliaryVerbs.third != null)
             TextSpan(
                 text: '${auxiliaryVerbs.third} ',
-                style: TextStyle(color: SentenceItem.verb.color)),
+                style: SentenceItem.verb.style),
           if (!clause.isBeAuxiliary)
             TextSpan(
                 text: '${clause.verbAsString()} ',
                 style: (clause.verb == null)
-                    ? unsetTextStyle
-                    : TextStyle(color: SentenceItem.verb.color)),
+                    ? SentenceItem.placeholder.style
+                    : SentenceItem.verb.style),
           if (clause.hasDitransitiveVerb && clause.indirectObject != null)
             TextSpan(
                 text: '${clause.indirectObject} ',
-                style: TextStyle(color: SentenceItem.noun.color)),
+                style: SentenceItem.noun.style),
           if (clause.hasTransitiveVerb && clause.directObject != null)
             TextSpan(
                 text: '${clause.directObject} ',
-                style: TextStyle(color: SentenceItem.noun.color)),
+                style: SentenceItem.noun.style),
           if (clause.verb is PhrasalVerb)
             TextSpan(
                 text: '${(clause.verb as PhrasalVerb).particle} ',
-                style: TextStyle(color: SentenceItem.verb.color)),
+                style: SentenceItem.verb.style),
           if (clause.hasLinkingVerb && clause.subjectComplement != null)
             TextSpan(
                 text: '${clause.subjectComplement} ',
-                style: TextStyle(color: SentenceItem.noun.color)),
+                style: SentenceItem.noun.style),
           if (clause.endAdverb != null)
             TextSpan(
-                text: '${clause.endAdverb}',
-                style: TextStyle(color: SentenceItem.adverb.color)),
+                text: '${clause.endAdverb}', style: SentenceItem.adverb.style),
           if (clause.isInterrogative) const TextSpan(text: '?'),
         ],
       ),

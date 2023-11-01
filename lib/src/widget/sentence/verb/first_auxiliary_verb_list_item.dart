@@ -73,11 +73,11 @@ class FirstAuxiliaryVerbListItem extends StatelessWidget {
       children: [
         if (!clause.isBeAuxiliary)
           SentenceItemTile(
-            color: SentenceItem.verb.color,
-            label: clause.firstAuxiliaryVerbPlaceholder,
-            value: auxiliaryVerbs.first,
-            valueEs: auxiliaryVerbsEs.first,
-            subtitle: clause.firstAuxiliaryVerbDescription,
+            style: SentenceItem.verb.style,
+            placeholder: clause.firstAuxiliaryVerbPlaceholder,
+            en: auxiliaryVerbs.first,
+            es: auxiliaryVerbsEs.first,
+            hint: clause.firstAuxiliaryVerbDescription,
             trailing: Icon(editingFirstAuxiliaryVerb
                 ? Icons.arrow_drop_up
                 : Icons.arrow_drop_down),
