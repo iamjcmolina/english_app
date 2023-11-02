@@ -29,6 +29,7 @@ class PrepositionalPhrase
   @override
   String get singularEs => es;
 
+  @override
   bool get isValid => preposition != null && object != null;
 
   const PrepositionalPhrase({this.preposition, this.object});

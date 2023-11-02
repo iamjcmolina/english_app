@@ -20,6 +20,7 @@ class AdjectivePlusComplement extends AnyAdjective {
   String get singularEs =>
       TextBuffer().add(adjective?.singularEs).add(complement?.es).toString();
 
+  @override
   bool get isValid => adjective != null && complement != null;
 
   const AdjectivePlusComplement({this.adjective, this.complement});

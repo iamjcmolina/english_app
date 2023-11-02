@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adjective/any_adjective.dart';
 import '../../../model/sentence/determiner/determiner.dart';
 import '../../../model/sentence/noun/noun.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -41,45 +42,35 @@ class NounPhraseForm extends StatelessWidget {
         ListTile(
           title: Text.rich(TextSpan(
             children: [
-              if (phrase.allowQuantifier && phrase.quantifier != null)
-                TextSpan(
-                  text: phrase.quantifier == null
-                      ? '<QuantifierOf> '
-                      : '${phrase.quantifierOf} ',
-                  style: phrase.quantifier == null
-                      ? SentenceItem.placeholder.style
-                      : SentenceItem.determiner.style,
-                ),
               TextSpan(
-                text: phrase.determiner == null
-                    ? '<Determiner> '
-                    : '${phrase.determiner} ',
-                style: phrase.determiner == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.determiner.style,
+                text: phrase.allowQuantifier
+                    ? phrase.quantifierOf?.addSpace()
+                    : null,
+                style: Word.determiner.style,
               ),
-              if (phrase.allowNumber && phrase.number != null)
-                TextSpan(
-                  text:
-                      phrase.number == null ? '<Number> ' : '${phrase.number} ',
-                  style: phrase.number == null
-                      ? SentenceItem.placeholder.style
-                      : SentenceItem.determiner.style,
-                ),
-              if (phrase.allowAdjective && phrase.adjective != null)
-                TextSpan(
-                  text: phrase.adjective == null
-                      ? '<Adjective> '
-                      : '${phrase.adjective} ',
-                  style: phrase.adjective == null
-                      ? SentenceItem.placeholder.style
-                      : SentenceItem.adjective.style,
-                ),
               TextSpan(
-                text: phrase.noun == null ? '<Noun>' : phrase.noun.toString(),
-                style: phrase.noun == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.noun.style,
+                text: (phrase.determiner?.en ?? '<Determiner>').addSpace(),
+                style: phrase.determiner == null
+                    ? Word.empty.style
+                    : Word.determiner.style,
+              ),
+              TextSpan(
+                text: phrase.allowNumber ? phrase.number?.en.addSpace() : null,
+                style: Word.determiner.style,
+              ),
+              TextSpan(
+                text: phrase.allowAdjective
+                    ? phrase.adjective?.en.addSpace()
+                    : null,
+                style: Word.adjective.style,
+              ),
+              TextSpan(
+                text: (phrase.noun?.en ?? '<Noun>').addSpace(),
+                style: phrase.noun == null ? Word.empty.style : Word.noun.style,
+              ),
+              TextSpan(
+                text: phrase.adjectivalPhrase?.en,
+                style: Word.adjective.style,
               ),
             ],
           )),
@@ -87,7 +78,7 @@ class NounPhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.determiner.style,
+          style: Word.determiner.style,
           title: 'Quantifier',
           textValue: phrase.quantifierOf,
           textValueEs: phrase.quantifierOfEs,
@@ -105,7 +96,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          style: SentenceItem.determiner.style,
+          style: Word.determiner.style,
           title: 'Determiner',
           textValue: phrase.determiner?.en,
           textValueEs: phrase.determiner?.es,
@@ -123,7 +114,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          style: SentenceItem.determiner.style,
+          style: Word.determiner.style,
           title: 'Number',
           textValue: phrase.number?.en,
           textValueEs: phrase.number?.es,
@@ -141,7 +132,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          style: SentenceItem.adjective.style,
+          style: Word.adjective.style,
           title: 'Adjective',
           textValue: phrase.adjective?.en,
           textValueEs: phrase.adjectiveEs,
@@ -162,7 +153,7 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          style: SentenceItem.noun.style,
+          style: Word.noun.style,
           title: 'Noun',
           textValue: phrase.noun?.en,
           textValueEs: phrase.noun?.es,
@@ -180,10 +171,10 @@ class NounPhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          style: SentenceItem.adjective.style,
+          style: Word.adjective.style,
           placeholder: '<PostModifierAdjective>',
-          en: phrase.endAdjective?.toString(),
-          es: phrase.endAdjective?.singularEs,
+          en: phrase.adjectivalPhrase?.toString(),
+          es: phrase.adjectivalPhrase?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToAdjectivalPhrasePage(context),
         ),
@@ -221,7 +212,7 @@ class NounPhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdjectivalPhrasePage(
-                  adjective: phrase.endAdjective,
+                  adjective: phrase.adjectivalPhrase,
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));

@@ -6,7 +6,7 @@ import '../../../model/sentence/clause/tense.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/sentence/verb/be.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
@@ -68,7 +68,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
       children: [
         if (!clause.isBeAuxiliary)
           SentenceItemTile(
-            style: SentenceItem.verb.style,
+            style: Word.verb.style,
             placeholder: clause.firstAuxiliaryVerbPlaceholder,
             en: auxiliaryVerbs.first,
             es: auxiliaryVerbsEs.first,

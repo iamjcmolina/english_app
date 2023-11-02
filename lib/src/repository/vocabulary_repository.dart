@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../extensions/string_extension.dart';
 import '../model/sentence/adjective/adjective.dart';
 import '../model/sentence/adverb/adverb.dart';
 import '../model/sentence/determiner/determiner.dart';
@@ -12,7 +13,6 @@ import '../model/sentence/verb/be.dart';
 import '../model/sentence/verb/modal_verb.dart';
 import '../model/sentence/verb/phrasal_verb.dart';
 import '../model/sentence/verb/verb.dart';
-import '../util/util.dart';
 import 'vocabulary_provider.dart';
 
 class VocabularyRepository extends ChangeNotifier {
@@ -34,7 +34,7 @@ class VocabularyRepository extends ChangeNotifier {
       ? Determiner.articles
       : noun.isPlural
           ? Determiner.articles.where((e) => e.en == 'the').toList()
-          : Util.isVowel(Util.first(noun.en))
+          : noun.en.first().isVowel
               ? Determiner.articles.where((e) => e.en != 'a').toList()
               : Determiner.articles.where((e) => e.en != 'an').toList();
 

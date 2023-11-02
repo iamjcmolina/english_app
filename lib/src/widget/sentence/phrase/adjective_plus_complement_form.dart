@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adjective/adjective_complement.dart';
 import '../../../model/sentence/phrase/adjective_plus_complement.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -40,20 +41,17 @@ class AdjectivePlusComplementForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.adjective == null
-                    ? '<Adjective> '
-                    : '${phrase.adjective!.en} ',
+                text: (phrase.adjective?.en ?? '<Adjective>').addSpace(),
                 style: phrase.adjective == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adjective.style,
+                    ? Word.empty.style
+                    : Word.adjective.style,
               ),
               TextSpan(
-                text: phrase.complement == null
-                    ? '<AdjectiveComplement> '
-                    : '${phrase.complement!.en} ',
+                text: (phrase.complement?.en ?? '<AdjectiveComplement>')
+                    .addSpace(),
                 style: phrase.complement == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adjective.style,
+                    ? Word.empty.style
+                    : Word.adjective.style,
               ),
             ],
           )),
@@ -61,7 +59,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: '<Adjective>',
           textValue: phrase.adjective?.en,
           textValueEs: isPlural
@@ -82,7 +80,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          style: SentenceItem.adjective.style,
+          style: Word.adjective.style,
           placeholder: '<AdjectiveComplement>',
           en: phrase.complement?.en,
           es: phrase.complement?.es,

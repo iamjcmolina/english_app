@@ -1,4 +1,3 @@
-import '../../../util/util.dart';
 import 'any_noun.dart';
 import 'countability.dart';
 import 'doer_pronoun.dart';
@@ -22,7 +21,7 @@ class IndefinitePronoun extends AnyNoun {
   @override
   bool get isSingularThirdPerson => isSingular;
 
-  bool get isNegativeOnlyAllowed => Util.startsWith(en, 'any');
+  bool get isNegativeOnlyAllowed => en.startsWith('any');
 
   @override
   bool get isValid => true;

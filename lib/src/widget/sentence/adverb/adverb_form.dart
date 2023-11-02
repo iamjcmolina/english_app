@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/sentence/adverb/any_adverb.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -33,12 +34,6 @@ class AdverbForm extends StatelessWidget {
       _ => vocabularyRepository.endAdverbs(),
     };
 
-    String label = switch (position) {
-      AdverbPosition.front => 'FrontAdverb',
-      AdverbPosition.mid => 'MidAdverb',
-      _ => 'EndAdverb',
-    };
-
     return ItemEditorLayout(
       header: [
         settingsControl,
@@ -46,24 +41,22 @@ class AdverbForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: <TextSpan>[
               TextSpan(
-                  text: '${adverb ?? '<$label>'}',
-                  style: (adverb == null)
-                      ? SentenceItem.placeholder.style
-                      : SentenceItem.adverb.style),
+                  text: adverb?.en ?? AnyAdverb.adverbPlaceholder,
+                  style: adverb == null ? Word.empty.style : Word.adverb.style),
             ],
           )),
         ),
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.adverb.style,
-          title: label,
+          style: Word.adverb.style,
+          title: AnyAdverb.adverbPlaceholder,
           textValue: adverb?.en,
           textValueEs: adverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
-              label: label,
+              label: AnyAdverb.adverbPlaceholder,
               value: adverb,
               options: adverbs,
               filterValuesEn: [(Adverb e) => e.en],

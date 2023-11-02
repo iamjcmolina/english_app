@@ -1,4 +1,4 @@
-import '../../../util/util.dart';
+import '../../../extensions/string_extension.dart';
 
 abstract class AnyVerb {
   static const infinitivePlaceholder = '<InfinitiveVerb>';
@@ -19,20 +19,20 @@ abstract class AnyVerb {
   String get infinitiveEs;
   String get pastParticipleEs;
   String get progressiveEs;
-  String get presentIEs => Util.replaceLast(presentHeEs, 'o');
+  String get presentIEs => '${presentHeEs.removeLast()}o';
   String get presentSingularYouEs => '${presentHeEs}s';
   String get presentYouEs => '$presentSingularYouEs/$presentTheyEs';
   String get presentHeEs;
-  String get presentWeEs => '${Util.lessLast(infinitiveEs)}mos';
+  String get presentWeEs => '${infinitiveEs.removeLast()}mos';
   String get presentTheyEs => '${presentHeEs}n';
   String get pastIEs;
-  String get pastSingularYouEs => Util.replaceLast(pastWeEs, 'ste');
+  String get pastSingularYouEs => '${pastWeEs.removeLast(3)}ste';
   String get pastYouEs => '$pastSingularYouEs/$pastTheyEs';
-  String get pastHeEs => '$_progressiveEsLess4ó';
+  String get pastHeEs => '${progressiveEs.removeLast(4)}ó';
   String get pastWeEs;
-  String get pastTheyEs => switch (_progressiveEsLess4) {
-        'ando' => '${_progressiveEsLess4}aron',
-        _ => '${_progressiveEsLess4}eron',
+  String get pastTheyEs => switch (progressiveEs.removeLast(4)) {
+        'ando' => '${progressiveEs.removeLast(4)}aron',
+        _ => '${progressiveEs.removeLast(4)}eron',
       };
   String get futureIEs => '$infinitiveEsé';
   String get futureSingularYouEs => '$infinitiveEsás';
@@ -49,8 +49,6 @@ abstract class AnyVerb {
   bool get isTransitive;
   bool get isDitransitive;
   bool get isLinkingVerb;
-
-  String get _progressiveEsLess4 => Util.lessLast(progressiveEs, 4);
 
   const AnyVerb();
 }

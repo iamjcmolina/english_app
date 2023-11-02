@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/phrase/adverb_plus_adverb.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -33,20 +34,16 @@ class AdverbPlusAdverbForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.intensifierOrMitigatorAdverb == null
-                    ? '<IntensifierOrMitigatorAdverb> '
-                    : '${phrase.intensifierOrMitigatorAdverb!.en} ',
-                style: phrase.intensifierOrMitigatorAdverb == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adverb.style,
+                text: (phrase.modifierAdverb?.en ?? '<Adverb> ').addSpace(),
+                style: phrase.modifierAdverb == null
+                    ? Word.empty.style
+                    : Word.adverb.style,
               ),
               TextSpan(
-                text: phrase.adverb == null
-                    ? '<Adverb> '
-                    : '${phrase.adverb!.en} ',
+                text: (phrase.adverb?.en ?? '<Adverb>').addSpace(),
                 style: phrase.adverb == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adverb.style,
+                    ? Word.empty.style
+                    : Word.adverb.style,
               ),
             ],
           )),
@@ -54,15 +51,15 @@ class AdverbPlusAdverbForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.verb.style,
-          title: '<IntensifierOrMitigatorAdverb>',
-          textValue: phrase.intensifierOrMitigatorAdverb?.en,
-          textValueEs: phrase.intensifierOrMitigatorAdverb?.es,
+          style: Word.verb.style,
+          title: '<Adverb>',
+          textValue: phrase.modifierAdverb?.en,
+          textValueEs: phrase.modifierAdverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
-              label: '<IntensifierOrMitigatorAdverb>',
-              value: phrase.intensifierOrMitigatorAdverb,
+              label: '<Adverb>',
+              value: phrase.modifierAdverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
@@ -73,7 +70,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: '<Adverb>',
           textValue: phrase.adverb?.en,
           textValueEs: phrase.adverb?.es,

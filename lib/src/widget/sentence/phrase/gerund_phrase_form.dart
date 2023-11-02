@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
 import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/phrase/gerund_phrase.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -43,26 +44,23 @@ class GerundPhraseForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.verb == null
-                    ? '<ProgressiveVerb> '
-                    : '${phrase.verb!.progressive} ',
-                style: phrase.verb == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.verb.style,
+                text: (phrase.verb?.progressive ?? '<ProgressiveVerb>')
+                    .addSpace(),
+                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
                 text: phrase.object == null && phrase.adverb == null
-                    ? '<ObjectOrModifier> '
-                    : '',
-                style: SentenceItem.placeholder.style,
+                    ? '<ObjectOrModifier>'
+                    : null,
+                style: Word.empty.style,
               ),
               TextSpan(
-                text: phrase.object == null ? '' : '${phrase.object!.en} ',
-                style: SentenceItem.noun.style,
+                text: phrase.object?.en.addSpace(),
+                style: Word.noun.style,
               ),
               TextSpan(
-                text: phrase.adverb == null ? '' : '${phrase.adverb!.en} ',
-                style: SentenceItem.adverb.style,
+                text: phrase.adverb?.en.addSpace(),
+                style: Word.adverb.style,
               ),
             ],
           )),
@@ -70,7 +68,7 @@ class GerundPhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: 'ProgressiveVerb',
           textValue: phrase.verb?.progressive,
           textValueEs: phrase.verb?.infinitiveEs,
@@ -89,7 +87,7 @@ class GerundPhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          style: SentenceItem.noun.style,
+          style: Word.noun.style,
           placeholder: "<Object>",
           en: phrase.object?.en,
           es: phrase.object?.es,
@@ -97,7 +95,7 @@ class GerundPhraseForm extends StatelessWidget {
           onTap: () => goToObjectPage(context),
         ),
         SentenceItemTile(
-          style: SentenceItem.adverb.style,
+          style: Word.adverb.style,
           placeholder: "<Modifier>",
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,

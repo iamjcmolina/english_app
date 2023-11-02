@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sentence/noun/pronoun.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/sentence_item_field.dart';
@@ -27,16 +27,14 @@ class PronounForm extends StatelessWidget {
         settingsControl,
         ListTile(
           title: Text(
-            pronoun == null ? '<Pronoun>' : pronoun.toString(),
-            style: pronoun == null
-                ? SentenceItem.placeholder.style
-                : SentenceItem.noun.style,
+            pronoun?.en ?? '<Pronoun>',
+            style: pronoun == null ? Word.empty.style : Word.noun.style,
           ),
         ),
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.noun.style,
+          style: Word.noun.style,
           title: 'Pronoun',
           textValue: pronoun?.en,
           fields: [

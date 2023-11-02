@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/sentence_item_field.dart';
 import '../../common/sentence_item_tile.dart';
@@ -39,7 +39,7 @@ class VerbTile extends StatelessWidget {
     return Column(
       children: [
         SentenceItemTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           placeholder: '${clause.verbPlaceholder}$auxiliaryVerbLabel',
           en: clause.verbAsString(),
           es: clause.verbAsStringEs(),

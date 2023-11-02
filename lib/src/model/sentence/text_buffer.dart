@@ -1,4 +1,4 @@
-import '../../util/util.dart';
+import '../../extensions/string_extension.dart';
 
 class TextBuffer {
   final StringBuffer buffer = StringBuffer();
@@ -14,8 +14,7 @@ class TextBuffer {
   @override
   String toString() {
     String speech = buffer.toString();
-    speech = Util.last(speech) == ' ' ? Util.lessLast(speech) : speech;
-    return speech.substring(0, 1).toUpperCase() +
-        speech.substring(1).toLowerCase();
+    speech = speech.last() == ' ' ? speech.removeLast() : speech;
+    return speech.first().toUpperCase() + speech.substring(1).toLowerCase();
   }
 }

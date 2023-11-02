@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
 import '../../../model/sentence/phrase/past_participle_phrase.dart';
 import '../../../model/sentence/verb/any_verb.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -41,20 +42,14 @@ class PastParticiplePhraseForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.verb == null
-                    ? '<PastParticipleVerb> '
-                    : '${phrase.verb!.pastParticiple} ',
-                style: phrase.verb == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.verb.style,
+                text: (phrase.verb?.pastParticiple ?? '<PastParticipleVerb>')
+                    .addSpace(),
+                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
-                text: phrase.adverb == null
-                    ? '<Adverb> '
-                    : '${phrase.adverb!.en} ',
-                style: phrase.verb == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adverb.style,
+                text: (phrase.adverb?.en ?? '<Adverb>').addSpace(),
+                style:
+                    phrase.verb == null ? Word.empty.style : Word.adverb.style,
               ),
             ],
           )),
@@ -62,7 +57,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: 'PastParticipleVerb',
           textValue: phrase.verb?.pastParticiple,
           textValueEs: phrase.verb?.pastParticipleEs,
@@ -81,7 +76,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          style: SentenceItem.adverb.style,
+          style: Word.adverb.style,
           placeholder: "<Adverb>",
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,

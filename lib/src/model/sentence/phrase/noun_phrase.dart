@@ -15,7 +15,7 @@ class NounPhrase extends AnyNoun {
   final Determiner? number;
   final Adjective? adjective;
   final Noun? noun;
-  final AnyAdjective? endAdjective;
+  final AnyAdjective? adjectivalPhrase;
 
   @override
   String get en => TextBuffer()
@@ -72,6 +72,7 @@ class NounPhrase extends AnyNoun {
   String? get adjectiveEs =>
       isPlural ? adjective?.pluralEs : adjective?.singularEs;
 
+  @override
   bool get isValid => determiner != null && noun != null;
 
   const NounPhrase({
@@ -80,7 +81,7 @@ class NounPhrase extends AnyNoun {
     this.number,
     this.adjective,
     this.noun,
-    this.endAdjective,
+    this.adjectivalPhrase,
   });
 
   NounPhrase copyWith({
@@ -97,8 +98,8 @@ class NounPhrase extends AnyNoun {
         number: number == null ? this.number : number.value,
         adjective: adjective == null ? this.adjective : adjective.value,
         noun: noun == null ? this.noun : noun.value,
-        endAdjective:
-            endAdjective == null ? this.endAdjective : endAdjective.value,
+        adjectivalPhrase:
+            endAdjective == null ? this.adjectivalPhrase : endAdjective.value,
       );
 
   @override

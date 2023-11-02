@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/phrase/adverb_plus_adjective.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -36,20 +37,16 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.adverb == null
-                    ? '<Adverb> '
-                    : '${phrase.adverb!.en} ',
+                text: (phrase.adverb?.en ?? '<Adverb>').addSpace(),
                 style: phrase.adverb == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adverb.style,
+                    ? Word.empty.style
+                    : Word.adverb.style,
               ),
               TextSpan(
-                text: phrase.adjective == null
-                    ? '<Adjective> '
-                    : '${phrase.adjective!.en} ',
+                text: (phrase.adjective?.en ?? '<Adjective>').addSpace(),
                 style: phrase.adjective == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.adjective.style,
+                    ? Word.empty.style
+                    : Word.adjective.style,
               ),
             ],
           )),
@@ -57,7 +54,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: '<Adverb>',
           textValue: phrase.adverb?.en,
           textValueEs: phrase.adverb?.es,
@@ -76,7 +73,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
           ],
         ),
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: '<Adjective>',
           textValue: phrase.adjective?.en,
           textValueEs: isPlural

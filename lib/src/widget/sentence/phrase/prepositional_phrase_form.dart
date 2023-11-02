@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../extensions/string_extension.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/phrase/prepositional_phrase.dart';
 import '../../../model/sentence/preposition/preposition.dart';
-import '../../../model/sentence_item.dart';
+import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
@@ -40,16 +41,15 @@ class PrepositionalPhraseForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.preposition == null
-                    ? '<Preposition> '
-                    : '${phrase.preposition!.en} ',
+                text: (phrase.preposition?.en ?? '<Preposition>').addSpace(),
                 style: phrase.preposition == null
-                    ? SentenceItem.placeholder.style
-                    : SentenceItem.preposition.style,
+                    ? Word.empty.style
+                    : Word.preposition.style,
               ),
               TextSpan(
-                text: phrase.object == null ? '' : '${phrase.object!.en} ',
-                style: SentenceItem.noun.style,
+                text: (phrase.object?.en ?? '<Object>').addSpace(),
+                style:
+                    phrase.object == null ? Word.empty.style : Word.noun.style,
               ),
             ],
           )),
@@ -57,7 +57,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
       ],
       body: [
         DropdownTile(
-          style: SentenceItem.verb.style,
+          style: Word.verb.style,
           title: 'Preposition',
           textValue: phrase.preposition?.en,
           textValueEs: phrase.preposition?.es,
@@ -76,7 +76,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
           ],
         ),
         SentenceItemTile(
-          style: SentenceItem.noun.style,
+          style: Word.noun.style,
           placeholder: "<VerbObject>",
           en: phrase.object?.en,
           es: phrase.object?.es,

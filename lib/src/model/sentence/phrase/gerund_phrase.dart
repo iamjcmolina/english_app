@@ -39,6 +39,7 @@ class GerundPhrase implements AnyNoun {
       .add(adverb?.es)
       .toString();
 
+  @override
   bool get isValid => verb != null && (object != null || adverb != null);
 
   const GerundPhrase({this.verb, this.object, this.adverb});

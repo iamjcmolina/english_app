@@ -1,4 +1,4 @@
-import '../../../util/util.dart';
+import '../../../extensions/string_extension.dart';
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
@@ -570,9 +570,8 @@ class IndependentClause {
   String _presentForSingularThirdPerson(AnyVerb verb) {
     final penultimateLetter = verb.infinitive
         .substring(verb.infinitive.length - 2, verb.infinitive.length - 1);
-    final lastLetter = verb.infinitive.substring(verb.infinitive.length - 1);
-    final lastTwoLetters =
-        verb.infinitive.substring(verb.infinitive.length - 2);
+    final lastLetter = verb.infinitive.last();
+    final lastTwoLetters = verb.infinitive.last(2);
     if (lastLetter == 'o' ||
         lastTwoLetters == 'sh' ||
         lastTwoLetters == 'ch' ||
@@ -580,7 +579,7 @@ class IndependentClause {
         lastLetter == 'x' ||
         lastLetter == 'z') {
       return '${verb.infinitive}es';
-    } else if (lastLetter == 'y' && Util.isConsonant(penultimateLetter)) {
+    } else if (lastLetter == 'y' && penultimateLetter.isConsonant) {
       final newWord = verb.infinitive.substring(0, verb.infinitive.length - 1);
       return '${newWord}ies';
     }

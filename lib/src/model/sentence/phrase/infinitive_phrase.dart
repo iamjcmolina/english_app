@@ -55,6 +55,7 @@ class InfinitivePhrase
   @override
   String get singularEs => es;
 
+  @override
   bool get isValid => verb != null && (object != null || adverb != null);
 
   const InfinitivePhrase({this.verb, this.object, this.adverb});

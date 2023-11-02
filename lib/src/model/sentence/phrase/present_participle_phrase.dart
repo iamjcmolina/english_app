@@ -30,6 +30,7 @@ class PresentParticiplePhrase implements AnyAdjective {
   @override
   String get singularEs => es;
 
+  @override
   bool get isValid => verb != null && (object != null || adverb != null);
 
   const PresentParticiplePhrase({

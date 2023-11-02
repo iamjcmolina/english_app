@@ -10,7 +10,7 @@ import '../../model/sentence/noun/any_noun.dart';
 import '../../model/sentence/noun/subject_complement.dart';
 import '../../model/sentence/verb/any_verb.dart';
 import '../../model/sentence/verb/modal_verb.dart';
-import '../../model/sentence_item.dart';
+import '../../model/word.dart';
 import '../common/item_editor_layout.dart';
 import '../common/sentence_item_tile.dart';
 import '../common/sentence_scaffold.dart';
@@ -121,7 +121,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
         ],
         body: [
           SentenceItemTile(
-            style: SentenceItem.adverb.style,
+            style: Word.adverb.style,
             placeholder: clause.frontAdverbPlaceholder,
             en: clause.frontAdverb?.toString(),
             es: clause.frontAdverb?.es,
@@ -131,7 +131,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           if (clause.isInterrogative) firstAuxiliaryVerbListItem,
           SentenceItemTile(
-            style: SentenceItem.noun.style,
+            style: Word.noun.style,
             placeholder: clause.subjectPlaceholder,
             en: clause.subject?.toString(),
             es: clause.subject?.es,
@@ -141,7 +141,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           if (!clause.isInterrogative) firstAuxiliaryVerbListItem,
           SentenceItemTile(
-            style: SentenceItem.adverb.style,
+            style: Word.adverb.style,
             placeholder: clause.midAdverbPlaceholder,
             en: clause.midAdverb?.toString(),
             es: clause.midAdverb?.es,
@@ -149,14 +149,14 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToAdverbPage(context, AdverbPosition.mid),
           ),
           SentenceItemTile(
-            style: SentenceItem.verb.style,
+            style: Word.verb.style,
             placeholder: clause.secondAuxiliaryVerbPlaceholder,
             en: auxiliaryVerbs.second,
             es: auxiliaryVerbsEs.second,
             isShown: auxiliaryVerbs.second != null,
           ),
           SentenceItemTile(
-            style: SentenceItem.verb.style,
+            style: Word.verb.style,
             placeholder: clause.thirdAuxiliaryVerbPlaceholder,
             en: auxiliaryVerbs.third,
             es: auxiliaryVerbsEs.third,
@@ -164,7 +164,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           if (!clause.isBeAuxiliary) verbListItem,
           SentenceItemTile(
-            style: SentenceItem.noun.style,
+            style: Word.noun.style,
             placeholder: clause.indirectObjectPlaceholder,
             en: clause.indirectObject?.toString(),
             es: clause.indirectObject?.es,
@@ -173,7 +173,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToObjectPage(context, true),
           ),
           SentenceItemTile(
-            style: SentenceItem.noun.style,
+            style: Word.noun.style,
             placeholder: clause.directObjectPlaceholder,
             en: clause.directObject?.toString(),
             es: clause.directObject?.es,
@@ -182,7 +182,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToObjectPage(context, false),
           ),
           SentenceItemTile(
-            style: SentenceItem.noun.style,
+            style: Word.noun.style,
             placeholder: clause.subjectComplementPlaceholder,
             en: clause.subjectComplement?.en,
             es: clause.subjectComplement?.es,
@@ -192,7 +192,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             isRequired: true,
           ),
           SentenceItemTile(
-            style: SentenceItem.adverb.style,
+            style: Word.adverb.style,
             placeholder: clause.endAdverbPlaceholder,
             en: clause.endAdverb?.toString(),
             es: clause.endAdverb?.es,
