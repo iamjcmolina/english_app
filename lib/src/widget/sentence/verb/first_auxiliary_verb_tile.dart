@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/label.dart';
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/tense.dart';
 import '../../../model/sentence/verb/any_verb.dart';
@@ -69,7 +70,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
         if (!clause.isBeAuxiliary)
           SentenceItemTile(
             style: Word.verb.style,
-            placeholder: clause.firstAuxiliaryVerbPlaceholder,
+            placeholder: Label.firstAuxiliaryVerb,
             en: auxiliaryVerbs.first,
             es: auxiliaryVerbsEs.first,
             hint: clause.firstAuxiliaryVerbDescription,
@@ -87,7 +88,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
           ),
         if (isModalVerbFieldShown)
           SentenceItemField<ModalVerb>(
-            label: 'Modal Verb',
+            label: Label.modalVerb,
             value: clause.modalVerb,
             options: modalVerbs,
             filterValuesEn: [

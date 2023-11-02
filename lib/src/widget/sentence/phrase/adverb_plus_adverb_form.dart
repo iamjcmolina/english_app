@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/phrase/adverb_plus_adverb.dart';
@@ -34,13 +35,13 @@ class AdverbPlusAdverbForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.modifierAdverb?.en ?? '<Adverb> ').addSpace(),
+                text: (phrase.modifierAdverb?.en ?? Label.adverb).addSpace(),
                 style: phrase.modifierAdverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
               ),
               TextSpan(
-                text: (phrase.adverb?.en ?? '<Adverb>').addSpace(),
+                text: (phrase.adverb?.en ?? Label.adverb).addSpace(),
                 style: phrase.adverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
@@ -52,13 +53,13 @@ class AdverbPlusAdverbForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: '<Adverb>',
+          title: Label.adverb,
           textValue: phrase.modifierAdverb?.en,
           textValueEs: phrase.modifierAdverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
-              label: '<Adverb>',
+              label: Label.adverb,
               value: phrase.modifierAdverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),
@@ -71,13 +72,13 @@ class AdverbPlusAdverbForm extends StatelessWidget {
         ),
         DropdownTile(
           style: Word.verb.style,
-          title: '<Adverb>',
+          title: Label.adverb,
           textValue: phrase.adverb?.en,
           textValueEs: phrase.adverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
-              label: '<Adverb>',
+              label: Label.adverb,
               value: phrase.adverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),

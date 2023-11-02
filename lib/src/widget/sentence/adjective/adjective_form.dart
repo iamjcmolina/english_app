@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/label.dart';
 import '../../../model/sentence/adjective/adjective.dart';
-import '../../../model/sentence/adjective/any_adjective.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
@@ -32,7 +32,7 @@ class AdjectiveForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: adjective?.en ?? AnyAdjective.adjectivePlaceholder,
+                text: adjective?.en ?? Label.adjective,
                 style:
                     adjective == null ? Word.empty.style : Word.adjective.style,
               ),
@@ -43,11 +43,11 @@ class AdjectiveForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.adjective.style,
-          title: 'Adjective',
+          title: Label.adjective,
           textValue: adjective?.en,
           fields: [
             SentenceItemField<Adjective>(
-              label: 'Adjective',
+              label: Label.adjective,
               value: adjective,
               options: vocabularyRepository.adjectives(),
               filterValuesEn: [(Adjective e) => e.en],

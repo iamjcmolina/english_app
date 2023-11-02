@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/noun/any_noun.dart';
 import '../../../model/sentence/phrase/prepositional_phrase.dart';
@@ -41,13 +42,13 @@ class PrepositionalPhraseForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.preposition?.en ?? '<Preposition>').addSpace(),
+                text: (phrase.preposition?.en ?? Label.preposition).addSpace(),
                 style: phrase.preposition == null
                     ? Word.empty.style
                     : Word.preposition.style,
               ),
               TextSpan(
-                text: (phrase.object?.en ?? '<Object>').addSpace(),
+                text: (phrase.object?.en ?? Label.object).addSpace(),
                 style:
                     phrase.object == null ? Word.empty.style : Word.noun.style,
               ),
@@ -58,13 +59,13 @@ class PrepositionalPhraseForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: 'Preposition',
+          title: Label.preposition,
           textValue: phrase.preposition?.en,
           textValueEs: phrase.preposition?.es,
           required: true,
           fields: [
             SentenceItemField<Preposition>(
-              label: 'Preposition',
+              label: Label.preposition,
               value: phrase.preposition,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.prepositions(),
@@ -77,7 +78,7 @@ class PrepositionalPhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.noun.style,
-          placeholder: "<VerbObject>",
+          placeholder: Label.object,
           en: phrase.object?.en,
           es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../model/label.dart';
 import '../../model/nullable.dart';
 import '../../model/sentence/adverb/adverb_position.dart';
 import '../../model/sentence/adverb/any_adverb.dart';
@@ -122,7 +123,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
         body: [
           SentenceItemTile(
             style: Word.adverb.style,
-            placeholder: clause.frontAdverbPlaceholder,
+            placeholder: Label.adverb,
             en: clause.frontAdverb?.toString(),
             es: clause.frontAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -132,7 +133,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           if (clause.isInterrogative) firstAuxiliaryVerbListItem,
           SentenceItemTile(
             style: Word.noun.style,
-            placeholder: clause.subjectPlaceholder,
+            placeholder: Label.subject,
             en: clause.subject?.toString(),
             es: clause.subject?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -142,7 +143,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           if (!clause.isInterrogative) firstAuxiliaryVerbListItem,
           SentenceItemTile(
             style: Word.adverb.style,
-            placeholder: clause.midAdverbPlaceholder,
+            placeholder: Label.adverb,
             en: clause.midAdverb?.toString(),
             es: clause.midAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -150,14 +151,14 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           SentenceItemTile(
             style: Word.verb.style,
-            placeholder: clause.secondAuxiliaryVerbPlaceholder,
+            placeholder: Label.secondAuxiliaryVerb,
             en: auxiliaryVerbs.second,
             es: auxiliaryVerbsEs.second,
             isShown: auxiliaryVerbs.second != null,
           ),
           SentenceItemTile(
             style: Word.verb.style,
-            placeholder: clause.thirdAuxiliaryVerbPlaceholder,
+            placeholder: Label.thirdAuxiliaryVerb,
             en: auxiliaryVerbs.third,
             es: auxiliaryVerbsEs.third,
             isShown: auxiliaryVerbs.third != null,
@@ -165,7 +166,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           if (!clause.isBeAuxiliary) verbListItem,
           SentenceItemTile(
             style: Word.noun.style,
-            placeholder: clause.indirectObjectPlaceholder,
+            placeholder: Label.indirectObject,
             en: clause.indirectObject?.toString(),
             es: clause.indirectObject?.es,
             isShown: clause.hasDitransitiveVerb,
@@ -174,7 +175,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           SentenceItemTile(
             style: Word.noun.style,
-            placeholder: clause.directObjectPlaceholder,
+            placeholder: Label.directObject,
             en: clause.directObject?.toString(),
             es: clause.directObject?.es,
             isShown: clause.hasTransitiveVerb,
@@ -183,7 +184,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           SentenceItemTile(
             style: Word.noun.style,
-            placeholder: clause.subjectComplementPlaceholder,
+            placeholder: Label.subjectComplement,
             en: clause.subjectComplement?.en,
             es: clause.subjectComplement?.es,
             isShown: clause.hasLinkingVerb,
@@ -193,7 +194,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           SentenceItemTile(
             style: Word.adverb.style,
-            placeholder: clause.endAdverbPlaceholder,
+            placeholder: Label.adverb,
             en: clause.endAdverb?.toString(),
             es: clause.endAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adverb/adverb.dart';
@@ -37,13 +38,13 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.adverb?.en ?? '<Adverb>').addSpace(),
+                text: (phrase.adverb?.en ?? Label.adverb).addSpace(),
                 style: phrase.adverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
               ),
               TextSpan(
-                text: (phrase.adjective?.en ?? '<Adjective>').addSpace(),
+                text: (phrase.adjective?.en ?? Label.adjective).addSpace(),
                 style: phrase.adjective == null
                     ? Word.empty.style
                     : Word.adjective.style,
@@ -55,13 +56,13 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: '<Adverb>',
+          title: Label.adverb,
           textValue: phrase.adverb?.en,
           textValueEs: phrase.adverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
-              label: '<Adverb>',
+              label: Label.adverb,
               value: phrase.adverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),
@@ -74,7 +75,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
         ),
         DropdownTile(
           style: Word.verb.style,
-          title: '<Adjective>',
+          title: Label.adjective,
           textValue: phrase.adjective?.en,
           textValueEs: isPlural
               ? phrase.adjective?.singularEs
@@ -82,7 +83,7 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
           required: true,
           fields: [
             SentenceItemField<Adjective>(
-              label: '<Adjective>',
+              label: Label.adjective,
               value: phrase.adjective,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.adjectives(),

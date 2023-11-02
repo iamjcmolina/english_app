@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adjective/adjective_complement.dart';
@@ -41,13 +42,13 @@ class AdjectivePlusComplementForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.adjective?.en ?? '<Adjective>').addSpace(),
+                text: (phrase.adjective?.en ?? Label.adjective).addSpace(),
                 style: phrase.adjective == null
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
               TextSpan(
-                text: (phrase.complement?.en ?? '<AdjectiveComplement>')
+                text: (phrase.complement?.en ?? Label.adjectiveComplement)
                     .addSpace(),
                 style: phrase.complement == null
                     ? Word.empty.style
@@ -60,7 +61,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: '<Adjective>',
+          title: Label.adjective,
           textValue: phrase.adjective?.en,
           textValueEs: isPlural
               ? phrase.adjective?.singularEs
@@ -68,7 +69,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
           required: true,
           fields: [
             SentenceItemField<Adjective>(
-              label: '<Adjective>',
+              label: Label.adjective,
               value: phrase.adjective,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.adjectives(),
@@ -81,7 +82,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adjective.style,
-          placeholder: '<AdjectiveComplement>',
+          placeholder: Label.adjectiveComplement,
           en: phrase.complement?.en,
           es: phrase.complement?.es,
           trailing: const Icon(Icons.arrow_forward_ios),

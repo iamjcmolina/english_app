@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/label.dart';
 import '../../../model/sentence/adverb/adverb.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
-import '../../../model/sentence/adverb/any_adverb.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
 import '../../common/dropdown_tile.dart';
@@ -41,7 +41,7 @@ class AdverbForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: <TextSpan>[
               TextSpan(
-                  text: adverb?.en ?? AnyAdverb.adverbPlaceholder,
+                  text: adverb?.en ?? Label.adverb,
                   style: adverb == null ? Word.empty.style : Word.adverb.style),
             ],
           )),
@@ -50,13 +50,13 @@ class AdverbForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.adverb.style,
-          title: AnyAdverb.adverbPlaceholder,
+          title: Label.adverb,
           textValue: adverb?.en,
           textValueEs: adverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
-              label: AnyAdverb.adverbPlaceholder,
+              label: Label.adverb,
               value: adverb,
               options: adverbs,
               filterValuesEn: [(Adverb e) => e.en],

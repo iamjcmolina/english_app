@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/label.dart';
 import '../../../model/sentence/noun/indefinite_pronoun.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
@@ -26,14 +27,12 @@ class IndefinitePronounForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
-    final pronouns = vocabularyRepository.indefinitePronouns(isNegative);
-
     return ItemEditorLayout(
       header: [
         settingsControl,
         ListTile(
           title: Text(
-            pronoun?.en ?? '<IndefinitePronoun>',
+            pronoun?.en ?? Label.indefinitePronoun,
             style: pronoun == null ? Word.empty.style : Word.noun.style,
           ),
         ),
@@ -41,26 +40,22 @@ class IndefinitePronounForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.noun.style,
-          title: 'Indefinite Pronoun',
+          title: Label.indefinitePronoun,
           textValue: pronoun?.en,
           fields: [
             SentenceItemField<IndefinitePronoun>(
-              label: 'Indefinite Pronoun',
+              label: Label.indefinitePronoun,
               value: pronoun,
-              options: pronouns,
+              options: vocabularyRepository.indefinitePronouns(isNegative),
               filterValuesEn: [(IndefinitePronoun e) => e.en],
               filterValuesEs: [(IndefinitePronoun e) => e.es],
               displayStringForOption: (pronoun) => pronoun.en,
-              onSelected: (pronoun) => validateAndSet(pronoun),
-              onChanged: (text) => validateAndSet(null),
+              onSelected: (pronoun) => setPronoun(pronoun),
+              onChanged: (text) => setPronoun(null),
             ),
           ],
         ),
       ],
     );
-  }
-
-  void validateAndSet(IndefinitePronoun? pronoun) {
-    setPronoun(pronoun);
   }
 }

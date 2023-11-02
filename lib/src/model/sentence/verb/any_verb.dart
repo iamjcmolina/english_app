@@ -1,18 +1,6 @@
 import '../../../extensions/string_extension.dart';
 
 abstract class AnyVerb {
-  static const infinitivePlaceholder = '<InfinitiveVerb>';
-  static const pastPlaceholder = '<PastVerb>';
-  static const presentPlaceholder = '<PresentVerb>';
-  static const pastParticiplePlaceholder = '<PastParticipleVerb>';
-  static const progressivePlaceholder = '<ProgressiveVerb>';
-  static const infinitivePlaceholderEs = '<VerbInfinitivo>';
-  static const pastPlaceholderEs = '<VerboPasado>';
-  static const presentPlaceholderEs = '<VerbPresente>';
-  static const futurePlaceholderEs = '<VerbFuturo>';
-  static const pastParticiplePlaceholderEs = '<VerbPasadoParticipio>';
-  static const progressivePlaceholderEs = '<VerboProgresivo>';
-  static const conditionalPlaceholderEs = '<VerboCondicional>';
   String get infinitive;
   String get pastParticiple;
   String get progressive;

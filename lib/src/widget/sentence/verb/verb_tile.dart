@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/label.dart';
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/word.dart';
@@ -34,7 +35,7 @@ class VerbTile extends StatelessWidget {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     final auxiliaryVerbLabel =
-        clause.isBeAuxiliary ? ', ${clause.firstAuxiliaryVerbPlaceholder}' : '';
+        clause.isBeAuxiliary ? ', ${Label.firstAuxiliaryVerb}' : '';
 
     return Column(
       children: [

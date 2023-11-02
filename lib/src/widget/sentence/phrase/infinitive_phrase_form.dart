@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
@@ -45,13 +46,13 @@ class InfinitivePhraseForm extends StatelessWidget {
             children: [
               TextSpan(
                 text: phrase.verb == null
-                    ? '<InfinitiveVerb> '
+                    ? '${Label.infinitiveVerb} '
                     : 'to ${phrase.verb!.infinitive} ',
                 style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
                 text: phrase.object == null && phrase.adverb == null
-                    ? '<ObjectOrModifier>'
+                    ? Label.objectOrAdverbialPhrase
                     : null,
                 style: Word.empty.style,
               ),
@@ -70,13 +71,13 @@ class InfinitivePhraseForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: 'InfinitiveVerb',
+          title: Label.infinitiveVerb,
           textValue: phrase.verb?.infinitive,
           textValueEs: phrase.verb?.infinitiveEs,
           required: true,
           fields: [
             SentenceItemField<AnyVerb>(
-              label: 'InfinitiveVerb',
+              label: Label.infinitiveVerb,
               value: phrase.verb,
               displayStringForOption: (e) => e.infinitive,
               options: vocabularyRepository.verbs(),
@@ -89,7 +90,7 @@ class InfinitivePhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.noun.style,
-          placeholder: "<Object>",
+          placeholder: Label.object,
           en: phrase.object?.en,
           es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
@@ -97,7 +98,7 @@ class InfinitivePhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adverb.style,
-          placeholder: "<Modifier>",
+          placeholder: Label.adverbialPhrase,
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),

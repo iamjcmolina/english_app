@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/verb/phrasal_verb.dart';
 import '../../../model/word.dart';
@@ -29,7 +30,7 @@ class ClauseText extends StatelessWidget {
               style: Word.adverb.style),
           if (clause.isInterrogative) firstAuxiliaryVerbSpan,
           TextSpan(
-              text: (clause.subject?.en ?? clause.subjectPlaceholder)
+              text: (clause.subject?.en ?? Label.subject)
                   .addSpace(clause.isVerbContractionActive),
               style:
                   clause.subject == null ? Word.empty.style : Word.noun.style),

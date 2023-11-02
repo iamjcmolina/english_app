@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
@@ -42,14 +43,15 @@ class PastParticiplePhraseForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.verb?.pastParticiple ?? '<PastParticipleVerb>')
+                text: (phrase.verb?.pastParticiple ?? Label.pastParticipleVerb)
                     .addSpace(),
                 style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
-                text: (phrase.adverb?.en ?? '<Adverb>').addSpace(),
-                style:
-                    phrase.verb == null ? Word.empty.style : Word.adverb.style,
+                text: (phrase.adverb?.en ?? Label.adverbialPhrase).addSpace(),
+                style: phrase.adverb == null
+                    ? Word.empty.style
+                    : Word.adverb.style,
               ),
             ],
           )),
@@ -58,13 +60,13 @@ class PastParticiplePhraseForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: 'PastParticipleVerb',
+          title: Label.pastParticipleVerb,
           textValue: phrase.verb?.pastParticiple,
           textValueEs: phrase.verb?.pastParticipleEs,
           required: true,
           fields: [
             SentenceItemField<AnyVerb>(
-              label: 'PastParticipleVerb',
+              label: Label.pastParticipleVerb,
               value: phrase.verb,
               displayStringForOption: (e) => e.pastParticiple,
               options: vocabularyRepository.actionVerbs(),
@@ -77,7 +79,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adverb.style,
-          placeholder: "<Adverb>",
+          placeholder: Label.adverbialPhrase,
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),

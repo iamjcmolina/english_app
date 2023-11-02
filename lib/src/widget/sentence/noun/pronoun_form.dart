@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../model/label.dart';
 import '../../../model/sentence/noun/pronoun.dart';
 import '../../../model/word.dart';
 import '../../common/dropdown_tile.dart';
@@ -27,7 +28,7 @@ class PronounForm extends StatelessWidget {
         settingsControl,
         ListTile(
           title: Text(
-            pronoun?.en ?? '<Pronoun>',
+            pronoun?.en ?? Label.personalPronoun,
             style: pronoun == null ? Word.empty.style : Word.noun.style,
           ),
         ),
@@ -35,11 +36,11 @@ class PronounForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.noun.style,
-          title: 'Pronoun',
+          title: Label.personalPronoun,
           textValue: pronoun?.en,
           fields: [
             SentenceItemField<Pronoun>(
-              label: 'Pronoun',
+              label: Label.personalPronoun,
               value: pronoun,
               options: pronouns,
               filterValuesEn: [(Pronoun e) => e.en],

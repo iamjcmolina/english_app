@@ -1,4 +1,5 @@
 import '../../../extensions/string_extension.dart';
+import '../../label.dart';
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
@@ -16,27 +17,6 @@ import 'clause_type.dart';
 import 'tense.dart';
 
 class IndependentClause {
-  final String frontAdverbPlaceholder = '<FrontAdverb>';
-  final String subjectPlaceholder = '<Subject>';
-  final String midAdverbPlaceholder = '<MidAdverb>';
-  final String firstAuxiliaryVerbPlaceholder = '<FirstAuxiliaryVerb>';
-  final String secondAuxiliaryVerbPlaceholder = '<SecondAuxiliaryVerb>';
-  final String thirdAuxiliaryVerbPlaceholder = '<ThirdAuxiliaryVerb>';
-  final String indirectObjectPlaceholder = '<IndirectObject>';
-  final String directObjectPlaceholder = '<DirectObject>';
-  final String subjectComplementPlaceholder = '<SubjectComplement>';
-  final String endAdverbPlaceholder = '<EndAdverb>';
-  final String frontAdverbPlaceholderEs = '<AdverbioFrontal>';
-  final String subjectPlaceholderEs = '<Sujeto>';
-  final String midAdverbPlaceholderEs = '<AdverbioIntermedio>';
-  final String firstAuxiliaryVerbPlaceholderEs = '<PrimerVerboAuxiliar>';
-  final String secondAuxiliaryVerbPlaceholderEs = '<SegundoVerboAuxiliar>';
-  final String thirdAuxiliaryVerbPlaceholderEs = '<TercerVerboAuxiliar>';
-  final String indirectObjectPlaceholderEs = '<ObjetoIndirecto>';
-  final String directObjectPlaceholderEs = '<ObjetoDirecto>';
-  final String subjectComplementPlaceholderEs = '<ComplementoDelSujeto>';
-  final String endAdverbPlaceholderEs = '<AdverbioFinal>';
-
   final bool isModalVerbEnabled;
   final bool isAffirmativeEmphasisEnabled;
   final bool isVerbContractionEnabled;
@@ -85,24 +65,15 @@ class IndependentClause {
   bool get hasDitransitiveVerb => verb?.isDitransitive ?? false;
   bool get hasLinkingVerb => verb?.isLinkingVerb ?? false;
 
-  String get modalVerbPlaceholder => isNegative
-      ? isVerbContractionEnabled
-          ? '<NegativeModalSubjectContraction>'
-          : isNegativeContractionEnabled
-              ? '<NegativeModalNegativeContraction>'
-              : '<NegativeModalVerb>'
-      : !isInterrogative && isVerbContractionEnabled
-          ? '<ModalVerbSubjectContraction>'
-          : '<ModalVerb>';
+  String get modalVerbPlaceholder =>
+      isNegative ? Label.negativeModalVerb : Label.modalVerb;
 
   String get verbPlaceholder => switch (verbTense) {
-        VerbTense.infinitive => '<BareInfinitiveVerb>',
-        VerbTense.present => '<SimplePresentVerb>',
-        VerbTense.past => '<PastVerb>',
-        VerbTense.future => '<FutureVerb>',
-        VerbTense.progressive => '<ProgressiveVerb>',
-        VerbTense.pastParticiple => '<PastParticipleVerb>',
-        VerbTense.conditional => '<Conditional>',
+        VerbTense.present => Label.presentVerb,
+        VerbTense.past => Label.pastVerb,
+        VerbTense.progressive => Label.progressiveVerb,
+        VerbTense.pastParticiple => Label.pastParticipleVerb,
+        _ => Label.infinitiveVerb,
       };
 
   bool get isVerbContractionActive {
@@ -287,24 +258,17 @@ class IndependentClause {
           : (hasPluralSubject ? 'were not' : 'was not')
       : (hasPluralSubject ? 'were' : 'was');
 
-  String get modalVerbPlaceholderEs => isNegative
-      ? isVerbContractionEnabled
-          ? '<ModalNegativoComoContracciónDelSujeto>'
-          : isNegativeContractionEnabled
-              ? '<VerboModalNegativoComoContracciónNegativa>'
-              : '<VerboModalNegativo>'
-      : !isInterrogative && isVerbContractionEnabled
-          ? '<VerboModalComoContracciónDelSujeto>'
-          : '<VerboModal>';
+  String get modalVerbPlaceholderEs =>
+      isNegative ? Label.negativeModalVerbEs : Label.modalVerbEs;
 
   String get verbPlaceholderEs => switch (verbTense) {
-        VerbTense.infinitive => '<VerboInfinitivoSuelto>',
-        VerbTense.present => '<VerboPresenteSimple>',
-        VerbTense.past => '<VerboPasado>',
-        VerbTense.future => '<VerboFuturo>',
-        VerbTense.progressive => '<VerboProgresivo>',
-        VerbTense.pastParticiple => '<VerboPasadoParticipio>',
-        VerbTense.conditional => '<VerboCondicional>',
+        VerbTense.infinitive => Label.infinitiveVerbEs,
+        VerbTense.present => Label.presentVerbEs,
+        VerbTense.past => Label.pastVerbEs,
+        VerbTense.future => Label.futureVerbEs,
+        VerbTense.progressive => Label.progressiveVerbEs,
+        VerbTense.pastParticiple => Label.pastParticipleVerbEs,
+        VerbTense.conditional => Label.conditionalVerbEs,
       };
 
   AuxiliaryVerbs get auxiliaryVerbsEs => switch (tense) {

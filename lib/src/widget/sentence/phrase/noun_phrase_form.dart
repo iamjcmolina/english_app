@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adjective/adjective.dart';
 import '../../../model/sentence/adjective/any_adjective.dart';
@@ -49,7 +50,7 @@ class NounPhraseForm extends StatelessWidget {
                 style: Word.determiner.style,
               ),
               TextSpan(
-                text: (phrase.determiner?.en ?? '<Determiner>').addSpace(),
+                text: (phrase.determiner?.en ?? Label.determiner).addSpace(),
                 style: phrase.determiner == null
                     ? Word.empty.style
                     : Word.determiner.style,
@@ -65,7 +66,7 @@ class NounPhraseForm extends StatelessWidget {
                 style: Word.adjective.style,
               ),
               TextSpan(
-                text: (phrase.noun?.en ?? '<Noun>').addSpace(),
+                text: (phrase.noun?.en ?? Label.noun).addSpace(),
                 style: phrase.noun == null ? Word.empty.style : Word.noun.style,
               ),
               TextSpan(
@@ -79,13 +80,13 @@ class NounPhraseForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.determiner.style,
-          title: 'Quantifier',
+          title: Label.quantifier,
           textValue: phrase.quantifierOf,
           textValueEs: phrase.quantifierOfEs,
           show: phrase.allowQuantifier,
           fields: [
             SentenceItemField<Determiner>(
-              label: 'Quantifier',
+              label: Label.quantifier,
               value: phrase.quantifier,
               options: vocabularyRepository.quantifiers(phrase.noun),
               filterValuesEn: [(Determiner e) => e.en],
@@ -97,13 +98,13 @@ class NounPhraseForm extends StatelessWidget {
         ),
         DropdownTile(
           style: Word.determiner.style,
-          title: 'Determiner',
+          title: Label.determiner,
           textValue: phrase.determiner?.en,
           textValueEs: phrase.determiner?.es,
           required: true,
           fields: [
             SentenceItemField<Determiner>(
-              label: 'Determiner',
+              label: Label.determiner,
               value: phrase.determiner,
               options: determiners(vocabularyRepository),
               filterValuesEn: [(Determiner e) => e.en],
@@ -115,13 +116,13 @@ class NounPhraseForm extends StatelessWidget {
         ),
         DropdownTile(
           style: Word.determiner.style,
-          title: 'Number',
+          title: Label.number,
           textValue: phrase.number?.en,
           textValueEs: phrase.number?.es,
           show: phrase.allowNumber,
           fields: [
             SentenceItemField<Determiner>(
-              label: 'Number',
+              label: Label.number,
               value: phrase.number,
               options: vocabularyRepository.numbers(phrase.noun, true),
               filterValuesEn: [(Determiner e) => e.en],
@@ -133,13 +134,13 @@ class NounPhraseForm extends StatelessWidget {
         ),
         DropdownTile(
           style: Word.adjective.style,
-          title: 'Adjective',
+          title: Label.adjective,
           textValue: phrase.adjective?.en,
           textValueEs: phrase.adjectiveEs,
           show: phrase.allowAdjective,
           fields: [
             SentenceItemField<Adjective>(
-              label: 'Adjective',
+              label: Label.adjective,
               value: phrase.adjective,
               options: vocabularyRepository.adjectives(),
               filterValuesEn: [(Adjective e) => e.en],
@@ -154,13 +155,13 @@ class NounPhraseForm extends StatelessWidget {
         ),
         DropdownTile(
           style: Word.noun.style,
-          title: 'Noun',
+          title: Label.noun,
           textValue: phrase.noun?.en,
           textValueEs: phrase.noun?.es,
           required: true,
           fields: [
             SentenceItemField<Noun>(
-              label: 'Noun',
+              label: Label.noun,
               value: phrase.noun,
               options: vocabularyRepository.nouns(phrase.determiner),
               filterValuesEn: [(Noun e) => e.en],
@@ -172,7 +173,7 @@ class NounPhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adjective.style,
-          placeholder: '<PostModifierAdjective>',
+          placeholder: Label.adjectivalPhrase,
           en: phrase.adjectivalPhrase?.toString(),
           es: phrase.adjectivalPhrase?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),

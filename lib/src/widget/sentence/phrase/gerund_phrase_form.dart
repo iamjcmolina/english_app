@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../extensions/string_extension.dart';
+import '../../../model/label.dart';
 import '../../../model/nullable.dart';
 import '../../../model/sentence/adverb/adverb_position.dart';
 import '../../../model/sentence/adverb/any_adverb.dart';
@@ -44,13 +45,13 @@ class GerundPhraseForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.verb?.progressive ?? '<ProgressiveVerb>')
+                text: (phrase.verb?.progressive ?? Label.progressiveVerb)
                     .addSpace(),
                 style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
                 text: phrase.object == null && phrase.adverb == null
-                    ? '<ObjectOrModifier>'
+                    ? Label.objectOrAdverbialPhrase
                     : null,
                 style: Word.empty.style,
               ),
@@ -69,13 +70,13 @@ class GerundPhraseForm extends StatelessWidget {
       body: [
         DropdownTile(
           style: Word.verb.style,
-          title: 'ProgressiveVerb',
+          title: Label.progressiveVerb,
           textValue: phrase.verb?.progressive,
           textValueEs: phrase.verb?.infinitiveEs,
           required: true,
           fields: [
             SentenceItemField<AnyVerb>(
-              label: 'ProgressiveVerb',
+              label: Label.progressiveVerb,
               value: phrase.verb,
               displayStringForOption: (e) => e.progressive,
               options: vocabularyRepository.actionVerbs(),
@@ -88,7 +89,7 @@ class GerundPhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.noun.style,
-          placeholder: "<Object>",
+          placeholder: Label.object,
           en: phrase.object?.en,
           es: phrase.object?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
@@ -96,7 +97,7 @@ class GerundPhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adverb.style,
-          placeholder: "<Modifier>",
+          placeholder: Label.adverbialPhrase,
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
