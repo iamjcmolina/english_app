@@ -50,7 +50,6 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   @override
   Widget build(BuildContext context) {
     final auxiliaryVerbs = clause.auxiliaryVerbs;
-    final auxiliaryVerbsEs = clause.auxiliaryVerbsEs;
 
     final verbListItem = VerbTile(
       clause: clause,
@@ -128,7 +127,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             es: clause.frontAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToAdverbPage(context, AdverbPosition.front),
-            isShown: clause.isInterrogative,
+            isShown: !clause.isInterrogative,
           ),
           if (clause.isInterrogative) firstAuxiliaryVerbListItem,
           SentenceItemTile(
@@ -153,14 +152,14 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             style: Word.verb.style,
             placeholder: Label.secondAuxiliaryVerb,
             en: auxiliaryVerbs.second,
-            es: auxiliaryVerbsEs.second,
+            es: auxiliaryVerbs.secondEs,
             isShown: auxiliaryVerbs.second != null,
           ),
           SentenceItemTile(
             style: Word.verb.style,
             placeholder: Label.thirdAuxiliaryVerb,
             en: auxiliaryVerbs.third,
-            es: auxiliaryVerbsEs.third,
+            es: auxiliaryVerbs.thirdEs,
             isShown: auxiliaryVerbs.third != null,
           ),
           if (!clause.isBeAuxiliary) verbListItem,

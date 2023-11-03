@@ -39,7 +39,6 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
 
     final modalVerbs = vocabularyRepository.modalVerbs();
     final auxiliaryVerbs = clause.auxiliaryVerbs;
-    final auxiliaryVerbsEs = clause.auxiliaryVerbsEs;
     bool isModalVerbEditable =
         (clause.isSimplePresent || clause.isContinuousPresent) &&
             clause.isModalVerbEnabled;
@@ -72,7 +71,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
             style: Word.verb.style,
             placeholder: Label.firstAuxiliaryVerb,
             en: auxiliaryVerbs.first,
-            es: auxiliaryVerbsEs.first,
+            es: auxiliaryVerbs.firstEs,
             hint: clause.firstAuxiliaryVerbDescription,
             trailing: Icon(
                 isEditingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
@@ -104,7 +103,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
               (ModalVerb e) => e.affirmativeTheyEs,
             ],
             displayStringForOption: (modalVerb) =>
-                clause.modalVerbAsString(modalVerb),
+                clause.conjugateModal(modalVerb) ?? '',
             onSelected: onModalVerbSelected,
             onChanged: (text) => onModalVerbChanged(),
           ),
@@ -130,7 +129,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
           ),
         if (isEditingVerb)
           SwitchListTile(
-            title: const Text('Contraction'),
+            title: const Text('Verb Contraction'),
             dense: true,
             secondary: const Icon(Icons.compress),
             value: clause.isVerbContractionEnabled,
@@ -142,7 +141,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
                       isNegativeContractionEnabled: false,
                     ));
                     if (verbController != null) {
-                      verbController!.text = clause.verbAsString();
+                      verbController!.text = clause.conjugateVerb() ?? '';
                     }
                   }
                 : null,
@@ -175,7 +174,6 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
   toggleModalVerb() => setClause(clause.copyWith(
         isModalVerbEnabled: !clause.isModalVerbEnabled,
         isAffirmativeEmphasisEnabled: false,
-        isNegativeContractionEnabled: false,
       ));
 
   toggleAffirmativeEmphasis() => setClause(clause.copyWith(
@@ -187,7 +185,6 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
   toggleNegativeContraction() => setClause(clause.copyWith(
         isNegativeContractionEnabled: !clause.isNegativeContractionEnabled,
         isVerbContractionEnabled: false,
-        isModalVerbEnabled: false,
         isAffirmativeEmphasisEnabled: false,
       ));
 }

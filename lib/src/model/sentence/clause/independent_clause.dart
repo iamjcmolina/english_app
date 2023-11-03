@@ -1,17 +1,14 @@
-import '../../../extensions/string_extension.dart';
 import '../../label.dart';
 import '../../nullable.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
-import '../noun/doer_pronoun.dart';
-import '../noun/indefinite_pronoun.dart';
+import '../noun/doer.dart';
 import '../noun/subject_complement.dart';
 import '../verb/any_verb.dart';
 import '../verb/auxiliary_verbs.dart';
 import '../verb/be.dart';
+import '../verb/have.dart';
 import '../verb/modal_verb.dart';
-import '../verb/phrasal_verb.dart';
-import '../verb/verb.dart';
 import '../verb/verb_tense.dart';
 import 'clause_type.dart';
 import 'tense.dart';
@@ -57,7 +54,8 @@ class IndependentClause {
   bool get hasSingularThirdPersonSubject =>
       subject?.isSingularThirdPerson ?? false;
   bool get hasPluralSubject => subject?.isPlural ?? false;
-  DoerPronoun get subjectAsPronoun => subject?.asPronoun ?? DoerPronoun.I;
+  Doer get subjectAsDoer => subject?.asDoer ?? Doer.I;
+  Doer get subjectAsDoerEs => subject?.asDoerEs ?? Doer.I;
 
   bool get isWouldModalVerb => modalVerb?.isWould ?? false;
 
@@ -94,8 +92,10 @@ class IndependentClause {
       };
 
   String get firstAuxiliaryVerbDescription => [
-        if (isModalVerbEnabled) 'Modal Verb',
-        if (isAffirmativeEmphasisEnabled) 'Affirmative Emphasis',
+        if ((isSimplePresent || isContinuousPresent) && isModalVerbEnabled)
+          'Modal Verb',
+        if ((isSimplePresent || isSimplePast) && isAffirmativeEmphasisEnabled)
+          'Affirmative Emphasis',
         if (isVerbContractionEnabled) 'Verb Contraction',
         if (isNegativeContractionEnabled) 'Negative Contraction',
       ].join(', ');
@@ -116,118 +116,142 @@ class IndependentClause {
       };
 
   AuxiliaryVerbs get _simplePresent => AuxiliaryVerbs(
-        first: isNegative
-            ? isModalVerbEnabled
-                ? modalVerbAsString()
-                : verb is Be
-                    ? _presentBe
-                    : isNegativeContractionEnabled
-                        ? (hasSingularThirdPersonSubject ? "doesn't" : "don't")
-                        : hasSingularThirdPersonSubject
-                            ? 'does not'
-                            : 'do not'
-            : isModalVerbEnabled
-                ? modalVerbAsString()
-                : verb is Be
-                    ? _presentBe
-                    : isInterrogative || isAffirmativeEmphasisEnabled
-                        ? (hasSingularThirdPersonSubject ? 'does' : 'do')
-                        : null,
-      );
+      first: isNegative
+          ? isModalVerbEnabled
+              ? conjugateModal()
+              : verb is Be
+                  ? Be.ser.simplePresent(this)
+                  : isNegativeContractionEnabled
+                      ? hasSingularThirdPersonSubject
+                          ? "doesn't"
+                          : "don't"
+                      : hasSingularThirdPersonSubject
+                          ? 'does not'
+                          : 'do not'
+          : isModalVerbEnabled
+              ? conjugateModal()
+              : verb is Be
+                  ? Be.ser.simplePresent(this)
+                  : isInterrogative || isAffirmativeEmphasisEnabled
+                      ? hasSingularThirdPersonSubject
+                          ? 'does'
+                          : 'do'
+                      : null,
+      firstEs: isModalVerbEnabled
+          ? conjugateModalEs()
+          : verb is Be
+              ? Be.ser.simplePresentEs(this)
+              : isNegative
+                  ? 'no'
+                  : '');
 
   AuxiliaryVerbs get _simplePast => AuxiliaryVerbs(
-      first: isNegative
-          ? verb is Be
-              ? _pastBe
-              : (isNegativeContractionEnabled ? "didn't" : 'did not')
-          : verb is Be
-              ? _pastBe
-              : isInterrogative || isAffirmativeEmphasisEnabled
-                  ? 'did'
-                  : null);
+        first: isNegative
+            ? verb is Be
+                ? Be.ser.simplePast(this)
+                : isNegativeContractionEnabled
+                    ? "didn't"
+                    : 'did not'
+            : verb is Be
+                ? Be.ser.simplePast(this)
+                : isInterrogative || isAffirmativeEmphasisEnabled
+                    ? 'did'
+                    : null,
+        firstEs: verb is Be
+            ? Be.ser.simplePastEs(this)
+            : isNegative
+                ? 'no'
+                : '',
+      );
 
   AuxiliaryVerbs get _simpleFuture => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? "'ll not"
-              : (isNegativeContractionEnabled ? "won't" : 'will not')
-          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'));
+        first: isNegative
+            ? isVerbContractionEnabled
+                ? "'ll not"
+                : (isNegativeContractionEnabled ? "won't" : 'will not')
+            : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
+        firstEs: isNegative ? "no" : '',
+      );
 
   AuxiliaryVerbs get _simplePresentPerfect => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? (hasSingularThirdPersonSubject ? "'s not" : "'ve not")
-              : isNegativeContractionEnabled
-                  ? (hasSingularThirdPersonSubject ? "hasn't" : "haven't")
-                  : (hasSingularThirdPersonSubject ? 'has not' : 'have not')
-          : isAffirmative && isVerbContractionEnabled
-              ? (hasSingularThirdPersonSubject ? "'s" : "'ve")
-              : (hasSingularThirdPersonSubject ? 'has' : 'have'));
+        first: Have.haber.simplePresent(this),
+        firstEs: Have.haber.simplePresentEs(this),
+      );
 
   AuxiliaryVerbs get _simplePastPerfect => AuxiliaryVerbs(
-      first: isNegative
-          ? (isVerbContractionEnabled ? "'d not" : "had not")
-          : (isAffirmative && isVerbContractionEnabled ? "'d" : "had"));
+        first: Have.haber.simplePast(this),
+        firstEs: Have.haber.simplePastEs(this),
+      );
 
   AuxiliaryVerbs get _simpleFuturePerfect => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? "'ll not"
-              : (isNegativeContractionEnabled ? "won't" : 'will not')
-          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
-      second: 'have');
+        first: isNegative
+            ? isVerbContractionEnabled
+                ? "'ll not"
+                : (isNegativeContractionEnabled ? "won't" : 'will not')
+            : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
+        second: Have.haber.infinitive,
+        firstEs: isNegative ? 'no' : '',
+        secondEs: Have.haber.futureEs(this),
+      );
 
   AuxiliaryVerbs get _continuousPresent => AuxiliaryVerbs(
-      first: isModalVerbEnabled ? modalVerbAsString() : _presentBe,
-      second: isModalVerbEnabled ? 'be' : null);
+        first: isModalVerbEnabled
+            ? conjugateModal()
+            : Be.estar.simplePresent(this),
+        second: isModalVerbEnabled ? Be.estar.infinitive : null,
+        firstEs: isModalVerbEnabled
+            ? conjugateModalEs()
+            : Be.estar.simplePresentEs(this),
+        secondEs: isModalVerbEnabled ? Be.estar.infinitiveEs : null,
+      );
 
-  AuxiliaryVerbs get _continuousPast => AuxiliaryVerbs(first: _pastBe);
+  AuxiliaryVerbs get _continuousPast => AuxiliaryVerbs(
+        first: Be.estar.simplePast(this),
+        firstEs: Be.estar.simplePastEs(this),
+      );
 
   AuxiliaryVerbs get _continuousFuture => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? "'ll not"
-              : (isNegativeContractionEnabled ? "won't" : 'will not')
-          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
-      second: 'be');
+        first: isNegative
+            ? isVerbContractionEnabled
+                ? "'ll not"
+                : (isNegativeContractionEnabled ? "won't" : 'will not')
+            : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
+        second: Be.estar.infinitive,
+        firstEs: isNegative ? 'no' : '',
+        secondEs: Be.estar.futureEs(this),
+      );
 
   AuxiliaryVerbs get _continuousPresentPerfect => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? (hasSingularThirdPersonSubject ? "'s not" : "'ve not")
-              : isNegativeContractionEnabled
-                  ? (hasSingularThirdPersonSubject ? "hasn't" : "haven't")
-                  : (hasSingularThirdPersonSubject ? 'has not' : 'have not')
-          : isAffirmative && isVerbContractionEnabled
-              ? (hasSingularThirdPersonSubject ? "'s" : "'ve")
-              : (hasSingularThirdPersonSubject ? 'has' : 'have'),
-      second: 'been');
+        first: Have.haber.simplePresent(this),
+        second: Be.estar.pastParticiple,
+        firstEs: Have.haber.simplePresentEs(this),
+        secondEs: Be.estar.pastParticipleEs,
+      );
 
   AuxiliaryVerbs get _continuousPastPerfect => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? "'d not"
-              : (isNegativeContractionEnabled ? "hadn't" : "had not")
-          : (isAffirmative && isVerbContractionEnabled ? "'d" : "had"),
-      second: 'been');
+        first: Have.haber.simplePast(this),
+        second: Be.estar.pastParticiple,
+        firstEs: Have.haber.simplePastEs(this),
+        secondEs: Be.estar.pastParticipleEs,
+      );
 
   AuxiliaryVerbs get _continuousFuturePerfect => AuxiliaryVerbs(
-      first: isNegative
-          ? isVerbContractionEnabled
-              ? "'ll not"
-              : (isNegativeContractionEnabled ? "won't" : 'will not')
-          : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
-      second: 'have',
-      third: 'been');
+        first: isNegative
+            ? isVerbContractionEnabled
+                ? "'ll not"
+                : (isNegativeContractionEnabled ? "won't" : 'will not')
+            : (isAffirmative && isVerbContractionEnabled ? "'ll" : 'will'),
+        second: Have.haber.infinitive,
+        third: Be.estar.pastParticiple,
+        firstEs: isNegative ? 'no' : '',
+        secondEs: Have.haber.futureEs(this),
+        thirdEs: Be.estar.pastParticipleEs,
+      );
 
   VerbTense get verbTense => isSimplePresent
-      ? isAffirmative && !isAffirmativeEmphasisEnabled && !isModalVerbEnabled
-          ? VerbTense.present
-          : VerbTense.infinitive
+      ? VerbTense.present
       : isSimplePast
-          ? isAffirmative && !isAffirmativeEmphasisEnabled
-              ? VerbTense.past
-              : VerbTense.infinitive
+          ? VerbTense.past
           : isSimpleFuture
               ? VerbTense.infinitive
               : isSimplePresentPerfect ||
@@ -235,112 +259,6 @@ class IndependentClause {
                       isSimpleFuturePerfect
                   ? VerbTense.pastParticiple
                   : VerbTense.progressive;
-
-  String get _presentBe => isNegative
-      ? hasSingularFirstPersonSubject
-          ? (isVerbContractionEnabled ? "'m not" : 'am not')
-          : hasSingularThirdPersonSubject
-              ? isVerbContractionEnabled
-                  ? "'s not"
-                  : (isNegativeContractionEnabled ? "isn't" : 'is not')
-              : isVerbContractionEnabled
-                  ? "'re not"
-                  : (isNegativeContractionEnabled ? "aren't" : 'are not')
-      : hasSingularFirstPersonSubject
-          ? (isAffirmative && isVerbContractionEnabled ? "'m" : 'am')
-          : hasSingularThirdPersonSubject
-              ? (isAffirmative && isVerbContractionEnabled ? "'s" : 'is')
-              : (isAffirmative && isVerbContractionEnabled ? "'re" : 'are');
-
-  String get _pastBe => isNegative
-      ? isNegativeContractionEnabled
-          ? (hasPluralSubject ? "weren't" : "wasn't")
-          : (hasPluralSubject ? 'were not' : 'was not')
-      : (hasPluralSubject ? 'were' : 'was');
-
-  String get modalVerbPlaceholderEs =>
-      isNegative ? Label.negativeModalVerbEs : Label.modalVerbEs;
-
-  String get verbPlaceholderEs => switch (verbTense) {
-        VerbTense.infinitive => Label.infinitiveVerbEs,
-        VerbTense.present => Label.presentVerbEs,
-        VerbTense.past => Label.pastVerbEs,
-        VerbTense.future => Label.futureVerbEs,
-        VerbTense.progressive => Label.progressiveVerbEs,
-        VerbTense.pastParticiple => Label.pastParticipleVerbEs,
-        VerbTense.conditional => Label.conditionalVerbEs,
-      };
-
-  AuxiliaryVerbs get auxiliaryVerbsEs => switch (tense) {
-        Tense.simplePresent => _simplePresentEs,
-        Tense.simplePast => _simplePastEs,
-        Tense.simpleFuture => _simpleFutureEs,
-        Tense.simplePresentPerfect => _simplePresentPerfectEs,
-        Tense.simplePastPerfect => _simplePastPerfectEs,
-        Tense.simpleFuturePerfect => _simpleFuturePerfectEs,
-        Tense.continuousPresent => _continuousPresentEs,
-        Tense.continuousPast => _continuousPastEs,
-        Tense.continuousFuture => _continuousFutureEs,
-        Tense.continuousPresentPerfect => _continuousPresentPerfectEs,
-        Tense.continuousPastPerfect => _continuousPastPerfectEs,
-        Tense.continuousFuturePerfect => _continuousFuturePerfectEs,
-      };
-
-  AuxiliaryVerbs get _simplePresentEs => AuxiliaryVerbs(
-      first: isModalVerbEnabled
-          ? modalVerbAsStringEs()
-          : verb is Be
-              ? _presentBeEs
-              : isNegative
-                  ? 'no'
-                  : '');
-
-  AuxiliaryVerbs get _simplePastEs => AuxiliaryVerbs(
-      first: verb is Be
-          ? _pastBeEs
-          : isNegative
-              ? 'no'
-              : '');
-
-  AuxiliaryVerbs get _simpleFutureEs =>
-      AuxiliaryVerbs(first: isNegative ? "no" : '');
-
-  AuxiliaryVerbs get _simplePresentPerfectEs =>
-      AuxiliaryVerbs(first: _presentHaveEs);
-
-  AuxiliaryVerbs get _simplePastPerfectEs => AuxiliaryVerbs(first: _pastHaveEs);
-
-  AuxiliaryVerbs get _simpleFuturePerfectEs =>
-      AuxiliaryVerbs(first: '', second: _futureHaveEs);
-
-  AuxiliaryVerbs get _continuousPresentEs => AuxiliaryVerbs(
-      first: isModalVerbEnabled ? modalVerbAsStringEs() : _presentBeAsEstarEs,
-      second: isModalVerbEnabled ? 'estar' : null);
-
-  AuxiliaryVerbs get _continuousPastEs =>
-      AuxiliaryVerbs(first: _pastBeAsEstarEs);
-
-  AuxiliaryVerbs get _continuousFutureEs => AuxiliaryVerbs(
-      first: isNegative ? 'no' : '',
-      second: switch (subjectAsPronoun) {
-        DoerPronoun.I => 'estaré',
-        DoerPronoun.you => 'estarás/estarán',
-        DoerPronoun.we => 'estaremos',
-        DoerPronoun.they => 'estarán',
-        DoerPronoun.he || DoerPronoun.she || DoerPronoun.it => 'estará',
-      });
-
-  AuxiliaryVerbs get _continuousPresentPerfectEs =>
-      AuxiliaryVerbs(first: _presentHaveEs, second: 'estado');
-
-  AuxiliaryVerbs get _continuousPastPerfectEs =>
-      AuxiliaryVerbs(first: _pastHaveEs, second: 'estado');
-
-  AuxiliaryVerbs get _continuousFuturePerfectEs => AuxiliaryVerbs(
-        first: isNegative ? 'no' : '',
-        second: _futureHaveEs,
-        third: 'estado',
-      );
 
   VerbTense get verbTenseEs => isSimplePresent
       ? isModalVerbEnabled
@@ -356,81 +274,18 @@ class IndependentClause {
                   ? VerbTense.pastParticiple
                   : VerbTense.progressive;
 
-  String get _presentBeEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => 'soy',
-      DoerPronoun.you => 'eres/son',
-      DoerPronoun.we => 'somos',
-      DoerPronoun.they => 'son',
-      _ => 'es',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
+  String get modalVerbPlaceholderEs =>
+      isNegative ? Label.negativeModalVerbEs : Label.modalVerbEs;
 
-  String get _pastBeEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => 'fui',
-      DoerPronoun.you => 'fuiste/fueron',
-      DoerPronoun.we => 'fuimos',
-      DoerPronoun.they => 'fueron',
-      _ => 'fue',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
-
-  String get _presentBeAsEstarEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => 'estoy',
-      DoerPronoun.you => 'estás/están',
-      DoerPronoun.we => 'estamos',
-      DoerPronoun.they => 'están',
-      _ => 'está',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
-
-  String get _pastBeAsEstarEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => 'estuve',
-      DoerPronoun.you => 'estuviste/estuvieron',
-      DoerPronoun.we => 'estuvimos',
-      DoerPronoun.they => 'estuvieron',
-      _ => 'estuvo',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
-
-  String get _presentHaveEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => 'he',
-      DoerPronoun.you => 'has/han',
-      DoerPronoun.we => 'hemos',
-      DoerPronoun.they => 'han',
-      _ => 'ha',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
-
-  String get _pastHaveEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.you => 'habías/habían',
-      DoerPronoun.we => 'habíamos',
-      DoerPronoun.they => 'habían',
-      _ => 'había',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
-
-  String get _futureHaveEs {
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => 'habré',
-      DoerPronoun.you => 'habrás/habrán',
-      DoerPronoun.we => 'habremos',
-      DoerPronoun.they => 'habrán',
-      _ => 'habrá',
-    };
-    return isNegative ? 'no $affirmative' : affirmative;
-  }
+  String get verbPlaceholderEs => switch (verbTense) {
+        VerbTense.infinitive => Label.infinitiveVerbEs,
+        VerbTense.present => Label.presentVerbEs,
+        VerbTense.past => Label.pastVerbEs,
+        VerbTense.future => Label.futureVerbEs,
+        VerbTense.progressive => Label.progressiveVerbEs,
+        VerbTense.pastParticiple => Label.pastParticipleVerbEs,
+        VerbTense.conditional => Label.conditionalVerbEs,
+      };
 
   bool get isValid => false;
 
@@ -494,123 +349,63 @@ class IndependentClause {
         endAdverb: endAdverb == null ? this.endAdverb : endAdverb.value,
       );
 
-  String modalVerbAsString([ModalVerb? otherModalVerb]) {
-    final modalVerb = this.modalVerb ?? otherModalVerb;
-    return modalVerb == null
-        ? modalVerbPlaceholder
+  String? conjugateVerb([AnyVerb? other]) {
+    final verb = other ?? this.verb;
+    if (verb == null) {
+      return null;
+    }
+    return switch (verbTense) {
+      VerbTense.present => verb.simplePresent(this),
+      VerbTense.past => verb.simplePast(this),
+      VerbTense.progressive => verb.progressive,
+      VerbTense.pastParticiple => verb.pastParticiple,
+      _ => verb.infinitive,
+    };
+  }
+
+  String? conjugateVerbEs([AnyVerb? other]) {
+    final verb = other ?? this.verb;
+    if (verb == null) {
+      return null;
+    }
+    return switch (verbTenseEs) {
+      VerbTense.present => verb.simplePresentEs(this),
+      VerbTense.past => verb.simplePastEs(this),
+      VerbTense.future => verb.futureEs(this),
+      VerbTense.conditional => verb.conditionalEs(this),
+      VerbTense.progressive => verb.progressiveEs,
+      VerbTense.pastParticiple => verb.pastParticipleEs,
+      VerbTense.infinitive => verb.infinitiveEs
+    };
+  }
+
+  String? conjugateModal([ModalVerb? other]) {
+    final modal = other ?? modalVerb;
+    return modal == null
+        ? null
         : isNegative
             ? isVerbContractionEnabled
-                ? modalVerb.negativeVerbContraction
+                ? modal.negativeWithVerbContraction
                 : isNegativeContractionEnabled
-                    ? modalVerb.negativeContraction
-                    : modalVerb.negative
-            : !isInterrogative && isVerbContractionEnabled
-                ? modalVerb.verbContraction
-                : modalVerb.verb;
+                    ? modal.negativeContraction
+                    : modal.negative
+            : isAffirmative && isVerbContractionEnabled
+                ? modal.verbContraction
+                : modal.verb;
   }
 
-  String verbAsString([AnyVerb? otherVerb]) {
-    AnyVerb? verb = otherVerb ?? this.verb;
-    verb = verb is PhrasalVerb ? verb.verb : verb;
-    return verb == null
-        ? verbPlaceholder
-        : verbTense == VerbTense.present
-            ? verb is Be
-                ? _presentBe
-                : hasSingularThirdPersonSubject
-                    ? _presentForSingularThirdPerson(verb)
-                    : verb.infinitive
-            : verbTense == VerbTense.past
-                ? verb is Be
-                    ? _pastBe
-                    : (verb as Verb).past
-                : verbTense == VerbTense.progressive
-                    ? verb.progressive
-                    : verbTense == VerbTense.pastParticiple
-                        ? verb.pastParticiple
-                        : verb.infinitive;
-  }
-
-  String _presentForSingularThirdPerson(AnyVerb verb) {
-    final penultimateLetter = verb.infinitive
-        .substring(verb.infinitive.length - 2, verb.infinitive.length - 1);
-    final lastLetter = verb.infinitive.last();
-    final lastTwoLetters = verb.infinitive.last(2);
-    if (lastLetter == 'o' ||
-        lastTwoLetters == 'sh' ||
-        lastTwoLetters == 'ch' ||
-        lastTwoLetters == 'ss' ||
-        lastLetter == 'x' ||
-        lastLetter == 'z') {
-      return '${verb.infinitive}es';
-    } else if (lastLetter == 'y' && penultimateLetter.isConsonant) {
-      final newWord = verb.infinitive.substring(0, verb.infinitive.length - 1);
-      return '${newWord}ies';
+  String? conjugateModalEs([ModalVerb? other]) {
+    final modal = other ?? modalVerb;
+    if (modal == null) {
+      return null;
     }
-    return '${verb.infinitive}s';
-  }
-
-  String modalVerbAsStringEs([ModalVerb? otherModalVerb]) {
-    final modalVerb = this.modalVerb ?? otherModalVerb;
-    if (modalVerb == null) {
-      return modalVerbPlaceholderEs;
-    }
-    final affirmative = switch (subjectAsPronoun) {
-      DoerPronoun.I => modalVerb.affirmativeIEs,
-      DoerPronoun.you => modalVerb.affirmativeYouEs,
-      DoerPronoun.we => modalVerb.affirmativeWeEs,
-      DoerPronoun.they => modalVerb.affirmativeTheyEs,
-      _ => modalVerb.affirmativeHeEs,
+    final affirmative = switch (subjectAsDoerEs) {
+      Doer.I => modal.affirmativeIEs,
+      Doer.you => modal.affirmativeYouEs,
+      Doer.we => modal.affirmativeWeEs,
+      Doer.they => modal.affirmativeTheyEs,
+      Doer.he || Doer.she || Doer.it => modal.affirmativeHeEs,
     };
     return isNegative ? 'no $affirmative' : affirmative;
-  }
-
-  String verbAsStringEs([AnyVerb? otherVerb]) {
-    final verb = otherVerb ?? this.verb;
-    if (verb == null) {
-      return verbPlaceholderEs;
-    }
-
-    final subjectAsPronoun = subject is IndefinitePronoun
-        ? (subject as IndefinitePronoun).asPronounEs
-        : this.subjectAsPronoun;
-    if (verbTenseEs == VerbTense.present) {
-      return switch (subjectAsPronoun) {
-        DoerPronoun.I => verb.presentIEs,
-        DoerPronoun.you => verb.presentYouEs,
-        DoerPronoun.we => verb.presentWeEs,
-        DoerPronoun.they => verb.presentTheyEs,
-        _ => verb.presentHeEs,
-      };
-    } else if (verbTenseEs == VerbTense.past) {
-      return switch (subjectAsPronoun) {
-        DoerPronoun.I => verb.pastIEs,
-        DoerPronoun.you => verb.pastYouEs,
-        DoerPronoun.we => verb.pastWeEs,
-        DoerPronoun.they => verb.pastTheyEs,
-        _ => verb.pastHeEs,
-      };
-    } else if (verbTenseEs == VerbTense.future) {
-      return switch (subjectAsPronoun) {
-        DoerPronoun.I => verb.futureIEs,
-        DoerPronoun.you => verb.futureYouEs,
-        DoerPronoun.we => verb.futureWeEs,
-        DoerPronoun.they => verb.futureTheyEs,
-        _ => verb.futureHeEs,
-      };
-    } else if (verbTenseEs == VerbTense.conditional) {
-      return switch (subjectAsPronoun) {
-        DoerPronoun.I => verb.conditionalIEs,
-        DoerPronoun.you => verb.conditionalYouEs,
-        DoerPronoun.we => verb.conditionalWeEs,
-        DoerPronoun.they => verb.conditionalTheyEs,
-        _ => verb.conditionalHeEs,
-      };
-    } else if (verbTenseEs == VerbTense.progressive) {
-      return verb.progressiveEs;
-    } else if (verbTenseEs == VerbTense.pastParticiple) {
-      return verb.pastParticipleEs;
-    }
-    return verb.infinitiveEs;
   }
 }

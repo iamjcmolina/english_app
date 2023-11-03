@@ -1,5 +1,5 @@
 import 'countability.dart';
-import 'doer_pronoun.dart';
+import 'doer.dart';
 import 'subject_complement.dart';
 
 abstract class AnyNoun extends SubjectComplement {
@@ -10,7 +10,8 @@ abstract class AnyNoun extends SubjectComplement {
   @override
   String get es;
   Countability get countability;
-  DoerPronoun get asPronoun;
+  Doer get asDoer;
+  Doer get asDoerEs => asDoer;
   bool get isSingularFirstPerson => false;
   bool get isSingularThirdPerson;
 

@@ -11,6 +11,9 @@ extension StringExtension on String {
   /// Returns last letters from current string
   String last([int letters = 1]) => substring(length - letters);
 
+  /// Returns a character in the specified position
+  String charAt(int position) => substring(position, position + 1);
+
   /// Returns current string without last letters
   String removeLast([int letters = 1]) => substring(0, length - letters);
 

@@ -4,14 +4,14 @@ import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../noun/countability.dart';
-import '../noun/doer_pronoun.dart';
+import '../noun/doer.dart';
 import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
 class InfinitivePhrase
     implements AnyNoun, AnyAdjective, AnyAdverb, AdjectiveComplement {
   @override
-  final DoerPronoun asPronoun = DoerPronoun.it;
+  final Doer asDoer = Doer.it;
   @override
   final Countability countability = Countability.singular;
   @override
@@ -54,6 +54,9 @@ class InfinitivePhrase
 
   @override
   String get singularEs => es;
+
+  @override
+  Doer get asDoerEs => asDoer;
 
   @override
   bool get isValid => verb != null && (object != null || adverb != null);

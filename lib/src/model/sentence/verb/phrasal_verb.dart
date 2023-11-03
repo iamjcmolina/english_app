@@ -1,66 +1,39 @@
-import 'any_verb.dart';
 import 'verb.dart';
 
-class PhrasalVerb extends AnyVerb {
-  final bool separable;
-  @override
-  final String infinitiveEs;
-  @override
-  final String pastParticipleEs;
-  @override
-  final String progressiveEs;
-  @override
-  final String presentHeEs;
-  @override
-  final String pastIEs;
-  @override
-  final String pastWeEs;
+class PhrasalVerb extends Verb {
   final String particle; // Adjective | Adverb | Preposition
-  final Verb verb;
-  @override
-  final bool isDitransitive;
-  @override
-  final bool isTransitive;
-  @override
-  final bool isLinkingVerb;
+  final bool isSeparable;
 
   @override
-  String get infinitive => '${verb.infinitive} $particle';
-
-  String get past => '${verb.past} $particle';
+  String get infinitive => '${super.infinitive} $particle';
 
   @override
-  String get pastParticiple => '${verb.pastParticiple} $particle';
+  String get past => '${super.past} $particle';
 
   @override
-  String get progressive => '${verb.progressive} $particle';
+  String get pastParticiple => '${super.pastParticiple} $particle';
+
+  @override
+  String get progressive => '${super.progressive} $particle';
+
+  @override
+  String get presentSingularThirdPerson =>
+      super.presentSingularThirdPerson + particle;
 
   PhrasalVerb({
-    required String infinitiveVerb,
-    required String pastVerb,
-    required String pastParticipleVerb,
+    required super.infinitive,
+    required super.past,
+    required super.pastParticiple,
     required this.particle,
-    required this.infinitiveEs,
-    required this.pastParticipleEs,
-    required this.progressiveEs,
-    required this.presentHeEs,
-    required this.pastIEs,
-    required this.pastWeEs,
-    required this.separable,
-    required this.isTransitive,
-    required this.isDitransitive,
-    this.isLinkingVerb = false,
-  }) : verb = Verb(
-            infinitive: infinitiveVerb,
-            past: pastVerb,
-            pastParticiple: pastParticipleVerb,
-            infinitiveEs: infinitiveEs,
-            pastParticipleEs: pastParticipleEs,
-            progressiveEs: progressiveEs,
-            presentHeEs: presentHeEs,
-            pastIEs: pastIEs,
-            pastWeEs: pastWeEs,
-            isTransitive: isTransitive,
-            isDitransitive: isDitransitive,
-            isLinkingVerb: isLinkingVerb);
+    required super.infinitiveEs,
+    required super.pastParticipleEs,
+    required super.progressiveEs,
+    required super.presentHeEs,
+    required super.pastIEs,
+    required super.pastWeEs,
+    required super.isTransitive,
+    required super.isDitransitive,
+    super.isLinkingVerb = false,
+    required this.isSeparable,
+  });
 }

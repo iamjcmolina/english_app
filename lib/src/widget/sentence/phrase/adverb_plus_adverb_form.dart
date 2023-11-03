@@ -35,8 +35,8 @@ class AdverbPlusAdverbForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.modifierAdverb?.en ?? Label.adverb).addSpace(),
-                style: phrase.modifierAdverb == null
+                text: (phrase.intensifierAdverb?.en ?? Label.adverb).addSpace(),
+                style: phrase.intensifierAdverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
               ),
@@ -54,13 +54,13 @@ class AdverbPlusAdverbForm extends StatelessWidget {
         DropdownTile(
           style: Word.verb.style,
           title: Label.adverb,
-          textValue: phrase.modifierAdverb?.en,
-          textValueEs: phrase.modifierAdverb?.es,
+          textValue: phrase.intensifierAdverb?.en,
+          textValueEs: phrase.intensifierAdverb?.es,
           required: true,
           fields: [
             SentenceItemField<Adverb>(
               label: Label.adverb,
-              value: phrase.modifierAdverb,
+              value: phrase.intensifierAdverb,
               displayStringForOption: (e) => e.en,
               options: vocabularyRepository.endAdverbs(),
               filterValuesEn: [(e) => e.en],
@@ -93,8 +93,8 @@ class AdverbPlusAdverbForm extends StatelessWidget {
     );
   }
 
-  void setIntensifierOrMitigator(Adverb? adverb) => setPhrase(
-      phrase.copyWith(intensifierOrMitigatorAdverb: Nullable(adverb)));
+  void setIntensifierOrMitigator(Adverb? adverb) =>
+      setPhrase(phrase.copyWith(intensifierAdverb: Nullable(adverb)));
 
   void setAdverb(Adverb? adverb) =>
       setPhrase(phrase.copyWith(adverb: Nullable(adverb)));

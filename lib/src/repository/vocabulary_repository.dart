@@ -10,6 +10,7 @@ import '../model/sentence/noun/pronoun.dart';
 import '../model/sentence/preposition/preposition.dart';
 import '../model/sentence/verb/any_verb.dart';
 import '../model/sentence/verb/be.dart';
+import '../model/sentence/verb/have.dart';
 import '../model/sentence/verb/modal_verb.dart';
 import '../model/sentence/verb/phrasal_verb.dart';
 import '../model/sentence/verb/verb.dart';
@@ -100,7 +101,7 @@ class VocabularyRepository extends ChangeNotifier {
           .toList();
 
   List<AnyVerb> verbs() =>
-      [Be.ser, ...provider.verbs, ...provider.phrasalVerbs];
+      [Be.ser, Have.tener, ...provider.verbs, ...provider.phrasalVerbs];
 
   List<Verb> actionVerbs() =>
       provider.verbs.where((e) => !e.isLinkingVerb).toList();

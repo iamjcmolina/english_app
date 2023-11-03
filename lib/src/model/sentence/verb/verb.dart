@@ -1,3 +1,4 @@
+import '../clause/independent_clause.dart';
 import 'any_verb.dart';
 
 class Verb extends AnyVerb {
@@ -25,6 +26,9 @@ class Verb extends AnyVerb {
   @override
   final bool isLinkingVerb;
 
+  @override
+  String get progressive => '${infinitive}ing';
+
   const Verb({
     required this.infinitive,
     required this.past,
@@ -41,5 +45,8 @@ class Verb extends AnyVerb {
   });
 
   @override
-  String get progressive => '${infinitive}ing';
+  String simplePast(IndependentClause clause) =>
+      clause.isAffirmative && !clause.isAffirmativeEmphasisEnabled
+          ? past
+          : infinitive;
 }

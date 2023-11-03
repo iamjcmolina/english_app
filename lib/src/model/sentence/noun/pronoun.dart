@@ -1,47 +1,45 @@
 import 'any_noun.dart';
 import 'countability.dart';
-import 'doer_pronoun.dart';
+import 'doer.dart';
 
 class Pronoun extends AnyNoun {
   static const subjectPronouns = [
-    Pronoun('I', 'yo', DoerPronoun.I),
-    Pronoun('you', 'tu/ustedes', DoerPronoun.you),
-    Pronoun('he', 'él', DoerPronoun.he),
-    Pronoun('she', 'ella', DoerPronoun.she),
-    Pronoun('it', 'eso', DoerPronoun.it),
-    Pronoun('we', 'nosotros', DoerPronoun.we),
-    Pronoun('they', 'ellos', DoerPronoun.they),
+    Pronoun('I', 'yo', Doer.I),
+    Pronoun('you', 'tu/ustedes', Doer.you),
+    Pronoun('he', 'él', Doer.he),
+    Pronoun('she', 'ella', Doer.she),
+    Pronoun('it', 'eso', Doer.it),
+    Pronoun('we', 'nosotros', Doer.we),
+    Pronoun('they', 'ellos', Doer.they),
   ];
   static const objectPronouns = [
-    Pronoun('me', 'me', DoerPronoun.I),
-    Pronoun('you', 'te', DoerPronoun.you),
-    Pronoun('him', 'lo/le', DoerPronoun.he),
-    Pronoun('her', 'lo/le', DoerPronoun.she),
-    Pronoun('it', 'lo/le', DoerPronoun.it),
-    Pronoun('us', 'nos', DoerPronoun.we),
-    Pronoun('them', 'les', DoerPronoun.they),
+    Pronoun('me', 'me', Doer.I),
+    Pronoun('you', 'te', Doer.you),
+    Pronoun('him', 'lo/le', Doer.he),
+    Pronoun('her', 'lo/le', Doer.she),
+    Pronoun('it', 'lo/le', Doer.it),
+    Pronoun('us', 'nos', Doer.we),
+    Pronoun('them', 'les', Doer.they),
   ];
   static const possessivePronouns = [
-    Pronoun('mine', 'mio(a)/el mio/la mia/los míos/las mías', DoerPronoun.I),
+    Pronoun('mine', 'mio(a)/el mio/la mia/los míos/las mías', Doer.I),
     Pronoun(
         'yours',
         'tuyo/el tuyo/la tuya/los tuyos(as)/suyo/el suyo/la suya/las suyas',
-        DoerPronoun.you),
-    Pronoun('his', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.he),
-    Pronoun(
-        'hers', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.she),
-    Pronoun('its', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.it),
+        Doer.you),
+    Pronoun('his', 'suyo/el suyo/la suya/los suyos/las suyas', Doer.he),
+    Pronoun('hers', 'suyo/el suyo/la suya/los suyos/las suyas', Doer.she),
+    Pronoun('its', 'suyo/el suyo/la suya/los suyos/las suyas', Doer.it),
     Pronoun('ours', 'nuestro/el nuestro/la nuestra/los nuestros/las nuestras',
-        DoerPronoun.we),
-    Pronoun(
-        'theirs', 'suyo/el suyo/la suya/los suyos/las suyas', DoerPronoun.they),
+        Doer.we),
+    Pronoun('theirs', 'suyo/el suyo/la suya/los suyos/las suyas', Doer.they),
   ];
   @override
   final String en;
   @override
   final String es;
   @override
-  final DoerPronoun asPronoun;
+  final Doer asDoer;
 
   @override
   Countability get countability =>
@@ -59,7 +57,7 @@ class Pronoun extends AnyNoun {
   @override
   bool get isValid => true;
 
-  const Pronoun(this.en, this.es, this.asPronoun);
+  const Pronoun(this.en, this.es, this.asDoer);
 
   @override
   String toString() => en;

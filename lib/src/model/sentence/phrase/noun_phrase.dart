@@ -5,7 +5,7 @@ import '../determiner/determiner.dart';
 import '../determiner/determiner_type.dart';
 import '../noun/any_noun.dart';
 import '../noun/countability.dart';
-import '../noun/doer_pronoun.dart';
+import '../noun/doer.dart';
 import '../noun/noun.dart';
 import '../text_buffer.dart';
 
@@ -39,7 +39,7 @@ class NounPhrase extends AnyNoun {
   Countability get countability => noun?.countability ?? Countability.singular;
 
   @override
-  DoerPronoun get asPronoun => noun?.asPronoun ?? DoerPronoun.it;
+  Doer get asDoer => noun?.asDoer ?? Doer.it;
 
   @override
   bool get isSingularFirstPerson => noun?.isSingularFirstPerson ?? false;
@@ -90,7 +90,7 @@ class NounPhrase extends AnyNoun {
     Nullable<Determiner>? number,
     Nullable<Adjective>? adjective,
     Nullable<Noun>? noun,
-    Nullable<AnyAdjective>? endAdjective,
+    Nullable<AnyAdjective>? adjectivalPhrase,
   }) =>
       NounPhrase(
         quantifier: quantifier == null ? this.quantifier : quantifier.value,
@@ -98,8 +98,9 @@ class NounPhrase extends AnyNoun {
         number: number == null ? this.number : number.value,
         adjective: adjective == null ? this.adjective : adjective.value,
         noun: noun == null ? this.noun : noun.value,
-        adjectivalPhrase:
-            endAdjective == null ? this.adjectivalPhrase : endAdjective.value,
+        adjectivalPhrase: adjectivalPhrase == null
+            ? this.adjectivalPhrase
+            : adjectivalPhrase.value,
       );
 
   @override

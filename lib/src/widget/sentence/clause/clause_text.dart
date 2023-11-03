@@ -31,7 +31,7 @@ class ClauseText extends StatelessWidget {
           if (clause.isInterrogative) firstAuxiliaryVerbSpan,
           TextSpan(
               text: (clause.subject?.en ?? Label.subject)
-                  .addSpace(clause.isVerbContractionActive),
+                  .addSpace(!clause.isVerbContractionActive),
               style:
                   clause.subject == null ? Word.empty.style : Word.noun.style),
           if (!clause.isInterrogative) firstAuxiliaryVerbSpan,
@@ -40,7 +40,10 @@ class ClauseText extends StatelessWidget {
           TextSpan(text: aux.second?.addSpace(), style: Word.verb.style),
           TextSpan(text: aux.third?.addSpace(), style: Word.verb.style),
           TextSpan(
-              text: !clause.isBeAuxiliary ? '${clause.verbAsString()} ' : null,
+              text: clause.isBeAuxiliary
+                  ? null
+                  : (clause.conjugateVerb() ?? clause.verbPlaceholder)
+                      .addSpace(),
               style: clause.verb == null ? Word.empty.style : Word.verb.style),
           TextSpan(
               text: clause.hasDitransitiveVerb

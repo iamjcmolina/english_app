@@ -42,8 +42,8 @@ class VerbTile extends StatelessWidget {
         SentenceItemTile(
           style: Word.verb.style,
           placeholder: '${clause.verbPlaceholder}$auxiliaryVerbLabel',
-          en: clause.verbAsString(),
-          es: clause.verbAsStringEs(),
+          en: clause.conjugateVerb() ?? clause.verbPlaceholder,
+          es: clause.conjugateVerbEs() ?? clause.verbPlaceholderEs,
           hint: clause.isBeAuxiliary
               ? clause.firstAuxiliaryVerbDescription
               : null,
@@ -71,7 +71,7 @@ class VerbTile extends StatelessWidget {
               (AnyVerb e) => e.futureIEs,
               (AnyVerb e) => e.conditionalIEs,
             ],
-            displayStringForOption: (verb) => clause.verbAsString(verb),
+            displayStringForOption: (verb) => clause.conjugateVerb(verb) ?? '',
             onSelected: onVerbSelected,
             onChanged: (text) => onVerbChanged(),
             textController: verbEditingController,

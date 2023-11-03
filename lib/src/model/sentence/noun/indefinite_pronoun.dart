@@ -1,6 +1,6 @@
 import 'any_noun.dart';
 import 'countability.dart';
-import 'doer_pronoun.dart';
+import 'doer.dart';
 
 class IndefinitePronoun extends AnyNoun {
   @override
@@ -13,10 +13,11 @@ class IndefinitePronoun extends AnyNoun {
   final String description;
 
   @override
-  DoerPronoun get asPronoun => isPlural ? DoerPronoun.they : DoerPronoun.it;
+  Doer get asDoer => isPlural ? Doer.they : Doer.it;
 
-  DoerPronoun get asPronounEs =>
-      countabilityEs == Countability.plural ? DoerPronoun.they : DoerPronoun.it;
+  @override
+  Doer get asDoerEs =>
+      countabilityEs == Countability.plural ? Doer.they : Doer.it;
 
   @override
   bool get isSingularThirdPerson => isSingular;

@@ -187,9 +187,9 @@ class VocabularyProvider extends ChangeNotifier {
     final rows = await _getCsvData('verbs/phrasal-verbs');
     return rows
         .map((row) => PhrasalVerb(
-              infinitiveVerb: row[0],
-              pastVerb: row[1],
-              pastParticipleVerb: row[2],
+              infinitive: row[0],
+              past: row[1],
+              pastParticiple: row[2],
               particle: row[3],
               infinitiveEs: row[4],
               pastParticipleEs: row[5],
@@ -197,7 +197,7 @@ class VocabularyProvider extends ChangeNotifier {
               presentHeEs: row[7],
               pastIEs: row[8],
               pastWeEs: row[9],
-              separable: row[10] == 1,
+              isSeparable: row[10] == 1,
               isTransitive: row[11] == 1,
               isDitransitive: row[12] == 1,
             ))

@@ -197,7 +197,7 @@ class NounPhraseForm extends StatelessWidget {
   setNoun(noun) => setPhrase(phrase.copyWith(noun: Nullable(noun)));
 
   setAdjectivalPhrase(AnyAdjective? adjective) =>
-      setPhrase(phrase.copyWith(endAdjective: Nullable(adjective)));
+      setPhrase(phrase.copyWith(adjectivalPhrase: Nullable(adjective)));
 
   List<Determiner> determiners(VocabularyRepository vocabularyRepository) => [
         ...vocabularyRepository.articles(phrase.noun),

@@ -1,6 +1,6 @@
 import 'any_noun.dart';
 import 'countability.dart';
-import 'doer_pronoun.dart';
+import 'doer.dart';
 
 class Noun extends AnyNoun {
   @override
@@ -11,7 +11,7 @@ class Noun extends AnyNoun {
   final Countability countability;
 
   @override
-  DoerPronoun get asPronoun => isPlural ? DoerPronoun.they : DoerPronoun.it;
+  Doer get asDoer => isPlural ? Doer.they : Doer.it;
 
   @override
   bool get isSingularThirdPerson => isSingular;

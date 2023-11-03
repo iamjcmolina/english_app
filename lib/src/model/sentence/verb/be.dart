@@ -1,3 +1,4 @@
+import '../clause/independent_clause.dart';
 import 'any_verb.dart';
 
 class Be extends AnyVerb {
@@ -133,4 +134,55 @@ class Be extends AnyVerb {
     required this.conditionalWeEs,
     required this.conditionalTheyEs,
   });
+
+  @override
+  String simplePresent(IndependentClause clause) =>
+      clause.isModalVerbEnabled ? infinitive : _simplePresentFirstAux(clause);
+
+  String _simplePresentFirstAux(IndependentClause clause) => clause.isNegative
+      ? clause.hasSingularFirstPersonSubject
+          ? clause.isVerbContractionEnabled
+              ? "'m not"
+              : 'am not'
+          : clause.hasSingularThirdPersonSubject
+              ? clause.isVerbContractionEnabled
+                  ? "'s not"
+                  : clause.isNegativeContractionEnabled
+                      ? "isn't"
+                      : 'is not'
+              : clause.isVerbContractionEnabled
+                  ? "'re not"
+                  : clause.isNegativeContractionEnabled
+                      ? "aren't"
+                      : 'are not'
+      : clause.hasSingularFirstPersonSubject
+          ? clause.isAffirmative && clause.isVerbContractionEnabled
+              ? "'m"
+              : 'am'
+          : clause.hasSingularThirdPersonSubject
+              ? clause.isAffirmative && clause.isVerbContractionEnabled
+                  ? "'s"
+                  : 'is'
+              : clause.isAffirmative && clause.isVerbContractionEnabled
+                  ? "'re"
+                  : 'are';
+
+  @override
+  String simplePast(IndependentClause clause) => clause.isNegative
+      ? clause.isNegativeContractionEnabled
+          ? (clause.hasPluralSubject ? "weren't" : "wasn't")
+          : (clause.hasPluralSubject ? 'were not' : 'was not')
+      : (clause.hasPluralSubject ? 'were' : 'was');
+
+  @override
+  String simplePresentEs(IndependentClause clause) {
+    final affirmative = super.simplePresentEs(clause);
+    return clause.isNegative ? 'no $affirmative' : affirmative;
+  }
+
+  @override
+  String simplePastEs(IndependentClause clause) {
+    final affirmative = super.simplePastEs(clause);
+    return clause.isNegative ? 'no $affirmative' : affirmative;
+  }
 }
