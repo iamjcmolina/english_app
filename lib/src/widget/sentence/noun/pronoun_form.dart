@@ -38,6 +38,7 @@ class PronounForm extends StatelessWidget {
           style: Word.noun.style,
           title: Label.personalPronoun,
           textValue: pronoun?.en,
+          required: true,
           fields: [
             SentenceItemField<Pronoun>(
               label: Label.personalPronoun,

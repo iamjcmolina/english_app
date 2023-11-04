@@ -42,6 +42,7 @@ class IndefinitePronounForm extends StatelessWidget {
           style: Word.noun.style,
           title: Label.indefinitePronoun,
           textValue: pronoun?.en,
+          required: true,
           fields: [
             SentenceItemField<IndefinitePronoun>(
               label: Label.indefinitePronoun,

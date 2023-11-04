@@ -5,8 +5,10 @@ import '../noun/any_noun.dart';
 import '../noun/doer.dart';
 import '../noun/subject_complement.dart';
 import '../verb/any_verb.dart';
+import '../verb/auxiliary_verb_type.dart';
 import '../verb/auxiliary_verbs.dart';
 import '../verb/be.dart';
+import '../verb/contraction_type.dart';
 import '../verb/have.dart';
 import '../verb/modal_verb.dart';
 import '../verb/verb_tense.dart';
@@ -14,10 +16,8 @@ import 'clause_type.dart';
 import 'tense.dart';
 
 class IndependentClause {
-  final bool isModalVerbEnabled;
-  final bool isAffirmativeEmphasisEnabled;
-  final bool isVerbContractionEnabled;
-  final bool isNegativeContractionEnabled;
+  final AuxiliaryVerbType? auxiliaryVerbType;
+  final ContractionType? contractionType;
   final ClauseType clauseType;
   final Tense tense;
   final AnyAdverb? frontAdverb;
@@ -289,11 +289,16 @@ class IndependentClause {
 
   bool get isValid => false;
 
+  bool get isModalVerbEnabled => auxiliaryVerbType == AuxiliaryVerbType.modal;
+  bool get isAffirmativeEmphasisEnabled =>
+      auxiliaryVerbType == AuxiliaryVerbType.emphasis;
+  bool get isVerbContractionEnabled => contractionType == ContractionType.verb;
+  bool get isNegativeContractionEnabled =>
+      contractionType == ContractionType.negative;
+
   const IndependentClause({
-    this.isModalVerbEnabled = false,
-    this.isAffirmativeEmphasisEnabled = false,
-    this.isVerbContractionEnabled = true,
-    this.isNegativeContractionEnabled = false,
+    this.auxiliaryVerbType,
+    this.contractionType,
     this.clauseType = ClauseType.affirmative,
     this.tense = Tense.simplePresent,
     this.frontAdverb,
@@ -308,10 +313,8 @@ class IndependentClause {
   });
 
   IndependentClause copyWith({
-    bool? isModalVerbEnabled,
-    bool? isAffirmativeEmphasisEnabled,
-    bool? isVerbContractionEnabled,
-    bool? isNegativeContractionEnabled,
+    Nullable<AuxiliaryVerbType>? auxiliaryVerbType,
+    Nullable<ContractionType>? contractionType,
     ClauseType? clauseType,
     Tense? tense,
     Nullable<AnyAdverb>? frontAdverb,
@@ -325,13 +328,12 @@ class IndependentClause {
     Nullable<AnyAdverb>? endAdverb,
   }) =>
       IndependentClause(
-        isModalVerbEnabled: isModalVerbEnabled ?? this.isModalVerbEnabled,
-        isAffirmativeEmphasisEnabled:
-            isAffirmativeEmphasisEnabled ?? this.isAffirmativeEmphasisEnabled,
-        isVerbContractionEnabled:
-            isVerbContractionEnabled ?? this.isVerbContractionEnabled,
-        isNegativeContractionEnabled:
-            isNegativeContractionEnabled ?? this.isNegativeContractionEnabled,
+        auxiliaryVerbType: auxiliaryVerbType == null
+            ? this.auxiliaryVerbType
+            : auxiliaryVerbType.value,
+        contractionType: contractionType == null
+            ? this.contractionType
+            : contractionType.value,
         clauseType: clauseType ?? this.clauseType,
         tense: tense ?? this.tense,
         frontAdverb: frontAdverb == null ? this.frontAdverb : frontAdverb.value,

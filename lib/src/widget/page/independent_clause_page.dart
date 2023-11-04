@@ -37,7 +37,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   late IndependentClause clause;
   bool editingFirstAuxiliaryVerb = false;
   bool editingVerb = false;
-  int index = 0;
+  bool isFormShown = false;
 
   bool get isValid => clause.isValid;
 
@@ -76,17 +76,17 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              GestureDetector(
-                onTap: () => setState(() => index = index == 0 ? 1 : 0),
-                child: const Icon(Icons.chevron_left),
-              ),
+              IconButton(
+                  onPressed: toggleIsFormShown,
+                  icon: const Icon(Icons.chevron_left)),
               IndexedStack(
-                index: index,
+                index: isFormShown ? 1 : 0,
+                alignment: AlignmentDirectional.center,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: DropdownMenu<Tense>(
-                      label: const Text('Clause Tense'),
+                      label: const Text('Tense'),
                       initialSelection: clause.tense,
                       dropdownMenuEntries: Tense.values
                           .map(
@@ -98,7 +98,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownMenu<ClauseType>(
-                      label: const Text('Clause Type'),
+                      label: const Text('Form'),
                       initialSelection: clause.clauseType,
                       dropdownMenuEntries: ClauseType.values
                           .map(
@@ -109,10 +109,9 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () => setState(() => index = index == 0 ? 1 : 0),
-                child: const Icon(Icons.chevron_right),
-              ),
+              IconButton(
+                  onPressed: toggleIsFormShown,
+                  icon: const Icon(Icons.chevron_right)),
             ],
           ),
           ListTile(
@@ -150,14 +149,14 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
           SentenceItemTile(
             style: Word.verb.style,
-            placeholder: Label.secondAuxiliaryVerb,
+            placeholder: Label.auxiliaryVerb,
             en: auxiliaryVerbs.second,
             es: auxiliaryVerbs.secondEs,
             isShown: auxiliaryVerbs.second != null,
           ),
           SentenceItemTile(
             style: Word.verb.style,
-            placeholder: Label.thirdAuxiliaryVerb,
+            placeholder: Label.auxiliaryVerb,
             en: auxiliaryVerbs.third,
             es: auxiliaryVerbs.thirdEs,
             isShown: auxiliaryVerbs.third != null,
@@ -307,4 +306,6 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
       setState(() => editingFirstAuxiliaryVerb = !editingFirstAuxiliaryVerb);
 
   toggleEditingVerb() => setState(() => editingVerb = !editingVerb);
+
+  toggleIsFormShown() => setState(() => isFormShown = !isFormShown);
 }

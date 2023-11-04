@@ -23,12 +23,8 @@ class Label {
   static const directObjectEs = '<ObjetoDirecto>';
   static const subjectComplementEs = '<ComplementoDelSujeto>';
   // Auxiliary Verbs
-  static const firstAuxiliaryVerb = '<FirstAuxiliaryVerb>';
-  static const secondAuxiliaryVerb = '<SecondAuxiliaryVerb>';
-  static const thirdAuxiliaryVerb = '<ThirdAuxiliaryVerb>';
-  static const firstAuxiliaryVerbEs = '<PrimerVerboAuxiliar>';
-  static const secondAuxiliaryVerbEs = '<SegundoVerboAuxiliar>';
-  static const thirdAuxiliaryVerbEs = '<TercerVerboAuxiliar>';
+  static const auxiliaryVerb = '<AuxiliaryVerb>';
+  static const auxiliaryVerbEs = '<VerboAuxiliar>';
   // Modal Verbs
   static const modalVerb = '<ModalVerb>';
   static const negativeModalVerb = '<NegativeModalVerb>';
@@ -49,11 +45,8 @@ class Label {
   static const conditionalVerbEs = '<VerboCondicional>';
   // Adverbs
   static const adverb = '<Adverb>';
-  static const adverbialPhrase = '<AdverbialPhrase>';
-  static const intensifierAdverb = '<IntensifierOrMitigatorAdverb>';
   static const adverbEs = '<Adverbio>';
-  static const intensifierAdverbEs = '<AdverbioIntensificadorOMitigador>';
   // Others
-  static const objectOrAdverbialPhrase = '<ObjectOrAdverbialPhrase>';
+  static const objectOrAdverb = '<ObjectOrAdverb>';
   static const preposition = '<Preposition>';
 }

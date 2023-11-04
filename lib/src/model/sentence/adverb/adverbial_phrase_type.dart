@@ -1,6 +1,6 @@
 enum AdverbialPhraseType {
   word('Adverb Word'),
-  adverbPlusAdverb('Adverb + Adverb Phrase'),
+  adverbPlusAdverb('Intensifier/Mitigator + Adverb'),
   infinitivePhrase('Infinitive Phrase'),
   prepositionalPhrase('Prepositional Phrase');
 

@@ -48,7 +48,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
                 style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
-                text: (phrase.adverb?.en ?? Label.adverbialPhrase).addSpace(),
+                text: (phrase.adverb?.en ?? Label.adverb).addSpace(),
                 style: phrase.adverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
@@ -79,7 +79,7 @@ class PastParticiplePhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adverb.style,
-          placeholder: Label.adverbialPhrase,
+          placeholder: Label.adverb,
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),

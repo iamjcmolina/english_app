@@ -35,16 +35,16 @@ class VerbTile extends StatelessWidget {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     final auxiliaryVerbLabel =
-        clause.isBeAuxiliary ? ', ${Label.firstAuxiliaryVerb}' : '';
+        clause.isBeAuxiliary ? ', ${Label.auxiliaryVerb}' : '';
 
     return Column(
       children: [
         SentenceItemTile(
           style: Word.verb.style,
           placeholder: '${clause.verbPlaceholder}$auxiliaryVerbLabel',
-          en: clause.conjugateVerb() ?? clause.verbPlaceholder,
-          es: clause.conjugateVerbEs() ?? clause.verbPlaceholderEs,
-          hint: clause.isBeAuxiliary
+          en: clause.conjugateVerb(),
+          es: clause.conjugateVerbEs(),
+          hint: clause.isBeAuxiliary && !isEditingVerb
               ? clause.firstAuxiliaryVerbDescription
               : null,
           trailing:

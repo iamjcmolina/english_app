@@ -51,7 +51,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
               ),
               TextSpan(
                 text: phrase.object == null && phrase.adverb == null
-                    ? Label.objectOrAdverbialPhrase
+                    ? Label.objectOrAdverb
                     : null,
                 style: Word.empty.style,
               ),
@@ -97,7 +97,7 @@ class PresentParticiplePhraseForm extends StatelessWidget {
         ),
         SentenceItemTile(
           style: Word.adverb.style,
-          placeholder: Label.adverbialPhrase,
+          placeholder: Label.adverb,
           en: phrase.adverb?.en,
           es: phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),

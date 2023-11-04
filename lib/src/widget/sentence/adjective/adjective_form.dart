@@ -45,6 +45,7 @@ class AdjectiveForm extends StatelessWidget {
           style: Word.adjective.style,
           title: Label.adjective,
           textValue: adjective?.en,
+          required: true,
           fields: [
             SentenceItemField<Adjective>(
               label: Label.adjective,

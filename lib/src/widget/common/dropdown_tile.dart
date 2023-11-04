@@ -37,7 +37,7 @@ class _DropdownTileState extends State<DropdownTile> {
       children: [
         SentenceItemTile(
           style: widget.style,
-          placeholder: '<${widget.title}>',
+          placeholder: widget.title,
           en: widget.textValue,
           es: widget.textValueEs,
           trailing: Icon(

@@ -47,7 +47,6 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
             controller: textEditingController,
             focusNode: focusNode,
             decoration: InputDecoration(
-              label: Text(label),
               suffixIcon: IconButton(
                 onPressed: () => onClear(textEditingController),
                 icon: const Icon(Icons.clear),

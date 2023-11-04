@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/label.dart';
+import '../../../model/nullable.dart';
 import '../../../model/sentence/clause/independent_clause.dart';
 import '../../../model/sentence/clause/tense.dart';
 import '../../../model/sentence/verb/any_verb.dart';
+import '../../../model/sentence/verb/auxiliary_verb_type.dart';
 import '../../../model/sentence/verb/be.dart';
+import '../../../model/sentence/verb/contraction_type.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
@@ -51,28 +54,27 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
       Tense.simplePast => clause.isAffirmative && clause.verb is! Be,
       _ => false,
     };
-    bool isContractionAllowed = switch (clause.tense) {
+    bool isVerbContractionAllowed = switch (clause.tense) {
       Tense.simplePresent => !clause.isInterrogative &&
-          (clause.isModalVerbEnabled || clause.verb is Be),
+          (clause.isModalVerbEnabled &&
+                  (clause.modalVerb?.hasVerbContraction ?? false) ||
+              clause.verb is Be),
       Tense.simplePast || Tense.continuousPast => false,
       _ => !clause.isInterrogative,
     };
+    bool isNegativeContractionAllowed = clause.isNegative;
 
     bool isModalVerbFieldShown = isEditingVerb && isModalVerbEditable;
-    bool isModalVerbToggleShown = isEditingVerb && isModalVerbAllowed;
-    bool isEmphasisToggleShown = isEditingVerb && isEmphasisAllowed;
-    bool isContractionToggleShown = isEditingVerb && isContractionAllowed;
-    bool isNegativeToggleShown = isEditingVerb && clause.isNegative;
 
     return Column(
       children: [
         if (!clause.isBeAuxiliary)
           SentenceItemTile(
             style: Word.verb.style,
-            placeholder: Label.firstAuxiliaryVerb,
+            placeholder: Label.auxiliaryVerb,
             en: auxiliaryVerbs.first,
             es: auxiliaryVerbs.firstEs,
-            hint: clause.firstAuxiliaryVerbDescription,
+            hint: isEditingVerb ? null : clause.firstAuxiliaryVerbDescription,
             trailing: Icon(
                 isEditingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
             onTap: toggleEditingFirstAuxiliaryVerb,
@@ -108,53 +110,74 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
             onChanged: (text) => onModalVerbChanged(),
           ),
         if (isEditingVerb)
-          SwitchListTile(
-            title: const Text('Modal Verb'),
-            secondary: const Icon(Icons.add),
-            dense: true,
-            value: clause.isModalVerbEnabled,
-            onChanged: isModalVerbToggleShown
-                ? (bool value) => toggleModalVerb()
-                : null,
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Type'),
+                SegmentedButton<AuxiliaryVerbType>(
+                  segments: [
+                    ButtonSegment(
+                      value: AuxiliaryVerbType.emphasis,
+                      label: const Text('Emphasis'),
+                      enabled: isEmphasisAllowed,
+                    ),
+                    ButtonSegment(
+                      value: AuxiliaryVerbType.modal,
+                      label: const Text('Modal'),
+                      enabled: isModalVerbAllowed,
+                    ),
+                  ],
+                  selected: clause.auxiliaryVerbType == null
+                      ? {}
+                      : {clause.auxiliaryVerbType!},
+                  emptySelectionAllowed: true,
+                  onSelectionChanged: (e) =>
+                      setAuxiliaryVerbType(e.isEmpty ? null : e.first),
+                  style: const ButtonStyle(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: VisualDensity(vertical: -1),
+                  ),
+                ),
+              ],
+            ),
           ),
         if (isEditingVerb)
-          SwitchListTile(
-            secondary: const Icon(Icons.add),
-            title: const Text('Affirmative emphasis'),
-            value: clause.isAffirmativeEmphasisEnabled,
-            dense: true,
-            onChanged: isEmphasisToggleShown
-                ? (value) => toggleAffirmativeEmphasis()
-                : null,
-          ),
-        if (isEditingVerb)
-          SwitchListTile(
-            title: const Text('Verb Contraction'),
-            dense: true,
-            secondary: const Icon(Icons.compress),
-            value: clause.isVerbContractionEnabled,
-            onChanged: isContractionToggleShown
-                ? (value) {
-                    setClause(clause.copyWith(
-                      isVerbContractionEnabled:
-                          !clause.isVerbContractionEnabled,
-                      isNegativeContractionEnabled: false,
-                    ));
-                    if (verbController != null) {
-                      verbController!.text = clause.conjugateVerb() ?? '';
-                    }
-                  }
-                : null,
-          ),
-        if (isEditingVerb)
-          SwitchListTile(
-            title: const Text('Negative Contraction'),
-            dense: true,
-            secondary: const Icon(Icons.compress),
-            value: clause.isNegativeContractionEnabled,
-            onChanged: isNegativeToggleShown
-                ? (value) => toggleNegativeContraction()
-                : null,
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Contraction'),
+                SegmentedButton<ContractionType>(
+                  segments: [
+                    ButtonSegment(
+                      value: ContractionType.verb,
+                      label: const Text('Verb'),
+                      enabled: isVerbContractionAllowed,
+                    ),
+                    ButtonSegment(
+                      value: ContractionType.negative,
+                      label: const Text('Negative'),
+                      enabled: isNegativeContractionAllowed,
+                    ),
+                  ],
+                  selected: clause.contractionType == null
+                      ? {}
+                      : {clause.contractionType!},
+                  emptySelectionAllowed: true,
+                  onSelectionChanged: (e) =>
+                      setContractionType(e.isEmpty ? null : e.first),
+                  style: const ButtonStyle(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: VisualDensity(vertical: -1),
+                  ),
+                ),
+              ],
+            ),
           ),
       ],
     );
@@ -171,20 +194,9 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
     // showOrHideBottomAppBar();
   }
 
-  toggleModalVerb() => setClause(clause.copyWith(
-        isModalVerbEnabled: !clause.isModalVerbEnabled,
-        isAffirmativeEmphasisEnabled: false,
-      ));
+  void setAuxiliaryVerbType(AuxiliaryVerbType? type) =>
+      setClause(clause.copyWith(auxiliaryVerbType: Nullable(type)));
 
-  toggleAffirmativeEmphasis() => setClause(clause.copyWith(
-        isAffirmativeEmphasisEnabled: !clause.isAffirmativeEmphasisEnabled,
-        isModalVerbEnabled: false,
-        isVerbContractionEnabled: false,
-      ));
-
-  toggleNegativeContraction() => setClause(clause.copyWith(
-        isNegativeContractionEnabled: !clause.isNegativeContractionEnabled,
-        isVerbContractionEnabled: false,
-        isAffirmativeEmphasisEnabled: false,
-      ));
+  void setContractionType(ContractionType? type) =>
+      setClause(clause.copyWith(contractionType: Nullable(type)));
 }
