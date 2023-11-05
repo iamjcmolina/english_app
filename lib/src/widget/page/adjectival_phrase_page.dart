@@ -42,7 +42,8 @@ class _AdjectivalPhrasePageState extends State<AdjectivalPhrasePage> {
   void initState() {
     super.initState();
     adjective = widget.adjective;
-    type = AdjectivalPhraseType.prepositionalPhrase;
+    type = AdjectivalPhraseType.from(
+        adjective.runtimeType, AdjectivalPhraseType.prepositionalPhrase);
   }
 
   @override

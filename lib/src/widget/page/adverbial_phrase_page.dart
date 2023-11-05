@@ -41,9 +41,8 @@ class _AdverbialPhrasePageState extends State<AdverbialPhrasePage> {
   void initState() {
     super.initState();
     adverb = widget.adverb;
-    type = switch (widget.adverb.runtimeType) {
-      _ => AdverbialPhraseType.word,
-    };
+    type = AdverbialPhraseType.from(
+        adverb.runtimeType, AdverbialPhraseType.adverb);
   }
 
   @override

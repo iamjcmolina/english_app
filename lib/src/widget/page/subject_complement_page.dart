@@ -44,11 +44,8 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
   void initState() {
     super.initState();
     complement = widget.complement;
-    type = switch (complement.runtimeType) {
-      NounPhrase => SubjectComplementType.nounPhrase,
-      Adjective => SubjectComplementType.adjective,
-      _ => SubjectComplementType.possessivePronoun,
-    };
+    type = SubjectComplementType.from(
+        complement.runtimeType, SubjectComplementType.possessivePronoun);
   }
 
   @override

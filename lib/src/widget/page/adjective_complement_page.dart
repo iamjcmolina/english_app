@@ -34,10 +34,8 @@ class _AdjectiveComplementPage extends State<AdjectiveComplementPage> {
   void initState() {
     super.initState();
     complement = widget.complement;
-    type = switch (complement.runtimeType) {
-      PrepositionalPhrase => AdjectiveComplementType.prepositionalPhrase,
-      _ => AdjectiveComplementType.infinitivePhrase,
-    };
+    type = AdjectiveComplementType.from(
+        complement.runtimeType, AdjectiveComplementType.infinitivePhrase);
   }
 
   @override

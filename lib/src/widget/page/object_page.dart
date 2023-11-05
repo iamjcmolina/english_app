@@ -49,13 +49,8 @@ class _ObjectPageState extends State<ObjectPage> {
   void initState() {
     super.initState();
     object = widget.object;
-    type = object == null
-        ? (mustAllowPronouns ? NounType.pronoun : NounType.nounPhrase)
-        : switch (object.runtimeType) {
-            NounPhrase => NounType.nounPhrase,
-            IndefinitePronoun => NounType.indefinitePronoun,
-            _ => NounType.pronoun,
-          };
+    type = type = NounType.from(object.runtimeType,
+        mustAllowPronouns ? NounType.pronoun : NounType.nounPhrase);
   }
 
   @override

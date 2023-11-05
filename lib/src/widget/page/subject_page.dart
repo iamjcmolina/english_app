@@ -36,10 +36,11 @@ class _SubjectPageState extends State<SubjectPage> {
   void initState() {
     super.initState();
     subject = widget.clause.subject;
-    type = switch (widget.clause.subject.runtimeType) {
+    type = switch (subject.runtimeType) {
       NounPhrase => NounType.nounPhrase,
       _ => NounType.pronoun,
     };
+    type = NounType.from(subject.runtimeType, NounType.pronoun);
   }
 
   @override
