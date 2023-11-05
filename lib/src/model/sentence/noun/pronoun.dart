@@ -13,10 +13,10 @@ class Pronoun extends AnyNoun {
     Pronoun('they', 'ellos', Doer.they),
   ];
   static const objectPronouns = [
-    Pronoun('me', 'me', Doer.I),
-    Pronoun('you', 'te', Doer.you),
+    Pronoun('me', 'me/mi', Doer.I),
+    Pronoun('you', 'te/ti/tu', Doer.you),
     Pronoun('him', 'lo/le', Doer.he),
-    Pronoun('her', 'lo/le', Doer.she),
+    Pronoun('her', 'la/lo/le', Doer.she),
     Pronoun('it', 'lo/le', Doer.it),
     Pronoun('us', 'nos', Doer.we),
     Pronoun('them', 'les', Doer.they),
