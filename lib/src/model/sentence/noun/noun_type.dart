@@ -1,9 +1,8 @@
-import 'package:english_app/src/model/sentence/noun/pronoun.dart';
-
 import '../phrase/gerund_phrase.dart';
 import '../phrase/infinitive_phrase.dart';
 import '../phrase/noun_phrase.dart';
 import 'indefinite_pronoun.dart';
+import 'pronoun.dart';
 
 enum NounType {
   pronoun("Pronoun"),
