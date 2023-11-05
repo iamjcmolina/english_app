@@ -229,7 +229,7 @@ class VocabularyProvider extends ChangeNotifier {
       "assets/vocabulary/$filename.csv",
     );
     return const CsvToListConverter()
-        .convert(text, eol: "\n", shouldParseNumbers: true)
+        .convert(text)
         .skip(1)
         .where((element) => element.length > 1)
         .toList();

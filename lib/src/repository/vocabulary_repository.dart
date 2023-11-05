@@ -43,27 +43,27 @@ class VocabularyRepository extends ChangeNotifier {
       ? Determiner.demonstrativeAdjectives
       : Determiner.demonstrativeAdjectives
           .where((e) =>
-              noun.isUncountable && e.isUncountableAllowed ||
-              noun.isSingular && e.isSingularAllowed ||
-              noun.isPlural && e.isPluralAllowed)
+              noun.isUncountable && e.allowsUncountable ||
+              noun.isSingular && e.allowsSingular ||
+              noun.isPlural && e.allowsPlural)
           .toList();
 
   List<Determiner> distributiveAdjectives(Noun? noun) => noun == null
       ? provider.distributiveAdjectives
       : provider.distributiveAdjectives
           .where((e) =>
-              noun.isUncountable && e.isUncountableAllowed ||
-              noun.isSingular && e.isSingularAllowed ||
-              noun.isPlural && e.isPluralAllowed)
+              noun.isUncountable && e.allowsUncountable ||
+              noun.isSingular && e.allowsSingular ||
+              noun.isPlural && e.allowsPlural)
           .toList();
 
   List<Determiner> quantifiers(Noun? noun) => noun == null
       ? provider.quantifiers
       : provider.quantifiers
           .where((e) =>
-              noun.isUncountable && e.isUncountableAllowed ||
-              noun.isSingular && e.isSingularAllowed ||
-              noun.isPlural && e.isPluralAllowed)
+              noun.isUncountable && e.allowsUncountable ||
+              noun.isSingular && e.allowsSingular ||
+              noun.isPlural && e.allowsPlural)
           .toList();
 
   List<Determiner> numbers(Noun? noun, [bool includeOrdinalNumbers = false]) =>
@@ -75,9 +75,9 @@ class VocabularyRepository extends ChangeNotifier {
           : [
               ...provider.naturalNumbers
                   .where((e) =>
-                      noun.isUncountable && e.isUncountableAllowed ||
-                      noun.isSingular && e.isSingularAllowed ||
-                      noun.isPlural && e.isPluralAllowed)
+                      noun.isUncountable && e.allowsUncountable ||
+                      noun.isSingular && e.allowsSingular ||
+                      noun.isPlural && e.allowsPlural)
                   .toList(),
               if (includeOrdinalNumbers && !noun.isPlural)
                 ...provider.ordinalNumbers,
@@ -90,9 +90,9 @@ class VocabularyRepository extends ChangeNotifier {
   List<Noun> nouns(Determiner? determiner) => determiner == null
       ? provider.nouns
       : provider.nouns.where((e) {
-          return e.isUncountable && determiner.isUncountableAllowed ||
-              e.isSingular && determiner.isSingularAllowed ||
-              e.isPlural && determiner.isPluralAllowed;
+          return e.isUncountable && determiner.allowsUncountable ||
+              e.isSingular && determiner.allowsSingular ||
+              e.isPlural && determiner.allowsPlural;
         }).toList();
 
   List<IndefinitePronoun> indefinitePronouns(bool isNegative) =>

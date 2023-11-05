@@ -264,13 +264,10 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
       switch (position) {
         case AdverbPosition.front:
           setFrontAdverb(response is AnyAdverb ? response : null);
-          break;
         case AdverbPosition.mid:
           setMidAdverb(response is AnyAdverb ? response : null);
-          break;
         case _:
           setEndAdverb(response is AnyAdverb ? response : null);
-          break;
       }
     }
   }
