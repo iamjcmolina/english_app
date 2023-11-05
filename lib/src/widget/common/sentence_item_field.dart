@@ -3,27 +3,27 @@ import 'package:flutter/material.dart';
 class SentenceItemField<T extends Object> extends StatelessWidget {
   final String label;
   final T? value;
+  final void Function(T?) setValue;
   final List<T> options;
+  final Iterable<String Function(T)> getEnWords;
+  final Iterable<String Function(T)> getEsWords;
   final String Function(T) displayStringForOption;
-  final Iterable<String Function(T)> filterValuesEn;
-  final Iterable<String Function(T)> filterValuesEs;
-  final bool enable;
-  final void Function(T) onSelected;
-  final void Function(String)? onChanged;
+  final void Function()? onSelected;
   final TextEditingController? textController;
+  final bool enable;
 
   const SentenceItemField({
     super.key,
     required this.label,
     required this.value,
+    required this.setValue,
     required this.options,
+    this.getEnWords = const [],
+    this.getEsWords = const [],
     this.displayStringForOption = RawAutocomplete.defaultStringForOption,
-    this.filterValuesEn = const [],
-    this.filterValuesEs = const [],
-    this.enable = true,
-    required this.onSelected,
-    required this.onChanged,
+    this.onSelected,
     this.textController,
+    this.enable = true,
   });
 
   @override
@@ -37,13 +37,17 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
         focusNode: FocusNode(),
         textEditingController: textController,
         optionsBuilder: optionsBuilder,
-        onSelected: onSelected,
+        onSelected: (T value) {
+          setValue(value);
+          if (onSelected != null) {
+            onSelected!();
+          }
+        },
         fieldViewBuilder: (BuildContext context,
             TextEditingController textEditingController,
             FocusNode focusNode,
             VoidCallback onFieldSubmitted) {
           return TextFormField(
-            keyboardType: TextInputType.none,
             controller: textEditingController,
             focusNode: focusNode,
             decoration: InputDecoration(
@@ -54,7 +58,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
             ),
             validator: validator,
             autovalidateMode: AutovalidateMode.always,
-            onChanged: onChanged,
+            //onChanged: (text) => setValue(null),
           );
         },
         optionsViewBuilder: (
@@ -76,10 +80,14 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
                     return GestureDetector(
                       onTap: () => onSelected(option),
                       child: ListTile(
-                        title: Text(displayStringForOption(option)),
-                        subtitle: Text(
-                            '${filterValuesEn.map((f) => f(option)).join(',')}\n'
-                            '${filterValuesEs.map((f) => f(option)).join(',')}'),
+                        title: Text(getEnWords
+                            .map(
+                                (String Function(T) getWord) => getWord(option))
+                            .join(',')),
+                        subtitle: Text(getEsWords
+                            .map(
+                                (String Function(T) getWord) => getWord(option))
+                            .join(',')),
                       ),
                     );
                   },
@@ -96,14 +104,18 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
 
   void onClear(TextEditingController textController) {
     textController.clear();
-    if (onChanged != null) onChanged!('');
+    setValue(null);
   }
 
-  Iterable<T> optionsBuilder(TextEditingValue textValue) =>
-      textValue.text == '' ? options : filter(textValue.text.toLowerCase());
-
-  Iterable<T> filter(String text) => options.where((T e) =>
-      [...filterValuesEn, ...filterValuesEs].any((f) => f(e).contains(text)));
+  Iterable<T> optionsBuilder(TextEditingValue editingValue) =>
+      editingValue.text == ''
+          ? options
+          : options.where((T option) => <String Function(T)>[
+                ...getEnWords,
+                ...getEsWords
+              ].any((String Function(T) getWord) => getWord(option)
+                  .toLowerCase()
+                  .contains(editingValue.text.toLowerCase())));
 
   String? validator(String? value) =>
       isOptionFound(value) ? null : 'Choose a valid $label';

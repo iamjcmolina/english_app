@@ -44,19 +44,14 @@ class PronounForm extends StatelessWidget {
               label: Label.personalPronoun,
               value: pronoun,
               options: pronouns,
-              filterValuesEn: [(Pronoun e) => e.en],
-              filterValuesEs: [(Pronoun e) => e.es],
+              getEnWords: [(Pronoun e) => e.en],
+              getEsWords: [(Pronoun e) => e.es],
               displayStringForOption: (pronoun) => pronoun.en,
-              onSelected: (pronoun) => validateAndSet(pronoun),
-              onChanged: (text) => validateAndSet(null),
+              setValue: (pronoun) => setPronoun(pronoun),
             ),
           ],
         ),
       ],
     );
-  }
-
-  validateAndSet(Pronoun? pronoun) {
-    setPronoun(pronoun);
   }
 }

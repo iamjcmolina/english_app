@@ -92,12 +92,12 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
             label: Label.modalVerb,
             value: clause.modalVerb,
             options: modalVerbs,
-            filterValuesEn: [
+            getEnWords: [
               (ModalVerb e) => e.verb,
               (ModalVerb e) => e.verbContraction,
               (ModalVerb e) => e.negativeContraction,
             ],
-            filterValuesEs: [
+            getEsWords: [
               (ModalVerb e) => e.affirmativeIEs,
               (ModalVerb e) => e.affirmativeYouEs,
               (ModalVerb e) => e.affirmativeHeEs,
@@ -106,8 +106,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
             ],
             displayStringForOption: (modalVerb) =>
                 clause.conjugateModal(modalVerb) ?? '',
-            onSelected: onModalVerbSelected,
-            onChanged: (text) => onModalVerbChanged(),
+            setValue: (e) => setModalVerb(e),
           ),
         if (isEditingVerb)
           Padding(
@@ -181,17 +180,6 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
           ),
       ],
     );
-  }
-
-  void onModalVerbSelected(ModalVerb modalVerb) {
-    setModalVerb(modalVerb);
-    //toggleEditingFirstAuxiliaryVerb();
-    // showOrHideBottomAppBar();
-  }
-
-  onModalVerbChanged() {
-    // setModalVerb(null);
-    // showOrHideBottomAppBar();
   }
 
   void setAuxiliaryVerbType(AuxiliaryVerbType? type) =>

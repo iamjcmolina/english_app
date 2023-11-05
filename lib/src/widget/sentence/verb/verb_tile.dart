@@ -57,12 +57,12 @@ class VerbTile extends StatelessWidget {
             label: clause.verbPlaceholder,
             value: clause.verb,
             options: vocabularyRepository.verbs(),
-            filterValuesEn: [
+            getEnWords: [
               (AnyVerb e) => e.infinitive,
               (AnyVerb e) => e.pastParticiple,
               (AnyVerb e) => e.progressive,
             ],
-            filterValuesEs: [
+            getEsWords: [
               (AnyVerb e) => e.infinitiveEs,
               (AnyVerb e) => e.pastParticipleEs,
               (AnyVerb e) => e.progressiveEs,
@@ -72,20 +72,10 @@ class VerbTile extends StatelessWidget {
               (AnyVerb e) => e.conditionalIEs,
             ],
             displayStringForOption: (verb) => clause.conjugateVerb(verb) ?? '',
-            onSelected: onVerbSelected,
-            onChanged: (text) => onVerbChanged(),
+            setValue: (verb) => setVerb(verb),
             textController: verbEditingController,
           ),
       ],
     );
-  }
-
-  void onVerbSelected(AnyVerb verb) {
-    setVerb(verb);
-    toggleEditingVerb();
-  }
-
-  onVerbChanged() {
-    setVerb(null);
   }
 }

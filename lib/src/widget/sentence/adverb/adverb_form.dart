@@ -59,18 +59,13 @@ class AdverbForm extends StatelessWidget {
               label: Label.adverb,
               value: adverb,
               options: adverbs,
-              filterValuesEn: [(Adverb e) => e.en],
-              filterValuesEs: [(Adverb e) => e.es],
-              onSelected: (e) => validateAndSet(e),
-              onChanged: (text) => validateAndSet(null),
+              getEnWords: [(Adverb e) => e.en],
+              getEsWords: [(Adverb e) => e.es],
+              setValue: (e) => setAdverb(e),
             ),
           ],
         ),
       ],
     );
-  }
-
-  void validateAndSet(Adverb? adverb) {
-    setAdverb(adverb);
   }
 }
