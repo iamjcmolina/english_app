@@ -122,7 +122,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           SentenceItemTile(
             style: Word.adverb.style,
             placeholder: Label.adverb,
-            en: clause.frontAdverb?.toString(),
+            en: clause.frontAdverb?.en,
             es: clause.frontAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToAdverbPage(context, AdverbPosition.front),
@@ -132,7 +132,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           SentenceItemTile(
             style: Word.noun.style,
             placeholder: Label.subject,
-            en: clause.subject?.toString(),
+            en: clause.subject?.en,
             es: clause.subject?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToSubjectPage(context),
@@ -142,7 +142,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           SentenceItemTile(
             style: Word.adverb.style,
             placeholder: Label.adverb,
-            en: clause.midAdverb?.toString(),
+            en: clause.midAdverb?.en,
             es: clause.midAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToAdverbPage(context, AdverbPosition.mid),
@@ -165,7 +165,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           SentenceItemTile(
             style: Word.noun.style,
             placeholder: Label.indirectObject,
-            en: clause.indirectObject?.toString(),
+            en: clause.indirectObject?.en,
             es: clause.indirectObject?.es,
             isShown: clause.hasDitransitiveVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -174,7 +174,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           SentenceItemTile(
             style: Word.noun.style,
             placeholder: Label.directObject,
-            en: clause.directObject?.toString(),
+            en: clause.directObject?.en,
             es: clause.directObject?.es,
             isShown: clause.hasTransitiveVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -193,7 +193,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           SentenceItemTile(
             style: Word.adverb.style,
             placeholder: Label.adverb,
-            en: clause.endAdverb?.toString(),
+            en: clause.endAdverb?.en,
             es: clause.endAdverb?.es,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToAdverbPage(context, AdverbPosition.end),

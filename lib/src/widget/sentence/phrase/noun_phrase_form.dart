@@ -169,7 +169,7 @@ class NounPhraseForm extends StatelessWidget {
         SentenceItemTile(
           style: Word.adjective.style,
           placeholder: Label.adjectivalPhrase,
-          en: phrase.adjectivalPhrase?.toString(),
+          en: phrase.adjectivalPhrase?.en,
           es: phrase.adjectivalPhrase?.singularEs,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToAdjectivalPhrasePage(context),
