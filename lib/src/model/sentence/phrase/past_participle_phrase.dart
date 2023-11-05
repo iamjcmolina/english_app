@@ -35,7 +35,4 @@ class PastParticiplePhrase implements AnyAdjective {
         verb: verb == null ? this.verb : verb.value,
         adverb: adverb == null ? this.adverb : adverb.value,
       );
-
-  @override
-  String toString() => en;
 }

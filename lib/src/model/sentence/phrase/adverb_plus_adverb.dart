@@ -36,7 +36,4 @@ class AdverbPlusAdverb implements AnyAdverb {
             : intensifierAdverb.value,
         adverb: adverb == null ? this.adverb : adverb.value,
       );
-
-  @override
-  String toString() => en;
 }

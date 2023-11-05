@@ -20,7 +20,4 @@ class Noun extends AnyNoun {
   bool get isValid => true;
 
   const Noun(this.en, this.es, this.countability);
-
-  @override
-  String toString() => en;
 }

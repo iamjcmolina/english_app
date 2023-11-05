@@ -9,7 +9,4 @@ class Adjective extends AnyAdjective {
   final String pluralEs;
 
   const Adjective(this.en, this.singularEs, this.pluralEs);
-
-  @override
-  String toString() => en;
 }

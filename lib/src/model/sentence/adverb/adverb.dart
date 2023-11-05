@@ -57,7 +57,4 @@ class Adverb extends AnyAdverb {
 
   const Adverb.evaluative(String en, String es)
       : this(en, es, AdverbType.evaluative, true, true, true);
-
-  @override
-  String toString() => en;
 }

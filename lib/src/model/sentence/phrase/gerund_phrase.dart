@@ -57,7 +57,4 @@ class GerundPhrase implements AnyNoun {
         object: object == null ? this.object : object.value,
         adverb: adverb == null ? this.adverb : adverb.value,
       );
-
-  @override
-  String toString() => en;
 }

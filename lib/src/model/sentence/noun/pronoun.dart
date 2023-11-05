@@ -58,7 +58,4 @@ class Pronoun extends AnyNoun {
   bool get isValid => true;
 
   const Pronoun(this.en, this.es, this.asDoer);
-
-  @override
-  String toString() => en;
 }

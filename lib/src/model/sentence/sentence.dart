@@ -7,10 +7,8 @@ class Sentence {
 
   Sentence copyWith({
     IndependentClause? independentClause,
-  }) => Sentence(
-    independentClause: independentClause ?? this.independentClause,
-  );
-
-  @override
-  String toString() => '$independentClause';
+  }) =>
+      Sentence(
+        independentClause: independentClause ?? this.independentClause,
+      );
 }

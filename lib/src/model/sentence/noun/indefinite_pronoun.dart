@@ -29,7 +29,4 @@ class IndefinitePronoun extends AnyNoun {
 
   const IndefinitePronoun(this.en, this.es, this.countability,
       this.countabilityEs, this.description);
-
-  @override
-  String toString() => en;
 }

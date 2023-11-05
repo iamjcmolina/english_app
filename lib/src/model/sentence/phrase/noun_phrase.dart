@@ -102,7 +102,4 @@ class NounPhrase extends AnyNoun {
             ? this.adjectivalPhrase
             : adjectivalPhrase.value,
       );
-
-  @override
-  String toString() => en;
 }

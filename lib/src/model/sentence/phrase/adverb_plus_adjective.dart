@@ -32,7 +32,4 @@ class AdverbPlusAdjective extends AnyAdjective {
         adverb: adverb == null ? this.adverb : adverb.value,
         adjective: adjective == null ? this.adjective : adjective.value,
       );
-
-  @override
-  String toString() => en;
 }

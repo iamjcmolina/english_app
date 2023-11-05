@@ -98,7 +98,4 @@ class Determiner {
         allowsUncountable = false,
         allowsSingular = true,
         allowsPlural = false;
-
-  @override
-  String toString() => en;
 }

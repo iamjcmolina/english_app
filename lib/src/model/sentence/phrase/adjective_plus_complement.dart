@@ -33,7 +33,4 @@ class AdjectivePlusComplement extends AnyAdjective {
         adjective: adjective == null ? this.adjective : adjective.value,
         complement: complement == null ? this.complement : complement.value,
       );
-
-  @override
-  String toString() => en;
 }
