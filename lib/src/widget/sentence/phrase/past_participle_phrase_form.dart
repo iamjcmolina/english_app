@@ -104,6 +104,8 @@ class PastParticiplePhraseForm extends StatelessWidget {
                 position: AdverbPosition.end,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    setAdverbialPhrase(response is AnyAdverb ? response : null);
+    if (response != null) {
+      setAdverbialPhrase(response is AnyAdverb ? response : null);
+    }
   }
 }

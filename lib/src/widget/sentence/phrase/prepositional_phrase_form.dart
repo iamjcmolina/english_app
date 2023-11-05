@@ -104,6 +104,8 @@ class PrepositionalPhraseForm extends StatelessWidget {
                 isIndirectObject: false,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    setObject(response is AnyNoun ? response : null);
+    if (response != null) {
+      setObject(response is AnyNoun ? response : null);
+    }
   }
 }

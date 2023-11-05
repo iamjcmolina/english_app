@@ -115,7 +115,7 @@ class GerundPhraseForm extends StatelessWidget {
   setAdverbialPhrase(AnyAdverb? adverb) =>
       setPhrase(phrase.copyWith(adverb: Nullable(adverb)));
 
-  goToObjectPage(BuildContext context) async {
+  void goToObjectPage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -125,10 +125,12 @@ class GerundPhraseForm extends StatelessWidget {
                 isIndirectObject: false,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    setObject(response is AnyNoun ? response : null);
+    if (response != null) {
+      setObject(response is AnyNoun ? response : null);
+    }
   }
 
-  goToAdverbialPhrasePage(BuildContext context) async {
+  void goToAdverbialPhrasePage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -137,6 +139,8 @@ class GerundPhraseForm extends StatelessWidget {
                 position: AdverbPosition.end,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    setAdverbialPhrase(response is AnyAdverb ? response : null);
+    if (response != null) {
+      setAdverbialPhrase(response is AnyAdverb ? response : null);
+    }
   }
 }

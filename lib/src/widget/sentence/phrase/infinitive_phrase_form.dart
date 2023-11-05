@@ -127,7 +127,9 @@ class InfinitivePhraseForm extends StatelessWidget {
                 isIndirectObject: false,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    setObject(response is AnyNoun ? response : null);
+    if (response != null) {
+      setObject(response is AnyNoun ? response : null);
+    }
   }
 
   void goToAdverbialPhrasePage(BuildContext context) async {
@@ -139,6 +141,8 @@ class InfinitivePhraseForm extends StatelessWidget {
                 position: AdverbPosition.end,
                 isNegative: isNegative,
                 isPlural: isPlural)));
-    setAdverbialPhrase(response is AnyAdverb ? response : null);
+    if (response != null) {
+      setAdverbialPhrase(response is AnyAdverb ? response : null);
+    }
   }
 }

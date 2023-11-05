@@ -208,7 +208,7 @@ class NounPhraseForm extends StatelessWidget {
         ...vocabularyRepository.numbers(phrase.noun)
       ];
 
-  goToAdjectivalPhrasePage(BuildContext context) async {
+  void goToAdjectivalPhrasePage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -217,6 +217,8 @@ class NounPhraseForm extends StatelessWidget {
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));
-    setAdjectivalPhrase(response is AnyAdjective ? response : null);
+    if (response != null) {
+      setAdjectivalPhrase(response is AnyAdjective ? response : null);
+    }
   }
 }

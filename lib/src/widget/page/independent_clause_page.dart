@@ -203,13 +203,15 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
     );
   }
 
-  goToSubjectPage(BuildContext context) async {
+  void goToSubjectPage(BuildContext context) async {
     final response = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => SubjectPage(clause: clause)));
-    setSubject(response is AnyNoun ? response : null);
+    if (response != null) {
+      setSubject(response is AnyNoun ? response : null);
+    }
   }
 
-  goToObjectPage(BuildContext context, bool isIndirectObject) async {
+  void goToObjectPage(BuildContext context, bool isIndirectObject) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -222,14 +224,16 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   isNegative: clause.isNegative,
                   isPlural: clause.hasPluralSubject,
                 )));
-    if (isIndirectObject) {
-      setIndirectObject(response is AnyNoun ? response : null);
-    } else {
-      setDirectObject(response is AnyNoun ? response : null);
+    if (response != null) {
+      if (isIndirectObject) {
+        setIndirectObject(response is AnyNoun ? response : null);
+      } else {
+        setDirectObject(response is AnyNoun ? response : null);
+      }
     }
   }
 
-  goToComplementPage(BuildContext context) async {
+  void goToComplementPage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -238,10 +242,12 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   isNegative: clause.isNegative,
                   isPlural: clause.hasPluralSubject,
                 )));
-    setComplement(response is SubjectComplement ? response : null);
+    if (response != null) {
+      setComplement(response is SubjectComplement ? response : null);
+    }
   }
 
-  goToAdverbPage(BuildContext context, AdverbPosition position) async {
+  void goToAdverbPage(BuildContext context, AdverbPosition position) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -254,16 +260,18 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                 position: position,
                 isNegative: clause.isNegative,
                 isPlural: clause.hasPluralSubject)));
-    switch (position) {
-      case AdverbPosition.front:
-        setFrontAdverb(response is AnyAdverb ? response : null);
-        break;
-      case AdverbPosition.mid:
-        setMidAdverb(response is AnyAdverb ? response : null);
-        break;
-      case _:
-        setEndAdverb(response is AnyAdverb ? response : null);
-        break;
+    if (response != null) {
+      switch (position) {
+        case AdverbPosition.front:
+          setFrontAdverb(response is AnyAdverb ? response : null);
+          break;
+        case AdverbPosition.mid:
+          setMidAdverb(response is AnyAdverb ? response : null);
+          break;
+        case _:
+          setEndAdverb(response is AnyAdverb ? response : null);
+          break;
+      }
     }
   }
 

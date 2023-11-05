@@ -98,7 +98,7 @@ class AdjectivePlusComplementForm extends StatelessWidget {
   void setComplement(AdjectiveComplement? complement) =>
       setPhrase(phrase.copyWith(complement: Nullable(complement)));
 
-  goToComplementPage(BuildContext context) async {
+  void goToComplementPage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -107,6 +107,8 @@ class AdjectivePlusComplementForm extends StatelessWidget {
                   isNegative: isNegative,
                   isPlural: isPlural,
                 )));
-    setComplement(response is AdjectiveComplement ? response : null);
+    if (response != null) {
+      setComplement(response is AdjectiveComplement ? response : null);
+    }
   }
 }
