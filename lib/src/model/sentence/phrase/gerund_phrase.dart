@@ -6,7 +6,7 @@ import '../noun/doer.dart';
 import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
-class GerundPhrase implements AnyNoun {
+class GerundPhrase extends AnyNoun {
   @override
   final Doer asDoer = Doer.it;
   @override

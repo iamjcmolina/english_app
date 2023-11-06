@@ -1,6 +1,8 @@
-import 'any_adjective.dart';
+import 'adjective_phrase.dart';
 
-class Adjective extends AnyAdjective {
+class Adjective extends AdjectivePhrase {
+  @override
+  final bool isValid = true;
   @override
   final String en;
   @override

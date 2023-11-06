@@ -32,7 +32,7 @@ class NounPhrase extends AnyNoun {
       .add(determiner?.es)
       .add(number?.es, when: allowNumber)
       .add(noun?.es)
-      .add(adjectiveEs, when: allowAdjective)
+      .add(adjective?.toEs(isPlural), when: allowAdjective)
       .toString();
 
   @override
@@ -68,9 +68,6 @@ class NounPhrase extends AnyNoun {
       ? null
       : '${quantifier!.es}'
           '${quantifier!.en.contains('of') ? '' : ' de'}';
-
-  String? get adjectiveEs =>
-      isPlural ? adjective?.pluralEs : adjective?.singularEs;
 
   @override
   bool get isValid => determiner != null && noun != null;

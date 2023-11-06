@@ -96,12 +96,12 @@ class NounPhraseForm extends StatelessWidget {
               ),
               TextSpan(
                 text: phrase.allowAdjective
-                    ? phrase.adjective?.es.addSpace()
+                    ? phrase.adjective?.toEs(phrase.noun?.isPlural).addSpace()
                     : null,
                 style: Word.adjective.style,
               ),
               TextSpan(
-                text: phrase.adjectivalPhrase?.es,
+                text: phrase.adjectivalPhrase?.toEs(phrase.noun?.isPlural),
                 style: Word.adjective.style,
               ),
             ],
@@ -167,7 +167,7 @@ class NounPhraseForm extends StatelessWidget {
           style: Word.adjective.style,
           title: Label.adjective,
           textValue: phrase.adjective?.en,
-          textValueEs: phrase.adjectiveEs,
+          textValueEs: phrase.adjective?.toEs(phrase.isPlural),
           show: phrase.allowAdjective,
           fields: [
             SentenceItemField<Adjective>(
@@ -206,7 +206,7 @@ class NounPhraseForm extends StatelessWidget {
           style: Word.adjective.style,
           placeholder: Label.adjectivalPhrase,
           en: phrase.adjectivalPhrase?.en,
-          es: phrase.adjectivalPhrase?.singularEs,
+          es: phrase.adjectivalPhrase?.toEs(),
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToAdjectivalPhrasePage(context),
         ),

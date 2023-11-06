@@ -1,10 +1,10 @@
 import '../../nullable.dart';
 import '../adjective/adjective.dart';
 import '../adjective/adjective_complement.dart';
-import '../adjective/any_adjective.dart';
+import '../adjective/adjective_phrase.dart';
 import '../text_buffer.dart';
 
-class AdjectivePlusComplement extends AnyAdjective {
+class AdjectivePlusComplement extends AdjectivePhrase {
   final Adjective? adjective;
   final AdjectiveComplement? complement;
 

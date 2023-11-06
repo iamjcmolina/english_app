@@ -1,11 +1,11 @@
 import '../../nullable.dart';
-import '../adjective/any_adjective.dart';
+import '../adjective/phrasal_attributive.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
-class PresentParticiplePhrase implements AnyAdjective {
+class PresentParticiplePhrase extends PhrasalAttributive {
   final AnyVerb? verb;
   final AnyNoun? object;
   final AnyAdverb? adverb;
@@ -23,12 +23,6 @@ class PresentParticiplePhrase implements AnyAdjective {
       .add(object?.es)
       .add(adverb?.es)
       .toString();
-
-  @override
-  String get pluralEs => es;
-
-  @override
-  String get singularEs => es;
 
   @override
   bool get isValid => verb != null && (object != null || adverb != null);

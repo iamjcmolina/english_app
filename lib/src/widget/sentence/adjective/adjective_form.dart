@@ -38,7 +38,7 @@ class AdjectiveForm extends StatelessWidget {
                       : Word.adjective.style),
               const TextSpan(text: '\n'),
               TextSpan(
-                  text: adjective?.es ?? Label.adjectiveEs,
+                  text: adjective?.toEs() ?? Label.adjectiveEs,
                   style: adjective == null
                       ? Word.empty.style
                       : Word.adjective.style),

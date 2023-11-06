@@ -1,6 +1,6 @@
 import '../../nullable.dart';
 import '../adjective/adjective_complement.dart';
-import '../adjective/any_adjective.dart';
+import '../adjective/phrasal_attributive.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../noun/countability.dart';
@@ -8,8 +8,8 @@ import '../noun/doer.dart';
 import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
-class InfinitivePhrase
-    implements AnyNoun, AnyAdjective, AnyAdverb, AdjectiveComplement {
+class InfinitivePhrase extends PhrasalAttributive
+    implements AnyNoun, AnyAdverb, AdjectiveComplement {
   @override
   final Doer asDoer = Doer.it;
   @override
@@ -48,12 +48,6 @@ class InfinitivePhrase
       .add(object?.es)
       .add(adverb?.es)
       .toString();
-
-  @override
-  String get pluralEs => es;
-
-  @override
-  String get singularEs => es;
 
   @override
   Doer get asDoerEs => asDoer;

@@ -7,7 +7,6 @@ abstract class AnyNoun extends SubjectComplement {
   bool get isValid;
   @override
   String get en;
-  @override
   String get es;
   Countability get countability;
   Doer get asDoer;
@@ -20,4 +19,7 @@ abstract class AnyNoun extends SubjectComplement {
   bool get isPlural => countability == Countability.plural;
 
   const AnyNoun();
+
+  @override
+  String toEs([bool? isPluralSubject]) => es;
 }

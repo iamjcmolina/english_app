@@ -186,7 +186,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             style: Word.noun.style,
             placeholder: Label.subjectComplement,
             en: clause.subjectComplement?.en,
-            es: clause.subjectComplement?.es,
+            es: clause.subjectComplement?.toEs(clause.hasPluralSubject),
             isShown: clause.hasLinkingVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToComplementPage(context),

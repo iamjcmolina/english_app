@@ -126,7 +126,9 @@ class _ClauseTextEs extends StatelessWidget {
             style: Word.noun.style),
         TextSpan(
             text: clause.hasLinkingVerb
-                ? clause.subjectComplement?.es.addSpace()
+                ? clause.subjectComplement
+                    ?.toEs(clause.hasPluralSubject)
+                    .addSpace()
                 : null,
             style: Word.noun.style),
         TextSpan(text: clause.endAdverb?.es, style: Word.adverb.style),

@@ -1,13 +1,13 @@
 import '../../nullable.dart';
 import '../adjective/adjective_complement.dart';
-import '../adjective/any_adjective.dart';
+import '../adjective/phrasal_attributive.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../preposition/preposition.dart';
 import '../text_buffer.dart';
 
-class PrepositionalPhrase
-    implements AnyAdjective, AnyAdverb, AdjectiveComplement {
+class PrepositionalPhrase extends PhrasalAttributive
+    implements AnyAdverb, AdjectiveComplement {
   @override
   final bool isAllowedInFront = true;
   @override
@@ -22,12 +22,6 @@ class PrepositionalPhrase
 
   @override
   String get es => TextBuffer().add(preposition?.es).add(object?.es).toString();
-
-  @override
-  String get pluralEs => es;
-
-  @override
-  String get singularEs => es;
 
   @override
   bool get isValid => preposition != null && object != null;

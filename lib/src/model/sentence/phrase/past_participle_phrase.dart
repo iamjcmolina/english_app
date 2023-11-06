@@ -1,10 +1,10 @@
 import '../../nullable.dart';
-import '../adjective/any_adjective.dart';
+import '../adjective/phrasal_attributive.dart';
 import '../adverb/any_adverb.dart';
 import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
-class PastParticiplePhrase implements AnyAdjective {
+class PastParticiplePhrase extends PhrasalAttributive {
   final AnyVerb? verb;
   final AnyAdverb? adverb;
 
@@ -15,12 +15,6 @@ class PastParticiplePhrase implements AnyAdjective {
   @override
   String get es =>
       TextBuffer().add(verb?.pastParticipleEs).add(adverb?.es).toString();
-
-  @override
-  String get pluralEs => es;
-
-  @override
-  String get singularEs => es;
 
   @override
   bool get isValid => verb != null && adverb != null;
