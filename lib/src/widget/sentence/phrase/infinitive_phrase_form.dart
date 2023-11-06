@@ -66,9 +66,8 @@ class InfinitivePhraseForm extends StatelessWidget {
               ),
               const TextSpan(text: '\n'),
               TextSpan(
-                text: phrase.verb == null
-                    ? '${Label.infinitiveVerbEs} '
-                    : 'to ${phrase.verb!.infinitiveEs} ',
+                text: (phrase.verb?.infinitiveEs ?? Label.infinitiveVerbEs)
+                    .addSpace(),
                 style: phrase.verb == null ? Word.empty.style : Word.verb.style,
               ),
               TextSpan(
