@@ -1,24 +1,16 @@
 import '../../nullable.dart';
 import '../adjective/adjective.dart';
 import '../adjective/adjective_complement.dart';
-import '../adjective/adjective_phrase.dart';
+import '../adjective/any_adjective.dart';
 import '../text_buffer.dart';
 
-class AdjectivePlusComplement extends AdjectivePhrase {
+class AdjectivePlusComplement implements AnyAdjective {
   final Adjective? adjective;
   final AdjectiveComplement? complement;
 
   @override
   String get en =>
       TextBuffer().add(adjective?.en).add(complement?.en).toString();
-
-  @override
-  String get pluralEs =>
-      TextBuffer().add(adjective?.pluralEs).add(complement?.es).toString();
-
-  @override
-  String get singularEs =>
-      TextBuffer().add(adjective?.singularEs).add(complement?.es).toString();
 
   @override
   bool get isValid => adjective != null && complement != null;
@@ -33,4 +25,10 @@ class AdjectivePlusComplement extends AdjectivePhrase {
         adjective: adjective == null ? this.adjective : adjective.value,
         complement: complement == null ? this.complement : complement.value,
       );
+
+  @override
+  String toEs([bool? isPluralSubject]) => TextBuffer()
+      .add(adjective?.toEs(isPluralSubject))
+      .add(complement?.es)
+      .toString();
 }

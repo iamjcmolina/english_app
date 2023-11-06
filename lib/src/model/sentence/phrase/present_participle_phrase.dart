@@ -1,11 +1,11 @@
 import '../../nullable.dart';
-import '../adjective/phrasal_attributive.dart';
+import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../text_buffer.dart';
 import '../verb/any_verb.dart';
 
-class PresentParticiplePhrase extends PhrasalAttributive {
+class PresentParticiplePhrase implements AnyAdjective {
   final AnyVerb? verb;
   final AnyNoun? object;
   final AnyAdverb? adverb;
@@ -15,13 +15,6 @@ class PresentParticiplePhrase extends PhrasalAttributive {
       .add(verb?.progressive)
       .add(object?.en)
       .add(adverb?.en)
-      .toString();
-
-  @override
-  String get es => TextBuffer()
-      .add(verb?.pastParticipleEs)
-      .add(object?.es)
-      .add(adverb?.es)
       .toString();
 
   @override
@@ -43,4 +36,11 @@ class PresentParticiplePhrase extends PhrasalAttributive {
         object: object == null ? this.object : object.value,
         adverb: adverb == null ? this.adverb : adverb.value,
       );
+
+  @override
+  String toEs([bool? isPluralSubject]) => TextBuffer()
+      .add(verb?.pastParticipleEs)
+      .add(object?.es)
+      .add(adverb?.es)
+      .toString();
 }

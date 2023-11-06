@@ -1,14 +1,19 @@
-import 'adjective_phrase.dart';
+import 'any_adjective.dart';
 
-class Adjective extends AdjectivePhrase {
+class Adjective implements AnyAdjective {
   @override
   final bool isValid = true;
   @override
   final String en;
-  @override
   final String singularEs;
-  @override
   final String pluralEs;
 
   const Adjective(this.en, this.singularEs, this.pluralEs);
+
+  @override
+  String toEs([bool? isPluralSubject]) => isPluralSubject == null
+      ? '$singularEs/$pluralEs'
+      : isPluralSubject
+          ? pluralEs
+          : singularEs;
 }

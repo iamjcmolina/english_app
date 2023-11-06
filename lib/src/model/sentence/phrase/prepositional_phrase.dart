@@ -1,13 +1,13 @@
 import '../../nullable.dart';
 import '../adjective/adjective_complement.dart';
-import '../adjective/phrasal_attributive.dart';
+import '../adjective/any_adjective.dart';
 import '../adverb/any_adverb.dart';
 import '../noun/any_noun.dart';
 import '../preposition/preposition.dart';
 import '../text_buffer.dart';
 
-class PrepositionalPhrase extends PhrasalAttributive
-    implements AnyAdverb, AdjectiveComplement {
+class PrepositionalPhrase
+    implements AnyAdverb, AnyAdjective, AdjectiveComplement {
   @override
   final bool isAllowedInFront = true;
   @override
@@ -36,4 +36,7 @@ class PrepositionalPhrase extends PhrasalAttributive
         preposition: preposition == null ? this.preposition : preposition.value,
         object: object == null ? this.object : object.value,
       );
+
+  @override
+  String toEs([bool? isPluralSubject]) => es;
 }

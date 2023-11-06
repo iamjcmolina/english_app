@@ -206,7 +206,7 @@ class NounPhraseForm extends StatelessWidget {
           style: Word.adjective.style,
           placeholder: Label.adjectivalPhrase,
           en: phrase.adjectivalPhrase?.en,
-          es: phrase.adjectivalPhrase?.toEs(),
+          es: phrase.adjectivalPhrase?.toEs(phrase.noun?.isPlural),
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToAdjectivalPhrasePage(context),
         ),
