@@ -73,6 +73,37 @@ class NounPhraseForm extends StatelessWidget {
                 text: phrase.adjectivalPhrase?.en,
                 style: Word.adjective.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: phrase.allowQuantifier
+                    ? phrase.quantifierOfEs?.addSpace()
+                    : null,
+                style: Word.determiner.style,
+              ),
+              TextSpan(
+                text: (phrase.determiner?.es ?? Label.determinerEs).addSpace(),
+                style: phrase.determiner == null
+                    ? Word.empty.style
+                    : Word.determiner.style,
+              ),
+              TextSpan(
+                text: phrase.allowNumber ? phrase.number?.es.addSpace() : null,
+                style: Word.determiner.style,
+              ),
+              TextSpan(
+                text: (phrase.noun?.es ?? Label.nounEs).addSpace(),
+                style: phrase.noun == null ? Word.empty.style : Word.noun.style,
+              ),
+              TextSpan(
+                text: phrase.allowAdjective
+                    ? phrase.adjective?.es.addSpace()
+                    : null,
+                style: Word.adjective.style,
+              ),
+              TextSpan(
+                text: phrase.adjectivalPhrase?.es,
+                style: Word.adjective.style,
+              ),
             ],
           )),
         ),
@@ -88,6 +119,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Determiner>(
               label: Label.quantifier,
               value: phrase.quantifier,
+              displayStringForOption: (e) => e.en,
               options: vocabularyRepository.quantifiers(phrase.noun),
               getEnWords: [(Determiner e) => e.en],
               getEsWords: [(Determiner e) => e.es],
@@ -105,6 +137,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Determiner>(
               label: Label.determiner,
               value: phrase.determiner,
+              displayStringForOption: (e) => e.en,
               options: determiners(vocabularyRepository),
               getEnWords: [(Determiner e) => e.en],
               getEsWords: [(Determiner e) => e.es],
@@ -122,6 +155,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Determiner>(
               label: Label.number,
               value: phrase.number,
+              displayStringForOption: (e) => e.en,
               options: vocabularyRepository.numbers(phrase.noun, true),
               getEnWords: [(Determiner e) => e.en],
               getEsWords: [(Determiner e) => e.es],
@@ -139,6 +173,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Adjective>(
               label: Label.adjective,
               value: phrase.adjective,
+              displayStringForOption: (e) => e.en,
               options: vocabularyRepository.adjectives(),
               getEnWords: [(Adjective e) => e.en],
               getEsWords: [
@@ -159,6 +194,7 @@ class NounPhraseForm extends StatelessWidget {
             SentenceItemField<Noun>(
               label: Label.noun,
               value: phrase.noun,
+              displayStringForOption: (e) => e.en,
               options: vocabularyRepository.nouns(phrase.determiner),
               getEnWords: [(Noun e) => e.en],
               getEsWords: [(Noun e) => e.es],

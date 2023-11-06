@@ -27,10 +27,17 @@ class PronounForm extends StatelessWidget {
       header: [
         settingsControl,
         ListTile(
-          title: Text(
-            pronoun?.en ?? Label.personalPronoun,
-            style: pronoun == null ? Word.empty.style : Word.noun.style,
-          ),
+          title: Text.rich(TextSpan(
+            children: [
+              TextSpan(
+                  text: pronoun?.en ?? Label.personalPronoun,
+                  style: pronoun == null ? Word.empty.style : Word.noun.style),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                  text: pronoun?.es ?? Label.personalPronounEs,
+                  style: pronoun == null ? Word.empty.style : Word.noun.style),
+            ],
+          )),
         ),
       ],
       body: [

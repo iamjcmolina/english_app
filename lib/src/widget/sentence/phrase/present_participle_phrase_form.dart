@@ -63,6 +63,26 @@ class PresentParticiplePhraseForm extends StatelessWidget {
                 text: phrase.adverb?.en,
                 style: Word.adverb.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: (phrase.verb?.progressiveEs ?? Label.progressiveVerbEs)
+                    .addSpace(),
+                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
+              ),
+              TextSpan(
+                text: phrase.object == null && phrase.adverb == null
+                    ? Label.objectOrAdverbEs
+                    : null,
+                style: Word.empty.style,
+              ),
+              TextSpan(
+                text: phrase.object?.es.addSpace(),
+                style: Word.noun.style,
+              ),
+              TextSpan(
+                text: phrase.adverb?.es,
+                style: Word.adverb.style,
+              ),
             ],
           )),
         ),

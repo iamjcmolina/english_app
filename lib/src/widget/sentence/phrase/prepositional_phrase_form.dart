@@ -52,6 +52,19 @@ class PrepositionalPhraseForm extends StatelessWidget {
                 style:
                     phrase.object == null ? Word.empty.style : Word.noun.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text:
+                    (phrase.preposition?.es ?? Label.prepositionEs).addSpace(),
+                style: phrase.preposition == null
+                    ? Word.empty.style
+                    : Word.preposition.style,
+              ),
+              TextSpan(
+                text: (phrase.object?.es ?? Label.objectEs).addSpace(),
+                style:
+                    phrase.object == null ? Word.empty.style : Word.noun.style,
+              ),
             ],
           )),
         ),

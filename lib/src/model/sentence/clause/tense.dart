@@ -1,16 +1,16 @@
 enum Tense {
-  simplePresent('S. present'),
-  simplePast('S. past'),
-  simpleFuture('S. future'),
-  simplePresentPerfect('S. present perfect'),
-  simplePastPerfect('S. past perfect'),
-  simpleFuturePerfect('S. future perfect'),
-  continuousPresent('C. present'),
-  continuousPast('C. past'),
-  continuousFuture('C. future'),
-  continuousPresentPerfect('C. present perfect'),
-  continuousPastPerfect('C. past perfect'),
-  continuousFuturePerfect('C. future perfect');
+  simplePresent('S. Present'),
+  simplePast('S. Past'),
+  simpleFuture('S. Future'),
+  simplePresentPerfect('S. Present Perfect'),
+  simplePastPerfect('S. Past Perfect'),
+  simpleFuturePerfect('S. Future Perfect'),
+  continuousPresent('C. Present'),
+  continuousPast('C. Past'),
+  continuousFuture('C. Future'),
+  continuousPresentPerfect('C. Present Perfect'),
+  continuousPastPerfect('C. Past Perfect'),
+  continuousFuturePerfect('C. Future Perfect');
 
   final String name;
 

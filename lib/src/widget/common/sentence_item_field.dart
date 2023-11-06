@@ -16,11 +16,11 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
+    required this.displayStringForOption,
     required this.setValue,
     required this.options,
     this.getEnWords = const [],
     this.getEsWords = const [],
-    this.displayStringForOption = RawAutocomplete.defaultStringForOption,
     this.onSelected,
     this.textController,
     this.enable = true,
@@ -87,6 +87,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
                         subtitle: Text(getEsWords
                             .map(
                                 (String Function(T) getWord) => getWord(option))
+                            .where((String e) => e.isNotEmpty)
                             .join(',')),
                       ),
                     );

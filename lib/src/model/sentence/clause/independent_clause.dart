@@ -408,6 +408,8 @@ class IndependentClause {
       Doer.they => modal.affirmativeTheyEs,
       Doer.he || Doer.she || Doer.it => modal.affirmativeHeEs,
     };
-    return isNegative ? 'no $affirmative' : affirmative;
+    return isNegative
+        ? 'no${affirmative.isEmpty ? '' : ' $affirmative'}'
+        : affirmative;
   }
 }

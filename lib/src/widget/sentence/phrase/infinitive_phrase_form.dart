@@ -64,6 +64,27 @@ class InfinitivePhraseForm extends StatelessWidget {
                 text: phrase.adverb?.en.addSpace(),
                 style: Word.adverb.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: phrase.verb == null
+                    ? '${Label.infinitiveVerbEs} '
+                    : 'to ${phrase.verb!.infinitiveEs} ',
+                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
+              ),
+              TextSpan(
+                text: phrase.object == null && phrase.adverb == null
+                    ? Label.objectOrAdverbEs
+                    : null,
+                style: Word.empty.style,
+              ),
+              TextSpan(
+                text: phrase.object?.es.addSpace(),
+                style: Word.noun.style,
+              ),
+              TextSpan(
+                text: phrase.adverb?.es.addSpace(),
+                style: Word.adverb.style,
+              ),
             ],
           )),
         ),

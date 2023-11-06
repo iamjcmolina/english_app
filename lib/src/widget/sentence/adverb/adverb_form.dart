@@ -43,6 +43,10 @@ class AdverbForm extends StatelessWidget {
               TextSpan(
                   text: adverb?.en ?? Label.adverb,
                   style: adverb == null ? Word.empty.style : Word.adverb.style),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                  text: adverb?.es ?? Label.adverbEs,
+                  style: adverb == null ? Word.empty.style : Word.adverb.style),
             ],
           )),
         ),
@@ -59,6 +63,7 @@ class AdverbForm extends StatelessWidget {
               label: Label.adverb,
               value: adverb,
               options: adverbs,
+              displayStringForOption: (e) => e.en,
               getEnWords: [(Adverb e) => e.en],
               getEsWords: [(Adverb e) => e.es],
               setValue: (e) => setAdverb(e),

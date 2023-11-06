@@ -49,6 +49,19 @@ class AdverbPlusAdjectiveForm extends StatelessWidget {
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: (phrase.adverb?.es ?? Label.adverbEs).addSpace(),
+                style: phrase.adverb == null
+                    ? Word.empty.style
+                    : Word.adverb.style,
+              ),
+              TextSpan(
+                text: (phrase.adjective?.es ?? Label.adjectiveEs).addSpace(),
+                style: phrase.adjective == null
+                    ? Word.empty.style
+                    : Word.adjective.style,
+              ),
             ],
           )),
         ),

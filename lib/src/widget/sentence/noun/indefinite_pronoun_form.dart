@@ -31,10 +31,17 @@ class IndefinitePronounForm extends StatelessWidget {
       header: [
         settingsControl,
         ListTile(
-          title: Text(
-            pronoun?.en ?? Label.indefinitePronoun,
-            style: pronoun == null ? Word.empty.style : Word.noun.style,
-          ),
+          title: Text.rich(TextSpan(
+            children: [
+              TextSpan(
+                  text: pronoun?.en ?? Label.indefinitePronoun,
+                  style: pronoun == null ? Word.empty.style : Word.noun.style),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                  text: pronoun?.es ?? Label.indefinitePronounEs,
+                  style: pronoun == null ? Word.empty.style : Word.noun.style),
+            ],
+          )),
         ),
       ],
       body: [

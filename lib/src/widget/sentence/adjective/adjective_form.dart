@@ -32,10 +32,16 @@ class AdjectiveForm extends StatelessWidget {
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: adjective?.en ?? Label.adjective,
-                style:
-                    adjective == null ? Word.empty.style : Word.adjective.style,
-              ),
+                  text: adjective?.en ?? Label.adjective,
+                  style: adjective == null
+                      ? Word.empty.style
+                      : Word.adjective.style),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                  text: adjective?.es ?? Label.adjectiveEs,
+                  style: adjective == null
+                      ? Word.empty.style
+                      : Word.adjective.style),
             ],
           )),
         ),
@@ -50,6 +56,7 @@ class AdjectiveForm extends StatelessWidget {
             SentenceItemField<Adjective>(
               label: Label.adjective,
               value: adjective,
+              displayStringForOption: (e) => e.en,
               options: vocabularyRepository.adjectives(),
               getEnWords: [(Adjective e) => e.en],
               getEsWords: [

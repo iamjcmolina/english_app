@@ -54,6 +54,20 @@ class AdjectivePlusComplementForm extends StatelessWidget {
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: (phrase.adjective?.es ?? Label.adjectiveEs).addSpace(),
+                style: phrase.adjective == null
+                    ? Word.empty.style
+                    : Word.adjective.style,
+              ),
+              TextSpan(
+                text: (phrase.complement?.es ?? Label.adjectiveComplementEs)
+                    .addSpace(),
+                style: phrase.complement == null
+                    ? Word.empty.style
+                    : Word.adjective.style,
+              ),
             ],
           )),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class SentenceItemTile extends StatelessWidget {
   final TextStyle style;
   final String placeholder;
+  final String placeholderEs;
   final String? en;
   final String? es;
   final String? hint;
@@ -15,6 +16,7 @@ class SentenceItemTile extends StatelessWidget {
     super.key,
     required this.style,
     required this.placeholder,
+    this.placeholderEs = '',
     required this.en,
     required this.es,
     this.hint,
@@ -41,14 +43,18 @@ class SentenceItemTile extends StatelessWidget {
       title: Text.rich(TextSpan(
         children: [
           TextSpan(
-              text: isEnEmpty ? '' : '$en ',
+              text: isEnEmpty ? null : '$en ',
               style: TextStyle(color: style.color)),
           TextSpan(
               text: '$placeholder ', style: isEnEmpty ? null : smallFontStyle),
-          TextSpan(text: isRequired ? '*' : '', style: starStyle),
+          TextSpan(text: isRequired ? '*' : null, style: starStyle),
+          if (!isEsEmpty || placeholderEs.isNotEmpty)
+            const TextSpan(text: '\n'),
           TextSpan(
-              text: isEsEmpty ? '' : '\n$es',
+              text: isEsEmpty ? null : '$es ',
               style: TextStyle(color: style.color, fontSize: smallFont)),
+          TextSpan(
+              text: placeholderEs, style: isEsEmpty ? null : smallFontStyle),
         ],
       )),
       subtitle: isHintEmpty ? null : Text(hint!, style: italicStyle),

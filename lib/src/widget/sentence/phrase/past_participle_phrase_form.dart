@@ -53,6 +53,19 @@ class PastParticiplePhraseForm extends StatelessWidget {
                     ? Word.empty.style
                     : Word.adverb.style,
               ),
+              const TextSpan(text: '\n'),
+              TextSpan(
+                text: (phrase.verb?.pastParticipleEs ??
+                        Label.pastParticipleVerbEs)
+                    .addSpace(),
+                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
+              ),
+              TextSpan(
+                text: (phrase.adverb?.es ?? Label.adverbEs).addSpace(),
+                style: phrase.adverb == null
+                    ? Word.empty.style
+                    : Word.adverb.style,
+              ),
             ],
           )),
         ),

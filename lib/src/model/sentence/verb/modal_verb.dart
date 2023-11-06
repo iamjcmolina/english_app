@@ -7,7 +7,7 @@ class ModalVerb {
         negativeWithVerbContraction: "cannot",
         negativeContraction: "can't",
         affirmativeIEs: 'puedo',
-        affirmativeSingularYouEs: 'puedes',
+        affirmativeYouEs: 'puedes/pueden',
         affirmativeHeEs: 'puede',
         affirmativeWeEs: 'podemos',
         affirmativeTheyEs: 'pueden'),
@@ -18,7 +18,7 @@ class ModalVerb {
         negativeWithVerbContraction: "could not",
         negativeContraction: "couldn't",
         affirmativeIEs: 'podría',
-        affirmativeSingularYouEs: 'podrías',
+        affirmativeYouEs: 'podrías/podrían',
         affirmativeHeEs: 'podría',
         affirmativeWeEs: 'podríamos',
         affirmativeTheyEs: 'podrían'),
@@ -29,7 +29,7 @@ class ModalVerb {
         negativeWithVerbContraction: "may not",
         negativeContraction: "mayn't",
         affirmativeIEs: 'podría',
-        affirmativeSingularYouEs: 'podrías',
+        affirmativeYouEs: 'podrías/podrían',
         affirmativeHeEs: 'podría',
         affirmativeWeEs: 'podríamos',
         affirmativeTheyEs: 'podrían'),
@@ -40,7 +40,7 @@ class ModalVerb {
         negativeWithVerbContraction: "might not",
         negativeContraction: "mightn't",
         affirmativeIEs: 'podría',
-        affirmativeSingularYouEs: 'podrías',
+        affirmativeYouEs: 'podrías/podrían',
         affirmativeHeEs: 'podría',
         affirmativeWeEs: 'podríamos',
         affirmativeTheyEs: 'podrían'),
@@ -51,7 +51,7 @@ class ModalVerb {
         negativeWithVerbContraction: "must not",
         negativeContraction: "mustn't",
         affirmativeIEs: 'debo',
-        affirmativeSingularYouEs: 'debes',
+        affirmativeYouEs: 'debes/deben',
         affirmativeHeEs: 'debe',
         affirmativeWeEs: 'debemos',
         affirmativeTheyEs: 'deben'),
@@ -62,7 +62,7 @@ class ModalVerb {
         negativeWithVerbContraction: "should not",
         negativeContraction: "shouldn't",
         affirmativeIEs: 'debería',
-        affirmativeSingularYouEs: 'deberías',
+        affirmativeYouEs: 'deberías/deberían',
         affirmativeHeEs: 'debería',
         affirmativeWeEs: 'deberíamos',
         affirmativeTheyEs: 'deberían'),
@@ -71,7 +71,12 @@ class ModalVerb {
         verbContraction: "'d",
         negative: 'would not',
         negativeWithVerbContraction: "'d not",
-        negativeContraction: "wouldn't"),
+        negativeContraction: "wouldn't",
+        affirmativeIEs: '',
+        affirmativeYouEs: '',
+        affirmativeHeEs: '',
+        affirmativeWeEs: '',
+        affirmativeTheyEs: ''),
   ];
   final String verb;
   final String verbContraction;
@@ -79,7 +84,7 @@ class ModalVerb {
   final String negativeWithVerbContraction;
   final String negativeContraction;
   final String affirmativeIEs;
-  final String affirmativeSingularYouEs;
+  final String affirmativeYouEs;
   final String affirmativeHeEs;
   final String affirmativeWeEs;
   final String affirmativeTheyEs;
@@ -88,18 +93,16 @@ class ModalVerb {
 
   bool get hasVerbContraction => verb != verbContraction;
 
-  String get affirmativeYouEs => '$affirmativeSingularYouEs/$affirmativeTheyEs';
-
   const ModalVerb({
     required this.verb,
     required this.verbContraction,
     required this.negative,
     required this.negativeWithVerbContraction,
     required this.negativeContraction,
-    this.affirmativeIEs = '',
-    this.affirmativeSingularYouEs = '',
-    this.affirmativeHeEs = '',
-    this.affirmativeWeEs = '',
-    this.affirmativeTheyEs = '',
+    required this.affirmativeIEs,
+    required this.affirmativeYouEs,
+    required this.affirmativeHeEs,
+    required this.affirmativeWeEs,
+    required this.affirmativeTheyEs,
   });
 }

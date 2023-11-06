@@ -93,9 +93,12 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
             value: clause.modalVerb,
             options: modalVerbs,
             getEnWords: [
-              (ModalVerb e) => e.verb,
-              (ModalVerb e) => e.verbContraction,
-              (ModalVerb e) => e.negativeContraction,
+              if (!clause.isNegative) (ModalVerb e) => e.verb,
+              if (!clause.isNegative) (ModalVerb e) => e.verbContraction,
+              if (clause.isNegative) (ModalVerb e) => e.negative,
+              if (clause.isNegative)
+                (ModalVerb e) => e.negativeWithVerbContraction,
+              if (clause.isNegative) (ModalVerb e) => e.negativeContraction,
             ],
             getEsWords: [
               (ModalVerb e) => e.affirmativeIEs,

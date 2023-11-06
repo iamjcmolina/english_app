@@ -170,6 +170,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             isShown: clause.hasDitransitiveVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToObjectPage(context, true),
+            isRequired: true,
           ),
           SentenceItemTile(
             style: Word.noun.style,
@@ -179,6 +180,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             isShown: clause.hasTransitiveVerb,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToObjectPage(context, false),
+            isRequired: true,
           ),
           SentenceItemTile(
             style: Word.noun.style,
