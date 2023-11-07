@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../model/sentence/adjective/adjective.dart';
 import '../model/sentence/adverb/adverb.dart';
+import '../model/sentence/adverb/kind_of_degree.dart';
 import '../model/sentence/determiner/determiner.dart';
 import '../model/sentence/noun/countability.dart';
 import '../model/sentence/noun/indefinite_pronoun.dart';
@@ -151,7 +152,15 @@ class VocabularyProvider extends ChangeNotifier {
     List<List<dynamic>> rows = await _getCsvData('adverbs/degree');
     return rows
         .map((row) => Adverb.degree(
-            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1))
+            row[0],
+            row[1],
+            switch (row[2]) {
+              'intensifier' => KindOfDegree.intensifier,
+              'moderator' => KindOfDegree.moderator,
+              'mitigator' => KindOfDegree.mitigator,
+              _ => KindOfDegree.none,
+            },
+            row[3]))
         .toList();
   }
 

@@ -1,6 +1,21 @@
-en,es,isAllowedInFront,isAllowedInTheMiddle,isAllowedInTheEnd
-really,realmente,0,1,0
-very,muy,0,1,0
-quite,bastante,0,1,0
-a lot,mucho,0,0,1
-a bit,un poco,0,0,1
+en,es,kindOfDegree,hint
+extremely,extremadamente,intensifier,""
+absolutely,absolutamente,intensifier,"Se utiliza generalmente con adjetivos y adverbios que tienen un sentido favorable como 'good' (bueno), 'well' (bien), etc."
+completely,completamente,intensifier,""
+highly,altamente/sumamente,intensifier,""
+very,muy,intensifier,""
+awfully,terriblemente,intensifier,""
+perfectly,perfectamente,intensifier,""
+rather,bastante,intensifier,"Se usa habitualmente con adjetivos con un sentido negativo  como 'bad' (malo)"
+really,realmente,intensifier,""
+so,tan,intensifier,""
+too,demasiado,intensifier,""
+totally,totalmente,intensifier,""
+utterly,absolutamente,intensifier,"Se usa habitualmente con adjetivos con un sentido negativo  como 'bad' (malo)"
+pretty,bastante,moderator,"Se usa sobre todo en inglés hablado"
+fairly,bastante,moderator,"Se utiliza generalmente con adjetivos y adverbios que tienen un sentido favorable como 'good' (bueno), 'well' (bien), etc."
+somewhat,algo,moderator,""
+slightly,ligeramente,mitigator,""
+almost,casi,mitigator,""
+a little,un poco,mitigator,""
+quite,muy,mitigator,"Forma educada de 'very'(muy)"

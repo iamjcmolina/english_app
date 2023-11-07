@@ -128,4 +128,6 @@ class VocabularyRepository extends ChangeNotifier {
 
   List<Adverb> endAdverbs() =>
       adverbs().where((adverb) => adverb.isAllowedInTheEnd).toList();
+
+  List<Adverb> degreeAdverbs() => provider.degreeAdverbs;
 }

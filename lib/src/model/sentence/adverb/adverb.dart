@@ -1,5 +1,6 @@
 import 'adverb_type.dart';
 import 'any_adverb.dart';
+import 'kind_of_degree.dart';
 
 class Adverb extends AnyAdverb {
   @override
@@ -13,12 +14,15 @@ class Adverb extends AnyAdverb {
   final bool isAllowedInTheMiddle;
   @override
   final bool isAllowedInTheEnd;
+  final KindOfDegree kindOfDegree;
+  final String hint;
 
   @override
   bool get isValid => true;
 
   const Adverb(this.en, this.es, this.type, this.isAllowedInFront,
-      this.isAllowedInTheMiddle, this.isAllowedInTheEnd);
+      this.isAllowedInTheMiddle, this.isAllowedInTheEnd,
+      [this.kindOfDegree = KindOfDegree.none, this.hint = '']);
 
   const Adverb.manner(String en, String es)
       : this(en, es, AdverbType.manner, false, true, true);
@@ -39,10 +43,10 @@ class Adverb extends AnyAdverb {
       : this(en, es, AdverbType.frequency, isAllowedInFront,
             isAllowedInTheMiddle, isAllowedInTheEnd);
 
-  const Adverb.degree(String en, String es, bool isAllowedInFront,
-      bool isAllowedInTheMiddle, bool isAllowedInTheEnd)
-      : this(en, es, AdverbType.degree, isAllowedInFront, isAllowedInTheMiddle,
-            isAllowedInTheEnd);
+  const Adverb.degree(
+      String en, String es, KindOfDegree kindOfDegree, String hint)
+      : this(
+            en, es, AdverbType.degree, false, false, false, kindOfDegree, hint);
 
   const Adverb.focusing(String en, String es)
       : this(en, es, AdverbType.focusing, false, true, false);

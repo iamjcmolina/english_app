@@ -76,7 +76,7 @@ class AdverbPlusAdverbForm extends StatelessWidget {
               label: Label.adverb,
               value: phrase.intensifierAdverb,
               displayStringForOption: (e) => e.en,
-              options: vocabularyRepository.endAdverbs(),
+              options: vocabularyRepository.degreeAdverbs(),
               getEnWords: [(e) => e.en],
               getEsWords: [(e) => e.es],
               setValue: (e) => setIntensifierOrMitigator(e),
