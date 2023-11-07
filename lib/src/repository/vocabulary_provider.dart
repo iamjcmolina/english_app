@@ -44,7 +44,8 @@ class VocabularyProvider extends ChangeNotifier {
     ordinalNumbers.addAll(await _getOrdinalNumbers());
     naturalNumbers.addAll(await _getNaturalNumbers());
     adjectives.addAll(await _getAdjectives());
-    nouns.addAll(await _getNouns());
+    nouns.addAll(await _getCountableNouns());
+    nouns.addAll(await _getUncountableNouns());
     indefinitePronouns.addAll(await _getIndefinitePronouns());
     mannerAdverbs.addAll(await _getMannerAdverbs());
     placeAdverbs.addAll(await _getPlaceAdverbs());
@@ -113,17 +114,32 @@ class VocabularyProvider extends ChangeNotifier {
         .toList();
   }
 
-  Future<List<Noun>> _getNouns() async {
-    final rows = await _getCsvData('nouns/nouns');
+  Future<List<Noun>> _getCountableNouns() async {
+    final rows = await _getCsvData('nouns/countable_nouns');
+    return rows
+        .map((row) => [
+              Noun(
+                row[0],
+                row[2],
+                Countability.singular,
+              ),
+              Noun(
+                row[1],
+                row[3],
+                Countability.plural,
+              )
+            ])
+        .expand((nouns) => nouns)
+        .toList();
+  }
+
+  Future<List<Noun>> _getUncountableNouns() async {
+    final rows = await _getCsvData('nouns/uncountable_nouns');
     return rows
         .map((row) => Noun(
               row[0],
               row[1],
-              switch (row[2]) {
-                'singular' => Countability.singular,
-                'plural' => Countability.plural,
-                _ => Countability.uncountable,
-              },
+              Countability.uncountable,
             ))
         .toList();
   }
