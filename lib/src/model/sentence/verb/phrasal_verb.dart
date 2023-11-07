@@ -20,7 +20,7 @@ class PhrasalVerb extends Verb {
   String get presentSingularThirdPerson =>
       super.presentSingularThirdPerson + particle;
 
-  PhrasalVerb({
+  const PhrasalVerb({
     required super.infinitive,
     required super.past,
     required super.pastParticiple,

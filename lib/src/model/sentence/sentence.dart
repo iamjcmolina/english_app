@@ -1,9 +1,9 @@
 import 'clause/independent_clause.dart';
 
 class Sentence {
-  IndependentClause independentClause;
+  final IndependentClause independentClause;
 
-  Sentence({required this.independentClause});
+  const Sentence({required this.independentClause});
 
   Sentence copyWith({
     IndependentClause? independentClause,

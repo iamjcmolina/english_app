@@ -6,7 +6,7 @@ class AuxiliaryVerbs {
   final String? secondEs;
   final String? thirdEs;
 
-  AuxiliaryVerbs({
+  const AuxiliaryVerbs({
     this.first,
     this.second,
     this.third,

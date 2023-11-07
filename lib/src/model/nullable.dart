@@ -1,5 +1,5 @@
 class Nullable<T> {
   final T? value;
 
-  Nullable(this.value);
+  const Nullable(this.value);
 }

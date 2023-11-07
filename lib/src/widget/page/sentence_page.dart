@@ -13,7 +13,7 @@ class SentencePage extends StatefulWidget {
 }
 
 class _SentencePageState extends State<SentencePage> {
-  Sentence sentence = Sentence(independentClause: const IndependentClause());
+  Sentence sentence = const Sentence(independentClause: IndependentClause());
 
   @override
   Widget build(BuildContext context) {
