@@ -61,7 +61,7 @@ class IndependentClause {
 
   bool get hasTransitiveVerb => verb?.isTransitive ?? false;
   bool get hasDitransitiveVerb => verb?.isDitransitive ?? false;
-  bool get hasLinkingVerb => verb?.isLinkingVerb ?? false;
+  bool get canHaveSubjectComplement => verb?.canBeLinkingVerb ?? false;
 
   String get modalVerbPlaceholder =>
       isNegative ? Label.negativeModalVerb : Label.modalVerb;

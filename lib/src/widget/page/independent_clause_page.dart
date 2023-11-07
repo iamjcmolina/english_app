@@ -187,10 +187,10 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             placeholder: Label.subjectComplement,
             en: clause.subjectComplement?.en,
             es: clause.subjectComplement?.toEs(clause.hasPluralSubject),
-            isShown: clause.hasLinkingVerb,
+            isShown: clause.canHaveSubjectComplement,
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToComplementPage(context),
-            isRequired: true,
+            isRequired: clause.verb?.isAlwaysLinkingVerb ?? false,
           ),
           SentenceItemTile(
             style: Word.adverb.style,

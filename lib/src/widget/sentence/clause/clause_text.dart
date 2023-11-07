@@ -71,7 +71,7 @@ class _ClauseTextEn extends StatelessWidget {
                 : null,
             style: Word.verb.style),
         TextSpan(
-            text: clause.hasLinkingVerb
+            text: clause.canHaveSubjectComplement
                 ? clause.subjectComplement?.en.addSpace()
                 : null,
             style: Word.noun.style),
@@ -125,7 +125,7 @@ class _ClauseTextEs extends StatelessWidget {
                 : null,
             style: Word.noun.style),
         TextSpan(
-            text: clause.hasLinkingVerb
+            text: clause.canHaveSubjectComplement
                 ? clause.subjectComplement
                     ?.toEs(clause.hasPluralSubject)
                     .addSpace()

@@ -14,6 +14,8 @@ class Verb extends AnyVerb {
   @override
   final String progressiveEs;
   @override
+  final String presentIEs;
+  @override
   final String presentHeEs;
   @override
   final String pastIEs;
@@ -24,10 +26,14 @@ class Verb extends AnyVerb {
   @override
   final bool isDitransitive;
   @override
-  final bool isLinkingVerb;
+  final bool canBeLinkingVerb;
 
   @override
   String get progressive => '${infinitive}ing';
+
+  @override
+  bool get isAlwaysLinkingVerb =>
+      infinitive == 'become' || infinitive == 'seem';
 
   const Verb({
     required this.infinitive,
@@ -36,12 +42,13 @@ class Verb extends AnyVerb {
     required this.infinitiveEs,
     required this.pastParticipleEs,
     required this.progressiveEs,
+    required this.presentIEs,
     required this.presentHeEs,
     required this.pastIEs,
     required this.pastWeEs,
     required this.isTransitive,
     required this.isDitransitive,
-    this.isLinkingVerb = false,
+    this.canBeLinkingVerb = false,
   });
 
   @override

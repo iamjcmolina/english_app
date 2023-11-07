@@ -89,11 +89,15 @@ class VocabularyRepository extends ChangeNotifier {
 
   List<Noun> nouns(Determiner? determiner) => determiner == null
       ? provider.nouns
-      : provider.nouns.where((e) {
-          return e.isUncountable && determiner.allowsUncountable ||
-              e.isSingular && determiner.allowsSingular ||
-              e.isPlural && determiner.allowsPlural;
-        }).toList();
+      : provider.nouns
+          .where((e) => determiner.en == 'a'
+              ? e.isSingular && e.en.first().isConsonant
+              : determiner.en == 'an'
+                  ? e.isSingular && e.en.first().isVowel
+                  : determiner.allowsUncountable && e.isUncountable ||
+                      determiner.allowsSingular && e.isSingular ||
+                      determiner.allowsPlural && e.isPlural)
+          .toList();
 
   List<IndefinitePronoun> indefinitePronouns(bool isNegative) =>
       provider.indefinitePronouns
@@ -104,7 +108,7 @@ class VocabularyRepository extends ChangeNotifier {
       [Be.ser, Have.tener, ...provider.verbs, ...provider.phrasalVerbs];
 
   List<Verb> actionVerbs() =>
-      provider.verbs.where((e) => !e.isLinkingVerb).toList();
+      provider.verbs.where((e) => !e.canBeLinkingVerb).toList();
 
   List<PhrasalVerb> phrasalVerbs() => provider.phrasalVerbs;
 

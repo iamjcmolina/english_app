@@ -28,12 +28,13 @@ class PhrasalVerb extends Verb {
     required super.infinitiveEs,
     required super.pastParticipleEs,
     required super.progressiveEs,
+    required super.presentIEs,
     required super.presentHeEs,
     required super.pastIEs,
     required super.pastWeEs,
     required super.isTransitive,
     required super.isDitransitive,
-    super.isLinkingVerb = false,
+    super.canBeLinkingVerb = false,
     required this.isSeparable,
   });
 }

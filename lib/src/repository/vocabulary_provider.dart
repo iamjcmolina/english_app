@@ -219,12 +219,13 @@ class VocabularyProvider extends ChangeNotifier {
               infinitiveEs: row[4],
               pastParticipleEs: row[5],
               progressiveEs: row[6],
-              presentHeEs: row[7],
-              pastIEs: row[8],
-              pastWeEs: row[9],
-              isSeparable: row[10] == 1,
-              isTransitive: row[11] == 1,
-              isDitransitive: row[12] == 1,
+              presentIEs: row[7],
+              presentHeEs: row[8],
+              pastIEs: row[9],
+              pastWeEs: row[10],
+              isSeparable: row[11] == 1,
+              isTransitive: row[12] == 1,
+              isDitransitive: row[13] == 1,
             ))
         .toList();
   }
@@ -239,12 +240,13 @@ class VocabularyProvider extends ChangeNotifier {
               infinitiveEs: row[3],
               pastParticipleEs: row[4],
               progressiveEs: row[5],
-              presentHeEs: row[6],
-              pastIEs: row[7],
-              pastWeEs: row[8],
-              isTransitive: row[9] == 1,
-              isDitransitive: row[10] == 1,
-              isLinkingVerb: row[11] == 1,
+              presentIEs: row[6],
+              presentHeEs: row[7],
+              pastIEs: row[8],
+              pastWeEs: row[9],
+              isTransitive: row[10] == 1,
+              isDitransitive: row[11] == 1,
+              canBeLinkingVerb: row[12] == 1,
             ))
         .toList();
   }

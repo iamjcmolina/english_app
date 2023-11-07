@@ -9,36 +9,52 @@ abstract class AnyVerb {
   String get infinitiveEs;
   String get pastParticipleEs;
   String get progressiveEs;
-  String get presentIEs => '${presentHeEs.removeLast()}o';
-  String get presentSingularYouEs => '${presentHeEs}s';
+  String get presentIEs;
+  String get presentSingularYouEs =>
+      presentHeEs.split('/').map((e) => '${e}s').join('/');
   String get presentYouEs => '$presentSingularYouEs/$presentTheyEs';
   String get presentHeEs;
-  String get presentWeEs => '${infinitiveEs.removeLast()}mos';
-  String get presentTheyEs => '${presentHeEs}n';
+  String get presentWeEs =>
+      infinitiveEs.split('/').map((e) => '${e.removeLast()}mos').join('/');
+  String get presentTheyEs =>
+      presentHeEs.split('/').map((e) => '${e}n').join('/');
   String get pastIEs;
-  String get pastSingularYouEs => '${pastWeEs.removeLast(3)}ste';
+  String get pastSingularYouEs =>
+      pastWeEs.split('/').map((e) => '${e.removeLast(3)}ste').join('/');
   String get pastYouEs => '$pastSingularYouEs/$pastTheyEs';
-  String get pastHeEs => '${progressiveEs.removeLast(4)}ó';
+  String get pastHeEs =>
+      progressiveEs.split('/').map((e) => '${e.removeLast(4)}ó').join('/');
   String get pastWeEs;
-  String get pastTheyEs => switch (progressiveEs.removeLast(4)) {
-        'ando' => '${progressiveEs.removeLast(4)}aron',
-        _ => '${progressiveEs.removeLast(4)}eron',
-      };
-  String get futureIEs => '$infinitiveEsé';
-  String get futureSingularYouEs => '$infinitiveEsás';
+  String get pastTheyEs => progressiveEs
+      .split('/')
+      .map((e) => switch (e.removeLast(4)) {
+            'ando' => '${e.removeLast(4)}aron',
+            _ => '${e.removeLast(4)}eron',
+          })
+      .join('/');
+  String get futureIEs => infinitiveEs.split('/').map((e) => '$eé').join('/');
+  String get futureSingularYouEs =>
+      infinitiveEs.split('/').map((e) => '$eás').join('/');
   String get futureYouEs => '$futureSingularYouEs/$futureTheyEs';
-  String get futureHeEs => '$infinitiveEsá';
-  String get futureWeEs => '${infinitiveEs}emos';
-  String get futureTheyEs => '$infinitiveEsán';
-  String get conditionalIEs => '$infinitiveEsía';
-  String get conditionalSingularYouEs => '$infinitiveEsías';
+  String get futureHeEs => infinitiveEs.split('/').map((e) => '$eá').join('/');
+  String get futureWeEs =>
+      infinitiveEs.split('/').map((e) => '${e}emos').join('/');
+  String get futureTheyEs =>
+      infinitiveEs.split('/').map((e) => '$eán').join('/');
+  String get conditionalIEs =>
+      infinitiveEs.split('/').map((e) => '$eía').join('/');
+  String get conditionalSingularYouEs =>
+      infinitiveEs.split('/').map((e) => '$eías').join('/');
   String get conditionalYouEs => '$conditionalSingularYouEs/$conditionalTheyEs';
-  String get conditionalHeEs => '$infinitiveEsía';
-  String get conditionalWeEs => '$infinitiveEsíamos';
-  String get conditionalTheyEs => '$infinitiveEsían';
+  String get conditionalHeEs =>
+      infinitiveEs.split('/').map((e) => '$eía').join('/');
+  String get conditionalWeEs =>
+      infinitiveEs.split('/').map((e) => '$eíamos').join('/');
+  String get conditionalTheyEs =>
+      infinitiveEs.split('/').map((e) => '$eían').join('/');
   bool get isTransitive;
   bool get isDitransitive;
-  bool get isLinkingVerb;
+  bool get canBeLinkingVerb;
 
   String get presentSingularThirdPerson {
     final penultimateLetter = infinitive.charAt(infinitive.length - 2);
@@ -56,6 +72,8 @@ abstract class AnyVerb {
     }
     return '${infinitive}s';
   }
+
+  bool get isAlwaysLinkingVerb => false;
 
   const AnyVerb();
 

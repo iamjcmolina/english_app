@@ -107,7 +107,10 @@ class Be extends AnyVerb {
   @override
   final bool isDitransitive = false;
   @override
-  final bool isLinkingVerb = true;
+  final bool canBeLinkingVerb = true;
+
+  @override
+  bool get isAlwaysLinkingVerb => true;
 
   const Be({
     required this.infinitiveEs,

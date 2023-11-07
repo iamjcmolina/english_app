@@ -112,7 +112,7 @@ class Have extends AnyVerb {
   @override
   final bool isDitransitive = false;
   @override
-  final bool isLinkingVerb = false;
+  final bool canBeLinkingVerb = false;
   final bool meansHaber;
 
   const Have({
