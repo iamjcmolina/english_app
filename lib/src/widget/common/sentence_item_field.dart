@@ -58,6 +58,7 @@ class SentenceItemField<T extends Object> extends StatelessWidget {
             ),
             validator: validator,
             autovalidateMode: AutovalidateMode.always,
+            scrollPadding: const EdgeInsets.only(bottom: 240),
             //onChanged: (text) => setValue(null),
           );
         },
