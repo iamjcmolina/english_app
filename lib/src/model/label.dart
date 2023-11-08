@@ -54,6 +54,8 @@ class Label {
   // Adverbs
   static const adverb = '<Adverb>';
   static const adverbEs = '<Adverbio>';
+  static const degreeAdverb = '<DegreeAdverb>';
+  static const degreeAdverbEs = '<AdverbioDeGrado>';
   // Others
   static const objectOrAdverb = '<ObjectOrAdverb>';
   static const objectOrAdverbEs = '<ObjetoOAdverbio>';

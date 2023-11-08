@@ -11,13 +11,12 @@ import '../../../model/sentence/noun/noun.dart';
 import '../../../model/sentence/phrase/noun_phrase.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
-import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
-import '../../common/sentence_item_field.dart';
-import '../../common/sentence_item_tile.dart';
+import '../../common/item_field.dart';
+import '../../common/item_tile.dart';
 import '../../page/adjectival_phrase_page.dart';
 
-class NounPhraseForm extends StatelessWidget {
+class NounPhraseForm extends StatefulWidget {
   final Widget settingsControl;
   final NounPhrase phrase;
   final void Function(NounPhrase?) setPhrase;
@@ -34,74 +33,98 @@ class NounPhraseForm extends StatelessWidget {
   });
 
   @override
+  State<NounPhraseForm> createState() => _NounPhraseFormState();
+}
+
+class _NounPhraseFormState extends State<NounPhraseForm> {
+  bool isQuantifierFieldShown = false;
+  bool isDeterminerFieldShown = false;
+  bool isNumberFieldShown = false;
+  bool isAdjectiveFieldShown = false;
+  bool isNounFieldShown = false;
+
+  @override
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
-        settingsControl,
+        widget.settingsControl,
         ListTile(
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: phrase.allowQuantifier
-                    ? phrase.quantifierOf?.addSpace()
+                text: widget.phrase.allowQuantifier
+                    ? widget.phrase.quantifierOf?.addSpace()
                     : null,
                 style: Word.determiner.style,
               ),
               TextSpan(
-                text: (phrase.determiner?.en ?? Label.determiner).addSpace(),
-                style: phrase.determiner == null
+                text: (widget.phrase.determiner?.en ?? Label.determiner)
+                    .addSpace(),
+                style: widget.phrase.determiner == null
                     ? Word.empty.style
                     : Word.determiner.style,
               ),
               TextSpan(
-                text: phrase.allowNumber ? phrase.number?.en.addSpace() : null,
+                text: widget.phrase.allowNumber
+                    ? widget.phrase.number?.en.addSpace()
+                    : null,
                 style: Word.determiner.style,
               ),
               TextSpan(
-                text: phrase.allowAdjective
-                    ? phrase.adjective?.en.addSpace()
+                text: widget.phrase.allowAdjective
+                    ? widget.phrase.adjective?.en.addSpace()
                     : null,
                 style: Word.adjective.style,
               ),
               TextSpan(
-                text: (phrase.noun?.en ?? Label.noun).addSpace(),
-                style: phrase.noun == null ? Word.empty.style : Word.noun.style,
+                text: (widget.phrase.noun?.en ?? Label.noun).addSpace(),
+                style: widget.phrase.noun == null
+                    ? Word.empty.style
+                    : Word.noun.style,
               ),
               TextSpan(
-                text: phrase.adjectivalPhrase?.en,
+                text: widget.phrase.adjectivalPhrase?.en,
                 style: Word.adjective.style,
               ),
               const TextSpan(text: '\n'),
               TextSpan(
-                text: phrase.allowQuantifier
-                    ? phrase.quantifierOfEs?.addSpace()
+                text: widget.phrase.allowQuantifier
+                    ? widget.phrase.quantifierOfEs?.addSpace()
                     : null,
                 style: Word.determiner.style,
               ),
               TextSpan(
-                text: (phrase.determiner?.es ?? Label.determinerEs).addSpace(),
-                style: phrase.determiner == null
+                text: (widget.phrase.determiner?.es ?? Label.determinerEs)
+                    .addSpace(),
+                style: widget.phrase.determiner == null
                     ? Word.empty.style
                     : Word.determiner.style,
               ),
               TextSpan(
-                text: phrase.allowNumber ? phrase.number?.es.addSpace() : null,
+                text: widget.phrase.allowNumber
+                    ? widget.phrase.number?.es.addSpace()
+                    : null,
                 style: Word.determiner.style,
               ),
               TextSpan(
-                text: (phrase.noun?.es ?? Label.nounEs).addSpace(),
-                style: phrase.noun == null ? Word.empty.style : Word.noun.style,
+                text: (widget.phrase.noun?.es ?? Label.nounEs).addSpace(),
+                style: widget.phrase.noun == null
+                    ? Word.empty.style
+                    : Word.noun.style,
               ),
               TextSpan(
-                text: phrase.allowAdjective
-                    ? phrase.adjective?.toEs(phrase.noun?.isPlural).addSpace()
+                text: widget.phrase.allowAdjective
+                    ? widget.phrase.adjective
+                        ?.toEs(widget.phrase.noun?.isPlural)
+                        .addSpace()
                     : null,
                 style: Word.adjective.style,
               ),
               TextSpan(
-                text: phrase.adjectivalPhrase?.toEs(phrase.noun?.isPlural),
+                text: widget.phrase.adjectivalPhrase
+                    ?.toEs(widget.phrase.noun?.isPlural),
                 style: Word.adjective.style,
               ),
             ],
@@ -109,104 +132,116 @@ class NounPhraseForm extends StatelessWidget {
         ),
       ],
       body: [
-        DropdownTile(
-          style: Word.determiner.style,
-          title: Label.quantifier,
-          textValue: phrase.quantifierOf,
-          textValueEs: phrase.quantifierOfEs,
-          show: phrase.allowQuantifier,
-          fields: [
-            SentenceItemField<Determiner>(
-              label: Label.quantifier,
-              value: phrase.quantifier,
-              displayStringForOption: (e) => e.en,
-              options: vocabularyRepository.quantifiers(phrase.noun),
-              getEnWords: [(Determiner e) => e.en],
-              getEsWords: [(Determiner e) => e.es],
-              setValue: (determiner) => setQuantifier(determiner),
-            ),
-          ],
-        ),
-        DropdownTile(
-          style: Word.determiner.style,
-          title: Label.determiner,
-          textValue: phrase.determiner?.en,
-          textValueEs: phrase.determiner?.es,
-          required: true,
-          fields: [
-            SentenceItemField<Determiner>(
-              label: Label.determiner,
-              value: phrase.determiner,
-              displayStringForOption: (e) => e.en,
-              options: determiners(vocabularyRepository),
-              getEnWords: [(Determiner e) => e.en],
-              getEsWords: [(Determiner e) => e.es],
-              setValue: (determiner) => setDeterminer(determiner),
-            )
-          ],
-        ),
-        DropdownTile(
-          style: Word.determiner.style,
-          title: Label.number,
-          textValue: phrase.number?.en,
-          textValueEs: phrase.number?.es,
-          show: phrase.allowNumber,
-          fields: [
-            SentenceItemField<Determiner>(
-              label: Label.number,
-              value: phrase.number,
-              displayStringForOption: (e) => e.en,
-              options: vocabularyRepository.numbers(phrase.noun, true),
-              getEnWords: [(Determiner e) => e.en],
-              getEsWords: [(Determiner e) => e.es],
-              setValue: (number) => setNumber(number),
-            ),
-          ],
-        ),
-        DropdownTile(
-          style: Word.adjective.style,
-          title: Label.adjective,
-          textValue: phrase.adjective?.en,
-          textValueEs: phrase.adjective?.toEs(phrase.isPlural),
-          show: phrase.allowAdjective,
-          fields: [
-            SentenceItemField<Adjective>(
-              label: Label.adjective,
-              value: phrase.adjective,
-              displayStringForOption: (e) => e.en,
-              options: vocabularyRepository.adjectives(),
-              getEnWords: [(Adjective e) => e.en],
-              getEsWords: [
-                (Adjective e) => e.singularEs,
-                (Adjective e) => e.pluralEs,
-              ],
-              setValue: (adjective) => setAdjective(adjective),
-            ),
-          ],
-        ),
-        DropdownTile(
-          style: Word.noun.style,
-          title: Label.noun,
-          textValue: phrase.noun?.en,
-          textValueEs: phrase.noun?.es,
-          required: true,
-          fields: [
-            SentenceItemField<Noun>(
-              label: Label.noun,
-              value: phrase.noun,
-              displayStringForOption: (e) => e.en,
-              options: vocabularyRepository.nouns(phrase.determiner),
-              getEnWords: [(Noun e) => e.en],
-              getEsWords: [(Noun e) => e.es],
-              setValue: (noun) => setNoun(noun),
-            ),
-          ],
-        ),
-        SentenceItemTile(
+        if (!isQuantifierFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleQuantifierField,
+            style: Word.determiner.style,
+            placeholder: Label.quantifier,
+            en: widget.phrase.quantifierOf,
+            es: widget.phrase.quantifierOfEs,
+            isShown: widget.phrase.allowQuantifier,
+          ),
+        if (isQuantifierFieldShown)
+          ItemField<Determiner>(
+            label: Label.quantifier,
+            options: vocabularyRepository.quantifiers(widget.phrase.noun),
+            value: widget.phrase.quantifier,
+            setValue: setQuantifier,
+            toEnString: (Determiner e) => e.en,
+            toEsString: (Determiner e) => e.es,
+            onAccept: toggleQuantifierField,
+          ),
+        // bool isDeterminerFieldShown = false;
+        if (!isDeterminerFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleDeterminerField,
+            style: Word.determiner.style,
+            placeholder: Label.determiner,
+            en: widget.phrase.determiner?.en,
+            es: widget.phrase.determiner?.es,
+            isRequired: true,
+          ),
+        if (isDeterminerFieldShown)
+          ItemField<Determiner>(
+            label: Label.determiner,
+            options: determiners(vocabularyRepository),
+            value: widget.phrase.determiner,
+            setValue: setDeterminer,
+            toEnString: (Determiner e) => e.en,
+            toEsString: (Determiner e) => e.es,
+            onAccept: toggleDeterminerField,
+          ),
+        // bool isNumberFieldShown = false;
+        if (!isNumberFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleDeterminerField,
+            style: Word.determiner.style,
+            placeholder: Label.number,
+            en: widget.phrase.number?.en,
+            es: widget.phrase.number?.es,
+            isShown: widget.phrase.allowNumber,
+          ),
+        if (isNumberFieldShown)
+          ItemField<Determiner>(
+            label: Label.number,
+            options: vocabularyRepository.numbers(widget.phrase.noun, true),
+            value: widget.phrase.number,
+            setValue: setNumber,
+            toEnString: (Determiner e) => e.en,
+            toEsString: (Determiner e) => e.es,
+            onAccept: toggleNumberField,
+          ),
+        // bool isAdjectiveFieldShown = false;
+        if (!isAdjectiveFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleDeterminerField,
+            style: Word.adjective.style,
+            placeholder: Label.adjective,
+            en: widget.phrase.adjective?.en,
+            es: widget.phrase.adjective?.toEs(widget.phrase.isPlural),
+            isShown: widget.phrase.allowAdjective,
+          ),
+        if (isAdjectiveFieldShown)
+          ItemField<Adjective>(
+            label: Label.adjective,
+            options: vocabularyRepository.adjectives(),
+            value: widget.phrase.adjective,
+            setValue: setAdjective,
+            toEnString: (Adjective e) => e.en,
+            toEsString: (Adjective e) => e.toEs(),
+            onAccept: toggleAdjectiveField,
+          ),
+        // bool isNounFieldShown = false;
+        if (!isNounFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleDeterminerField,
+            style: Word.noun.style,
+            placeholder: Label.noun,
+            en: widget.phrase.noun?.en,
+            es: widget.phrase.noun?.es,
+            isRequired: true,
+          ),
+        if (isNounFieldShown)
+          ItemField<Noun>(
+            label: Label.noun,
+            options: vocabularyRepository.nouns(widget.phrase.determiner),
+            value: widget.phrase.noun,
+            setValue: setNoun,
+            toEnString: (Noun e) => e.en,
+            toEsString: (Noun e) => e.es,
+            onAccept: toggleNounField,
+          ),
+        ItemTile(
           style: Word.adjective.style,
           placeholder: Label.adjectivalPhrase,
-          en: phrase.adjectivalPhrase?.en,
-          es: phrase.adjectivalPhrase?.toEs(phrase.noun?.isPlural),
+          en: widget.phrase.adjectivalPhrase?.en,
+          es: widget.phrase.adjectivalPhrase
+              ?.toEs(widget.phrase.noun?.isPlural),
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToAdjectivalPhrasePage(context),
         ),
@@ -214,29 +249,31 @@ class NounPhraseForm extends StatelessWidget {
     );
   }
 
-  setQuantifier(quantifierOf) =>
-      setPhrase(phrase.copyWith(quantifier: Nullable(quantifierOf)));
+  setQuantifier(quantifierOf) => widget
+      .setPhrase(widget.phrase.copyWith(quantifier: Nullable(quantifierOf)));
 
-  setDeterminer(determiner) =>
-      setPhrase(phrase.copyWith(determiner: Nullable(determiner)));
+  setDeterminer(determiner) => widget
+      .setPhrase(widget.phrase.copyWith(determiner: Nullable(determiner)));
 
   setAdjective(adjective) =>
-      setPhrase(phrase.copyWith(adjective: Nullable(adjective)));
+      widget.setPhrase(widget.phrase.copyWith(adjective: Nullable(adjective)));
 
-  setNumber(number) => setPhrase(phrase.copyWith(number: Nullable(number)));
+  setNumber(number) =>
+      widget.setPhrase(widget.phrase.copyWith(number: Nullable(number)));
 
-  setNoun(noun) => setPhrase(phrase.copyWith(noun: Nullable(noun)));
+  setNoun(noun) =>
+      widget.setPhrase(widget.phrase.copyWith(noun: Nullable(noun)));
 
-  setAdjectivalPhrase(AnyAdjective? adjective) =>
-      setPhrase(phrase.copyWith(adjectivalPhrase: Nullable(adjective)));
+  setAdjectivalPhrase(AnyAdjective? adjective) => widget
+      .setPhrase(widget.phrase.copyWith(adjectivalPhrase: Nullable(adjective)));
 
   List<Determiner> determiners(VocabularyRepository vocabularyRepository) => [
-        ...vocabularyRepository.articles(phrase.noun),
+        ...vocabularyRepository.articles(widget.phrase.noun),
         ...vocabularyRepository.possessiveAdjectives(),
-        ...vocabularyRepository.demonstrativeAdjectives(phrase.noun),
-        ...vocabularyRepository.distributiveAdjectives(phrase.noun),
-        ...vocabularyRepository.quantifiers(phrase.noun),
-        ...vocabularyRepository.numbers(phrase.noun)
+        ...vocabularyRepository.demonstrativeAdjectives(widget.phrase.noun),
+        ...vocabularyRepository.distributiveAdjectives(widget.phrase.noun),
+        ...vocabularyRepository.quantifiers(widget.phrase.noun),
+        ...vocabularyRepository.numbers(widget.phrase.noun)
       ];
 
   void goToAdjectivalPhrasePage(BuildContext context) async {
@@ -244,12 +281,26 @@ class NounPhraseForm extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) => AdjectivalPhrasePage(
-                  adjective: phrase.adjectivalPhrase,
-                  isNegative: isNegative,
-                  isPlural: isPlural,
+                  adjective: widget.phrase.adjectivalPhrase,
+                  isNegative: widget.isNegative,
+                  isPlural: widget.isPlural,
                 )));
     if (response != null) {
       setAdjectivalPhrase(response is AnyAdjective ? response : null);
     }
   }
+
+  toggleQuantifierField() =>
+      setState(() => isQuantifierFieldShown = !isQuantifierFieldShown);
+
+  toggleDeterminerField() =>
+      setState(() => isDeterminerFieldShown = !isDeterminerFieldShown);
+
+  toggleNumberField() =>
+      setState(() => isNumberFieldShown = !isNumberFieldShown);
+
+  toggleAdjectiveField() =>
+      setState(() => isAdjectiveFieldShown = !isAdjectiveFieldShown);
+
+  toggleNounField() => setState(() => isNounFieldShown = !isNounFieldShown);
 }

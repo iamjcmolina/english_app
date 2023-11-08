@@ -105,7 +105,8 @@ class _SubjectComplementState extends State<SubjectComplementPage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        SubjectComplementType.adverbPlusAdjective => AdverbPlusAdjectiveForm(
+        SubjectComplementType.degreeAdverbPlusAdjective =>
+          AdverbPlusAdjectiveForm(
             setPhrase: setComplement,
             phrase: complement is AdverbPlusAdjective
                 ? complement as AdverbPlusAdjective

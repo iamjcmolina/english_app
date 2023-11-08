@@ -5,11 +5,11 @@ import '../../../model/label.dart';
 import '../../../model/sentence/noun/indefinite_pronoun.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
-import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
-import '../../common/sentence_item_field.dart';
+import '../../common/item_field.dart';
+import '../../common/item_tile.dart';
 
-class IndefinitePronounForm extends StatelessWidget {
+class IndefinitePronounForm extends StatefulWidget {
   final Widget settingsControl;
   final bool isNegative;
   final IndefinitePronoun? pronoun;
@@ -24,45 +24,61 @@ class IndefinitePronounForm extends StatelessWidget {
   });
 
   @override
+  State<IndefinitePronounForm> createState() => _IndefinitePronounFormState();
+}
+
+class _IndefinitePronounFormState extends State<IndefinitePronounForm> {
+  bool isFieldShown = false;
+
+  @override
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
-        settingsControl,
+        widget.settingsControl,
         ListTile(
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                  text: pronoun?.en ?? Label.indefinitePronoun,
-                  style: pronoun == null ? Word.empty.style : Word.noun.style),
+                  text: widget.pronoun?.en ?? Label.indefinitePronoun,
+                  style: widget.pronoun == null
+                      ? Word.empty.style
+                      : Word.noun.style),
               const TextSpan(text: '\n'),
               TextSpan(
-                  text: pronoun?.es ?? Label.indefinitePronounEs,
-                  style: pronoun == null ? Word.empty.style : Word.noun.style),
+                  text: widget.pronoun?.es ?? Label.indefinitePronounEs,
+                  style: widget.pronoun == null
+                      ? Word.empty.style
+                      : Word.noun.style),
             ],
           )),
         ),
       ],
       body: [
-        DropdownTile(
-          style: Word.noun.style,
-          title: Label.indefinitePronoun,
-          textValue: pronoun?.en,
-          required: true,
-          fields: [
-            SentenceItemField<IndefinitePronoun>(
-              label: Label.indefinitePronoun,
-              value: pronoun,
-              options: vocabularyRepository.indefinitePronouns(isNegative),
-              getEnWords: [(IndefinitePronoun e) => e.en],
-              getEsWords: [(IndefinitePronoun e) => e.es],
-              displayStringForOption: (pronoun) => pronoun.en,
-              setValue: (pronoun) => setPronoun(pronoun),
-            ),
-          ],
-        ),
+        if (!isFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleField,
+            style: Word.noun.style,
+            placeholder: Label.indefinitePronoun,
+            en: widget.pronoun?.en,
+            es: null,
+            isRequired: true,
+          ),
+        if (isFieldShown)
+          ItemField<IndefinitePronoun>(
+            label: Label.indefinitePronoun,
+            options: vocabularyRepository.indefinitePronouns(widget.isNegative),
+            value: widget.pronoun,
+            setValue: widget.setPronoun,
+            toEnString: (pronoun) => pronoun.en,
+            toEsString: (pronoun) => pronoun.es,
+            onAccept: toggleField,
+          ),
       ],
     );
   }
+
+  toggleField() => setState(() => isFieldShown = !isFieldShown);
 }

@@ -10,10 +10,9 @@ import '../../model/sentence/clause/tense.dart';
 import '../../model/sentence/noun/any_noun.dart';
 import '../../model/sentence/noun/subject_complement.dart';
 import '../../model/sentence/verb/any_verb.dart';
-import '../../model/sentence/verb/modal_verb.dart';
 import '../../model/word.dart';
 import '../common/item_editor_layout.dart';
-import '../common/sentence_item_tile.dart';
+import '../common/item_tile.dart';
 import '../common/sentence_scaffold.dart';
 import '../sentence/clause/clause_text.dart';
 import '../sentence/verb/first_auxiliary_verb_tile.dart';
@@ -33,11 +32,11 @@ class IndependentClausePage extends StatefulWidget {
 }
 
 class _IndependentClausePageState extends State<IndependentClausePage> {
-  final verbEditingController = TextEditingController();
+  final mainVerbController = TextEditingController();
   late IndependentClause clause;
-  bool editingFirstAuxiliaryVerb = false;
-  bool editingVerb = false;
-  bool isFormShown = false;
+  bool isTenseFieldShown = false;
+  bool isFirstAuxiliaryVerbSettingsShown = false;
+  bool isMainVerbFieldShown = false;
 
   bool get isValid => clause.isValid;
 
@@ -51,22 +50,13 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   Widget build(BuildContext context) {
     final auxiliaryVerbs = clause.auxiliaryVerbs;
 
-    final verbListItem = VerbTile(
-      clause: clause,
-      isEditingVerb: editingVerb,
-      toggleEditingVerb: toggleEditingVerb,
-      setVerb: setVerb,
-      verbEditingController: verbEditingController,
-      isShown: !clause.isBeAuxiliary,
-    );
-    final firstAuxiliaryVerbListItem = FirstAuxiliaryVerbTile(
-      isEditingVerb: editingFirstAuxiliaryVerb,
+    final firstAuxiliaryVerbTile = FirstAuxiliaryVerbTile(
       clause: clause,
       setClause: setClause,
-      toggleEditingFirstAuxiliaryVerb: toggleEditingFirstAuxiliaryVerb,
-      setModalVerb: setModalVerb,
+      isSettingsShown: isFirstAuxiliaryVerbSettingsShown,
+      toggleFirstAuxiliaryVerbSettings: toggleFirstAuxiliaryVerbSettings,
       setVerb: setVerb,
-      verbController: verbEditingController,
+      mainVerbController: mainVerbController,
     );
 
     return SentenceScaffold(
@@ -80,7 +70,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
                   onPressed: toggleIsFormShown,
                   icon: const Icon(Icons.chevron_left)),
               IndexedStack(
-                index: isFormShown ? 1 : 0,
+                index: isTenseFieldShown ? 0 : 1,
                 alignment: AlignmentDirectional.center,
                 children: <Widget>[
                   Padding(
@@ -119,7 +109,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
           ),
         ],
         body: [
-          SentenceItemTile(
+          ItemTile(
             style: Word.adverb.style,
             placeholder: Label.adverb,
             en: clause.frontAdverb?.en,
@@ -128,8 +118,8 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToAdverbPage(context, AdverbPosition.front),
             isShown: !clause.isInterrogative,
           ),
-          if (clause.isInterrogative) firstAuxiliaryVerbListItem,
-          SentenceItemTile(
+          if (clause.isInterrogative) firstAuxiliaryVerbTile,
+          ItemTile(
             style: Word.noun.style,
             placeholder: Label.subject,
             en: clause.subject?.en,
@@ -138,8 +128,8 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToSubjectPage(context),
             isRequired: true,
           ),
-          if (!clause.isInterrogative) firstAuxiliaryVerbListItem,
-          SentenceItemTile(
+          if (!clause.isInterrogative) firstAuxiliaryVerbTile,
+          ItemTile(
             style: Word.adverb.style,
             placeholder: Label.adverb,
             en: clause.midAdverb?.en,
@@ -147,22 +137,29 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => goToAdverbPage(context, AdverbPosition.mid),
           ),
-          SentenceItemTile(
+          ItemTile(
             style: Word.verb.style,
             placeholder: Label.auxiliaryVerb,
             en: auxiliaryVerbs.second,
             es: auxiliaryVerbs.secondEs,
             isShown: auxiliaryVerbs.second != null,
           ),
-          SentenceItemTile(
+          ItemTile(
             style: Word.verb.style,
             placeholder: Label.auxiliaryVerb,
             en: auxiliaryVerbs.third,
             es: auxiliaryVerbs.thirdEs,
             isShown: auxiliaryVerbs.third != null,
           ),
-          if (!clause.isBeAuxiliary) verbListItem,
-          SentenceItemTile(
+          VerbTile(
+            clause: clause,
+            setVerb: setVerb,
+            controller: mainVerbController,
+            toggleField: toggleMainVerbField,
+            isFieldShown: isMainVerbFieldShown,
+            isShown: !clause.isBeAuxiliary,
+          ),
+          ItemTile(
             style: Word.noun.style,
             placeholder: Label.indirectObject,
             en: clause.indirectObject?.en,
@@ -172,7 +169,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToObjectPage(context, true),
             isRequired: true,
           ),
-          SentenceItemTile(
+          ItemTile(
             style: Word.noun.style,
             placeholder: Label.directObject,
             en: clause.directObject?.en,
@@ -182,7 +179,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToObjectPage(context, false),
             isRequired: true,
           ),
-          SentenceItemTile(
+          ItemTile(
             style: Word.noun.style,
             placeholder: Label.subjectComplement,
             en: clause.subjectComplement?.en,
@@ -192,7 +189,7 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
             onTap: () => goToComplementPage(context),
             isRequired: clause.verb?.isAlwaysLinkingVerb ?? false,
           ),
-          SentenceItemTile(
+          ItemTile(
             style: Word.adverb.style,
             placeholder: Label.adverb,
             en: clause.endAdverb?.en,
@@ -282,9 +279,6 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
   setSubject(AnyNoun? subject) =>
       setClause(clause.copyWith(subject: Nullable(subject)));
 
-  setModalVerb(ModalVerb? modalVerb) =>
-      setClause(clause.copyWith(modalVerb: Nullable(modalVerb)));
-
   setMidAdverb(AnyAdverb? adverb) =>
       setClause(clause.copyWith(midAdverb: Nullable(adverb)));
 
@@ -309,10 +303,11 @@ class _IndependentClausePageState extends State<IndependentClausePage> {
 
   saveItem(BuildContext context) => Navigator.pop(context, clause);
 
-  toggleEditingFirstAuxiliaryVerb() =>
-      setState(() => editingFirstAuxiliaryVerb = !editingFirstAuxiliaryVerb);
+  toggleFirstAuxiliaryVerbSettings() => setState(() =>
+      isFirstAuxiliaryVerbSettingsShown = !isFirstAuxiliaryVerbSettingsShown);
 
-  toggleEditingVerb() => setState(() => editingVerb = !editingVerb);
+  toggleMainVerbField() =>
+      setState(() => isMainVerbFieldShown = !isMainVerbFieldShown);
 
-  toggleIsFormShown() => setState(() => isFormShown = !isFormShown);
+  toggleIsFormShown() => setState(() => isTenseFieldShown = !isTenseFieldShown);
 }

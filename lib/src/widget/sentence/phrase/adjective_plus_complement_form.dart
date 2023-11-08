@@ -9,13 +9,12 @@ import '../../../model/sentence/adjective/adjective_complement.dart';
 import '../../../model/sentence/phrase/adjective_plus_complement.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
-import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
-import '../../common/sentence_item_field.dart';
-import '../../common/sentence_item_tile.dart';
+import '../../common/item_field.dart';
+import '../../common/item_tile.dart';
 import '../../page/adjective_complement_page.dart';
 
-class AdjectivePlusComplementForm extends StatelessWidget {
+class AdjectivePlusComplementForm extends StatefulWidget {
   final Widget settingsControl;
   final AdjectivePlusComplement phrase;
   final void Function(AdjectivePlusComplement?) setPhrase;
@@ -32,40 +31,52 @@ class AdjectivePlusComplementForm extends StatelessWidget {
   });
 
   @override
+  State<AdjectivePlusComplementForm> createState() =>
+      _AdjectivePlusComplementFormState();
+}
+
+class _AdjectivePlusComplementFormState
+    extends State<AdjectivePlusComplementForm> {
+  bool isAdjectiveFieldShown = false;
+
+  @override
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
-        settingsControl,
+        widget.settingsControl,
         ListTile(
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.adjective?.en ?? Label.adjective).addSpace(),
-                style: phrase.adjective == null
+                text:
+                    (widget.phrase.adjective?.en ?? Label.adjective).addSpace(),
+                style: widget.phrase.adjective == null
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
               TextSpan(
-                text: (phrase.complement?.en ?? Label.adjectiveComplement)
-                    .addSpace(),
-                style: phrase.complement == null
+                text:
+                    (widget.phrase.complement?.en ?? Label.adjectiveComplement)
+                        .addSpace(),
+                style: widget.phrase.complement == null
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
               const TextSpan(text: '\n'),
               TextSpan(
-                text:
-                    (phrase.adjective?.toEs() ?? Label.adjectiveEs).addSpace(),
-                style: phrase.adjective == null
+                text: (widget.phrase.adjective?.toEs() ?? Label.adjectiveEs)
+                    .addSpace(),
+                style: widget.phrase.adjective == null
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
               TextSpan(
-                text: (phrase.complement?.es ?? Label.adjectiveComplementEs)
+                text: (widget.phrase.complement?.es ??
+                        Label.adjectiveComplementEs)
                     .addSpace(),
-                style: phrase.complement == null
+                style: widget.phrase.complement == null
                     ? Word.empty.style
                     : Word.adjective.style,
               ),
@@ -74,31 +85,31 @@ class AdjectivePlusComplementForm extends StatelessWidget {
         ),
       ],
       body: [
-        DropdownTile(
-          style: Word.verb.style,
-          title: Label.adjective,
-          textValue: phrase.adjective?.en,
-          textValueEs: isPlural
-              ? phrase.adjective?.singularEs
-              : phrase.adjective?.pluralEs,
-          required: true,
-          fields: [
-            SentenceItemField<Adjective>(
-              label: Label.adjective,
-              value: phrase.adjective,
-              displayStringForOption: (e) => e.en,
-              options: vocabularyRepository.adjectives(),
-              getEnWords: [(e) => e.en],
-              getEsWords: [(e) => isPlural ? e.pluralEs : e.singularEs],
-              setValue: (e) => setAdjective(e),
-            ),
-          ],
-        ),
-        SentenceItemTile(
+        if (!isAdjectiveFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleAdjectiveField,
+            style: Word.adjective.style,
+            placeholder: Label.adjective,
+            en: widget.phrase.adjective?.en,
+            es: widget.phrase.adjective?.toEs(widget.isPlural),
+            isRequired: true,
+          ),
+        if (isAdjectiveFieldShown)
+          ItemField<Adjective>(
+            label: Label.adjective,
+            options: vocabularyRepository.adjectives(),
+            value: widget.phrase.adjective,
+            setValue: setAdjective,
+            toEnString: (e) => e.en,
+            toEsString: (e) => e.toEs(widget.isPlural),
+            onAccept: toggleAdjectiveField,
+          ),
+        ItemTile(
           style: Word.adjective.style,
           placeholder: Label.adjectiveComplement,
-          en: phrase.complement?.en,
-          es: phrase.complement?.es,
+          en: widget.phrase.complement?.en,
+          es: widget.phrase.complement?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToComplementPage(context),
         ),
@@ -107,22 +118,25 @@ class AdjectivePlusComplementForm extends StatelessWidget {
   }
 
   void setAdjective(Adjective? adjective) =>
-      setPhrase(phrase.copyWith(adjective: Nullable(adjective)));
+      widget.setPhrase(widget.phrase.copyWith(adjective: Nullable(adjective)));
 
-  void setComplement(AdjectiveComplement? complement) =>
-      setPhrase(phrase.copyWith(complement: Nullable(complement)));
+  void setComplement(AdjectiveComplement? complement) => widget
+      .setPhrase(widget.phrase.copyWith(complement: Nullable(complement)));
 
   void goToComplementPage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AdjectiveComplementPage(
-                  complement: phrase.complement,
-                  isNegative: isNegative,
-                  isPlural: isPlural,
+                  complement: widget.phrase.complement,
+                  isNegative: widget.isNegative,
+                  isPlural: widget.isPlural,
                 )));
     if (response != null) {
       setComplement(response is AdjectiveComplement ? response : null);
     }
   }
+
+  toggleAdjectiveField() =>
+      setState(() => isAdjectiveFieldShown = !isAdjectiveFieldShown);
 }

@@ -5,29 +5,31 @@ import '../adverb/adverb.dart';
 import '../text_buffer.dart';
 
 class AdverbPlusAdjective implements AnyAdjective {
-  final Adverb? adverb;
+  final Adverb? degreeAdverb;
   final Adjective? adjective;
 
   @override
-  String get en => TextBuffer().add(adverb?.en).add(adjective?.en).toString();
+  String get en =>
+      TextBuffer().add(degreeAdverb?.en).add(adjective?.en).toString();
 
   @override
-  bool get isValid => adverb != null && adjective != null;
+  bool get isValid => degreeAdverb != null && adjective != null;
 
-  const AdverbPlusAdjective({this.adjective, this.adverb});
+  const AdverbPlusAdjective({this.adjective, this.degreeAdverb});
 
   AdverbPlusAdjective copyWith({
-    Nullable<Adverb>? adverb,
+    Nullable<Adverb>? degreeAdverb,
     Nullable<Adjective>? adjective,
   }) =>
       AdverbPlusAdjective(
-        adverb: adverb == null ? this.adverb : adverb.value,
+        degreeAdverb:
+            degreeAdverb == null ? this.degreeAdverb : degreeAdverb.value,
         adjective: adjective == null ? this.adjective : adjective.value,
       );
 
   @override
   String toEs([bool? isPluralSubject]) => TextBuffer()
-      .add(adverb?.es)
+      .add(degreeAdverb?.es)
       .add(adjective?.toEs(isPluralSubject))
       .toString();
 }

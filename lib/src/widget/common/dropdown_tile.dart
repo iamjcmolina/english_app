@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'sentence_item_tile.dart';
+import 'item_tile.dart';
 
 class DropdownTile extends StatefulWidget {
   final TextStyle style;
@@ -35,7 +35,7 @@ class _DropdownTileState extends State<DropdownTile> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SentenceItemTile(
+        ItemTile(
           style: widget.style,
           placeholder: widget.title,
           en: widget.textValue,

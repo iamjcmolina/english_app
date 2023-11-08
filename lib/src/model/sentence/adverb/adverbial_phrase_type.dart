@@ -4,8 +4,8 @@ import '../phrase/prepositional_phrase.dart';
 import 'adverb.dart';
 
 enum AdverbialPhraseType {
-  adverb('Adverb Word'),
-  adverbPlusAdverb('Intensifier/Mitigator + Adverb'),
+  adverb('Adverb'),
+  adverbPlusAdverb('Degree Adverb + Adverb'),
   infinitivePhrase('Infinitive Phrase'),
   prepositionalPhrase('Prepositional Phrase');
 

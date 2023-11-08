@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SentenceItemTile extends StatelessWidget {
+class ItemTile extends StatelessWidget {
   final TextStyle style;
   final String placeholder;
   final String placeholderEs;
@@ -12,7 +12,7 @@ class SentenceItemTile extends StatelessWidget {
   final bool isShown;
   final bool isRequired;
 
-  const SentenceItemTile({
+  const ItemTile({
     super.key,
     required this.style,
     required this.placeholder,

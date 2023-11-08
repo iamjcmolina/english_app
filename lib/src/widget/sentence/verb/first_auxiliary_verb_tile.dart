@@ -12,28 +12,26 @@ import '../../../model/sentence/verb/contraction_type.dart';
 import '../../../model/sentence/verb/modal_verb.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
-import '../../common/sentence_item_field.dart';
-import '../../common/sentence_item_tile.dart';
-import 'verb_tile.dart';
+import '../../common/item_field.dart';
+import '../../common/item_tile.dart';
+import 'verb_field.dart';
 
 class FirstAuxiliaryVerbTile extends StatelessWidget {
-  final bool isEditingVerb;
   final IndependentClause clause;
   final void Function(IndependentClause) setClause;
-  final void Function() toggleEditingFirstAuxiliaryVerb;
-  final void Function(ModalVerb?) setModalVerb;
+  final bool isSettingsShown;
+  final void Function() toggleFirstAuxiliaryVerbSettings;
   final void Function(AnyVerb?) setVerb;
-  final TextEditingController? verbController;
+  final TextEditingController mainVerbController;
 
   const FirstAuxiliaryVerbTile({
     super.key,
-    required this.isEditingVerb,
     required this.clause,
     required this.setClause,
-    required this.toggleEditingFirstAuxiliaryVerb,
-    required this.setModalVerb,
+    required this.isSettingsShown,
+    required this.toggleFirstAuxiliaryVerbSettings,
     required this.setVerb,
-    this.verbController,
+    required this.mainVerbController,
   });
 
   @override
@@ -62,56 +60,41 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
       Tense.simplePast || Tense.continuousPast => false,
       _ => !clause.isInterrogative,
     };
-    bool isNegativeContractionAllowed = clause.isNegative;
 
-    bool isModalVerbFieldShown = isEditingVerb && isModalVerbEditable;
+    final mainVerbLabel =
+        clause.isBeAuxiliary ? ', ${clause.verbPlaceholder}' : '';
 
     return Column(
       children: [
-        if (!clause.isBeAuxiliary)
-          SentenceItemTile(
-            style: Word.verb.style,
-            placeholder: Label.auxiliaryVerb,
-            en: auxiliaryVerbs.first,
-            es: auxiliaryVerbs.firstEs,
-            hint: isEditingVerb ? null : clause.firstAuxiliaryVerbDescription,
-            trailing: Icon(
-                isEditingVerb ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-            onTap: toggleEditingFirstAuxiliaryVerb,
-          ),
-        if (clause.isBeAuxiliary)
-          VerbTile(
-            clause: clause,
-            isEditingVerb: isEditingVerb,
-            toggleEditingVerb: toggleEditingFirstAuxiliaryVerb,
-            setVerb: setVerb,
-            verbEditingController: verbController,
-          ),
-        if (isModalVerbFieldShown)
-          SentenceItemField<ModalVerb>(
-            label: Label.modalVerb,
-            value: clause.modalVerb,
-            options: modalVerbs,
-            getEnWords: [
-              if (!clause.isNegative) (ModalVerb e) => e.verb,
-              if (!clause.isNegative) (ModalVerb e) => e.verbContraction,
-              if (clause.isNegative) (ModalVerb e) => e.negative,
-              if (clause.isNegative)
-                (ModalVerb e) => e.negativeWithVerbContraction,
-              if (clause.isNegative) (ModalVerb e) => e.negativeContraction,
-            ],
-            getEsWords: [
-              (ModalVerb e) => e.affirmativeIEs,
-              (ModalVerb e) => e.affirmativeYouEs,
-              (ModalVerb e) => e.affirmativeHeEs,
-              (ModalVerb e) => e.affirmativeWeEs,
-              (ModalVerb e) => e.affirmativeTheyEs,
-            ],
-            displayStringForOption: (modalVerb) =>
-                clause.conjugateModal(modalVerb) ?? '',
-            setValue: (e) => setModalVerb(e),
-          ),
-        if (isEditingVerb)
+        ItemTile(
+          style: Word.verb.style,
+          placeholder: '${Label.auxiliaryVerb}$mainVerbLabel',
+          en: auxiliaryVerbs.first,
+          es: auxiliaryVerbs.firstEs,
+          hint: isSettingsShown ? null : clause.firstAuxiliaryVerbDescription,
+          trailing: Icon(
+              isSettingsShown ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+          onTap: toggleFirstAuxiliaryVerbSettings,
+          isRequired: clause.isBeAuxiliary,
+        ),
+        if (isSettingsShown) ...[
+          if (clause.isBeAuxiliary)
+            VerbField(
+              clause: clause,
+              setVerb: setVerb,
+              controller: mainVerbController,
+              autofocus: false,
+            ),
+          if (isModalVerbEditable)
+            ItemField<ModalVerb>(
+              label: Label.modalVerb,
+              options: modalVerbs,
+              value: clause.modalVerb,
+              setValue: setModalVerb,
+              toEnString: (e) => clause.conjugateModal(e) ?? '',
+              toEsString: (e) => clause.conjugateModalEs(e) ?? '',
+              autofocus: false,
+            ),
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
@@ -140,13 +123,12 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
                       setAuxiliaryVerbType(e.isEmpty ? null : e.first),
                   style: const ButtonStyle(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity(vertical: -1),
+                    visualDensity: VisualDensity(horizontal: -2, vertical: -2),
                   ),
                 ),
               ],
             ),
           ),
-        if (isEditingVerb)
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
@@ -164,7 +146,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
                     ButtonSegment(
                       value: ContractionType.negative,
                       label: const Text('Negative'),
-                      enabled: isNegativeContractionAllowed,
+                      enabled: clause.isNegative,
                     ),
                   ],
                   selected: clause.contractionType == null
@@ -175,19 +157,25 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
                       setContractionType(e.isEmpty ? null : e.first),
                   style: const ButtonStyle(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity(vertical: -1),
+                    visualDensity: VisualDensity(horizontal: -2, vertical: -2),
                   ),
                 ),
               ],
             ),
           ),
+        ]
       ],
     );
   }
 
+  void setModalVerb(ModalVerb? modalVerb) =>
+      setClause(clause.copyWith(modalVerb: Nullable(modalVerb)));
+
   void setAuxiliaryVerbType(AuxiliaryVerbType? type) =>
       setClause(clause.copyWith(auxiliaryVerbType: Nullable(type)));
 
-  void setContractionType(ContractionType? type) =>
-      setClause(clause.copyWith(contractionType: Nullable(type)));
+  void setContractionType(ContractionType? type) {
+    setClause(clause.copyWith(contractionType: Nullable(type)));
+    mainVerbController.text = clause.conjugateVerb() ?? '';
+  }
 }

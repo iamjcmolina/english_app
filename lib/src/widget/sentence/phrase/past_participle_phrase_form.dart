@@ -10,13 +10,12 @@ import '../../../model/sentence/phrase/past_participle_phrase.dart';
 import '../../../model/sentence/verb/any_verb.dart';
 import '../../../model/word.dart';
 import '../../../repository/vocabulary_repository.dart';
-import '../../common/dropdown_tile.dart';
 import '../../common/item_editor_layout.dart';
-import '../../common/sentence_item_field.dart';
-import '../../common/sentence_item_tile.dart';
+import '../../common/item_field.dart';
+import '../../common/item_tile.dart';
 import '../../page/adverbial_phrase_page.dart';
 
-class PastParticiplePhraseForm extends StatelessWidget {
+class PastParticiplePhraseForm extends StatefulWidget {
   final Widget settingsControl;
   final PastParticiplePhrase phrase;
   final void Function(PastParticiplePhrase?) setPhrase;
@@ -33,36 +32,49 @@ class PastParticiplePhraseForm extends StatelessWidget {
   });
 
   @override
+  State<PastParticiplePhraseForm> createState() =>
+      _PastParticiplePhraseFormState();
+}
+
+class _PastParticiplePhraseFormState extends State<PastParticiplePhraseForm> {
+  bool isVerbFieldShown = false;
+
+  @override
   Widget build(BuildContext context) {
     final vocabularyRepository = Provider.of<VocabularyRepository>(context);
 
     return ItemEditorLayout(
       header: [
-        settingsControl,
+        widget.settingsControl,
         ListTile(
           title: Text.rich(TextSpan(
             children: [
               TextSpan(
-                text: (phrase.verb?.pastParticiple ?? Label.pastParticipleVerb)
+                text: (widget.phrase.verb?.pastParticiple ??
+                        Label.pastParticipleVerb)
                     .addSpace(),
-                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
+                style: widget.phrase.verb == null
+                    ? Word.empty.style
+                    : Word.verb.style,
               ),
               TextSpan(
-                text: (phrase.adverb?.en ?? Label.adverb).addSpace(),
-                style: phrase.adverb == null
+                text: (widget.phrase.adverb?.en ?? Label.adverb).addSpace(),
+                style: widget.phrase.adverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
               ),
               const TextSpan(text: '\n'),
               TextSpan(
-                text: (phrase.verb?.pastParticipleEs ??
+                text: (widget.phrase.verb?.pastParticipleEs ??
                         Label.pastParticipleVerbEs)
                     .addSpace(),
-                style: phrase.verb == null ? Word.empty.style : Word.verb.style,
+                style: widget.phrase.verb == null
+                    ? Word.empty.style
+                    : Word.verb.style,
               ),
               TextSpan(
-                text: (phrase.adverb?.es ?? Label.adverbEs).addSpace(),
-                style: phrase.adverb == null
+                text: (widget.phrase.adverb?.es ?? Label.adverbEs).addSpace(),
+                style: widget.phrase.adverb == null
                     ? Word.empty.style
                     : Word.adverb.style,
               ),
@@ -71,29 +83,31 @@ class PastParticiplePhraseForm extends StatelessWidget {
         ),
       ],
       body: [
-        DropdownTile(
-          style: Word.verb.style,
-          title: Label.pastParticipleVerb,
-          textValue: phrase.verb?.pastParticiple,
-          textValueEs: phrase.verb?.pastParticipleEs,
-          required: true,
-          fields: [
-            SentenceItemField<AnyVerb>(
-              label: Label.pastParticipleVerb,
-              value: phrase.verb,
-              displayStringForOption: (e) => e.pastParticiple,
-              options: vocabularyRepository.actionVerbs(),
-              getEnWords: [(AnyVerb e) => e.pastParticiple],
-              getEsWords: [(AnyVerb e) => e.pastParticipleEs],
-              setValue: (e) => setVerb(e),
-            ),
-          ],
-        ),
-        SentenceItemTile(
+        if (!isVerbFieldShown)
+          ItemTile(
+            trailing: const Icon(Icons.edit),
+            onTap: toggleVerbField,
+            style: Word.verb.style,
+            placeholder: Label.progressiveVerb,
+            en: widget.phrase.verb?.pastParticiple,
+            es: widget.phrase.verb?.pastParticipleEs,
+            isRequired: true,
+          ),
+        if (isVerbFieldShown)
+          ItemField<AnyVerb>(
+            label: Label.pastParticipleVerb,
+            options: vocabularyRepository.actionVerbs(),
+            value: widget.phrase.verb,
+            setValue: setVerb,
+            toEnString: (AnyVerb e) => e.pastParticiple,
+            toEsString: (AnyVerb e) => e.pastParticipleEs,
+            onAccept: toggleVerbField,
+          ),
+        ItemTile(
           style: Word.adverb.style,
           placeholder: Label.adverb,
-          en: phrase.adverb?.en,
-          es: phrase.adverb?.es,
+          en: widget.phrase.adverb?.en,
+          es: widget.phrase.adverb?.es,
           trailing: const Icon(Icons.arrow_forward_ios),
           onTap: () => goToAdverbialPhrasePage(context),
         ),
@@ -102,22 +116,24 @@ class PastParticiplePhraseForm extends StatelessWidget {
   }
 
   void setVerb(AnyVerb? verb) =>
-      setPhrase(phrase.copyWith(verb: Nullable(verb)));
+      widget.setPhrase(widget.phrase.copyWith(verb: Nullable(verb)));
 
   void setAdverbialPhrase(AnyAdverb? adverb) =>
-      setPhrase(phrase.copyWith(adverb: Nullable(adverb)));
+      widget.setPhrase(widget.phrase.copyWith(adverb: Nullable(adverb)));
 
   void goToAdverbialPhrasePage(BuildContext context) async {
     final response = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AdverbialPhrasePage(
-                adverb: phrase.adverb,
+                adverb: widget.phrase.adverb,
                 position: AdverbPosition.end,
-                isNegative: isNegative,
-                isPlural: isPlural)));
+                isNegative: widget.isNegative,
+                isPlural: widget.isPlural)));
     if (response != null) {
       setAdverbialPhrase(response is AnyAdverb ? response : null);
     }
   }
+
+  toggleVerbField() => setState(() => isVerbFieldShown = !isVerbFieldShown);
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../model/sentence/adjective/adjectival_phrase_type.dart';
 import '../../model/sentence/adjective/any_adjective.dart';
-import '../../model/sentence/phrase/adjectival_phrase_type.dart';
 import '../../model/sentence/phrase/adjective_plus_complement.dart';
 import '../../model/sentence/phrase/adverb_plus_adjective.dart';
 import '../../model/sentence/phrase/infinitive_phrase.dart';
@@ -103,7 +103,8 @@ class _AdjectivalPhrasePageState extends State<AdjectivalPhrasePage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        AdjectivalPhraseType.adverbPlusAdjective => AdverbPlusAdjectiveForm(
+        AdjectivalPhraseType.degreeAdverbPlusAdjective =>
+          AdverbPlusAdjectiveForm(
             setPhrase: setAdjective,
             phrase: adjective is AdverbPlusAdjective
                 ? adjective as AdverbPlusAdjective

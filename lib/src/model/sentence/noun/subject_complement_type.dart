@@ -7,8 +7,8 @@ import 'pronoun.dart';
 
 enum SubjectComplementType {
   adjective('Adjective'),
-  adverbPlusAdjective('Adverb+Adjective'),
-  adjectivePlusComplement('Adjective+Complement'),
+  degreeAdverbPlusAdjective('Degree Adverb + Adjective'),
+  adjectivePlusComplement('Adjective + Complement'),
   possessivePronoun('Possessive pronoun'),
   nounPhrase('Noun phrase'),
   infinitivePhrase('Infinitive phrase');
@@ -23,7 +23,7 @@ enum SubjectComplementType {
           Type type, SubjectComplementType defaultType) =>
       switch (type) {
         Adjective => SubjectComplementType.adjective,
-        AdverbPlusAdjective => SubjectComplementType.adverbPlusAdjective,
+        AdverbPlusAdjective => SubjectComplementType.degreeAdverbPlusAdjective,
         AdjectivePlusComplement =>
           SubjectComplementType.adjectivePlusComplement,
         Pronoun => SubjectComplementType.possessivePronoun,

@@ -10,30 +10,29 @@ class AdverbPlusAdverb implements AnyAdverb {
   final bool isAllowedInTheMiddle = false;
   @override
   final bool isAllowedInTheEnd = false;
-  final Adverb? intensifierAdverb;
+  final Adverb? degreeAdverb;
   final Adverb? adverb;
 
   @override
   String get en =>
-      TextBuffer().add(intensifierAdverb?.en).add(adverb?.en).toString();
+      TextBuffer().add(degreeAdverb?.en).add(adverb?.en).toString();
 
   @override
   String get es =>
-      TextBuffer().add(intensifierAdverb?.es).add(adverb?.es).toString();
+      TextBuffer().add(degreeAdverb?.es).add(adverb?.es).toString();
 
   @override
-  bool get isValid => intensifierAdverb != null && adverb != null;
+  bool get isValid => degreeAdverb != null && adverb != null;
 
-  const AdverbPlusAdverb({this.intensifierAdverb, this.adverb});
+  const AdverbPlusAdverb({this.degreeAdverb, this.adverb});
 
   AdverbPlusAdverb copyWith({
-    Nullable<Adverb>? intensifierAdverb,
+    Nullable<Adverb>? degreeAdverb,
     Nullable<Adverb>? adverb,
   }) =>
       AdverbPlusAdverb(
-        intensifierAdverb: intensifierAdverb == null
-            ? this.intensifierAdverb
-            : intensifierAdverb.value,
+        degreeAdverb:
+            degreeAdverb == null ? this.degreeAdverb : degreeAdverb.value,
         adverb: adverb == null ? this.adverb : adverb.value,
       );
 }
