@@ -119,6 +119,7 @@ class _GerundPhraseFormState extends State<GerundPhraseForm> {
             setValue: setVerb,
             toEnString: (AnyVerb e) => e.progressive,
             toEsString: (AnyVerb e) => e.infinitiveEs,
+            getHelperText: (e) => e.help,
             onAccept: toggleVerbField,
           ),
         ItemTile(

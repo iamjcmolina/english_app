@@ -55,6 +55,7 @@ abstract class AnyVerb {
   bool get isTransitive;
   bool get isDitransitive;
   bool get canBeLinkingVerb;
+  String get help => '';
 
   String get presentSingularThirdPerson {
     final penultimateLetter = infinitive.charAt(infinitive.length - 2);

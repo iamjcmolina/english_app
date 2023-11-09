@@ -66,7 +66,7 @@ class VocabularyProvider extends ChangeNotifier {
     final rows = await _getCsvData('determiners/distributive-adjectives');
     return rows
         .map((row) => Determiner.distributiveAdjective(
-            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1))
+            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1, row[5]))
         .toList();
   }
 
@@ -74,7 +74,7 @@ class VocabularyProvider extends ChangeNotifier {
     final rows = await _getCsvData('determiners/quantifiers');
     return rows
         .map((row) => Determiner.quantifier(
-            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1))
+            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1, row[5]))
         .toList();
   }
 
@@ -146,22 +146,22 @@ class VocabularyProvider extends ChangeNotifier {
 
   Future<List<Adverb>> _getMannerAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/manner');
-    return rows.map((row) => Adverb.manner(row[0], row[1])).toList();
+    return rows.map((row) => Adverb.manner(row[0], row[1], row[2])).toList();
   }
 
   Future<List<Adverb>> _getPlaceAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/place');
-    return rows.map((row) => Adverb.place(row[0], row[1])).toList();
+    return rows.map((row) => Adverb.place(row[0], row[1], row[2])).toList();
   }
 
   Future<List<Adverb>> _getTimeAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/time');
-    return rows.map((row) => Adverb.time(row[0], row[1])).toList();
+    return rows.map((row) => Adverb.time(row[0], row[1], row[2])).toList();
   }
 
   Future<List<Adverb>> _getDurationAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/duration');
-    return rows.map((row) => Adverb.duration(row[0], row[1])).toList();
+    return rows.map((row) => Adverb.duration(row[0], row[1], row[2])).toList();
   }
 
   Future<List<Adverb>> _getDegreeAdverbs() async {
@@ -182,25 +182,27 @@ class VocabularyProvider extends ChangeNotifier {
 
   Future<List<Adverb>> _getFocusingAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/focusing');
-    return rows.map((row) => Adverb.focusing(row[0], row[1])).toList();
+    return rows.map((row) => Adverb.focusing(row[0], row[1], row[2])).toList();
   }
 
   Future<List<Adverb>> _getCertaintyAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/certainty');
     return rows
         .map((row) => Adverb.certainty(
-            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1))
+            row[0], row[1], row[2] == 1, row[3] == 1, row[4] == 1, row[5]))
         .toList();
   }
 
   Future<List<Adverb>> _getViewpointAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/viewpoint');
-    return rows.map((row) => Adverb.viewpoint(row[0], row[1])).toList();
+    return rows.map((row) => Adverb.viewpoint(row[0], row[1], row[2])).toList();
   }
 
   Future<List<Adverb>> _getEvaluativeAdverbs() async {
     List<List<dynamic>> rows = await _getCsvData('adverbs/evaluative');
-    return rows.map((row) => Adverb.evaluative(row[0], row[1])).toList();
+    return rows
+        .map((row) => Adverb.evaluative(row[0], row[1], row[2]))
+        .toList();
   }
 
   Future<List<Preposition>> getPrepositions() async {
@@ -226,6 +228,7 @@ class VocabularyProvider extends ChangeNotifier {
               isSeparable: row[11] == 1,
               isTransitive: row[12] == 1,
               isDitransitive: row[13] == 1,
+              help: row[14],
             ))
         .toList();
   }
@@ -247,6 +250,7 @@ class VocabularyProvider extends ChangeNotifier {
               isTransitive: row[10] == 1,
               isDitransitive: row[11] == 1,
               canBeLinkingVerb: row[12] == 1,
+              help: row[13],
             ))
         .toList();
   }

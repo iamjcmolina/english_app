@@ -10,7 +10,8 @@ class ModalVerb {
         affirmativeYouEs: 'puedes/pueden',
         affirmativeHeEs: 'puede',
         affirmativeWeEs: 'podemos',
-        affirmativeTheyEs: 'pueden'),
+        affirmativeTheyEs: 'pueden',
+        help: ''),
     ModalVerb(
         verb: 'could',
         verbContraction: "could",
@@ -21,7 +22,8 @@ class ModalVerb {
         affirmativeYouEs: 'podrías/podrían',
         affirmativeHeEs: 'podría',
         affirmativeWeEs: 'podríamos',
-        affirmativeTheyEs: 'podrían'),
+        affirmativeTheyEs: 'podrían',
+        help: ''),
     ModalVerb(
         verb: 'may',
         verbContraction: "may",
@@ -32,7 +34,8 @@ class ModalVerb {
         affirmativeYouEs: 'podrías/podrían',
         affirmativeHeEs: 'podría',
         affirmativeWeEs: 'podríamos',
-        affirmativeTheyEs: 'podrían'),
+        affirmativeTheyEs: 'podrían',
+        help: ''),
     ModalVerb(
         verb: 'might',
         verbContraction: "might",
@@ -43,7 +46,8 @@ class ModalVerb {
         affirmativeYouEs: 'podrías/podrían',
         affirmativeHeEs: 'podría',
         affirmativeWeEs: 'podríamos',
-        affirmativeTheyEs: 'podrían'),
+        affirmativeTheyEs: 'podrían',
+        help: ''),
     ModalVerb(
         verb: 'must',
         verbContraction: "must",
@@ -54,7 +58,8 @@ class ModalVerb {
         affirmativeYouEs: 'debes/deben',
         affirmativeHeEs: 'debe',
         affirmativeWeEs: 'debemos',
-        affirmativeTheyEs: 'deben'),
+        affirmativeTheyEs: 'deben',
+        help: ''),
     ModalVerb(
         verb: 'should',
         verbContraction: "should",
@@ -65,7 +70,8 @@ class ModalVerb {
         affirmativeYouEs: 'deberías/deberían',
         affirmativeHeEs: 'debería',
         affirmativeWeEs: 'deberíamos',
-        affirmativeTheyEs: 'deberían'),
+        affirmativeTheyEs: 'deberían',
+        help: ''),
     ModalVerb(
         verb: 'would',
         verbContraction: "'d",
@@ -76,7 +82,8 @@ class ModalVerb {
         affirmativeYouEs: '',
         affirmativeHeEs: '',
         affirmativeWeEs: '',
-        affirmativeTheyEs: ''),
+        affirmativeTheyEs: '',
+        help: ''),
   ];
   final String verb;
   final String verbContraction;
@@ -88,6 +95,7 @@ class ModalVerb {
   final String affirmativeHeEs;
   final String affirmativeWeEs;
   final String affirmativeTheyEs;
+  final String help;
 
   bool get isWould => verb.toLowerCase() == 'would';
 
@@ -104,5 +112,6 @@ class ModalVerb {
     required this.affirmativeHeEs,
     required this.affirmativeWeEs,
     required this.affirmativeTheyEs,
+    required this.help,
   });
 }

@@ -35,6 +35,7 @@ class PhrasalVerb extends Verb {
     required super.isTransitive,
     required super.isDitransitive,
     super.canBeLinkingVerb = false,
+    required super.help,
     required this.isSeparable,
   });
 }

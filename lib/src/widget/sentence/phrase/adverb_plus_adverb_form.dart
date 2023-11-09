@@ -92,6 +92,7 @@ class _AdverbPlusAdverbFormState extends State<AdverbPlusAdverbForm> {
             toEnString: (e) => e.en,
             toEsString: (e) => e.es,
             setValue: setDegreeAdverb,
+            getHelperText: (e) => e.help,
             onAccept: toggleDegreeAdverbField,
           ),
         if (!isAdverbFieldShown)
@@ -112,6 +113,7 @@ class _AdverbPlusAdverbFormState extends State<AdverbPlusAdverbForm> {
             options: vocabularyRepository.endAdverbs(),
             toEnString: (e) => e.en,
             toEsString: (e) => e.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleAdverbField,
           ),
       ],

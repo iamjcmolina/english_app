@@ -1,6 +1,6 @@
-en,es,isAllowedInFront,isAllowedInTheMiddle,isAllowedInTheEnd
-probably,probablemente,0,1,0
-possibly,posiblemente,0,1,0
-certainly,ciertamente,0,1,0
-maybe,tal vez/quizás/a lo mejor,1,0,1
-perhaps,tal vez/quizás/a lo mejor,1,0,1
+en,es,isAllowedInFront,isAllowedInTheMiddle,isAllowedInTheEnd,help
+probably,probablemente,0,1,0,""
+possibly,posiblemente,0,1,0,""
+certainly,ciertamente,0,1,0,""
+maybe,tal vez,1,0,1,""
+perhaps,quizás,1,0,1,""

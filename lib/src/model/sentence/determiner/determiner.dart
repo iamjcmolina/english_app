@@ -2,9 +2,12 @@ import 'determiner_type.dart';
 
 class Determiner {
   static const articles = [
-    Determiner.article('a', 'un/una', false, true, false),
-    Determiner.article('an', 'un/una', false, true, false),
-    Determiner.article('the', 'el/la/los/las', true, true, true),
+    Determiner.article('a', 'un/una', false, true, false,
+        'Se usa solo con sustantivos singulares que inician con consonante'),
+    Determiner.article('an', 'un/una', false, true, false,
+        'Se usa solo con sustantivos singulares que inician con vocal'),
+    Determiner.article('the', 'el/la/los/las', true, true, true,
+        'Se puede usar con cualquier sustantivo'),
   ];
   static const possessiveAdjectives = [
     Determiner.possessiveAdjective('my', 'mi/mis'),
@@ -27,6 +30,7 @@ class Determiner {
   final bool allowsUncountable;
   final bool allowsSingular;
   final bool allowsPlural;
+  final String help;
 
   const Determiner({
     required this.en,
@@ -35,6 +39,7 @@ class Determiner {
     required this.allowsUncountable,
     required this.allowsSingular,
     required this.allowsPlural,
+    this.help = '',
   });
 
   const Determiner.article(
@@ -43,13 +48,15 @@ class Determiner {
     this.allowsUncountable,
     this.allowsSingular,
     this.allowsPlural,
+    this.help,
   ) : type = DeterminerType.article;
 
   const Determiner.possessiveAdjective(this.en, this.es)
       : type = DeterminerType.possessive,
         allowsUncountable = true,
         allowsSingular = true,
-        allowsPlural = true;
+        allowsPlural = true,
+        help = '';
 
   const Determiner.demonstrative(
     this.en,
@@ -57,7 +64,8 @@ class Determiner {
     this.allowsUncountable,
     this.allowsSingular,
     this.allowsPlural,
-  ) : type = DeterminerType.demonstrative;
+  )   : type = DeterminerType.demonstrative,
+        help = '';
 
   const Determiner.distributiveAdjective(
     this.en,
@@ -65,6 +73,7 @@ class Determiner {
     this.allowsUncountable,
     this.allowsSingular,
     this.allowsPlural,
+    this.help,
   ) : type = DeterminerType.distributive;
 
   const Determiner.quantifier(
@@ -73,6 +82,7 @@ class Determiner {
     this.allowsUncountable,
     this.allowsSingular,
     this.allowsPlural,
+    this.help,
   ) : type = DeterminerType.quantifier;
 
   const Determiner.one()
@@ -81,7 +91,8 @@ class Determiner {
         es = 'uno/una',
         allowsUncountable = false,
         allowsSingular = true,
-        allowsPlural = false;
+        allowsPlural = false,
+        help = '';
 
   const Determiner.naturalNumber(
     this.en,
@@ -89,7 +100,8 @@ class Determiner {
   )   : type = DeterminerType.number,
         allowsUncountable = false,
         allowsSingular = false,
-        allowsPlural = true;
+        allowsPlural = true,
+        help = '';
 
   const Determiner.ordinalNumber(
     this.en,
@@ -97,5 +109,6 @@ class Determiner {
   )   : type = DeterminerType.number,
         allowsUncountable = false,
         allowsSingular = true,
-        allowsPlural = false;
+        allowsPlural = false,
+        help = '';
 }

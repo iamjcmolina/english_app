@@ -81,6 +81,7 @@ class _AdverbFormState extends State<AdverbForm> {
             setValue: widget.setAdverb,
             toEnString: (e) => e.en,
             toEsString: (e) => e.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleField,
           ),
       ],

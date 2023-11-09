@@ -98,6 +98,7 @@ class _AdverbPlusAdjectiveFormState extends State<AdverbPlusAdjectiveForm> {
             setValue: (e) => setDegreeAdverb(e),
             toEnString: (e) => e.en,
             toEsString: (e) => e.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleAdverbField,
           ),
         if (!isAdjectiveFieldShown)

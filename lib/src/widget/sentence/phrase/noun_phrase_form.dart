@@ -150,6 +150,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
             setValue: setQuantifier,
             toEnString: (Determiner e) => e.en,
             toEsString: (Determiner e) => e.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleQuantifierField,
           ),
         // bool isDeterminerFieldShown = false;
@@ -171,6 +172,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
             setValue: setDeterminer,
             toEnString: (Determiner e) => e.en,
             toEsString: (Determiner e) => e.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleDeterminerField,
           ),
         // bool isNumberFieldShown = false;
@@ -192,6 +194,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
             setValue: setNumber,
             toEnString: (Determiner e) => e.en,
             toEsString: (Determiner e) => e.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleNumberField,
           ),
         // bool isAdjectiveFieldShown = false;

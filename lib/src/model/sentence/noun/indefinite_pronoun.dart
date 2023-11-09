@@ -10,7 +10,7 @@ class IndefinitePronoun extends AnyNoun {
   @override
   final Countability countability;
   final Countability countabilityEs;
-  final String description;
+  final String help;
 
   @override
   Doer get asDoer => isPlural ? Doer.they : Doer.it;
@@ -27,6 +27,6 @@ class IndefinitePronoun extends AnyNoun {
   @override
   bool get isValid => true;
 
-  const IndefinitePronoun(this.en, this.es, this.countability,
-      this.countabilityEs, this.description);
+  const IndefinitePronoun(
+      this.en, this.es, this.countability, this.countabilityEs, this.help);
 }

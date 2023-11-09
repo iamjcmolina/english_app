@@ -121,6 +121,7 @@ class _PresentParticiplePhraseFormState
             setValue: setVerb,
             toEnString: (AnyVerb e) => e.progressive,
             toEsString: (AnyVerb e) => e.pastParticipleEs,
+            getHelperText: (e) => e.help,
             onAccept: toggleVerbField,
           ),
         ItemTile(

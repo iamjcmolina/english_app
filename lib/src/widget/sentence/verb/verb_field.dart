@@ -34,6 +34,7 @@ class VerbField extends StatelessWidget {
       onAccept: onAccept,
       toEnString: (verb) => clause.conjugateVerb(verb) ?? '',
       toEsString: (verb) => clause.conjugateVerbEs(verb) ?? '',
+      getHelperText: (e) => e.help,
       controller: controller,
       autofocus: autofocus,
     );

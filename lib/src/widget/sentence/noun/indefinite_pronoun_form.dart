@@ -74,6 +74,7 @@ class _IndefinitePronounFormState extends State<IndefinitePronounForm> {
             setValue: widget.setPronoun,
             toEnString: (pronoun) => pronoun.en,
             toEsString: (pronoun) => pronoun.es,
+            getHelperText: (e) => e.help,
             onAccept: toggleField,
           ),
       ],

@@ -113,6 +113,7 @@ class VocabularyRepository extends ChangeNotifier {
   List<PhrasalVerb> phrasalVerbs() => provider.phrasalVerbs;
 
   List<Adverb> adverbs() => [
+        ...Adverb.frequencyAdverbs,
         ...provider.certaintyAdverbs,
         ...provider.degreeAdverbs,
         ...provider.durationAdverbs,

@@ -91,9 +91,9 @@ class ItemField<T extends Object> extends StatelessWidget {
                                 const TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(text: ' (${toEsString(option)})'),
                       ])),
-                      subtitle: getHelperText == null || value == null
+                      subtitle: getHelperText == null
                           ? null
-                          : Text(helperText!),
+                          : Text(getHelperText!(option)),
                     ),
                   );
                 },

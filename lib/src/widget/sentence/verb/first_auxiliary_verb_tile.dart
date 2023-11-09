@@ -93,6 +93,7 @@ class FirstAuxiliaryVerbTile extends StatelessWidget {
               setValue: setModalVerb,
               toEnString: (e) => clause.conjugateModal(e) ?? '',
               toEsString: (e) => clause.conjugateModalEs(e) ?? '',
+              getHelperText: (e) => e.help,
               autofocus: false,
             ),
           Padding(

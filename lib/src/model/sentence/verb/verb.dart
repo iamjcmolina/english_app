@@ -27,6 +27,8 @@ class Verb extends AnyVerb {
   final bool isDitransitive;
   @override
   final bool canBeLinkingVerb;
+  @override
+  final String help;
 
   @override
   String get progressive => '${infinitive}ing';
@@ -49,6 +51,7 @@ class Verb extends AnyVerb {
     required this.isTransitive,
     required this.isDitransitive,
     this.canBeLinkingVerb = false,
+    required this.help,
   });
 
   @override
