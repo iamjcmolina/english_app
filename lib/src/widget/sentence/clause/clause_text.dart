@@ -104,6 +104,16 @@ class _ClauseTextEs extends StatelessWidget {
         TextSpan(
             text: clause.midAdverb?.es.addSpace(), style: Word.adverb.style),
         TextSpan(
+            text: clause.hasDitransitiveVerb
+                ? clause.indirectObject?.es.addSpace()
+                : null,
+            style: Word.noun.style),
+        TextSpan(
+            text: clause.hasTransitiveVerb
+                ? clause.directObject?.es.addSpace()
+                : null,
+            style: Word.noun.style),
+        TextSpan(
             text: aux.firstEs?.addSpace(aux.firstEs!.isNotEmpty),
             style: aux.firstEs == null ? Word.empty.style : Word.verb.style),
         TextSpan(text: aux.secondEs?.addSpace(), style: Word.verb.style),
@@ -114,16 +124,6 @@ class _ClauseTextEs extends StatelessWidget {
                 : (clause.conjugateVerbEs() ?? clause.verbPlaceholderEs)
                     .addSpace(),
             style: clause.verb == null ? Word.empty.style : Word.verb.style),
-        TextSpan(
-            text: clause.hasDitransitiveVerb
-                ? clause.indirectObject?.es.addSpace()
-                : null,
-            style: Word.noun.style),
-        TextSpan(
-            text: clause.hasTransitiveVerb
-                ? clause.directObject?.es.addSpace()
-                : null,
-            style: Word.noun.style),
         TextSpan(
             text: clause.canHaveSubjectComplement
                 ? clause.subjectComplement
