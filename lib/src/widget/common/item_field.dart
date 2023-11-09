@@ -57,11 +57,19 @@ class ItemField<T extends Object> extends StatelessWidget {
               prefixIcon: onAccept == null
                   ? null
                   : IconButton(
-                      onPressed: onAccept,
+                      onPressed: () {
+                        if (controller.text.isEmpty) {
+                          setValue(null);
+                        }
+                        onAccept!();
+                      },
                       icon: const Icon(Icons.done),
                     ),
               suffixIcon: IconButton(
-                onPressed: () => setValue(null),
+                onPressed: () {
+                  controller.text = '';
+                  focusNode.unfocus();
+                },
                 icon: const Icon(Icons.clear),
               )),
           validator: validator,
