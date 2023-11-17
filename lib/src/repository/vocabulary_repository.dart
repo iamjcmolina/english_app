@@ -6,7 +6,9 @@ import '../model/sentence/adverb/adverb.dart';
 import '../model/sentence/determiner/determiner.dart';
 import '../model/sentence/noun/indefinite_pronoun.dart';
 import '../model/sentence/noun/noun.dart';
-import '../model/sentence/noun/pronoun.dart';
+import '../model/sentence/noun/object_pronoun.dart';
+import '../model/sentence/noun/possessive_pronoun.dart';
+import '../model/sentence/noun/subject_pronoun.dart';
 import '../model/sentence/preposition/preposition.dart';
 import '../model/sentence/verb/any_verb.dart';
 import '../model/sentence/verb/be.dart';
@@ -21,11 +23,12 @@ class VocabularyRepository extends ChangeNotifier {
 
   VocabularyRepository(this.provider);
 
-  List<Pronoun> subjectPronouns() => Pronoun.subjectPronouns;
+  List<SubjectPronoun> subjectPronouns() => SubjectPronoun.subjectPronouns;
 
-  List<Pronoun> objectPronouns() => Pronoun.objectPronouns;
+  List<ObjectPronoun> objectPronouns() => ObjectPronoun.objectPronouns;
 
-  List<Pronoun> possessivePronouns() => Pronoun.possessivePronouns;
+  List<PossessivePronoun> possessivePronouns() =>
+      PossessivePronoun.possessivePronouns;
 
   List<Determiner> possessiveAdjectives() => Determiner.possessiveAdjectives;
 

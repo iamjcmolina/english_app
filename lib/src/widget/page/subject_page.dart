@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../model/sentence/clause/independent_clause.dart';
 import '../../model/sentence/noun/any_noun.dart';
 import '../../model/sentence/noun/indefinite_pronoun.dart';
-import '../../model/sentence/noun/noun_type.dart';
-import '../../model/sentence/noun/pronoun.dart';
+import '../../model/sentence/noun/subject_pronoun.dart';
+import '../../model/sentence/noun/subject_type.dart';
 import '../../model/sentence/phrase/gerund_phrase.dart';
 import '../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../model/sentence/phrase/noun_phrase.dart';
-import '../../repository/vocabulary_repository.dart';
 import '../common/sentence_scaffold.dart';
 import '../sentence/noun/indefinite_pronoun_form.dart';
-import '../sentence/noun/pronoun_form.dart';
+import '../sentence/noun/subject_pronoun_form.dart';
 import '../sentence/phrase/gerund_phrase_form.dart';
 import '../sentence/phrase/infinitive_phrase_form.dart';
 import '../sentence/phrase/noun_phrase_form.dart';
@@ -28,7 +26,7 @@ class SubjectPage extends StatefulWidget {
 
 class _SubjectPageState extends State<SubjectPage> {
   AnyNoun? subject;
-  late NounType type;
+  late SubjectType type;
 
   bool get isValid => subject?.isValid ?? false;
 
@@ -37,23 +35,21 @@ class _SubjectPageState extends State<SubjectPage> {
     super.initState();
     subject = widget.clause.subject;
     type = switch (subject.runtimeType) {
-      NounPhrase => NounType.nounPhrase,
-      _ => NounType.pronoun,
+      NounPhrase => SubjectType.nounPhrase,
+      _ => SubjectType.pronoun,
     };
-    type = NounType.from(subject.runtimeType, NounType.pronoun);
+    type = SubjectType.from(subject.runtimeType, SubjectType.pronoun);
   }
 
   @override
   Widget build(BuildContext context) {
-    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
-
     final settingsControl = Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: DropdownMenu<NounType>(
+        child: DropdownMenu<SubjectType>(
           label: const Text('Subject Type'),
           initialSelection: type,
-          dropdownMenuEntries: NounType.values
+          dropdownMenuEntries: SubjectType.values
               .map((e) => DropdownMenuEntry(value: e, label: e.name))
               .toList(),
           onSelected: (e) => setType(e!),
@@ -74,7 +70,13 @@ class _SubjectPageState extends State<SubjectPage> {
         ),
       ],
       body: switch (type) {
-        NounType.nounPhrase => NounPhraseForm(
+        SubjectType.pronoun => SubjectPronounForm(
+            setPronoun: setSubject,
+            pronoun:
+                subject is SubjectPronoun ? subject as SubjectPronoun : null,
+            settingsControl: settingsControl,
+          ),
+        SubjectType.nounPhrase => NounPhraseForm(
             setPhrase: setSubject,
             phrase: subject is NounPhrase
                 ? subject as NounPhrase
@@ -83,7 +85,7 @@ class _SubjectPageState extends State<SubjectPage> {
             isNegative: widget.clause.isNegative,
             isPlural: widget.clause.hasPluralSubject,
           ),
-        NounType.indefinitePronoun => IndefinitePronounForm(
+        SubjectType.indefinitePronoun => IndefinitePronounForm(
             setPronoun: setSubject,
             pronoun: subject is IndefinitePronoun
                 ? subject as IndefinitePronoun
@@ -91,7 +93,7 @@ class _SubjectPageState extends State<SubjectPage> {
             settingsControl: settingsControl,
             isNegative: widget.clause.isNegative,
           ),
-        NounType.infinitivePhrase => InfinitivePhraseForm(
+        SubjectType.infinitivePhrase => InfinitivePhraseForm(
             setPhrase: setSubject,
             phrase: subject is InfinitivePhrase
                 ? subject as InfinitivePhrase
@@ -100,7 +102,7 @@ class _SubjectPageState extends State<SubjectPage> {
             isNegative: widget.clause.isNegative,
             isPlural: widget.clause.hasPluralSubject,
           ),
-        NounType.gerundPhrase => GerundPhraseForm(
+        SubjectType.gerundPhrase => GerundPhraseForm(
             setPhrase: setSubject,
             phrase: subject is GerundPhrase
                 ? subject as GerundPhrase
@@ -109,17 +111,11 @@ class _SubjectPageState extends State<SubjectPage> {
             isNegative: widget.clause.isNegative,
             isPlural: widget.clause.hasPluralSubject,
           ),
-        _ => PronounForm(
-            pronouns: vocabularyRepository.subjectPronouns(),
-            setPronoun: setSubject,
-            pronoun: subject is Pronoun ? subject as Pronoun : null,
-            settingsControl: settingsControl,
-          ),
       },
     );
   }
 
   setSubject(AnyNoun? subject) => setState(() => this.subject = subject);
 
-  setType(NounType type) => setState(() => this.type = type);
+  setType(SubjectType type) => setState(() => this.type = type);
 }

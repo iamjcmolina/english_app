@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../model/sentence/noun/any_noun.dart';
 import '../../model/sentence/noun/indefinite_pronoun.dart';
-import '../../model/sentence/noun/noun_type.dart';
-import '../../model/sentence/noun/pronoun.dart';
+import '../../model/sentence/noun/object_pronoun.dart';
+import '../../model/sentence/noun/object_type.dart';
 import '../../model/sentence/phrase/gerund_phrase.dart';
 import '../../model/sentence/phrase/infinitive_phrase.dart';
 import '../../model/sentence/phrase/noun_phrase.dart';
-import '../../repository/vocabulary_repository.dart';
 import '../common/sentence_scaffold.dart';
 import '../sentence/noun/indefinite_pronoun_form.dart';
-import '../sentence/noun/pronoun_form.dart';
+import '../sentence/noun/object_pronoun_form.dart';
 import '../sentence/phrase/gerund_phrase_form.dart';
 import '../sentence/phrase/infinitive_phrase_form.dart';
 import '../sentence/phrase/noun_phrase_form.dart';
@@ -38,7 +36,7 @@ class ObjectPage extends StatefulWidget {
 
 class _ObjectPageState extends State<ObjectPage> {
   AnyNoun? object;
-  late NounType type;
+  late ObjectType type;
 
   bool get isValid => object?.isValid ?? false;
 
@@ -49,22 +47,20 @@ class _ObjectPageState extends State<ObjectPage> {
   void initState() {
     super.initState();
     object = widget.object;
-    type = type = NounType.from(object.runtimeType,
-        mustAllowPronouns ? NounType.pronoun : NounType.nounPhrase);
+    type = type = ObjectType.from(object.runtimeType,
+        mustAllowPronouns ? ObjectType.pronoun : ObjectType.nounPhrase);
   }
 
   @override
   Widget build(BuildContext context) {
-    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
-
     final settingsControl = Center(
         child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: DropdownMenu<NounType>(
+            child: DropdownMenu<ObjectType>(
                 label: const Text('Noun Object Type'),
                 initialSelection: type,
-                dropdownMenuEntries: NounType.values
-                    .where((e) => mustAllowPronouns || e != NounType.pronoun)
+                dropdownMenuEntries: ObjectType.values
+                    .where((e) => mustAllowPronouns || e != ObjectType.pronoun)
                     .map((e) => DropdownMenuEntry(value: e, label: e.name))
                     .toList(),
                 onSelected: (e) => setType(e!))));
@@ -82,7 +78,12 @@ class _ObjectPageState extends State<ObjectPage> {
         ),
       ],
       body: switch (type) {
-        NounType.nounPhrase => NounPhraseForm(
+        ObjectType.pronoun => ObjectPronounForm(
+            setPronoun: setObject,
+            pronoun: object is ObjectPronoun ? object as ObjectPronoun : null,
+            settingsControl: settingsControl,
+          ),
+        ObjectType.nounPhrase => NounPhraseForm(
             setPhrase: setObject,
             phrase: object is NounPhrase
                 ? object as NounPhrase
@@ -91,7 +92,7 @@ class _ObjectPageState extends State<ObjectPage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        NounType.indefinitePronoun => IndefinitePronounForm(
+        ObjectType.indefinitePronoun => IndefinitePronounForm(
             setPronoun: setObject,
             pronoun: object is IndefinitePronoun
                 ? object as IndefinitePronoun
@@ -99,7 +100,7 @@ class _ObjectPageState extends State<ObjectPage> {
             settingsControl: settingsControl,
             isNegative: widget.isNegative,
           ),
-        NounType.infinitivePhrase => InfinitivePhraseForm(
+        ObjectType.infinitivePhrase => InfinitivePhraseForm(
             setPhrase: setObject,
             phrase: object is InfinitivePhrase
                 ? object as InfinitivePhrase
@@ -108,7 +109,7 @@ class _ObjectPageState extends State<ObjectPage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        NounType.gerundPhrase => GerundPhraseForm(
+        ObjectType.gerundPhrase => GerundPhraseForm(
             setPhrase: setObject,
             phrase: object is GerundPhrase
                 ? object as GerundPhrase
@@ -117,17 +118,11 @@ class _ObjectPageState extends State<ObjectPage> {
             isNegative: widget.isNegative,
             isPlural: widget.isPlural,
           ),
-        _ => PronounForm(
-            pronouns: vocabularyRepository.objectPronouns(),
-            setPronoun: setObject,
-            pronoun: object is Pronoun ? object as Pronoun : null,
-            settingsControl: settingsControl,
-          ),
       },
     );
   }
 
   setObject(AnyNoun? object) => setState(() => this.object = object);
 
-  setType(NounType type) => setState(() => this.type = type);
+  setType(ObjectType type) => setState(() => this.type = type);
 }

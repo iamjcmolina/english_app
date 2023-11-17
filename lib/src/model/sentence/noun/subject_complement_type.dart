@@ -3,7 +3,7 @@ import '../phrase/adjective_plus_complement.dart';
 import '../phrase/adverb_plus_adjective.dart';
 import '../phrase/infinitive_phrase.dart';
 import '../phrase/noun_phrase.dart';
-import 'pronoun.dart';
+import 'possessive_pronoun.dart';
 
 enum SubjectComplementType {
   adjective('Adjective'),
@@ -26,7 +26,7 @@ enum SubjectComplementType {
         AdverbPlusAdjective => SubjectComplementType.degreeAdverbPlusAdjective,
         AdjectivePlusComplement =>
           SubjectComplementType.adjectivePlusComplement,
-        Pronoun => SubjectComplementType.possessivePronoun,
+        PossessivePronoun => SubjectComplementType.possessivePronoun,
         NounPhrase => SubjectComplementType.nounPhrase,
         InfinitivePhrase => SubjectComplementType.infinitivePhrase,
         _ => defaultType,

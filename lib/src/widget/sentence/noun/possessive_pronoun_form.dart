@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../model/label.dart';
-import '../../../model/sentence/noun/pronoun.dart';
+import '../../../model/sentence/noun/possessive_pronoun.dart';
 import '../../../model/word.dart';
+import '../../../repository/vocabulary_repository.dart';
 import '../../common/item_editor_layout.dart';
 import '../../common/item_field.dart';
 import '../../common/item_tile.dart';
 
-class PronounForm extends StatefulWidget {
+class PossessivePronounForm extends StatefulWidget {
   final Widget settingsControl;
-  final List<Pronoun> pronouns;
-  final Pronoun? pronoun;
-  final void Function(Pronoun?) setPronoun;
+  final PossessivePronoun? pronoun;
+  final void Function(PossessivePronoun?) setPronoun;
 
-  const PronounForm({
+  const PossessivePronounForm({
     super.key,
     required this.settingsControl,
-    required this.pronouns,
     required this.pronoun,
     required this.setPronoun,
   });
 
   @override
-  State<PronounForm> createState() => _PronounFormState();
+  State<PossessivePronounForm> createState() => _PronounFormState();
 }
 
-class _PronounFormState extends State<PronounForm> {
+class _PronounFormState extends State<PossessivePronounForm> {
   bool isFieldShown = false;
 
   @override
   Widget build(BuildContext context) {
+    final vocabularyRepository = Provider.of<VocabularyRepository>(context);
+
     return ItemEditorLayout(
       header: [
         widget.settingsControl,
@@ -63,9 +65,9 @@ class _PronounFormState extends State<PronounForm> {
             isRequired: true,
           ),
         if (isFieldShown)
-          ItemField<Pronoun>(
+          ItemField<PossessivePronoun>(
             label: Label.personalPronoun,
-            options: widget.pronouns,
+            options: vocabularyRepository.possessivePronouns(),
             value: widget.pronoun,
             setValue: widget.setPronoun,
             toEnString: (pronoun) => pronoun.en,
