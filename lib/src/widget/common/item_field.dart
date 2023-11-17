@@ -67,8 +67,10 @@ class ItemField<T extends Object> extends StatelessWidget {
                     ),
               suffixIcon: IconButton(
                 onPressed: () {
+                  if (controller.text.isEmpty) {
+                    setValue(null);
+                  }
                   controller.text = '';
-                  focusNode.unfocus();
                 },
                 icon: const Icon(Icons.clear),
               )),
