@@ -5,7 +5,7 @@ import 'doer.dart';
 class SubjectPronoun extends AnyNoun {
   static const subjectPronouns = [
     SubjectPronoun('I', 'yo', Doer.I),
-    SubjectPronoun('you', 'tu/ustedes', Doer.you),
+    SubjectPronoun('you', 'tú/ustedes', Doer.you),
     SubjectPronoun('he', 'él', Doer.he),
     SubjectPronoun('she', 'ella', Doer.she),
     SubjectPronoun('it', 'eso', Doer.it),

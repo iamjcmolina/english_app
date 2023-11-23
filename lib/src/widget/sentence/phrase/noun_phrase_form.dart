@@ -179,7 +179,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
         if (!isNumberFieldShown)
           ItemTile(
             trailing: const Icon(Icons.edit),
-            onTap: toggleDeterminerField,
+            onTap: toggleNumberField,
             style: Word.determiner.style,
             placeholder: Label.number,
             en: widget.phrase.number?.en,
@@ -201,7 +201,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
         if (!isAdjectiveFieldShown)
           ItemTile(
             trailing: const Icon(Icons.edit),
-            onTap: toggleDeterminerField,
+            onTap: toggleAdjectiveField,
             style: Word.adjective.style,
             placeholder: Label.adjective,
             en: widget.phrase.adjective?.en,
@@ -222,7 +222,7 @@ class _NounPhraseFormState extends State<NounPhraseForm> {
         if (!isNounFieldShown)
           ItemTile(
             trailing: const Icon(Icons.edit),
-            onTap: toggleDeterminerField,
+            onTap: toggleNounField,
             style: Word.noun.style,
             placeholder: Label.noun,
             en: widget.phrase.noun?.en,
